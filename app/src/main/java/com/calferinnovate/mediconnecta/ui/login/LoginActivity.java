@@ -26,6 +26,8 @@ import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.ui.login.LoginViewModel;
 import com.calferinnovate.mediconnecta.ui.login.LoginViewModelFactory;
 import com.calferinnovate.mediconnecta.databinding.ActivityLoginBinding;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -42,8 +44,8 @@ public class LoginActivity extends AppCompatActivity {
         loginViewModel = new ViewModelProvider(this, new LoginViewModelFactory())
                 .get(LoginViewModel.class);
 
-        final EditText usernameEditText = binding.username;
-        final EditText passwordEditText = binding.password;
+        final TextInputEditText usernameEditText = binding.username;
+        final TextInputEditText passwordEditText = binding.password;
         final Button loginButton = binding.login;
         final ProgressBar loadingProgressBar = binding.loading;
 
