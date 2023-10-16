@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="seed">#A1C7BA</color>
+    <color name="md_theme_black">#000000</color>
+    <color name="md_theme_white">#ffffff</color>
 <color name="md_theme_light_primary">#006B58</color>
 <color name="md_theme_light_onPrimary">#FFFFFF</color>
 <color name="md_theme_light_primaryContainer">#7CF8D7</color>

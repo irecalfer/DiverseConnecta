@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="desc_imag_logo_login">Imagen del logo para al activity de login</string>
+</resources>

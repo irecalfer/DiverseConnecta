@@ -23,30 +23,77 @@
             android:id="@+id/logo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="96dp"
-            app:srcCompat="@drawable/logo_verde" />
+            android:layout_marginTop="160dp"
+            app:srcCompat="@drawable/logo_verde"
+            android:contentDescription="@string/desc_imag_logo_login"/>
 
-        <EditText
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/username"
             android:layout_width="match_parent"
             android:layout_height="48dp"
+            android:layout_marginTop="-50dp"
+            android:textColorHint="@color/md_theme_black"
+            app:endIconMode="custom"
+            app:endIconDrawable="@drawable/user_icon"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/prompt_user"
+                android:background="@color/md_theme_white"
+                android:inputType="text"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
+            android:textColorHint="@color/md_theme_black"
+            app:endIconMode="password_toggle">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/md_theme_white"
+                android:hint="@string/prompt_password"
+                android:inputType="textPassword"
+                />
+
+            <Button
+                android:id="@+id/login"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:enabled="false"
+                android:text="@string/action_sign_in"
+                android:layout_marginTop="20dp"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!--
+        <EditText
+
+            android:layout_width="match_parent"
+
+
             android:autofillHints="@string/prompt_email"
-            android:hint="@string/prompt_email"
+
             android:inputType="textEmailAddress"
             android:selectAllOnFocus="true" />
 
         <EditText
-            android:id="@+id/password"
+
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_marginTop="8dp"
             android:autofillHints="@string/prompt_password"
-            android:hint="@string/prompt_password"
+
             android:imeActionLabel="@string/action_sign_in_short"
             android:imeOptions="actionDone"
             android:inputType="textPassword"
-            android:selectAllOnFocus="true" />
+            android:selectAllOnFocus="true" /> -->
 
         <ProgressBar
             android:id="@+id/loading"
@@ -56,14 +103,6 @@
             android:layout_marginTop="64dp"
             android:layout_marginBottom="64dp"
             android:visibility="gone" />
-
-        <Button
-            android:id="@+id/login"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:enabled="false"
-            android:text="@string/action_sign_in" />
 
     </LinearLayout>
 
