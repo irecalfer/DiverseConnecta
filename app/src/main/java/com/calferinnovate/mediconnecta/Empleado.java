@@ -4,7 +4,7 @@ package com.calferinnovate.mediconnecta;
 // guardarlo en la variable name y poder consultarlo desde otras activities.
 public class Empleado {
 
-    private String user,pass,name;
+    private String user,pass,names;
 
     public String getUser() {
         return user;
@@ -22,11 +22,11 @@ public class Empleado {
         this.pass = pass;
     }
 
-    public String getName() {
-        return name;
+    public String getNames() {
+        return names;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNames(String names) {
+        this.names = names;
     }
 }
