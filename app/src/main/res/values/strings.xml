@@ -21,4 +21,6 @@
     <string name="login_failed">"Ha introducido un nombre de usuario o contraseña incorrecta"</string>
     <string name="prompt_user">Usuario</string>
     <string name="desc_imag_logo_login">Imagen del logo para al activity de login</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
