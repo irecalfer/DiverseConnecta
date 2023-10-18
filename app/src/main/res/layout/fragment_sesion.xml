@@ -5,56 +5,78 @@
     android:id="@+id/frameLayout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SesionFragment">
+    tools:context=".SesionFragment" >
 
-    <LinearLayout
+    <ImageView
+        android:id="@+id/imagenLogo"
+        android:layout_width="0dp"
+        android:layout_height="415dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/logo_verde"
+        android:contentDescription="@string/desc_imag_logo_login" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/userLabel"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginBottom="17dp"
+        app:endIconContentDescription="@string/content_description_end_icon_user"
+        app:endIconDrawable="@drawable/icono_usuario"
+        app:endIconMode="custom"
+        app:layout_constraintBottom_toTopOf="@+id/passLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imagenLogo">
 
-        <ImageView
-            android:id="@+id/logoLogin"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/user"
             android:layout_width="match_parent"
-            android:layout_height="283dp"
-            android:src="@tools:sample/avatars"
-            tools:srcCompat="@drawable/logo_verde"
-            android:layout_marginTop="200dp"/>
+            android:layout_height="wrap_content"
+            android:hint="@string/userLogin" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_marginTop="20dp"
-            android:id="@+id/userLabel"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/passLabel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="-10dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginBottom="11dp"
+        app:endIconMode="password_toggle"
+        app:layout_constraintBottom_toTopOf="@+id/button2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userLabel">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/pass"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:hint="@string/pass"
+            android:inputType="textPassword"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="598dp" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/user"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Usuario" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_marginTop="10dp"
-            android:id="@+id/passLabel"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/pass"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Contraseña" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <Button
-            android:id="@+id/button"
-            android:layout_width="241dp"
-            android:layout_height="61dp"
-            android:layout_marginTop="-300dp"
-            android:layout_marginLeft="150dp"
-            android:text="Button" />
-
-    </LinearLayout>
-
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="100dp"
+        android:layout_marginBottom="65dp"
+        android:text="@string/buttonAcceso"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/passLabel" />
 </androidx.constraintlayout.widget.ConstraintLayout>

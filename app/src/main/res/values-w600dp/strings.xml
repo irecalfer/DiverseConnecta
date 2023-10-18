@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="desc_imag_logo_login">Imagen del logo para al activity de login</string>
+    <string name="pass">Contraseña</string>
+    <string name="userLogin">Usuario</string>
+    <string name="buttonAcceso">Acceder</string>
+    <string name="content_description_end_icon_user">Icono de usuario</string>
+    <string name="desc_logo_inicio">Imagen del logo para el inicio de sesión</string>
 </resources>
