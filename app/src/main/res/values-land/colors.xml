@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="background">#F2F5E0</color>
+    <color name="blanco_de_cinc">#fafbfd</color>
+    <color name="blanco_señales">#f4f4f4</color>
+    <color name="formularios">#6FAF9F</color>
+    <color name="verde_pastel">#83B9AB</color>
+</resources>

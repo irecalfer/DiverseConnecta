@@ -5,7 +5,7 @@
     android:id="@+id/frameLayout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SesionFragment" >
+    tools:context=".SesionFragment">
 
     <ImageView
         android:id="@+id/imagenLogo"
@@ -14,67 +14,106 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="50dp"
         android:layout_marginEnd="32dp"
+        android:contentDescription="@string/desc_imag_logo_login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/logo_verde"
-        android:contentDescription="@string/desc_imag_logo_login" />
+        app:srcCompat="@drawable/logo_verde_oscuro" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/userLabel"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="80dp"
         android:layout_marginStart="50dp"
         android:layout_marginEnd="50dp"
         android:layout_marginBottom="17dp"
+        android:textColorHint="@color/md_theme_light_onPrimary"
+        app:autoSizeTextType="uniform"
+        app:boxBackgroundColor="@color/md_theme_light_surfaceTint"
+        app:boxBackgroundMode="filled"
+        app:boxStrokeColor="#FFFFFF"
+        app:counterEnabled="false"
         app:endIconContentDescription="@string/content_description_end_icon_user"
         app:endIconDrawable="@drawable/icono_usuario"
         app:endIconMode="custom"
+        app:endIconTint="@color/md_theme_light_background"
+        app:helperTextTextColor="#FFFFFF"
+        app:hintTextColor="#FFFFFF"
         app:layout_constraintBottom_toTopOf="@+id/passLabel"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imagenLogo">
+        app:layout_constraintTop_toBottomOf="@+id/imagenLogo"
+        app:passwordToggleTint="@color/md_theme_light_onPrimary">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/user"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/userLogin" />
+            android:layout_height="70dp"
+            android:hint="@string/userLogin"
+            android:inputType="text"
+            android:textColor="#FFFFFF"
+            android:textColorHighlight="#FFFFFF"
+            android:textColorHint="#FFFFFF"
+            android:textColorLink="#FFFFFF"
+            android:textSize="24sp"
+            app:autoSizeTextType="uniform" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/passLabel"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="80dp"
         android:layout_marginStart="50dp"
         android:layout_marginTop="-10dp"
         android:layout_marginEnd="50dp"
         android:layout_marginBottom="11dp"
+        android:textColorHint="#FFFFFF"
+        app:autoSizeTextType="uniform"
+        app:boxBackgroundColor="@color/md_theme_light_surfaceTint"
+        app:boxBackgroundMode="filled"
+        app:boxStrokeColor="#FFFFFF"
         app:endIconMode="password_toggle"
-        app:layout_constraintBottom_toTopOf="@+id/button2"
+        app:endIconTint="@color/md_theme_light_background"
+        app:hintAnimationEnabled="true"
+        app:hintEnabled="true"
+        app:hintTextColor="#FFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/btnAcceso"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/userLabel">
+        app:layout_constraintTop_toBottomOf="@+id/userLabel"
+        app:passwordToggleTint="#FFFFFF"
+        app:placeholderTextColor="#FFFFFF"
+        app:prefixTextColor="#FFFFFF">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/pass"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="70dp"
+            android:drawableTint="#FFFFFF"
+            android:forceDarkAllowed="false"
             android:hint="@string/pass"
             android:inputType="textPassword"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#FFFFFF"
+            android:textColorLink="#FFFFFF"
+            android:textSize="24sp"
+            app:autoSizeTextType="uniform"
             tools:layout_editor_absoluteX="0dp"
             tools:layout_editor_absoluteY="598dp" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/btnAcceso"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="70dp"
         android:layout_marginStart="100dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="100dp"
         android:layout_marginBottom="65dp"
+        android:backgroundTint="@color/md_theme_light_surfaceTint"
         android:text="@string/buttonAcceso"
+        app:autoSizeTextType="uniform"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

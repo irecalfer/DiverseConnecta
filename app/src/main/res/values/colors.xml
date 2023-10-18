@@ -63,4 +63,9 @@
 <color name="md_theme_dark_surfaceTint">#5DDBBC</color>
 <color name="md_theme_dark_outlineVariant">#3F4945</color>
 <color name="md_theme_dark_scrim">#000000</color>
+    <color name="background">#F2F5E0</color>
+    <color name="blanco_de_cinc">#fafbfd</color>
+    <color name="blanco_señales">#f4f4f4</color>
+    <color name="formularios">#6FAF9F</color>
+    <color name="verde_pastel">#83B9AB</color>
 </resources>
