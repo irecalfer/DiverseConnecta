@@ -6,4 +6,6 @@
     <string name="buttonAcceso">Acceder</string>
     <string name="content_description_end_icon_user">Icono de usuario</string>
     <string name="desc_logo_inicio">Imagen del logo para el inicio de sesión</string>
+    <string name="labelAreaGeriatría">¿En que unidad de geriatría?</string>
+    <string name="labelSaludMental">¿En qué área de salud mental?</string>
 </resources>

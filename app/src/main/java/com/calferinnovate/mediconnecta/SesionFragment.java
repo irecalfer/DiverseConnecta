@@ -84,7 +84,7 @@ public class SesionFragment extends Fragment implements Response.Listener<JSONOb
 
     @Override
     public void onResponse(JSONObject response) {
-        Toast.makeText(getContext(), "Permitiendo el acceso al usuario "+ username.getText().toString(), Toast.LENGTH_SHORT).show();
+
         // Vamos a crear un objeto Empleado, para que lo que nos pase Json podamos parsearlo y pasarselo
         // a esos atributos de la clase Empleado.
         Empleado empleado = new Empleado();
@@ -99,15 +99,19 @@ public class SesionFragment extends Fragment implements Response.Listener<JSONOb
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject object = jsonArray.getJSONObject(i);
 
-                String user = object.getString("user");
-                String pwd = object.getString("pwd");
-                String names = object.getString("names");
+               // String user = object.getString("user");
+               // String pwd = object.getString("pwd");
+               // String names = object.getString("names");
 
-                Log.d("datos", "Nombre= "+ names + "Username= " + user + "Contraseña= " + pwd);
+
 
                 empleado.setUser(object.optString("user"));
                 empleado.setPass(object.optString("pwd"));
                 empleado.setNames(object.optString("names"));
+
+                //Log.d("datos", "Nombre= "+ names + "Username= " + user + "Contraseña= " + pwd);
+
+                Toast.makeText(getContext(), "Permitiendo el acceso al usuario "+ username.getText().toString(), Toast.LENGTH_SHORT).show();
             }
         } catch (JSONException e) {
             Log.d("Exception", String.valueOf(e));

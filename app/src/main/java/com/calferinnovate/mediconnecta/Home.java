@@ -5,7 +5,9 @@ import androidx.fragment.app.FragmentManager;
 
 import android.os.Bundle;
 
+
 public class Home extends AppCompatActivity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,3 +18,4 @@ public class Home extends AppCompatActivity {
         fm.beginTransaction().replace(R.id.HomeView, new SesionFragment()).commit();
     }
 }
+
