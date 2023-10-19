@@ -9,7 +9,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -34,6 +39,8 @@ public class SesionFragment extends Fragment implements Response.Listener<JSONOb
     private TextInputEditText username;
     private TextInputEditText password;
     private Button btnAcceso;
+    private SesionFragment binding;
+    private NavController navController;
 
 
 
@@ -45,10 +52,23 @@ public class SesionFragment extends Fragment implements Response.Listener<JSONOb
 
         // Necesitamos un objeto de tipo View
         View vista = inflater.inflate(R.layout.fragment_sesion, container, false);
+
+
+
+        return vista;
+    }
+
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        navController = Navigation.findNavController(view);
+
         // Vamos a referenciar estos objetos con el XML
-        username = (TextInputEditText) vista.findViewById(R.id.user);
-        password = (TextInputEditText) vista.findViewById(R.id.pass);
-        btnAcceso = (Button) vista.findViewById(R.id.btnAcceso);
+        username = (TextInputEditText) view.findViewById(R.id.user);
+        password = (TextInputEditText) view.findViewById(R.id.pass);
+        btnAcceso = (Button) view.findViewById(R.id.btnAcceso);
 
         // Instanciamos RequestQueue
         rq = Volley.newRequestQueue(getContext());
@@ -60,8 +80,6 @@ public class SesionFragment extends Fragment implements Response.Listener<JSONOb
                 iniciarSesion();
             }
         });
-
-        return vista;
     }
 
     // Programamos el botón de Acceso con el método iniciarSesion
@@ -112,16 +130,12 @@ public class SesionFragment extends Fragment implements Response.Listener<JSONOb
                 //Log.d("datos", "Nombre= "+ names + "Username= " + user + "Contraseña= " + pwd);
 
                 Toast.makeText(getContext(), "Permitiendo el acceso al usuario "+ username.getText().toString(), Toast.LENGTH_SHORT).show();
+
+                navController.navigate(R.id.action_sesionFragment_to_seleccionUnidadFragment);
             }
         } catch (JSONException e) {
             Log.d("Exception", String.valueOf(e));
         }
-
-
-
-
-        Intent intencion = new Intent(getContext(), SeleccionUnidadFragment.class);
-        startActivity(intencion);
 
 
     }

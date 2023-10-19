@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_graph"
+    app:startDestination="@id/sesionFragment">
+
+    <fragment
+        android:id="@+id/sesionFragment"
+        android:name="com.calferinnovate.mediconnecta.SesionFragment"
+        android:label="fragment_sesion"
+        tools:layout="@layout/fragment_sesion" >
+        <action
+            android:id="@+id/action_sesionFragment_to_seleccionUnidadFragment"
+            app:destination="@id/seleccionUnidadFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/seleccionUnidadFragment"
+        android:name="com.calferinnovate.mediconnecta.SeleccionUnidadFragment"
+        android:label="fragment_seleccion_unidad"
+        tools:layout="@layout/fragment_seleccion_unidad" >
+        <action
+            android:id="@+id/action_seleccionUnidadFragment_to_home2"
+            app:destination="@id/home2" />
+    </fragment>
+    <activity
+        android:id="@+id/home2"
+        android:name="com.calferinnovate.mediconnecta.Home"
+        android:label="activity_home"
+        tools:layout="@layout/activity_home" />
+</navigation>
