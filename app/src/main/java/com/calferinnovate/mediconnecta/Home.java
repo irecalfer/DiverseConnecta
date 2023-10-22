@@ -1,7 +1,6 @@
 package com.calferinnovate.mediconnecta;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
 
 import android.os.Bundle;
 

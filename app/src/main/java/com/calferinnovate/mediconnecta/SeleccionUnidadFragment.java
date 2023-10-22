@@ -13,8 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
 
 
 public class SeleccionUnidadFragment extends Fragment {
