@@ -138,6 +138,7 @@ public class SesionFragment extends Fragment implements Response.Listener<JSONOb
 
                 Log.d("datos", "Nombre= "+ empleado.getCod_empleado() + "Username= " + empleado.getUser().toString() + "Contraseña= " + empleado.getPass().toString());
 
+
                 Toast.makeText(getContext(), "Permitiendo el acceso al usuario "+ username.getText().toString(), Toast.LENGTH_SHORT).show();
 
                 // Ahora vamos a guardar los datos del empleado con su código
@@ -163,17 +164,15 @@ public class SesionFragment extends Fragment implements Response.Listener<JSONOb
             for (int i=0; i<response.length(); i++ ){
                 try{
                     jsonObject = response.getJSONObject(i);
+                    //empleado.setFoto(jsonObject.optBlob("E.foto"));
                     empleado.setNombre(jsonObject.optString("nombre"));
                     empleado.setApellidos(jsonObject.optString("apellidos"));
                     empleado.setFk_cargo(jsonObject.optInt("fk_cargo"));
+                    empleado.setNombreCargo(jsonObject.optString("nombreCargo"));
+
+                    pasoDeDatosAlSiguienteFragmento();
                     Log.d("datos", "Nombre= "+ empleado.getNombre().toString() + "Apellidos= " + empleado.getApellidos().toString() + "Cargo= " + empleado.getFk_cargo());
-                    //Para poder pasar objetos de un fragment tenemos que crear nuestr5o bundle y agregarñp como parámetro
-                    //al método .navigate()
-                    Bundle bundle = new Bundle();
-                    bundle.putParcelable("empleados", empleado);
-                    Log.d("prueba", bundle.toString());
-                    //Cargamos el nuevo fragmento
-                    navController.navigate(R.id.action_sesionFragment_to_seleccionUnidadFragment, bundle);
+                    Log.d("Cargo", empleado.getNombreCargo());
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
@@ -184,6 +183,16 @@ public class SesionFragment extends Fragment implements Response.Listener<JSONOb
         rq = Volley.newRequestQueue(getContext());
         rq.add(jsonArrayRequest);
 
+    }
+
+    void pasoDeDatosAlSiguienteFragmento(){
+        //Para poder pasar objetos de un fragment tenemos que crear nuestr5o bundle y agregarñp como parámetro
+        //al método .navigate()
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("empleados", empleado);
+        Log.d("prueba", bundle.toString());
+        //Cargamos el nuevo fragmento
+        navController.navigate(R.id.action_sesionFragment_to_seleccionUnidadFragment, bundle);
     }
 
 
