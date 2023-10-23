@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentResultListener;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
@@ -19,6 +20,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.Volley;
@@ -29,6 +31,8 @@ import com.google.android.material.textfield.TextInputEditText;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 public class SesionFragment extends Fragment implements Response.Listener<JSONObject>, Response.ErrorListener {
 
@@ -41,6 +45,8 @@ public class SesionFragment extends Fragment implements Response.Listener<JSONOb
     private TextInputEditText password;
     private Button btnAcceso;
     private NavController navController;
+    Empleado empleado;
+    ArrayList<Empleado> sesionEmpleado = new ArrayList<>();
 
 
 
@@ -105,7 +111,7 @@ public class SesionFragment extends Fragment implements Response.Listener<JSONOb
 
         // Vamos a crear un objeto Empleado, para que lo que nos pase Json podamos parsearlo y pasarselo
         // a esos atributos de la clase Empleado.
-        Empleado empleado = new Empleado();
+       empleado = new Empleado();
         // Creamos un objeto Json de tipo array para recuperar ese array que estamos creando en el archivos php
         // con el formato Json. datos es el nombre del array que hemos declarado en el archivo php.
 
@@ -125,11 +131,18 @@ public class SesionFragment extends Fragment implements Response.Listener<JSONOb
 
                 empleado.setUser(object.optString("user"));
                 empleado.setPass(object.optString("pwd"));
-                empleado.setNames(object.optString("names"));
+                empleado.setCod_empleado(object.optInt("cod_empleado"));
 
-                Log.d("datos", "Nombre= "+ empleado.getNames().toString() + "Username= " + empleado.getUser().toString() + "Contraseña= " + empleado.getPass().toString());
+
+                Log.d("datos", "Nombre= "+ empleado.getCod_empleado() + "Username= " + empleado.getUser().toString() + "Contraseña= " + empleado.getPass().toString());
 
                 Toast.makeText(getContext(), "Permitiendo el acceso al usuario "+ username.getText().toString(), Toast.LENGTH_SHORT).show();
+
+                // Ahora vamos a guardar los datos del empleado con su código
+                String url_datos = Constantes.url_part+"datos_empleados.php?cod_empleado="+empleado.getCod_empleado();
+                guardar_datos_empleado(url_datos);
+
+                //Ahora guardamos al empleado dentro de la lista de empleados para poder acceder desde el resto de acitivdades.
 
                 navController.navigate(R.id.action_sesionFragment_to_seleccionUnidadFragment);
             }
@@ -139,4 +152,27 @@ public class SesionFragment extends Fragment implements Response.Listener<JSONOb
 
 
     }
+    public void guardar_datos_empleado(String url){
+        JsonArrayRequest jsonArrayRequest= new JsonArrayRequest(url, response -> {
+            JSONObject jsonObject = null;
+            for (int i=0; i<response.length(); i++ ){
+                try{
+                    jsonObject = response.getJSONObject(i);
+                    empleado.setNombre(jsonObject.optString("nombre"));
+                    empleado.setApellidos(jsonObject.optString("apellidos"));
+                    empleado.setFk_cargo(jsonObject.optInt("fk_cargo"));
+                    Log.d("datos", "Nombre= "+ empleado.getNombre().toString() + "Apellidos= " + empleado.getApellidos().toString() + "Cargo= " + empleado.getFk_cargo());
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }, error -> {
+            Toast.makeText(getContext(), "Error al obtener los datos", Toast.LENGTH_SHORT).show();
+        });
+        rq = Volley.newRequestQueue(getContext());
+        rq.add(jsonArrayRequest);
+
+    }
+
+
 }
