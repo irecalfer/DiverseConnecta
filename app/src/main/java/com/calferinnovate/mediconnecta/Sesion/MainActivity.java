@@ -1,14 +1,13 @@
-package com.calferinnovate.mediconnecta;
+package com.calferinnovate.mediconnecta.Sesion;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
 
-import com.calferinnovate.mediconnecta.clases.Empleado;
+import com.calferinnovate.mediconnecta.R;
 
 
-public class Home extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
 
 
 
@@ -16,7 +15,7 @@ public class Home extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.activity_main);
 
         //FragmentManager fmSesion = getSupportFragmentManager();
         //fmSesion.beginTransaction().replace(R.id.HomeView, new SesionFragment()).commit();

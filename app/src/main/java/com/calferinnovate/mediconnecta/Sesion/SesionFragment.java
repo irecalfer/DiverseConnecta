@@ -1,4 +1,4 @@
-package com.calferinnovate.mediconnecta;
+package com.calferinnovate.mediconnecta.Sesion;
 
 
 import android.os.Bundle;
@@ -12,7 +12,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentResultListener;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
@@ -24,6 +23,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.Volley;
+import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.clases.Constantes;
 import com.calferinnovate.mediconnecta.clases.Empleado;
 import com.google.android.material.textfield.TextInputEditText;
@@ -84,6 +84,16 @@ public class SesionFragment extends Fragment implements Response.Listener<JSONOb
             @Override
             public void onClick(View v) {
                 iniciarSesion();
+                //Vamos a pasar los datos de este fragmento al siguiente
+                //Hacemos una instancia de la clase Bundle
+                Bundle enviaDatosEmpleados = new Bundle();
+                enviaDatosEmpleados.putParcelable("keyDatos", empleado);
+
+
+
+
+                //Cargamos el nuevo fragmento
+                navController.navigate(R.id.action_sesionFragment_to_seleccionUnidadFragment);
             }
         });
     }
@@ -144,7 +154,7 @@ public class SesionFragment extends Fragment implements Response.Listener<JSONOb
 
                 //Ahora guardamos al empleado dentro de la lista de empleados para poder acceder desde el resto de acitivdades.
 
-                navController.navigate(R.id.action_sesionFragment_to_seleccionUnidadFragment);
+
             }
         } catch (JSONException e) {
             Log.d("Exception", String.valueOf(e));

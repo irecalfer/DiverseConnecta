@@ -1,25 +1,20 @@
-package com.calferinnovate.mediconnecta;
+package com.calferinnovate.mediconnecta.Sesion;
 
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentResultListener;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
-import com.calferinnovate.mediconnecta.clases.Empleado;
-
-import java.util.ArrayList;
+import com.calferinnovate.mediconnecta.R;
 
 
 public class SeleccionUnidadFragment extends Fragment {
