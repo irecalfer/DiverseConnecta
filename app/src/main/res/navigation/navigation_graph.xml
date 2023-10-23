@@ -20,12 +20,15 @@
         android:label="fragment_seleccion_unidad"
         tools:layout="@layout/fragment_seleccion_unidad" >
         <action
-            android:id="@+id/action_seleccionUnidadFragment_to_home2"
-            app:destination="@id/home2" />
+            android:id="@+id/action_seleccionUnidadFragment_to_homeActivity"
+            app:destination="@id/homeActivity" />
+        <argument
+            android:name="empleadoSesion"
+            app:argType="com.calferinnovate.mediconnecta.clases.Empleado" />
     </fragment>
     <activity
-        android:id="@+id/home2"
-        android:name="com.calferinnovate.mediconnecta.Sesion.MainActivity"
+        android:id="@+id/homeActivity"
+        android:name="com.calferinnovate.mediconnecta.Home.HomeActivity"
         android:label="activity_home"
-        tools:layout="@layout/activity_main" />
+        tools:layout="@layout/activity_home" />
 </navigation>

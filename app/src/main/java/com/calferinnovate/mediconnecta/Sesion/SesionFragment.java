@@ -84,16 +84,8 @@ public class SesionFragment extends Fragment implements Response.Listener<JSONOb
             @Override
             public void onClick(View v) {
                 iniciarSesion();
-                //Vamos a pasar los datos de este fragmento al siguiente
-                //Hacemos una instancia de la clase Bundle
-                Bundle enviaDatosEmpleados = new Bundle();
-                enviaDatosEmpleados.putParcelable("keyDatos", empleado);
 
 
-
-
-                //Cargamos el nuevo fragmento
-                navController.navigate(R.id.action_sesionFragment_to_seleccionUnidadFragment);
             }
         });
     }
@@ -172,6 +164,11 @@ public class SesionFragment extends Fragment implements Response.Listener<JSONOb
                     empleado.setApellidos(jsonObject.optString("apellidos"));
                     empleado.setFk_cargo(jsonObject.optInt("fk_cargo"));
                     Log.d("datos", "Nombre= "+ empleado.getNombre().toString() + "Apellidos= " + empleado.getApellidos().toString() + "Cargo= " + empleado.getFk_cargo());
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable("empleados", empleado);
+                    Log.d("prueba", bundle.toString());
+                    //Cargamos el nuevo fragmento
+                    navController.navigate(R.id.action_sesionFragment_to_seleccionUnidadFragment, bundle);
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }

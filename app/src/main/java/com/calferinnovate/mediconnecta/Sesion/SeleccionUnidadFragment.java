@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.calferinnovate.mediconnecta.R;
+import com.calferinnovate.mediconnecta.clases.Empleado;
 
 
 public class SeleccionUnidadFragment extends Fragment {
@@ -22,6 +24,7 @@ public class SeleccionUnidadFragment extends Fragment {
     Button botonFinalizar;
     NavController navController;
     TextView nombre;
+
 
 
 
@@ -56,12 +59,17 @@ public class SeleccionUnidadFragment extends Fragment {
         nombre = view.findViewById(R.id.nombreYApellidos);
 
 
+        if(getArguments() != null){
+            Empleado empleado = getArguments().getParcelable("empleados", Empleado.class);
+            nombre.setText(empleado.getNombre());
+            Log.d("probando", nombre.getText().toString());
+        }
 
 
         botonFinalizar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                navController.navigate(R.id.action_seleccionUnidadFragment_to_home2);
+                navController.navigate(R.id.action_seleccionUnidadFragment_to_homeActivity);
             }
         });
 
