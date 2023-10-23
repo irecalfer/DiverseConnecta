@@ -154,6 +154,9 @@ public class SesionFragment extends Fragment implements Response.Listener<JSONOb
 
 
     }
+
+    //Cogeremos todos los datos del empleado a través de su código de empleado obtenido anteriormente.
+    //Guardaremos todos los datos en un objeto de tipo empleado.
     public void guardar_datos_empleado(String url){
         JsonArrayRequest jsonArrayRequest= new JsonArrayRequest(url, response -> {
             JSONObject jsonObject = null;
@@ -164,6 +167,8 @@ public class SesionFragment extends Fragment implements Response.Listener<JSONOb
                     empleado.setApellidos(jsonObject.optString("apellidos"));
                     empleado.setFk_cargo(jsonObject.optInt("fk_cargo"));
                     Log.d("datos", "Nombre= "+ empleado.getNombre().toString() + "Apellidos= " + empleado.getApellidos().toString() + "Cargo= " + empleado.getFk_cargo());
+                    //Para poder pasar objetos de un fragment tenemos que crear nuestr5o bundle y agregarñp como parámetro
+                    //al método .navigate()
                     Bundle bundle = new Bundle();
                     bundle.putParcelable("empleados", empleado);
                     Log.d("prueba", bundle.toString());

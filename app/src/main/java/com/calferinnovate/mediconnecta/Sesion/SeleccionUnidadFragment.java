@@ -23,7 +23,7 @@ public class SeleccionUnidadFragment extends Fragment {
 
     Button botonFinalizar;
     NavController navController;
-    TextView nombre;
+    TextView nombre, cod_empleado, cargo;
 
 
 
@@ -47,6 +47,12 @@ public class SeleccionUnidadFragment extends Fragment {
     }
 
 
+    void completaDatosEmpleado(Empleado e){
+        nombre.setText(e.getNombre()+" "+e.getApellidos());
+        cod_empleado.setText(e.getCod_empleado());
+        //cargo.setText
+        Log.d("probando", nombre.getText().toString());
+    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -59,11 +65,13 @@ public class SeleccionUnidadFragment extends Fragment {
         nombre = view.findViewById(R.id.nombreYApellidos);
 
 
+        // Para obtener el empleado lo haremos con el siguiente if
         if(getArguments() != null){
             Empleado empleado = getArguments().getParcelable("empleados", Empleado.class);
-            nombre.setText(empleado.getNombre());
-            Log.d("probando", nombre.getText().toString());
+            completaDatosEmpleado(empleado);
         }
+
+
 
 
         botonFinalizar.setOnClickListener(new View.OnClickListener() {

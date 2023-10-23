@@ -22,9 +22,6 @@
         <action
             android:id="@+id/action_seleccionUnidadFragment_to_homeActivity"
             app:destination="@id/homeActivity" />
-        <argument
-            android:name="empleadoSesion"
-            app:argType="com.calferinnovate.mediconnecta.clases.Empleado" />
     </fragment>
     <activity
         android:id="@+id/homeActivity"
