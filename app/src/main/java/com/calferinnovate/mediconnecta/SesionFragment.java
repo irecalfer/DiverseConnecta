@@ -22,6 +22,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.Volley;
+import com.calferinnovate.mediconnecta.clases.Constantes;
+import com.calferinnovate.mediconnecta.clases.Empleado;
 import com.google.android.material.textfield.TextInputEditText;
 
 import org.json.JSONArray;
@@ -84,7 +86,7 @@ public class SesionFragment extends Fragment implements Response.Listener<JSONOb
     private void iniciarSesion() {
         // Guardamos en un string nuestra dirección ip y la direccion en donde está nuestro archivo php.
         // y concatenamos con nuestros parámetros de comunicación.
-        String url = "http://192.168.1.13/MediConnecta/sesion.php?user="+username.getText().toString()+
+        String url = Constantes.url_part+"inicio_sesion.php?user="+username.getText().toString()+
                 "&pwd="+password.getText().toString();
 
         //Request a string response from the provided url
@@ -115,9 +117,9 @@ public class SesionFragment extends Fragment implements Response.Listener<JSONOb
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject object = jsonArray.getJSONObject(i);
 
-               // String user = object.getString("user");
-               // String pwd = object.getString("pwd");
-               // String names = object.getString("names");
+               //String user = object.getString("user");
+                // String pwd = object.getString("pwd");
+               //String names = object.getString("names");
 
 
 
@@ -125,7 +127,7 @@ public class SesionFragment extends Fragment implements Response.Listener<JSONOb
                 empleado.setPass(object.optString("pwd"));
                 empleado.setNames(object.optString("names"));
 
-                //Log.d("datos", "Nombre= "+ names + "Username= " + user + "Contraseña= " + pwd);
+                Log.d("datos", "Nombre= "+ empleado.getNames().toString() + "Username= " + empleado.getUser().toString() + "Contraseña= " + empleado.getPass().toString());
 
                 Toast.makeText(getContext(), "Permitiendo el acceso al usuario "+ username.getText().toString(), Toast.LENGTH_SHORT).show();
 

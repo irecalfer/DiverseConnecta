@@ -1,4 +1,4 @@
-package com.calferinnovate.mediconnecta;
+package com.calferinnovate.mediconnecta.clases;
 
 // El objetivo de esta clase es que cuadno el usuario se loguee, recuperar el nombre del empleado,
 // guardarlo en la variable name y poder consultarlo desde otras activities.
