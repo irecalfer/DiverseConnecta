@@ -24,6 +24,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.Volley;
 import com.calferinnovate.mediconnecta.R;
+import com.calferinnovate.mediconnecta.clases.ClaseGlobal;
 import com.calferinnovate.mediconnecta.clases.Constantes;
 import com.calferinnovate.mediconnecta.clases.Empleado;
 import com.google.android.material.textfield.TextInputEditText;
@@ -101,7 +102,9 @@ public class SesionFragment extends Fragment implements Response.Listener<JSONOb
 
         // Vamos a crear un objeto Empleado, para que lo que nos pase Json podamos parsearlo y pasarselo
         // a esos atributos de la clase Empleado.
-        empleado = (Empleado) getActivity().getApplicationContext();
+        //empleado = (Empleado) getActivity().getApplicationContext();
+        empleado = ((ClaseGlobal) getActivity().getApplicationContext()).empleado;
+
 
         //Request a string response from the provided url
         jrq = new JsonObjectRequest(Request.Method.GET,url, null,this, this);

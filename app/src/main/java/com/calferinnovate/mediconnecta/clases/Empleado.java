@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 // El objetivo de esta clase es que cuadno el usuario se loguee, recuperar el nombre del empleado,
 // guardarlo en la variable name y poder consultarlo desde otras activities.
-public class Empleado extends Application{
+public class Empleado{
 
     private String user,pass,nombre, apellidos, nombreCargo;
     private int cod_empleado, fk_cargo;
@@ -33,8 +33,6 @@ public class Empleado extends Application{
         this.fk_cargo = fk_cargo;
         this.foto = foto;
     }
-
-
 
 
 

@@ -49,5 +49,6 @@ dependencies {
     //Navegación entre fragmentos
     implementation "androidx.navigation:navigation-fragment:2.7.4"
     implementation "androidx.navigation:navigation-ui:2.7.4"
+    implementation 'com.loopj.android:android-async-http:1.4.11'
 
 }
