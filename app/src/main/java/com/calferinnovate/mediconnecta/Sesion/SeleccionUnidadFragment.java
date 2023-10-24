@@ -12,16 +12,13 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.Volley;
+import com.calferinnovate.mediconnecta.clases.Area;
 import com.calferinnovate.mediconnecta.clases.ClaseGlobal;
 import com.calferinnovate.mediconnecta.clases.Constantes;
 import com.calferinnovate.mediconnecta.clases.Unidades;
-import com.loopj.android.http.*;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +27,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.clases.Empleado;
@@ -41,22 +37,21 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import cz.msebera.android.httpclient.Header;
-
 
 public class SeleccionUnidadFragment extends Fragment implements AdapterView.OnItemSelectedListener {
 
     Button botonFinalizar;
     NavController navController;
     TextView nombre, cod_empleado, cargo;
-    Spinner geriatriaSP, saludMentalSP;
+    Spinner areaSP, unidadesSP;
     Empleado empleado;
     private Unidades unidades;
+    private Area area;
 
-    ArrayList<String> listaUnidadesGeriatria = new ArrayList<>();
-    ArrayList<String> listaUnidadesSaludMental = new ArrayList<>();
-    ArrayAdapter <String> geriatriaAdapter;
-    ArrayAdapter <String> saludMentalAdapter;
+    ArrayList<String> listaAreas = new ArrayList<>();
+    ArrayList<String> listaUnidades = new ArrayList<>();
+    ArrayAdapter <String> areasAdapter;
+    ArrayAdapter <String> unidadesAdapter;
 
     RequestQueue requestQueue;
     JsonObjectRequest jsonObjectRequest;
@@ -91,6 +86,7 @@ public class SeleccionUnidadFragment extends Fragment implements AdapterView.OnI
 
         empleado = ((ClaseGlobal) getActivity().getApplicationContext()).empleado;
         unidades = ((ClaseGlobal) getActivity().getApplicationContext()).unidades;
+        area = ((ClaseGlobal) getActivity().getApplicationContext()).area;
         navController = Navigation.findNavController(view);
 
 
@@ -98,8 +94,8 @@ public class SeleccionUnidadFragment extends Fragment implements AdapterView.OnI
         nombre = view.findViewById(R.id.nombreYApellidos);
         cod_empleado = (TextView) view.findViewById(R.id.cod_empleado);
         cargo = (TextView) view.findViewById(R.id.cargo);
-        geriatriaSP = (Spinner) view.findViewById(R.id.spinnerGeriatria);
-        saludMentalSP = (Spinner) view.findViewById(R.id.spinnerSaludMental);
+        areaSP = (Spinner) view.findViewById(R.id.spinnerArea);
+        unidadesSP = (Spinner) view.findViewById(R.id.spinnerUnidad);
 
 
         // Instanciamos RequestQueue
@@ -121,20 +117,21 @@ public class SeleccionUnidadFragment extends Fragment implements AdapterView.OnI
 
 
     public void poblarSpinner(){
-        String urlGeriatria = Constantes.url_part+"unidades.php?fk_id_area=1";
+        String urlArea = Constantes.url_part+"areas.php";
         jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
-                urlGeriatria, null, new Response.Listener<JSONObject>() {
+                urlArea, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    JSONArray jsonArray = response.getJSONArray("datos_unidades");
+                    JSONArray jsonArray = response.getJSONArray("datos_area");
                     for (int i = 0; i < jsonArray.length(); i++){
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        unidades.setNombreUnidad(jsonObject.optString("nombre"));
-                        listaUnidadesGeriatria.add(unidades.getNombreUnidad());
-                        geriatriaAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, listaUnidadesGeriatria);
-                        geriatriaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        geriatriaSP.setAdapter(geriatriaAdapter);
+                        area.setId_area(jsonObject.optInt("id_area"));
+                        area.setNombre(jsonObject.optString("nombre"));
+                        listaAreas.add(area.getNombre());
+                        areasAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, listaAreas);
+                        areasAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        areaSP.setAdapter(areasAdapter);
                     }
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
@@ -147,12 +144,12 @@ public class SeleccionUnidadFragment extends Fragment implements AdapterView.OnI
             }
         });
         requestQueue.add(jsonObjectRequest);
-        geriatriaSP.setOnItemSelectedListener(this);
+        //areaSP.setOnItemSelectedListener(this);
     }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        if(parent.getId() == R.id.spinnerGeriatria){
+        if(parent.getId() == R.id.spinnerArea){
 
         }
     }
@@ -162,55 +159,7 @@ public class SeleccionUnidadFragment extends Fragment implements AdapterView.OnI
 
     }
 
-    /*
-    @Override
-    public void onResponse(JSONObject response) {
-        try {
-            JSONArray jsonArray = response.getJSONArray("datos_unidades");
 
-            for(int i = 0; i<jsonArray.length(); i++){
-                JSONObject jsonObject = jsonArray.getJSONObject(i);
-                unidades.setNombreUnidad(jsonObject.optString("nombre"));
-                Log.d("pruebaUnidad", unidades.getNombreUnidad());
-                lista.add(unidades);
-                a = new ArrayAdapter<Unidades>(getContext(), android.R.layout.simple_spinner_item, lista);
-                a.setDropDownViewResource(android.R.layout.simple_spinner_item);
-                geriatriaSP.setAdapter(a);
-            }
-
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
-        }
-    }
-        @Override
-    public void onErrorResponse(VolleyError error) {
-            Toast.makeText(getContext(), "Algo ha fallado", Toast.LENGTH_SHORT).show();
-    }
-
-    /*public void poblarSpinner(){
-        String urlGeriatria = Constantes.url_part+"seleccion_unidades.php?fk_id_unidad=1";
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(urlGeriatria, response -> {
-            JSONObject jsonObject = null;
-            ArrayList<Unidades> lista = new ArrayList<Unidades>();
-            for (int i =0; i <response.length(); i++){
-                try {
-                    jsonObject = response.getJSONObject(i);
-                    unidades.setNombreUnidad(jsonObject.optString("nombre"));
-                    lista.add(unidades);
-
-                } catch (JSONException e) {
-                    throw new RuntimeException(e);
-                }
-
-            }
-            ArrayAdapter <Unidades> a = new ArrayAdapter<Unidades>(getContext(), android.R.layout.simple_dropdown_item_1line, lista);
-            geriatriaSP.setAdapter(a);
-        }, error -> {
-            Toast.makeText(getContext(), "Error al obtener los datos", Toast.LENGTH_SHORT).show();
-        });
-        rq = Volley.newRequestQueue(getContext());
-        rq.add(jsonArrayRequest);
-    }*/
 
 
 }

@@ -109,12 +109,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:text="Unidades de Geriatría:"
-        app:layout_constraintBottom_toTopOf="@+id/spinnerGeriatria"
+        android:text="Seleccione el area:"
+        app:layout_constraintBottom_toTopOf="@+id/spinnerArea"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Spinner
-        android:id="@+id/spinnerGeriatria"
+        android:id="@+id/spinnerArea"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginStart="32dp"
@@ -130,12 +130,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:text="Unidades salud mental:"
-        app:layout_constraintBottom_toTopOf="@+id/spinnerSaludMental"
+        android:text="Seleccione la unidad:"
+        app:layout_constraintBottom_toTopOf="@+id/spinnerUnidad"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Spinner
-        android:id="@+id/spinnerSaludMental"
+        android:id="@+id/spinnerUnidad"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginStart="32dp"
@@ -144,7 +144,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerGeriatria" />
+        app:layout_constraintTop_toBottomOf="@+id/spinnerArea" />
 
     <Button
         android:id="@+id/AccesoAlHome"
@@ -155,7 +155,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerSaludMental"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerUnidad"
         app:layout_constraintVertical_bias="0.43" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
