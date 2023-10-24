@@ -41,25 +41,20 @@ public class SeleccionUnidadFragment extends Fragment {
 
         return vista;
 
-
-
-
-
     }
 
 
     public void completaDatosEmpleado(Empleado e){
-        nombre.setText(e.getNombre()+" "+e.getApellidos());
+        nombre.setText(String.valueOf(e.getNombre()+" "+e.getApellidos()));
         cargo.setText(String.valueOf(e.getNombreCargo()));
         cod_empleado.setText(String.valueOf(e.getCod_empleado()));
-        Log.d("probando", nombre.getText().toString());
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
+        empleado = (Empleado) getActivity().getApplicationContext();
         navController = Navigation.findNavController(view);
 
         botonFinalizar = (Button) view.findViewById(R.id.AccesoAlHome);
@@ -68,11 +63,8 @@ public class SeleccionUnidadFragment extends Fragment {
         cargo = (TextView) view.findViewById(R.id.cargo);
 
 
-        // Para obtener el empleado lo haremos con el siguiente if
-        if(getArguments() != null){
-            empleado = getArguments().getParcelable("empleados", Empleado.class);
-            completaDatosEmpleado(empleado);
-        }
+
+        completaDatosEmpleado(empleado);
 
 
 

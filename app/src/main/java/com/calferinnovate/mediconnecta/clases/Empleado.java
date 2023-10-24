@@ -1,5 +1,7 @@
 package com.calferinnovate.mediconnecta.clases;
 
+import android.app.Application;
+import android.content.SharedPreferences;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -11,11 +13,12 @@ import java.util.ArrayList;
 
 // El objetivo de esta clase es que cuadno el usuario se loguee, recuperar el nombre del empleado,
 // guardarlo en la variable name y poder consultarlo desde otras activities.
-public class Empleado implements Parcelable {
+public class Empleado extends Application{
 
     private String user,pass,nombre, apellidos, nombreCargo;
     private int cod_empleado, fk_cargo;
     private Blob foto;
+
 
     public Empleado() {
     }
@@ -31,27 +34,9 @@ public class Empleado implements Parcelable {
         this.foto = foto;
     }
 
-    protected Empleado(Parcel in) {
-        user = in.readString();
-        pass = in.readString();
-        nombre = in.readString();
-        apellidos = in.readString();
-        nombreCargo = in.readString();
-        cod_empleado = in.readInt();
-        fk_cargo = in.readInt();
-    }
 
-    public static final Creator<Empleado> CREATOR = new Creator<Empleado>() {
-        @Override
-        public Empleado createFromParcel(Parcel in) {
-            return new Empleado(in);
-        }
 
-        @Override
-        public Empleado[] newArray(int size) {
-            return new Empleado[size];
-        }
-    };
+
 
     public String getUser() {
         return user;
@@ -118,19 +103,5 @@ public class Empleado implements Parcelable {
         this.foto = foto;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
 
-    @Override
-    public void writeToParcel(@NonNull Parcel dest, int flags) {
-        dest.writeString(user);
-        dest.writeString(pass);
-        dest.writeString(nombre);
-        dest.writeString(apellidos);
-        dest.writeString(nombreCargo);
-        dest.writeInt(cod_empleado);
-        dest.writeInt(fk_cargo);
-    }
 }

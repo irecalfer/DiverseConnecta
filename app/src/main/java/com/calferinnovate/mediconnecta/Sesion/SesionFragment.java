@@ -45,8 +45,10 @@ public class SesionFragment extends Fragment implements Response.Listener<JSONOb
     private TextInputEditText password;
     private Button btnAcceso;
     private NavController navController;
-    Empleado empleado;
-    ArrayList<Empleado> sesionEmpleado = new ArrayList<>();
+    private Empleado empleado;
+
+
+
 
 
 
@@ -97,6 +99,10 @@ public class SesionFragment extends Fragment implements Response.Listener<JSONOb
         String url = Constantes.url_part+"inicio_sesion.php?user="+username.getText().toString()+
                 "&pwd="+password.getText().toString();
 
+        // Vamos a crear un objeto Empleado, para que lo que nos pase Json podamos parsearlo y pasarselo
+        // a esos atributos de la clase Empleado.
+        empleado = (Empleado) getActivity().getApplicationContext();
+
         //Request a string response from the provided url
         jrq = new JsonObjectRequest(Request.Method.GET,url, null,this, this);
         rq.add(jrq);
@@ -111,29 +117,24 @@ public class SesionFragment extends Fragment implements Response.Listener<JSONOb
     @Override
     public void onResponse(JSONObject response) {
 
-        // Vamos a crear un objeto Empleado, para que lo que nos pase Json podamos parsearlo y pasarselo
-        // a esos atributos de la clase Empleado.
-       empleado = new Empleado();
+
+
         // Creamos un objeto Json de tipo array para recuperar ese array que estamos creando en el archivos php
         // con el formato Json. datos es el nombre del array que hemos declarado en el archivo php.
 
         try {
             JSONArray jsonArray = response.getJSONArray("datos");
-            JSONObject jsonObject = jsonArray.getJSONObject(0);
+
 
             // Recorrer los datos del usuario
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject object = jsonArray.getJSONObject(i);
 
-               //String user = object.getString("user");
-                // String pwd = object.getString("pwd");
-               //String names = object.getString("names");
-
-
 
                 empleado.setUser(object.optString("user"));
                 empleado.setPass(object.optString("pwd"));
                 empleado.setCod_empleado(object.optInt("cod_empleado"));
+
 
 
                 Log.d("datos", "Nombre= "+ empleado.getCod_empleado() + "Username= " + empleado.getUser().toString() + "Contraseña= " + empleado.getPass().toString());
@@ -145,7 +146,6 @@ public class SesionFragment extends Fragment implements Response.Listener<JSONOb
                 String url_datos = Constantes.url_part+"datos_empleados.php?cod_empleado="+empleado.getCod_empleado();
                 guardar_datos_empleado(url_datos);
 
-                //Ahora guardamos al empleado dentro de la lista de empleados para poder acceder desde el resto de acitivdades.
 
 
             }
@@ -170,9 +170,12 @@ public class SesionFragment extends Fragment implements Response.Listener<JSONOb
                     empleado.setFk_cargo(jsonObject.optInt("fk_cargo"));
                     empleado.setNombreCargo(jsonObject.optString("nombreCargo"));
 
-                    pasoDeDatosAlSiguienteFragmento();
+                    //pasoDeDatosAlSiguienteFragmento();
+                    navController.navigate(R.id.action_sesionFragment_to_seleccionUnidadFragment);
                     Log.d("datos", "Nombre= "+ empleado.getNombre().toString() + "Apellidos= " + empleado.getApellidos().toString() + "Cargo= " + empleado.getFk_cargo());
                     Log.d("Cargo", empleado.getNombreCargo());
+
+
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
@@ -183,17 +186,9 @@ public class SesionFragment extends Fragment implements Response.Listener<JSONOb
         rq = Volley.newRequestQueue(getContext());
         rq.add(jsonArrayRequest);
 
+
     }
 
-    void pasoDeDatosAlSiguienteFragmento(){
-        //Para poder pasar objetos de un fragment tenemos que crear nuestr5o bundle y agregarñp como parámetro
-        //al método .navigate()
-        Bundle bundle = new Bundle();
-        bundle.putParcelable("empleados", empleado);
-        Log.d("prueba", bundle.toString());
-        //Cargamos el nuevo fragmento
-        navController.navigate(R.id.action_sesionFragment_to_seleccionUnidadFragment, bundle);
-    }
 
 
 }
