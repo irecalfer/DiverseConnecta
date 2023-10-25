@@ -13,12 +13,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
+        android:layout_marginEnd="8dp"
         android:adjustViewBounds="true"
+        android:background="@color/md_theme_light_surfaceTint"
         android:contentDescription="@string/content_description_foto_empleado"
         android:maxWidth="400dp"
         android:maxHeight="400dp"
+        android:padding="7dp"
         android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="@+id/labelCargo"
+        app:layout_constraintEnd_toStartOf="@+id/labelNombreApellidos"
         app:layout_constraintStart_toStartOf="@+id/guiaVertIzq"
         app:layout_constraintTop_toTopOf="@+id/guiaHorTop"
         tools:src="@tools:sample/avatars" />
@@ -27,11 +31,14 @@
         android:id="@+id/labelNombreApellidos"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="40dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginTop="100dp"
         android:layout_marginEnd="8dp"
+        android:autoSizeMaxTextSize="100sp"
+        android:autoSizeMinTextSize="12sp"
         android:hint="@string/nombreYApellidosLabel"
+        android:textColorHint="@color/md_theme_black"
         app:autoSizeTextType="uniform"
+        app:hintTextColor="@color/md_theme_black"
         app:layout_constraintEnd_toStartOf="@+id/guiaVertDer"
         app:layout_constraintStart_toEndOf="@+id/fotoEmpleado"
         app:layout_constraintTop_toTopOf="@+id/guiaHorTop">
@@ -42,17 +49,21 @@
             android:layout_height="wrap_content"
             android:enabled="false"
             android:imeOptions="actionNext"
-            app:autoSizeTextType="uniform" />
+            android:textColor="@color/md_theme_black"
+            android:textColorHint="@color/md_theme_black" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/labelCodigoEmpleado"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="40dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:hint="@string/codigo_empleado_label"
+        android:textColorHint="@color/md_theme_black"
+        app:autoSizeTextType="uniform"
+        app:hintTextColor="@color/md_theme_black"
         app:layout_constraintEnd_toStartOf="@+id/guiaVertDer"
         app:layout_constraintStart_toEndOf="@+id/fotoEmpleado"
         app:layout_constraintTop_toBottomOf="@+id/labelNombreApellidos">
@@ -63,18 +74,21 @@
             android:layout_height="wrap_content"
             android:enabled="false"
             android:imeOptions="actionNext"
-            android:text="Hi How are you"
+            android:textColor="@color/md_theme_black"
             app:autoSizeTextType="uniform" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/labelCargo"
+        app:autoSizeTextType="uniform"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="40dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:hint="@string/cargo_label"
+        android:textColorHint="@color/md_theme_black"
+        app:hintTextColor="@color/md_theme_black"
         app:layout_constraintEnd_toStartOf="@+id/guiaVertDer"
         app:layout_constraintStart_toEndOf="@+id/fotoEmpleado"
         app:layout_constraintTop_toBottomOf="@+id/labelCodigoEmpleado">
@@ -85,7 +99,7 @@
             android:layout_height="wrap_content"
             android:enabled="false"
             android:imeOptions="actionNext"
-            android:text="Hi How are you"
+            android:textColor="@color/md_theme_black"
             app:autoSizeTextType="uniform" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -93,7 +107,9 @@
         android:id="@+id/labelTextoSeleccionUnidad"
         android:layout_width="0dp"
         android:layout_height="50dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="72dp"
+        android:layout_marginEnd="24dp"
         android:autoSizeMaxTextSize="100sp"
         android:autoSizeMinTextSize="12sp"
         android:autoSizeStepGranularity="2sp"
@@ -103,22 +119,26 @@
         app:layout_constraintEnd_toStartOf="@+id/guiaVertDer"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guiaVertIzq"
-        app:layout_constraintTop_toBottomOf="@+id/divider" />
+        app:layout_constraintTop_toBottomOf="@+id/fotoEmpleado" />
 
     <TextView
         android:id="@+id/labelSeleccionUnidadGeriatria"
         android:layout_width="0dp"
         android:layout_height="50dp"
-        android:autoSizeMaxTextSize="100sp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="32dp"
+        android:autoSizeMaxTextSize="24sp"
         android:autoSizeMinTextSize="12sp"
         android:autoSizeStepGranularity="2sp"
+
         android:autoSizeTextType="uniform"
         android:gravity="center"
         android:text="@string/seleccionar_area"
         app:layout_constraintEnd_toStartOf="@+id/guiaVertDer"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guiaVertIzq"
-        app:layout_constraintTop_toBottomOf="@+id/labelTextoSeleccionUnidad" />
+        app:layout_constraintTop_toBottomOf="@+id/divider" />
 
     <Spinner
         android:id="@+id/spinnerArea"
@@ -136,7 +156,7 @@
         android:id="@+id/textView9"
         android:layout_width="0dp"
         android:layout_height="50dp"
-        android:autoSizeMaxTextSize="100sp"
+        android:autoSizeMaxTextSize="24sp"
         android:autoSizeMinTextSize="12sp"
         android:autoSizeStepGranularity="2sp"
         android:autoSizeTextType="uniform"
@@ -163,10 +183,13 @@
 
     <Button
         android:id="@+id/AccesoAlHome"
-        android:layout_width="417dp"
-        android:layout_height="72dp"
+        android:layout_width="300dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="32dp"
         android:text="@string/acceso_al_home_btn_label"
+        app:autoSizeTextType="uniform"
         app:layout_constraintBottom_toTopOf="@+id/guiaHorBot"
         app:layout_constraintEnd_toStartOf="@+id/guiaVertDer"
         app:layout_constraintStart_toStartOf="@+id/guiaVertIzq"
@@ -205,12 +228,12 @@
     <View
         android:id="@+id/divider"
         android:layout_width="599dp"
-        android:layout_height="1dp"
-        android:layout_marginTop="100dp"
-        android:background="?android:attr/listDivider"
+        android:layout_height="3dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/md_theme_light_surfaceTint"
         app:layout_constraintEnd_toStartOf="@+id/guiaVertDer"
         app:layout_constraintStart_toStartOf="@+id/guiaVertIzq"
-        app:layout_constraintTop_toBottomOf="@+id/fotoEmpleado" />
+        app:layout_constraintTop_toBottomOf="@+id/labelTextoSeleccionUnidad" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

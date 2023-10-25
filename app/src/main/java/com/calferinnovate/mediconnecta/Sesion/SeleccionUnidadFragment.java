@@ -139,8 +139,8 @@ public class SeleccionUnidadFragment extends Fragment implements AdapterView.OnI
                         area.setId_area(jsonObject.optInt("id_area"));
                         area.setNombre(jsonObject.optString("nombre_area"));
                         listaAreas.add(area.getNombre());
-                        areasAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, listaAreas);
-                        areasAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        areasAdapter = new ArrayAdapter<>(getContext(), R.layout.my_spinner, listaAreas);
+                        areasAdapter.setDropDownViewResource(R.layout.my_spinner);
                         areaSP.setAdapter(areasAdapter);
                     }
                 } catch (JSONException e) {
@@ -178,8 +178,8 @@ public class SeleccionUnidadFragment extends Fragment implements AdapterView.OnI
                             unidades.setFk_area(jsonObject.optInt("fk_id_area"));
                             Log.d("datos", unidades.getNombreUnidad());
                             listaUnidades.add(unidades.getNombreUnidad());
-                            unidadesAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, listaUnidades);
-                            unidadesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                            unidadesAdapter = new ArrayAdapter<>(getContext(), R.layout.my_spinner, listaUnidades);
+                            unidadesAdapter.setDropDownViewResource(R.layout.my_spinner);
                             unidadesSP.setAdapter(unidadesAdapter);
                         }
                     } catch (JSONException e) {
