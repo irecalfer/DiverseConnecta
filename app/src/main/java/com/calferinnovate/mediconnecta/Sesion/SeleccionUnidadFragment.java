@@ -19,6 +19,7 @@ import com.calferinnovate.mediconnecta.clases.ClaseGlobal;
 import com.calferinnovate.mediconnecta.clases.Constantes;
 import com.calferinnovate.mediconnecta.clases.Unidades;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -127,7 +128,7 @@ public class SeleccionUnidadFragment extends Fragment implements AdapterView.OnI
                     for (int i = 0; i < jsonArray.length(); i++){
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                         area.setId_area(jsonObject.optInt("id_area"));
-                        area.setNombre(jsonObject.optString("nombre"));
+                        area.setNombre(jsonObject.optString("nombre_area"));
                         listaAreas.add(area.getNombre());
                         areasAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, listaAreas);
                         areasAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -144,13 +145,48 @@ public class SeleccionUnidadFragment extends Fragment implements AdapterView.OnI
             }
         });
         requestQueue.add(jsonObjectRequest);
-        //areaSP.setOnItemSelectedListener(this);
+        areaSP.setOnItemSelectedListener(this);
     }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         if(parent.getId() == R.id.spinnerArea){
+            listaUnidades.clear();
+            String areaSeleccionada = parent.getSelectedItem().toString();
+            Log.d("nombrePadre", areaSeleccionada);
+            String urlUnidades = Constantes.url_part+"unidades.php?nombre_area="+areaSeleccionada;
+            requestQueue = Volley.newRequestQueue(getContext());
+            jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, urlUnidades, null,  new Response.Listener<JSONObject>() {
 
+                @Override
+                public void onResponse(JSONObject response) {
+                    try {
+                        JSONArray jsonArray = response.getJSONArray("datos_unidades");
+                        for(int i = 0; i<jsonArray.length(); i++){
+                            JSONObject jsonObject = jsonArray.getJSONObject(i);
+                            unidades.setId_unidad(jsonObject.optInt("id_unidad"));
+                            unidades.setNombreUnidad(jsonObject.optString("nombre"));
+                            unidades.setFk_area(jsonObject.optInt("fk_id_area"));
+                            Log.d("datos", unidades.getNombreUnidad());
+                            listaUnidades.add(unidades.getNombreUnidad());
+                            unidadesAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, listaUnidades);
+                            unidadesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                            unidadesSP.setAdapter(unidadesAdapter);
+                        }
+                    } catch (JSONException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    error.toString();
+
+                }
+            });
+            requestQueue.add(jsonObjectRequest);
+            unidadesSP.setOnItemSelectedListener(this);
         }
     }
 
