@@ -14,6 +14,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
 import com.calferinnovate.mediconnecta.clases.Area;
 import com.calferinnovate.mediconnecta.clases.ClaseGlobal;
 import com.calferinnovate.mediconnecta.clases.Constantes;
@@ -26,11 +27,13 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.clases.Empleado;
+import com.google.android.material.textfield.TextInputEditText;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -43,9 +46,10 @@ public class SeleccionUnidadFragment extends Fragment implements AdapterView.OnI
 
     Button botonFinalizar;
     NavController navController;
-    TextView nombre, cod_empleado, cargo;
+    TextInputEditText nombre, cod_empleado, cargo;
     Spinner areaSP, unidadesSP;
     Empleado empleado;
+    ImageView foto;
     private Unidades unidades;
     private Area area;
 
@@ -79,7 +83,11 @@ public class SeleccionUnidadFragment extends Fragment implements AdapterView.OnI
         nombre.setText(String.valueOf(e.getNombre()+" "+e.getApellidos()));
         cargo.setText(String.valueOf(e.getNombreCargo()));
         cod_empleado.setText(String.valueOf(e.getCod_empleado()));
+        //Cargamos la foto del empleado con Glide
+        Glide.with(getContext()).load(empleado.getFoto()).into(foto);
     }
+
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -92,11 +100,12 @@ public class SeleccionUnidadFragment extends Fragment implements AdapterView.OnI
 
 
         botonFinalizar = (Button) view.findViewById(R.id.AccesoAlHome);
-        nombre = view.findViewById(R.id.nombreYApellidos);
-        cod_empleado = (TextView) view.findViewById(R.id.cod_empleado);
-        cargo = (TextView) view.findViewById(R.id.cargo);
+        nombre = (TextInputEditText) view.findViewById(R.id.nombreYApellidos);
+        cod_empleado = (TextInputEditText) view.findViewById(R.id.cod_empleado);
+        cargo = (TextInputEditText) view.findViewById(R.id.cargo);
         areaSP = (Spinner) view.findViewById(R.id.spinnerArea);
         unidadesSP = (Spinner) view.findViewById(R.id.spinnerUnidad);
+        foto = (ImageView) view.findViewById(R.id.fotoEmpleado);
 
 
         // Instanciamos RequestQueue

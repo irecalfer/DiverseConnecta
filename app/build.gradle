@@ -50,5 +50,7 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment:2.7.4"
     implementation "androidx.navigation:navigation-ui:2.7.4"
     implementation 'com.loopj.android:android-async-http:1.4.11'
+    //Imagenes con libreria Glide
+    implementation "com.github.bumptech.glide:glide:4.16.0"
 
 }

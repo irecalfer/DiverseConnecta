@@ -167,7 +167,7 @@ public class SesionFragment extends Fragment implements Response.Listener<JSONOb
                 JSONArray jsonArray = response.getJSONArray("empleados");
                 for (int i=0; i<response.length(); i++ ) {
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
-                    //empleado.setFoto(jsonObject.optBlob("E.foto"));
+                    empleado.setFoto(jsonObject.optString("foto"));
                     empleado.setNombre(jsonObject.optString("nombre"));
                     empleado.setApellidos(jsonObject.optString("apellidos"));
                     empleado.setFk_cargo(jsonObject.optInt("fk_cargo"));

@@ -7,6 +7,8 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
+import com.bumptech.glide.Glide;
+
 import java.io.Serializable;
 import java.sql.Blob;
 import java.util.ArrayList;

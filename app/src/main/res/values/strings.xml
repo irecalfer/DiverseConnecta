@@ -30,4 +30,12 @@
     <string name="desc_logo_inicio">Imagen del logo para el inicio de sesión</string>
     <string name="labelAreaGeriatría">¿En que unidad de geriatría?</string>
     <string name="labelSaludMental">¿En qué área de salud mental?</string>
+    <string name="seleccionar_area">Seleccione el area:</string>
+    <string name="nombreYApellidosLabel">Nombre y Apellidos:</string>
+    <string name="codigo_empleado_label">Código de empleado:</string>
+    <string name="cargo_label">Cargo:</string>
+    <string name="seleccionar_area_unidad_label">Seleccione la unidad en la que va a trabajar hoy:</string>
+    <string name="seleccionar_unidad_label">Seleccione la unidad:</string>
+    <string name="acceso_al_home_btn_label">Acceso al Home</string>
+    <string name="content_description_foto_empleado">Foto del empleado de la sesión actual</string>
 </resources>
