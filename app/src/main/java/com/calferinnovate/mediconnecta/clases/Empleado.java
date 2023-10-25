@@ -17,13 +17,13 @@ public class Empleado{
 
     private String user,pass,nombre, apellidos, nombreCargo;
     private int cod_empleado, fk_cargo;
-    private Blob foto;
+    private String foto;
 
 
     public Empleado() {
     }
 
-    public Empleado(String user, String pass, String nombre, String apellidos, String nombreCargo, int cod_empleado, int fk_cargo, Blob foto) {
+    public Empleado(String user, String pass, String nombre, String apellidos, String nombreCargo, int cod_empleado, int fk_cargo, String foto) {
         this.user = user;
         this.pass = pass;
         this.nombre = nombre;
@@ -93,13 +93,11 @@ public class Empleado{
         this.nombreCargo = nombreCargo;
     }
 
-    public Blob getFoto() {
+    public String getFoto() {
         return foto;
     }
 
-    public void setFoto(Blob foto) {
+    public void setFoto(String foto) {
         this.foto = foto;
     }
-
-
 }
