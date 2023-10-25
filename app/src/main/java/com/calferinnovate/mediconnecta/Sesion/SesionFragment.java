@@ -162,11 +162,11 @@ public class SesionFragment extends Fragment implements Response.Listener<JSONOb
     //Cogeremos todos los datos del empleado a través de su código de empleado obtenido anteriormente.
     //Guardaremos todos los datos en un objeto de tipo empleado.
     public void guardar_datos_empleado(String url){
-        JsonArrayRequest jsonArrayRequest= new JsonArrayRequest(url, response -> {
-            JSONObject jsonObject = null;
-            for (int i=0; i<response.length(); i++ ){
-                try{
-                    jsonObject = response.getJSONObject(i);
+        JsonObjectRequest jsonObjectRequest= new JsonObjectRequest(url, response -> {
+            try{
+                JSONArray jsonArray = response.getJSONArray("empleados");
+                for (int i=0; i<response.length(); i++ ) {
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
                     //empleado.setFoto(jsonObject.optBlob("E.foto"));
                     empleado.setNombre(jsonObject.optString("nombre"));
                     empleado.setApellidos(jsonObject.optString("apellidos"));
@@ -175,19 +175,19 @@ public class SesionFragment extends Fragment implements Response.Listener<JSONOb
 
                     //pasoDeDatosAlSiguienteFragmento();
                     navController.navigate(R.id.action_sesionFragment_to_seleccionUnidadFragment);
-                    Log.d("datos", "Nombre= "+ empleado.getNombre().toString() + "Apellidos= " + empleado.getApellidos().toString() + "Cargo= " + empleado.getFk_cargo());
+                    Log.d("datos", "Nombre= " + empleado.getNombre().toString() + "Apellidos= " + empleado.getApellidos().toString() + "Cargo= " + empleado.getFk_cargo());
                     Log.d("Cargo", empleado.getNombreCargo());
 
-
+                }
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
-            }
+
         }, error -> {
             Toast.makeText(getContext(), "Error al obtener los datos", Toast.LENGTH_SHORT).show();
         });
         rq = Volley.newRequestQueue(getContext());
-        rq.add(jsonArrayRequest);
+        rq.add(jsonObjectRequest);
 
 
     }
