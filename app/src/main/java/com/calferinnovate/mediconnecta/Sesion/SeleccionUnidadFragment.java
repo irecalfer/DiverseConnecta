@@ -165,7 +165,8 @@ public class SeleccionUnidadFragment extends Fragment implements AdapterView.OnI
             Log.d("nombrePadre", areaSeleccionada);
             String urlUnidades = Constantes.url_part+"unidades.php?nombre_area="+areaSeleccionada;
             requestQueue = Volley.newRequestQueue(getContext());
-            jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, urlUnidades, null,  new Response.Listener<JSONObject>() {
+            jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, urlUnidades, null,
+                    new Response.Listener<JSONObject>() {
 
                 @Override
                 public void onResponse(JSONObject response) {

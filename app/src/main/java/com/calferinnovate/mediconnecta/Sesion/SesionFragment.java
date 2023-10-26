@@ -164,21 +164,18 @@ public class SesionFragment extends Fragment implements Response.Listener<JSONOb
     public void guardar_datos_empleado(String url){
         JsonObjectRequest jsonObjectRequest= new JsonObjectRequest(url, response -> {
             try{
-                JSONArray jsonArray = response.getJSONArray("empleados");
-                for (int i=0; i<response.length(); i++ ) {
-                    JSONObject jsonObject = jsonArray.getJSONObject(i);
-                    empleado.setFoto(jsonObject.optString("foto"));
-                    empleado.setNombre(jsonObject.optString("nombre"));
-                    empleado.setApellidos(jsonObject.optString("apellidos"));
-                    empleado.setFk_cargo(jsonObject.optInt("fk_cargo"));
-                    empleado.setNombreCargo(jsonObject.optString("nombreCargo"));
+                    empleado.setFoto(response.optString("foto"));
+                    empleado.setNombre(response.optString("nombre"));
+                    empleado.setApellidos(response.optString("apellidos"));
+                    empleado.setFk_cargo(response.optInt("fk_cargo"));
+                    empleado.setNombreCargo(response.optString("nombreCargo"));
 
                     //pasoDeDatosAlSiguienteFragmento();
                     navController.navigate(R.id.action_sesionFragment_to_seleccionUnidadFragment);
                     Log.d("datos", "Nombre= " + empleado.getNombre().toString() + "Apellidos= " + empleado.getApellidos().toString() + "Cargo= " + empleado.getFk_cargo());
                     Log.d("Cargo", empleado.getNombreCargo());
 
-                }
+
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
