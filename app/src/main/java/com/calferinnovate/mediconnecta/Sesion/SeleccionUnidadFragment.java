@@ -52,6 +52,8 @@ public class SeleccionUnidadFragment extends Fragment implements AdapterView.OnI
     ImageView foto;
     private Unidades unidades;
     private Area area;
+    private String nombreArea, nombreUnidad;
+    private int idArea, idUnidad;
 
     ArrayList<String> listaAreas = new ArrayList<>();
     ArrayList<String> listaUnidades = new ArrayList<>();

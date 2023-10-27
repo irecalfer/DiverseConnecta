@@ -38,4 +38,14 @@
     <string name="seleccionar_unidad_label">Seleccione la unidad:</string>
     <string name="acceso_al_home_btn_label">Acceso al Home</string>
     <string name="content_description_foto_empleado">Foto del empleado de la sesión actual</string>
+
+    <!-- Navigation Drawer -->
+
+    <string name="home_item">Home</string>
+    <string name="residentes_item">Residentes</string>
+    <string name="parte_general_item">Parte General</string>
+    <string name="cambio_unidad_item">Cambio unidad</string>
+    <string name="normas_empresa_item">Normas empresa</string>
+    <string name="mensajes_item">Mensajes</string>
+    <string name="log_out_item">Cerrar Sesión</string>
 </resources>
