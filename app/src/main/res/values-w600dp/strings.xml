@@ -15,4 +15,11 @@
     <string name="seleccionar_unidad_label">Seleccione la unidad:</string>
     <string name="acceso_al_home_btn_label">Acceso al Home</string>
     <string name="content_description_foto_empleado">Foto del empleado de la sesión actual</string>
+    <string name="cierre_sesion_item">Cerrar sesión</string>
+    <string name="unidad">Unidad Placeholder</string>
+    <string name="nombreYApellidos">Nombre y apellidos Placeholder</string>
+    <string name="configuracion_item">Configuración</string>
+    <string name="mediconnecta_principal_item">Principal</string>
+    <string name="open_nav">Abrir navegador</string>
+    <string name="close_nav">Cerrar navegador</string>
 </resources>

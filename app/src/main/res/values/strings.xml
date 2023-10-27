@@ -48,4 +48,12 @@
     <string name="normas_empresa_item">Normas empresa</string>
     <string name="mensajes_item">Mensajes</string>
     <string name="log_out_item">Cerrar Sesión</string>
+    <string name="cierre_sesion_item">Cerrar sesión</string>
+    <string name="unidad">Unidad Placeholder</string>
+    <string name="nombreYApellidos">Nombre y apellidos Placeholder</string>
+    <string name="configuracion_item">Configuración</string>
+    <string name="politica_item">Política</string>
+    <string name="mediconnecta_principal_item">Principal</string>
+    <string name="open_nav">Abrir navegador</string>
+    <string name="close_nav">Cerrar navegador</string>
 </resources>
