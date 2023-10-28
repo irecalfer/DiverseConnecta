@@ -56,4 +56,5 @@
     <string name="mediconnecta_principal_item">Principal</string>
     <string name="open_nav">Abrir navegador</string>
     <string name="close_nav">Cerrar navegador</string>
+    <string name="avisos">Avisos</string>
 </resources>
