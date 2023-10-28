@@ -2,19 +2,28 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/navigation_graph_home">
-
+    android:id="@+id/navigation_graph_home"
+    app:startDestination="@id/homeFragment2">
     <fragment
         android:id="@+id/homeFragment2"
         android:name="com.calferinnovate.mediconnecta.Home.Fragments.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
-            android:id="@+id/action_homeFragment2_to_listaAvisosFragment2"
-            app:destination="@id/listaAvisosFragment2" />
+            android:id="@+id/action_homeFragment2_to_homeContentFragment"
+            app:destination="@id/homeContentFragment" />
     </fragment>
     <fragment
-        android:id="@+id/listaAvisosFragment2"
+        android:id="@+id/homeContentFragment"
+        android:name="com.calferinnovate.mediconnecta.Home.Fragments.HomeContentFragment"
+        android:label="fragment_home_content"
+        tools:layout="@layout/fragment_home_content" >
+        <action
+            android:id="@+id/action_homeContentFragment_to_listaAvisosFragment"
+            app:destination="@id/listaAvisosFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/listaAvisosFragment"
         android:name="com.calferinnovate.mediconnecta.Home.Fragments.listaAvisosFragment"
         android:label="fragment_lista_avisos"
         tools:layout="@layout/fragment_lista_avisos" />
