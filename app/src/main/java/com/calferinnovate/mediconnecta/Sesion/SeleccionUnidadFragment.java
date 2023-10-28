@@ -52,8 +52,6 @@ public class SeleccionUnidadFragment extends Fragment implements AdapterView.OnI
     ImageView foto;
     private Unidades unidades;
     private Area area;
-    private String nombreArea, nombreUnidad;
-    private int idArea, idUnidad;
 
     ArrayList<String> listaAreas = new ArrayList<>();
     ArrayList<String> listaUnidades = new ArrayList<>();
@@ -62,10 +60,6 @@ public class SeleccionUnidadFragment extends Fragment implements AdapterView.OnI
 
     RequestQueue requestQueue;
     JsonObjectRequest jsonObjectRequest;
-
-
-
-
 
 
 
@@ -81,34 +75,15 @@ public class SeleccionUnidadFragment extends Fragment implements AdapterView.OnI
     }
 
 
-    public void completaDatosEmpleado(Empleado e){
-        nombre.setText(String.valueOf(e.getNombre()+" "+e.getApellidos()));
-        cargo.setText(String.valueOf(e.getNombreCargo()));
-        cod_empleado.setText(String.valueOf(e.getCod_empleado()));
-        //Cargamos la foto del empleado con Glide
-        Glide.with(getContext()).load(empleado.getFoto()).into(foto);
-    }
-
-
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        empleado = ((ClaseGlobal) getActivity().getApplicationContext()).empleado;
-        unidades = ((ClaseGlobal) getActivity().getApplicationContext()).unidades;
-        area = ((ClaseGlobal) getActivity().getApplicationContext()).area;
+        asociacionVariableComponente(view);
+        llamadaAObjetoClaseGlobal();
+
         navController = Navigation.findNavController(view);
-
-
-        botonFinalizar = (Button) view.findViewById(R.id.AccesoAlHome);
-        nombre = (TextInputEditText) view.findViewById(R.id.nombreYApellidos);
-        cod_empleado = (TextInputEditText) view.findViewById(R.id.cod_empleado);
-        cargo = (TextInputEditText) view.findViewById(R.id.cargo);
-        areaSP = (Spinner) view.findViewById(R.id.spinnerArea);
-        unidadesSP = (Spinner) view.findViewById(R.id.spinnerUnidad);
-        foto = (ImageView) view.findViewById(R.id.fotoEmpleado);
-
 
         // Instanciamos RequestQueue
         requestQueue = Volley.newRequestQueue(getContext());
@@ -126,7 +101,29 @@ public class SeleccionUnidadFragment extends Fragment implements AdapterView.OnI
         });
 
     }
+    public void completaDatosEmpleado(Empleado e){
+        nombre.setText(String.valueOf(e.getNombre()+" "+e.getApellidos()));
+        cargo.setText(String.valueOf(e.getNombreCargo()));
+        cod_empleado.setText(String.valueOf(e.getCod_empleado()));
+        //Cargamos la foto del empleado con Glide
+        Glide.with(getContext()).load(empleado.getFoto()).into(foto);
+    }
 
+    public void asociacionVariableComponente(View view){
+        botonFinalizar = (Button) view.findViewById(R.id.AccesoAlHome);
+        nombre = (TextInputEditText) view.findViewById(R.id.nombreYApellidos);
+        cod_empleado = (TextInputEditText) view.findViewById(R.id.cod_empleado);
+        cargo = (TextInputEditText) view.findViewById(R.id.cargo);
+        areaSP = (Spinner) view.findViewById(R.id.spinnerArea);
+        unidadesSP = (Spinner) view.findViewById(R.id.spinnerUnidad);
+        foto = (ImageView) view.findViewById(R.id.fotoEmpleado);
+    }
+
+    public void llamadaAObjetoClaseGlobal(){
+        empleado = ((ClaseGlobal) getActivity().getApplicationContext()).empleado;
+        unidades = ((ClaseGlobal) getActivity().getApplicationContext()).unidades;
+        area = ((ClaseGlobal) getActivity().getApplicationContext()).area;
+    }
 
     public void poblarSpinner(){
         String urlArea = Constantes.url_part+"areas.php";
