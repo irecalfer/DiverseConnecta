@@ -43,8 +43,8 @@
 
     <Button
         android:id="@+id/abrirAvisos"
-        android:layout_width="414dp"
-        android:layout_height="65dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:text="@string/avisos"
         app:layout_constraintEnd_toStartOf="@+id/guiaVertDer"
@@ -53,10 +53,12 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewAvisos"
-        android:layout_width="534dp"
-        android:layout_height="439dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="1dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="3dp"
+        app:layout_constraintBotton_toStartOf="@+id/guiaHorBot"
         app:layout_constraintEnd_toStartOf="@+id/guiaVertDer"
         app:layout_constraintStart_toEndOf="@+id/guiaVertIzq"
         app:layout_constraintTop_toBottomOf="@+id/abrirAvisos" />
