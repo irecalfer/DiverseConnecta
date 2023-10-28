@@ -28,4 +28,18 @@
         android:name="com.calferinnovate.mediconnecta.Home.HomeActivity"
         android:label="activity_home"
         tools:layout="@layout/activity_home" />
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.calferinnovate.mediconnecta.Home.Fragments.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_listaAvisosFragment2"
+            app:destination="@id/listaAvisosFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/listaAvisosFragment"
+        android:name="com.calferinnovate.mediconnecta.Home.Fragments.listaAvisosFragment"
+        android:label="fragment_lista_avisos"
+        tools:layout="@layout/fragment_lista_avisos" />
 </navigation>

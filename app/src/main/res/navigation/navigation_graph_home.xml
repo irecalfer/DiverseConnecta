@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_graph_home">
+
+    <fragment
+        android:id="@+id/homeFragment2"
+        android:name="com.calferinnovate.mediconnecta.Home.Fragments.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment2_to_listaAvisosFragment2"
+            app:destination="@id/listaAvisosFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/listaAvisosFragment2"
+        android:name="com.calferinnovate.mediconnecta.Home.Fragments.listaAvisosFragment"
+        android:label="fragment_lista_avisos"
+        tools:layout="@layout/fragment_lista_avisos" />
+</navigation>

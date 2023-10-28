@@ -5,7 +5,7 @@
     android:id="@+id/relativeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Home.Fragments.HomeFragment" >
+    tools:context=".Home.Fragments.HomeFragment">
 
 
     <androidx.constraintlayout.widget.Guideline
@@ -14,18 +14,21 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_begin="32dp" />
+
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guiaVertDer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_end="32dp" />
+
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guiaHorTop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_begin="32dp" />
+
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guiaHorBot"
         android:layout_width="wrap_content"
@@ -51,16 +54,14 @@
         app:layout_constraintStart_toStartOf="@+id/guiaVertIzq"
         app:layout_constraintTop_toBottomOf="@+id/calendarView" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewAvisos"
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentContainerView2"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="3dp"
-        app:layout_constraintBotton_toStartOf="@+id/guiaHorBot"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/guiaHorBot"
         app:layout_constraintEnd_toStartOf="@+id/guiaVertDer"
-        app:layout_constraintStart_toEndOf="@+id/guiaVertIzq"
+        app:layout_constraintStart_toStartOf="@+id/guiaVertIzq"
         app:layout_constraintTop_toBottomOf="@+id/abrirAvisos" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
