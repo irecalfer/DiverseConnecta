@@ -74,10 +74,7 @@ public class SesionFragment extends Fragment implements Response.Listener<JSONOb
 
         navController = Navigation.findNavController(view);
 
-        // Vamos a referenciar estos objetos con el XML
-        username = (TextInputEditText) view.findViewById(R.id.user);
-        password = (TextInputEditText) view.findViewById(R.id.pass);
-        btnAcceso = (Button) view.findViewById(R.id.btnAcceso);
+        asociacionVariableComponente(view);
 
         // Instanciamos RequestQueue
         rq = Volley.newRequestQueue(getContext());
@@ -91,6 +88,14 @@ public class SesionFragment extends Fragment implements Response.Listener<JSONOb
 
             }
         });
+    }
+
+    public void asociacionVariableComponente(View view){
+        // Vamos a referenciar estos objetos con el XML
+        username = (TextInputEditText) view.findViewById(R.id.user);
+        password = (TextInputEditText) view.findViewById(R.id.pass);
+        btnAcceso = (Button) view.findViewById(R.id.btnAcceso);
+
     }
 
     // Programamos el botón de Acceso con el método iniciarSesion
