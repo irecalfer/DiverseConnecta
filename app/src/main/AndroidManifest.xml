@@ -19,10 +19,10 @@
         android:theme="@style/Theme.MediConnecta"
         android:usesCleartextTraffic="true" >
         <activity
-            android:name=".Home.Fragments.HomeFragment"
+            android:name=".Home.HomeActivity"
             android:exported="false" />
         <activity
-            android:name=".Home.HomeActivity"
+            android:name=".Home.Fragments.HomeFragment"
             android:exported="false" />
         <activity
             android:name=".Sesion.MainActivity"

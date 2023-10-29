@@ -18,14 +18,5 @@
         android:id="@+id/seleccionUnidadFragment"
         android:name="com.calferinnovate.mediconnecta.Sesion.SeleccionUnidadFragment"
         android:label="fragment_seleccion_unidad"
-        tools:layout="@layout/fragment_seleccion_unidad" >
-        <action
-            android:id="@+id/action_seleccionUnidadFragment_to_HomeActivity"
-            app:destination="@id/HomeActivity" />
-    </fragment>
-    <activity
-        android:id="@+id/HomeActivity"
-        android:name="com.calferinnovate.mediconnecta.Home.HomeActivity"
-        android:label="activity_home"
-        tools:layout="@layout/activity_home"/>
+        tools:layout="@layout/fragment_seleccion_unidad" />
 </navigation>

@@ -2,46 +2,66 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawer_layout"
+    android:id="@+id/relativeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:context=".Home.Fragments.HomeFragment"
-    tools:openDrawer="start">
+    tools:context=".Home.Fragments.HomeFragment">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guiaVertIzq"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="32dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guiaVertDer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="32dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guiaHorTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="32dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guiaHorBot"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_end="32dp" />
+
+    <CalendarView
+        android:id="@+id/calendarView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@color/md_theme_light_surfaceTint"
-        android:elevation="4dp"
-        android:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toStartOf="@+id/guiaVertDer"
+        app:layout_constraintStart_toStartOf="@+id/guiaVertIzq"
+        app:layout_constraintTop_toTopOf="@+id/guiaHorTop" />
 
-    <FrameLayout
-        android:id="@+id/fragment_container"
-        android:layout_width="wrap_content"
+    <Button
+        android:id="@+id/abrirAvisos"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
         android:layout_marginTop="32dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:text="@string/avisos"
+        app:layout_constraintEnd_toStartOf="@+id/guiaVertDer"
+        app:layout_constraintStart_toStartOf="@+id/guiaVertIzq"
+        app:layout_constraintTop_toBottomOf="@+id/calendarView" />
 
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/nav_view"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        app:headerLayout="@layout/nav_header"
-        app:itemIconTint="@color/md_theme_light_surfaceTint"
-        app:itemTextColor="@color/md_theme_light_surfaceTint"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        app:menu="@menu/nav_menu" />
+    <ListView
+        android:layout_width="534dp"
+        android:layout_height="407dp"
+        tools:layout_editor_absoluteY="450dp"
+        app:layout_constraintEnd_toStartOf="@+id/guiaVertDer"
+        app:layout_constraintStart_toStartOf="@+id/guiaVertIzq"
+        app:layout_constraintTop_toBottomOf="@+id/abrirAvisos"
+        app:layout_constraintBottom_toTopOf="@id/guiaHorBot"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

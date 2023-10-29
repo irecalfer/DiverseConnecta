@@ -31,7 +31,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.clases.Empleado;
@@ -65,8 +64,6 @@ public class SeleccionUnidadFragment extends Fragment implements AdapterView.OnI
 
 
 
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -96,17 +93,21 @@ public class SeleccionUnidadFragment extends Fragment implements AdapterView.OnI
         completaDatosEmpleado(empleado);
         poblarSpinner();
 
+
+
         botonFinalizar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                navController.navigate(R.id.HomeActivity);
-                //Intent intent = new Intent(getActivity(), HomeActivity.class);
-                //startActivity(intent);
+               Intent intent = new Intent(getActivity(), HomeActivity.class);
+               startActivity(intent);
             }
         });
 
-
     }
+
+    /** Called when the user taps the Send button */
+
+
     public void completaDatosEmpleado(Empleado e){
         nombre.setText(String.valueOf(e.getNombre()+" "+e.getApellidos()));
         cargo.setText(String.valueOf(e.getNombreCargo()));
