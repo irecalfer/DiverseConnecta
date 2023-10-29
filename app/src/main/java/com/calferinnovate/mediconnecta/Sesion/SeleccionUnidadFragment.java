@@ -1,5 +1,6 @@
 package com.calferinnovate.mediconnecta.Sesion;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,6 +16,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
+import com.calferinnovate.mediconnecta.Home.HomeActivity;
 import com.calferinnovate.mediconnecta.clases.Area;
 import com.calferinnovate.mediconnecta.clases.ClaseGlobal;
 import com.calferinnovate.mediconnecta.clases.Constantes;
@@ -72,6 +74,7 @@ public class SeleccionUnidadFragment extends Fragment implements AdapterView.OnI
 
     View vista = inflater.inflate(R.layout.fragment_seleccion_unidad, container, false);
 
+
         return vista;
 
     }
@@ -93,14 +96,15 @@ public class SeleccionUnidadFragment extends Fragment implements AdapterView.OnI
         completaDatosEmpleado(empleado);
         poblarSpinner();
 
-
-
         botonFinalizar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                navController.navigate(R.id.action_seleccionUnidadFragment_to_homeActivity);
+                navController.navigate(R.id.HomeActivity);
+                //Intent intent = new Intent(getActivity(), HomeActivity.class);
+                //startActivity(intent);
             }
         });
+
 
     }
     public void completaDatosEmpleado(Empleado e){

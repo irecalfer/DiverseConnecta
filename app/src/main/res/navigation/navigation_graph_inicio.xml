@@ -20,11 +20,12 @@
         android:label="fragment_seleccion_unidad"
         tools:layout="@layout/fragment_seleccion_unidad" >
         <action
-            android:id="@+id/action_seleccionUnidadFragment_to_homeActivity"
-            app:destination="@id/homeActivity" />
+            android:id="@+id/action_seleccionUnidadFragment_to_HomeActivity"
+            app:destination="@id/HomeActivity" />
     </fragment>
     <activity
-        android:id="@+id/homeActivity"
+        android:id="@+id/HomeActivity"
         android:name="com.calferinnovate.mediconnecta.Home.HomeActivity"
-        android:label="HomeActivity" />
+        android:label="activity_home"
+        tools:layout="@layout/activity_home"/>
 </navigation>
