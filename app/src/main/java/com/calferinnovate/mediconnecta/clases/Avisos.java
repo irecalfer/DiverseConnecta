@@ -4,13 +4,13 @@ import java.sql.Date;
 
 public class Avisos {
     private int num_aviso;
-    private Date fecha_aviso;
+    private String fecha_aviso;
     private String contenido;
 
     public Avisos() {
     }
 
-    public Avisos(int num_aviso, Date fecha_aviso, String contenido) {
+    public Avisos(int num_aviso, String fecha_aviso, String contenido) {
         this.num_aviso = num_aviso;
         this.fecha_aviso = fecha_aviso;
         this.contenido = contenido;
@@ -24,11 +24,11 @@ public class Avisos {
         this.num_aviso = num_aviso;
     }
 
-    public Date getFecha_aviso() {
+    public String getFecha_aviso() {
         return fecha_aviso;
     }
 
-    public void setFecha_aviso(Date fecha_aviso) {
+    public void setFecha_aviso(String fecha_aviso) {
         this.fecha_aviso = fecha_aviso;
     }
 

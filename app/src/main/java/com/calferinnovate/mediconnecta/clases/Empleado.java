@@ -20,12 +20,13 @@ public class Empleado{
     private String user,pass,nombre, apellidos, nombreCargo;
     private int cod_empleado, fk_cargo;
     private String foto;
+    private ArrayList<Empleado> listadoEmpleado;
 
 
     public Empleado() {
     }
 
-    public Empleado(String user, String pass, String nombre, String apellidos, String nombreCargo, int cod_empleado, int fk_cargo, String foto) {
+    public Empleado(String user, String pass, String nombre, String apellidos, String nombreCargo, int cod_empleado, int fk_cargo, String foto, ArrayList<Empleado> lista) {
         this.user = user;
         this.pass = pass;
         this.nombre = nombre;
@@ -34,6 +35,7 @@ public class Empleado{
         this.cod_empleado = cod_empleado;
         this.fk_cargo = fk_cargo;
         this.foto = foto;
+        this.listadoEmpleado = lista;
     }
 
 
@@ -101,5 +103,13 @@ public class Empleado{
 
     public void setFoto(String foto) {
         this.foto = foto;
+    }
+
+    public ArrayList<Empleado> getListadoEmpleado() {
+        return listadoEmpleado;
+    }
+
+    public void setListadoEmpleado(ArrayList<Empleado> listadoEmpleado) {
+        this.listadoEmpleado = listadoEmpleado;
     }
 }

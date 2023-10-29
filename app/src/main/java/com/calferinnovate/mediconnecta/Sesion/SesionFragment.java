@@ -74,12 +74,13 @@ public class SesionFragment extends Fragment implements Response.Listener<JSONOb
 
         navController = Navigation.findNavController(view);
 
+        //Asociamos cada componente del layout con nuestras variables
         asociacionVariableComponente(view);
 
         // Instanciamos RequestQueue
         rq = Volley.newRequestQueue(getContext());
 
-        //Relaccionamos el botón de Acceso con el Listener para que actñue cuando sea presionado
+        //Relaccionamos el botón de Acceso con el Listener para que actúe cuando sea presionado
         btnAcceso.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -107,7 +108,6 @@ public class SesionFragment extends Fragment implements Response.Listener<JSONOb
 
         // Vamos a crear un objeto Empleado, para que lo que nos pase Json podamos parsearlo y pasarselo
         // a esos atributos de la clase Empleado.
-        //empleado = (Empleado) getActivity().getApplicationContext();
         empleado = ((ClaseGlobal) getActivity().getApplicationContext()).empleado;
 
 
@@ -143,11 +143,6 @@ public class SesionFragment extends Fragment implements Response.Listener<JSONOb
                 empleado.setPass(object.optString("pwd"));
                 empleado.setCod_empleado(object.optInt("cod_empleado"));
 
-
-
-                Log.d("datos", "Nombre= "+ empleado.getCod_empleado() + "Username= " + empleado.getUser().toString() + "Contraseña= " + empleado.getPass().toString());
-
-
                 Toast.makeText(getContext(), "Permitiendo el acceso al usuario "+ username.getText().toString(), Toast.LENGTH_SHORT).show();
 
                 // Ahora vamos a guardar los datos del empleado con su código
@@ -157,6 +152,7 @@ public class SesionFragment extends Fragment implements Response.Listener<JSONOb
 
 
             }
+
         } catch (JSONException e) {
             Log.d("Exception", String.valueOf(e));
         }
