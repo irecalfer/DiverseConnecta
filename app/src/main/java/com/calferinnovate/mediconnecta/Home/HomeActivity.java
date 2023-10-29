@@ -13,9 +13,10 @@ import android.view.MenuItem;
 import com.calferinnovate.mediconnecta.Home.Fragments.HomeFragment;
 import com.calferinnovate.mediconnecta.Home.Fragments.ResidentesFragment;
 import com.calferinnovate.mediconnecta.R;
+import com.calferinnovate.mediconnecta.clases.Backpressedlistener;
 import com.google.android.material.navigation.NavigationView;
 
-public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, Backpressedlistener {
 
     private DrawerLayout drawerLayout;
 
@@ -54,7 +55,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public void onBackPressed() {
+    public void onBackPressed(){
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
         } else {

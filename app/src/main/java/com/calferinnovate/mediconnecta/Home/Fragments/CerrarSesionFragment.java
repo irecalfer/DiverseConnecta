@@ -12,10 +12,10 @@ import com.calferinnovate.mediconnecta.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link HomeContentFragment#newInstance} factory method to
+ * Use the {@link CerrarSesionFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HomeContentFragment extends Fragment {
+public class CerrarSesionFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -26,7 +26,7 @@ public class HomeContentFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public HomeContentFragment() {
+    public CerrarSesionFragment() {
         // Required empty public constructor
     }
 
@@ -36,11 +36,11 @@ public class HomeContentFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment HomeContentFragment.
+     * @return A new instance of fragment CerrarSesionFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static HomeContentFragment newInstance(String param1, String param2) {
-        HomeContentFragment fragment = new HomeContentFragment();
+    public static CerrarSesionFragment newInstance(String param1, String param2) {
+        CerrarSesionFragment fragment = new CerrarSesionFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -61,6 +61,6 @@ public class HomeContentFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home_content, container, false);
+        return inflater.inflate(R.layout.fragment_cerrar_sesion, container, false);
     }
 }
