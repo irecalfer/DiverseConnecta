@@ -37,8 +37,8 @@ import java.util.ArrayList;
 
 public class SesionFragment extends Fragment implements Response.Listener<JSONObject>, Response.ErrorListener {
 
-    RequestQueue rq;
-    JsonRequest jrq;
+    private RequestQueue rq;
+    private JsonRequest jrq;
 
     // Creamos los objetos donde almacenaremos el usuario y la contraseña y el botón que nos
     // permitirá el acceso
@@ -56,14 +56,8 @@ public class SesionFragment extends Fragment implements Response.Listener<JSONOb
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        //return inflater.inflate(R.layout.fragment_sesion, container, false);
-
         // Necesitamos un objeto de tipo View
         View vista = inflater.inflate(R.layout.fragment_sesion, container, false);
-
-
-
         return vista;
     }
 
@@ -73,10 +67,8 @@ public class SesionFragment extends Fragment implements Response.Listener<JSONOb
         super.onViewCreated(view, savedInstanceState);
 
         navController = Navigation.findNavController(view);
-
         //Asociamos cada componente del layout con nuestras variables
         asociacionVariableComponente(view);
-
         // Instanciamos RequestQueue
         rq = Volley.newRequestQueue(getContext());
 
@@ -85,17 +77,15 @@ public class SesionFragment extends Fragment implements Response.Listener<JSONOb
             @Override
             public void onClick(View v) {
                 iniciarSesion();
-
-
             }
         });
     }
 
     public void asociacionVariableComponente(View view){
         // Vamos a referenciar estos objetos con el XML
-        username = (TextInputEditText) view.findViewById(R.id.user);
-        password = (TextInputEditText) view.findViewById(R.id.pass);
-        btnAcceso = (Button) view.findViewById(R.id.btnAcceso);
+        username = view.findViewById(R.id.user);
+        password = view.findViewById(R.id.pass);
+        btnAcceso = view.findViewById(R.id.btnAcceso);
 
     }
 
@@ -124,33 +114,21 @@ public class SesionFragment extends Fragment implements Response.Listener<JSONOb
 
     @Override
     public void onResponse(JSONObject response) {
-
-
-
         // Creamos un objeto Json de tipo array para recuperar ese array que estamos creando en el archivos php
         // con el formato Json. datos es el nombre del array que hemos declarado en el archivo php.
-
         try {
             JSONArray jsonArray = response.getJSONArray("datos");
-
-
             // Recorrer los datos del usuario
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject object = jsonArray.getJSONObject(i);
-
-
                 empleado.setUser(object.optString("user"));
                 empleado.setPass(object.optString("pwd"));
                 empleado.setCod_empleado(object.optInt("cod_empleado"));
-
                 Toast.makeText(getContext(), "Permitiendo el acceso al usuario "+ username.getText().toString(), Toast.LENGTH_SHORT).show();
 
                 // Ahora vamos a guardar los datos del empleado con su código
-                String url_datos = Constantes.url_part+"datos_empleados.php?cod_empleado="+empleado.getCod_empleado();
-                guardar_datos_empleado(url_datos);
-
-
-
+                String urlDatos = Constantes.url_part+"datos_empleados.php?cod_empleado="+empleado.getCod_empleado();
+                guardar_datos_empleado(urlDatos);
             }
 
         } catch (JSONException e) {
@@ -170,13 +148,10 @@ public class SesionFragment extends Fragment implements Response.Listener<JSONOb
                     empleado.setApellidos(response.optString("apellidos"));
                     empleado.setFk_cargo(response.optInt("fk_cargo"));
                     empleado.setNombreCargo(response.optString("nombreCargo"));
-
                     //pasoDeDatosAlSiguienteFragmento();
                     navController.navigate(R.id.action_sesionFragment_to_seleccionUnidadFragment);
                     Log.d("datos", "Nombre= " + empleado.getNombre().toString() + "Apellidos= " + empleado.getApellidos().toString() + "Cargo= " + empleado.getFk_cargo());
                     Log.d("Cargo", empleado.getNombreCargo());
-
-
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
@@ -186,10 +161,5 @@ public class SesionFragment extends Fragment implements Response.Listener<JSONOb
         });
         rq = Volley.newRequestQueue(getContext());
         rq.add(jsonObjectRequest);
-
-
     }
-
-
-
 }

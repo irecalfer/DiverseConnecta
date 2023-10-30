@@ -75,10 +75,9 @@ public class SeleccionUnidadFragment extends Fragment implements AdapterView.OnI
         // Inflate the layout for this fragment
 
     View vista = inflater.inflate(R.layout.fragment_seleccion_unidad, container, false);
-
-
+        asociacionVariableComponente(vista);
+        llamadaAObjetoClaseGlobal();
         return vista;
-
     }
 
 
@@ -87,9 +86,6 @@ public class SeleccionUnidadFragment extends Fragment implements AdapterView.OnI
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        asociacionVariableComponente(view);
-        llamadaAObjetoClaseGlobal();
-
         navController = Navigation.findNavController(view);
 
         // Instanciamos RequestQueue
@@ -97,8 +93,6 @@ public class SeleccionUnidadFragment extends Fragment implements AdapterView.OnI
 
         completaDatosEmpleado(empleado);
         poblarSpinner();
-
-
 
         botonFinalizar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,7 +117,6 @@ public class SeleccionUnidadFragment extends Fragment implements AdapterView.OnI
     }
 
 
-    /** Called when the user taps the Send button */
 
 
     public void completaDatosEmpleado(Empleado e){
@@ -135,13 +128,13 @@ public class SeleccionUnidadFragment extends Fragment implements AdapterView.OnI
     }
 
     public void asociacionVariableComponente(View view){
-        botonFinalizar = (Button) view.findViewById(R.id.AccesoAlHome);
-        nombre = (TextInputEditText) view.findViewById(R.id.nombreYApellidos);
-        cod_empleado = (TextInputEditText) view.findViewById(R.id.cod_empleado);
-        cargo = (TextInputEditText) view.findViewById(R.id.cargo);
-        areaSP = (Spinner) view.findViewById(R.id.spinnerArea);
-        unidadesSP = (Spinner) view.findViewById(R.id.spinnerUnidad);
-        foto = (ImageView) view.findViewById(R.id.fotoEmpleado);
+        botonFinalizar = view.findViewById(R.id.AccesoAlHome);
+        nombre = view.findViewById(R.id.nombreYApellidos);
+        cod_empleado = view.findViewById(R.id.cod_empleado);
+        cargo = view.findViewById(R.id.cargo);
+        areaSP = view.findViewById(R.id.spinnerArea);
+        unidadesSP = view.findViewById(R.id.spinnerUnidad);
+        foto = view.findViewById(R.id.fotoEmpleado);
     }
 
     public void llamadaAObjetoClaseGlobal(){
@@ -164,10 +157,10 @@ public class SeleccionUnidadFragment extends Fragment implements AdapterView.OnI
                         area.setId_area(jsonObject.optInt("id_area"));
                         area.setNombre(jsonObject.optString("nombre_area"));
                         listaAreas.add(area.getNombre());
-                        areasAdapter = new ArrayAdapter<>(getContext(), R.layout.my_spinner, listaAreas);
-                        areasAdapter.setDropDownViewResource(R.layout.my_spinner);
-                        areaSP.setAdapter(areasAdapter);
                     }
+                    areasAdapter = new ArrayAdapter<>(getContext(), R.layout.my_spinner, listaAreas);
+                    areasAdapter.setDropDownViewResource(R.layout.my_spinner);
+                    areaSP.setAdapter(areasAdapter);
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
                 }
@@ -189,7 +182,7 @@ public class SeleccionUnidadFragment extends Fragment implements AdapterView.OnI
             String areaSeleccionada = parent.getSelectedItem().toString();
             Log.d("nombrePadre", areaSeleccionada);
             String urlUnidades = Constantes.url_part+"unidades.php?nombre_area="+areaSeleccionada;
-            requestQueue = Volley.newRequestQueue(getContext());
+
             jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, urlUnidades, null,
                     new Response.Listener<JSONObject>() {
 
@@ -205,10 +198,10 @@ public class SeleccionUnidadFragment extends Fragment implements AdapterView.OnI
                             unidades.setFk_area(jsonObject.optInt("fk_id_area"));
                             Log.d("datos", unidades.getNombreUnidad());
                             listaUnidades.add(unidades.getNombreUnidad());
-                            unidadesAdapter = new ArrayAdapter<>(getContext(), R.layout.my_spinner, listaUnidades);
-                            unidadesAdapter.setDropDownViewResource(R.layout.my_spinner);
-                            unidadesSP.setAdapter(unidadesAdapter);
                         }
+                        unidadesAdapter = new ArrayAdapter<>(getContext(), R.layout.my_spinner, listaUnidades);
+                        unidadesAdapter.setDropDownViewResource(R.layout.my_spinner);
+                        unidadesSP.setAdapter(unidadesAdapter);
                     } catch (JSONException e) {
                         throw new RuntimeException(e);
                     }
@@ -293,7 +286,6 @@ public class SeleccionUnidadFragment extends Fragment implements AdapterView.OnI
 
             }
         });
-        requestQueue = Volley.newRequestQueue(getContext());
         requestQueue.add(jsonObjectRequest);
         return (listaPacientes != null) ? listaPacientes : new ArrayList<>();
     }
