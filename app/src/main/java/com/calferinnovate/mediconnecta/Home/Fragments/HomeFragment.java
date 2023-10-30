@@ -27,10 +27,12 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.calferinnovate.mediconnecta.Home.Fragments.HomeFragments.AvisosListViewFragment;
 import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.clases.Avisos;
 import com.calferinnovate.mediconnecta.clases.ClaseGlobal;
 import com.calferinnovate.mediconnecta.clases.Constantes;
+import com.calferinnovate.mediconnecta.clases.Fechas;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -44,94 +46,76 @@ import java.util.Date;
 public class HomeFragment extends Fragment{
 
     private CalendarView calendario;
+    private AvisosListViewFragment avisosListViewFragment;
     private Button abrirFragmentoListaAvisos;
-    private ListView listViewEmpleados;
-    private String fechaSeleccionada;
-    private String url;
-    private Calendar calendar;
-    String comillas = "\"";
-    private ArrayAdapter avisosAdapter;
-    private Avisos avisos;
 
-    ArrayList<String> listaAvisos = new ArrayList<>();
-    RequestQueue requestQueue;
-    JsonObjectRequest jsonObjectRequest;
+
+    private Calendar calendar;
+
+    private Avisos avisos;
+    private Fechas fechaSeleccionada;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
+        //Declaramos las variables globales y referenciamos nuestras variables con sus correspondientes
+        //componentes xml
         View vista = inflater.inflate(R.layout.fragment_home, container, false);
-        return vista;
+
+
+            //Obtenemos la referencia al ListView desde onCreateView
+            asociarVariablesConComponentes(vista);
+            declaracionObjetosClaseGlobal();
+            return vista;
+
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        asociarVariablesConComponentes(view);
-        objetoAvisosClaseGlobal();
+        //Obtenemos una instancia de calendario ya que CalendarView no contiene estos datos.
         calendar = Calendar.getInstance();
 
 
+        //Si clickamos en algún día del CalendarView, setearemos en el calendario de java el día clickeado
+        //y llamando a fechaSeleccionada guardaremos esa fecha en formato de año/mes/dia para poder pasarla
+        //la base de datos
         calendario.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
                 calendar.set(year, month, dayOfMonth);
-                fechaSeleccionada = new SimpleDateFormat("yyyy-MM-dd").format(calendar.getTime());
+                fechaSeleccionada.setFechaActual(new SimpleDateFormat("yyyy-MM-dd").format(calendar.getTime()));
             }
         });
 
+        //CUando clcikememos en el botón mostraremos en el fragmentContainer el fragment que contiene el
+        //ListView
         abrirFragmentoListaAvisos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                abrirAvisosDiarios(fechaSeleccionada);
+                //abrirAvisosDiarios(fechaSeleccionada);
+               // getParentFragmentManager() .beginTransaction().replace(R.id.fragmentContainerViewLIstView, new AvisosListViewFragment()).commit();
+                getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerViewLIstView, new AvisosListViewFragment()).commit();
+                Log.d("avisos", "Se ha implementado el nuevo fragmento");
             }
         });
     }
 
-    public void objetoAvisosClaseGlobal(){
+    public void declaracionObjetosClaseGlobal(){
         avisos = ((ClaseGlobal) getActivity().getApplicationContext()).avisos;
+        fechaSeleccionada = ((ClaseGlobal) getActivity().getApplicationContext()).fechas;
+
     }
 
     public void asociarVariablesConComponentes(View view){
         calendario = (CalendarView) view.findViewById(R.id.calendarView);
         abrirFragmentoListaAvisos = (Button) view.findViewById(R.id.abrirAvisos);
-        listViewEmpleados = (ListView) view.findViewById(R.id.listViewAvisos);
+
     }
 
-    public void abrirAvisosDiarios(String fecha){
-        url = Constantes.url_part+"avisos.php?fecha_aviso="+comillas+fechaSeleccionada+comillas;
-
-        requestQueue = Volley.newRequestQueue(getContext());
-
-        jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try{
-                    JSONArray jsonArray = response.getJSONArray("avisos");
-                    for(int i = 0; i<jsonArray.length(); i++){
-                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        avisos = new Avisos(jsonObject.optInt("num_aviso"), jsonObject.optString(("fecha_aviso")), jsonObject.optString("contenido"));
-                        listaAvisos.add(avisos.getContenido());
-                        avisosAdapter = new ArrayAdapter<>(getContext(), R.layout.fragment_home, listaAvisos);
-                        listViewEmpleados.setAdapter(avisosAdapter);
-                        Log.d("aviso", avisos.getContenido());
-                    }
-                }catch(JSONException jsonException){
-                    throw new RuntimeException(jsonException);
-                }
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.toString();
-                Log.d("error", error.toString());
-            }
-        });
-        requestQueue.add(jsonObjectRequest);
-    }
 
 
 }

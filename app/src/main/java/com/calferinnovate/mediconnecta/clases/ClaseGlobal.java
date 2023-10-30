@@ -7,11 +7,15 @@ public class ClaseGlobal extends Application {
     public Unidades unidades;
     public Area area;
     public Avisos avisos;
+    public Fechas fechas;
+
     @Override public void onCreate(){
         super.onCreate();
         empleado = new Empleado();
         unidades = new Unidades();
         area = new Area();
         avisos = new Avisos();
+        fechas = new Fechas();
+
     }
 }
