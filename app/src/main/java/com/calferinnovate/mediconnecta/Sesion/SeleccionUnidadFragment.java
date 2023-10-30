@@ -20,6 +20,7 @@ import com.calferinnovate.mediconnecta.Home.HomeActivity;
 import com.calferinnovate.mediconnecta.clases.Area;
 import com.calferinnovate.mediconnecta.clases.ClaseGlobal;
 import com.calferinnovate.mediconnecta.clases.Constantes;
+import com.calferinnovate.mediconnecta.clases.Pacientes;
 import com.calferinnovate.mediconnecta.clases.Unidades;
 
 import android.util.Log;
@@ -42,6 +43,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import javax.security.auth.callback.Callback;
 
 public class SeleccionUnidadFragment extends Fragment implements AdapterView.OnItemSelectedListener {
 
@@ -53,6 +55,9 @@ public class SeleccionUnidadFragment extends Fragment implements AdapterView.OnI
     ImageView foto;
     private Unidades unidades;
     private Area area;
+    private Pacientes pacientes;
+    private ArrayList<Pacientes> listaPacientes = new ArrayList<>();
+    private String unidadSeleccionada;
 
     ArrayList<String> listaAreas = new ArrayList<>();
     ArrayList<String> listaUnidades = new ArrayList<>();
@@ -98,12 +103,25 @@ public class SeleccionUnidadFragment extends Fragment implements AdapterView.OnI
         botonFinalizar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               Intent intent = new Intent(getActivity(), HomeActivity.class);
-               startActivity(intent);
+                // utilizamos la interfaz Callback para esperar a que la obtención de
+                // datos se complete antes de iniciar la actividad HomeActivity
+                obtenerDatosPacientes(new Callback() {
+
+                    @Override
+                    public void onSuccess() {
+                        Intent intent = new Intent(getActivity(), HomeActivity.class);
+                        startActivity(intent);
+                    }
+                    @Override
+                    public void onError() {
+                        // Manejar errores
+                    }
+                });
             }
         });
 
     }
+
 
     /** Called when the user taps the Send button */
 
@@ -130,6 +148,7 @@ public class SeleccionUnidadFragment extends Fragment implements AdapterView.OnI
         empleado = ((ClaseGlobal) getActivity().getApplicationContext()).empleado;
         unidades = ((ClaseGlobal) getActivity().getApplicationContext()).unidades;
         area = ((ClaseGlobal) getActivity().getApplicationContext()).area;
+        pacientes = ((ClaseGlobal) getActivity().getApplicationContext()).pacientes;
     }
 
     public void poblarSpinner(){
@@ -180,6 +199,7 @@ public class SeleccionUnidadFragment extends Fragment implements AdapterView.OnI
                         JSONArray jsonArray = response.getJSONArray("datos_unidades");
                         for(int i = 0; i<jsonArray.length(); i++){
                             JSONObject jsonObject = jsonArray.getJSONObject(i);
+                            unidades = new Unidades();
                             unidades.setId_unidad(jsonObject.optInt("id_unidad"));
                             unidades.setNombreUnidad(jsonObject.optString("nombre"));
                             unidades.setFk_area(jsonObject.optInt("fk_id_area"));
@@ -202,7 +222,19 @@ public class SeleccionUnidadFragment extends Fragment implements AdapterView.OnI
                 }
             });
             requestQueue.add(jsonObjectRequest);
-            unidadesSP.setOnItemSelectedListener(this);
+            unidadesSP.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    String unidadSeleccionada = parent.getSelectedItem().toString();
+                    unidades.setUnidadActual(unidadSeleccionada);
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
+
         }
     }
 
@@ -211,7 +243,66 @@ public class SeleccionUnidadFragment extends Fragment implements AdapterView.OnI
 
     }
 
+    private ArrayList<Pacientes> obtenerDatosPacientes(final Callback callback) {
+        String urlPacientes = Constantes.url_part+"pacientes.php?nombre="+unidades.getUnidadActual();
 
+        jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, urlPacientes, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try{
+                    JSONArray jsonArray = response.getJSONArray("pacientes");
+                    for(int i =0; i< jsonArray.length(); i++){
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        pacientes = new Pacientes();
+                        pacientes.setFoto(jsonObject.optString("foto"));
+                        pacientes.setCip_sns(jsonObject.optString("cip_sns"));
+                        pacientes.setNum_seguridad_social(jsonObject.optString("num_seguridad_social"));
+                        pacientes.setNombre(jsonObject.optString("nombre"));
+                        pacientes.setApellidos(jsonObject.optString("apellidos"));
+                        pacientes.setFecha_nacimiento(jsonObject.optString("fecha_nacimiento"));
+                        pacientes.setDni(jsonObject.optString("dni"));
+                        pacientes.setEstado_civil(jsonObject.optString("estado_civil"));
+                        pacientes.setLugar_nacimiento(jsonObject.optString("lugar_nacimiento"));
+                        pacientes.setSexo(jsonObject.optString("sexo"));
+                        pacientes.setFk_id_seguro(jsonObject.optInt("fk_id_seguro"));
+                        pacientes.setFk_num_habitacion(jsonObject.optInt("fk_num_habitacion"));
+                        pacientes.setFk_num_historia_clinica(jsonObject.optInt("fk_num_historia_clinica"));
+                        pacientes.setFk_id_pauta_geriatria(jsonObject.optInt("fk_id_pauta_geriatria"));
+                        pacientes.setFk_id_pauta_salud_mental(jsonObject.optInt("fk_id_pauta_salud_mental"));
+                        pacientes.setFk_id_unidad(jsonObject.optInt("fk_id_unidad"));
+                        pacientes.setFk_id_rutina_anatomicos(jsonObject.optInt("fk_id_rutina_anatomicos"));
+                        listaPacientes.add(pacientes);
+                        if (pacientes != null) {
+                            pacientes.setListaPacientesUnidad(listaPacientes);
+                        }
+                    }
+                    pacientes.setListaPacientesUnidad(listaPacientes);
+                    Log.d("tamañoPacientes", String.valueOf(pacientes.getListaPacientesUnidad().size()));
+                    Log.d("tamañoPacientes", "Ha llegado aquí");
+                    if (callback != null) {
+                        callback.onSuccess();
+                    }
+                }catch(JSONException e){
+                    e.getMessage();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        requestQueue = Volley.newRequestQueue(getContext());
+        requestQueue.add(jsonObjectRequest);
+        return (listaPacientes != null) ? listaPacientes : new ArrayList<>();
+    }
+
+    // Interfaz para manejar la respuesta de obtenerDatosPacientes
+    public interface Callback {
+        void onSuccess();
+        void onError();
+    }
 
 
 }

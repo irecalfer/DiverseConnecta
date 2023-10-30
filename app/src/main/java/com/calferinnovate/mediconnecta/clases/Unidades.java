@@ -6,14 +6,16 @@ public class Unidades{
 
     private int id_unidad, fk_area;
     private String nombreUnidad;
+    private String unidadActual;
 
     public Unidades() {
     }
 
-    public Unidades(int id_unidad, int fk_area, String nombreUnidad) {
+    public Unidades(int id_unidad, int fk_area, String nombreUnidad, String unidadActual) {
         this.id_unidad = id_unidad;
         this.fk_area = fk_area;
         this.nombreUnidad = nombreUnidad;
+        this.unidadActual = unidadActual;
     }
 
     public int getId_unidad() {
@@ -42,5 +44,13 @@ public class Unidades{
 
     public String toString(){
         return nombreUnidad;
+    }
+
+    public String getUnidadActual() {
+        return unidadActual;
+    }
+
+    public void setUnidadActual(String unidadActual) {
+        this.unidadActual = unidadActual;
     }
 }

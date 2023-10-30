@@ -33,6 +33,7 @@ import com.calferinnovate.mediconnecta.clases.Avisos;
 import com.calferinnovate.mediconnecta.clases.ClaseGlobal;
 import com.calferinnovate.mediconnecta.clases.Constantes;
 import com.calferinnovate.mediconnecta.clases.Fechas;
+import com.calferinnovate.mediconnecta.clases.Pacientes;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -54,6 +55,8 @@ public class HomeFragment extends Fragment{
 
     private Avisos avisos;
     private Fechas fechaSeleccionada;
+
+    private Pacientes pacientes;
 
 
     @Override
@@ -107,6 +110,7 @@ public class HomeFragment extends Fragment{
     public void declaracionObjetosClaseGlobal(){
         avisos = ((ClaseGlobal) getActivity().getApplicationContext()).avisos;
         fechaSeleccionada = ((ClaseGlobal) getActivity().getApplicationContext()).fechas;
+        pacientes = ((ClaseGlobal) getActivity().getApplicationContext()).pacientes;
 
     }
 
