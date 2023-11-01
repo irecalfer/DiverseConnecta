@@ -138,10 +138,10 @@ public class SeleccionUnidadFragment extends Fragment implements AdapterView.OnI
     }
 
     public void llamadaAObjetoClaseGlobal(){
-        empleado = ((ClaseGlobal) getActivity().getApplicationContext()).empleado;
-        unidades = ((ClaseGlobal) getActivity().getApplicationContext()).unidades;
-        area = ((ClaseGlobal) getActivity().getApplicationContext()).area;
-        pacientes = ((ClaseGlobal) getActivity().getApplicationContext()).pacientes;
+        empleado = ((ClaseGlobal) getActivity().getApplicationContext()).getEmpleado();
+        unidades = ((ClaseGlobal) getActivity().getApplicationContext()).getUnidades();
+        area = ((ClaseGlobal) getActivity().getApplicationContext()).getArea();
+        pacientes = ((ClaseGlobal) getActivity().getApplicationContext()).getPacientes();
     }
 
     public void poblarSpinner(){

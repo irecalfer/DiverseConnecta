@@ -5,17 +5,17 @@
     android:id="@+id/layoutConsultasyRutinas"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Home.Fragments.HomeFragments.consultasYRutinasDiariasFragment">
+    tools:context=".Home.Fragments.HomeFragments.Rutinas.consultasYRutinasDiariasFragment">
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guiaVertDer"
+        android:id="@+id/vertIzq"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_begin="32dp" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guiaVertIzq"
+        android:id="@+id/vertDer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -29,10 +29,34 @@
         app:layout_constraintGuide_begin="32dp" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guiaHorBot"
+        android:id="@+id/horBot"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_end="32dp" />
+
+
+    <EditText
+        android:id="@+id/fechaActual"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:inputType="date"
+        app:layout_constraintEnd_toStartOf="@+id/vertDer"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toEndOf="@+id/vertIzq"
+        app:layout_constraintTop_toTopOf="@+id/guiaHorTop" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvRutinas"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintBottom_toTopOf="@+id/horBot"
+        app:layout_constraintEnd_toStartOf="@+id/vertDer"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/vertIzq"
+        app:layout_constraintTop_toBottomOf="@+id/fechaActual" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

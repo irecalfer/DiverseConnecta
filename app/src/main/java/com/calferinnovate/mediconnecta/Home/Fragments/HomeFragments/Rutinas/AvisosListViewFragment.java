@@ -1,4 +1,4 @@
-package com.calferinnovate.mediconnecta.Home.Fragments.HomeFragments;
+package com.calferinnovate.mediconnecta.Home.Fragments.HomeFragments.Rutinas;
 
 import android.os.Bundle;
 
@@ -59,8 +59,8 @@ public class AvisosListViewFragment extends Fragment {
     }
 
     private void llamadaAObjetosGlobales(View view) {
-        avisos = ((ClaseGlobal) getActivity().getApplicationContext()).avisos;
-        fechas = ((ClaseGlobal) getActivity().getApplicationContext()).fechas;
+        avisos = ((ClaseGlobal) getActivity().getApplicationContext()).getAvisos();
+        fechas = ((ClaseGlobal) getActivity().getApplicationContext()).getFechas();
         avisosLV = (ListView) view.findViewById(R.id.listViewAvisos);
     }
 
@@ -97,10 +97,10 @@ public class AvisosListViewFragment extends Fragment {
                         avisos.setFecha_aviso(jsonObject.optString("fecha_aviso"));
                         avisos.setContenido(jsonObject.optString("contenido"));
                         listaContenidoAvisos.add(avisos.getContenido());
-                        avisosAdapter = new ArrayAdapter<>(getActivity(), R.layout.items_avisos_listview, R.id.itemAvisoListView, listaContenidoAvisos);
-                        avisosLV.setAdapter(avisosAdapter);
-                        Log.d("aviso", avisos.getContenido());
                     }
+                    avisosAdapter = new ArrayAdapter<>(getActivity(), R.layout.items_avisos_listview, R.id.itemAvisoListView, listaContenidoAvisos);
+                    avisosLV.setAdapter(avisosAdapter);
+                    Log.d("aviso", avisos.getContenido());
                 }catch(JSONException jsonException){
                     throw new RuntimeException(jsonException);
                 }

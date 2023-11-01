@@ -98,7 +98,7 @@ public class SesionFragment extends Fragment implements Response.Listener<JSONOb
 
         // Vamos a crear un objeto Empleado, para que lo que nos pase Json podamos parsearlo y pasarselo
         // a esos atributos de la clase Empleado.
-        empleado = ((ClaseGlobal) getActivity().getApplicationContext()).empleado;
+        empleado = ((ClaseGlobal) getActivity().getApplicationContext()).getEmpleado();
 
 
         //Request a string response from the provided url
