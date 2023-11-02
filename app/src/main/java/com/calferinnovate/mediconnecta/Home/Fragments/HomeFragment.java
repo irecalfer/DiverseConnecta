@@ -13,15 +13,28 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CalendarView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.calferinnovate.mediconnecta.Home.Fragments.HomeFragments.Rutinas.AvisosListViewFragment;
 import com.calferinnovate.mediconnecta.Home.Fragments.HomeFragments.Rutinas.consultasYRutinasDiariasFragment;
 import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.clases.Avisos;
 import com.calferinnovate.mediconnecta.clases.ClaseGlobal;
+import com.calferinnovate.mediconnecta.clases.Constantes;
 import com.calferinnovate.mediconnecta.clases.Fechas;
 import com.calferinnovate.mediconnecta.clases.Pacientes;
+import com.calferinnovate.mediconnecta.clases.Rutinas;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class HomeFragment extends Fragment{
@@ -36,7 +49,11 @@ public class HomeFragment extends Fragment{
     private Avisos avisos;
     private Fechas fechaSeleccionada;
 
-    private Pacientes pacientes;
+
+    private JsonObjectRequest jsonObjectRequest;
+    private RequestQueue requestQueue;
+    private Rutinas rutinas;
+
 
 
     @Override
@@ -47,7 +64,7 @@ public class HomeFragment extends Fragment{
         //componentes xml
         View vista = inflater.inflate(R.layout.fragment_home, container, false);
 
-
+            requestQueue = Volley.newRequestQueue(getContext());
             //Obtenemos la referencia al ListView desde onCreateView
             asociarVariablesConComponentes(vista);
             declaracionObjetosClaseGlobal();
@@ -79,8 +96,6 @@ public class HomeFragment extends Fragment{
         abrirFragmentoListaAvisos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //abrirAvisosDiarios(fechaSeleccionada);
-               // getParentFragmentManager() .beginTransaction().replace(R.id.fragmentContainerViewLIstView, new AvisosListViewFragment()).commit();
                 getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerViewLIstView, new AvisosListViewFragment()).commit();
                 Log.d("avisos", "Se ha implementado el nuevo fragmento");
             }
@@ -98,17 +113,12 @@ public class HomeFragment extends Fragment{
     public void declaracionObjetosClaseGlobal(){
         avisos = ((ClaseGlobal) getActivity().getApplicationContext()).getAvisos();
         fechaSeleccionada = ((ClaseGlobal) getActivity().getApplicationContext()).getFechas();
-        pacientes = ((ClaseGlobal) getActivity().getApplicationContext()).getPacientes();
-
     }
 
     public void asociarVariablesConComponentes(View view){
         calendario = view.findViewById(R.id.calendarView);
         abrirFragmentoListaAvisos = view.findViewById(R.id.abrirAvisos);
         rutinasBtn = view.findViewById(R.id.abrirRutinas);
-
     }
-
-
 
 }

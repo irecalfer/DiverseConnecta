@@ -50,13 +50,11 @@ public class SeleccionUnidadFragment extends Fragment implements AdapterView.OnI
     Spinner areaSP, unidadesSP;
     Empleado empleado;
     ImageView foto;
-    private Unidades unidades;
     private Area area;
-    private Pacientes pacientes;
-    private ArrayList<Pacientes> listaPacientes = new ArrayList<>();
     private ArrayList<Unidades> unidadesArrayList = new ArrayList<>();
-    private String unidadSeleccionada;
-
+    private ClaseGlobal claseGlobal;
+    private Pacientes pacientes;
+    private Unidades unidades;
     ArrayList<String> listaAreas = new ArrayList<>();
     ArrayList<String> listaUnidades = new ArrayList<>();
     ArrayAdapter<String> areasAdapter;
@@ -145,9 +143,10 @@ public class SeleccionUnidadFragment extends Fragment implements AdapterView.OnI
 
     public void llamadaAObjetoClaseGlobal() {
         empleado = ((ClaseGlobal) getActivity().getApplicationContext()).getEmpleado();
-        unidades = ((ClaseGlobal) getActivity().getApplicationContext()).getUnidades();
         area = ((ClaseGlobal) getActivity().getApplicationContext()).getArea();
-        pacientes = ((ClaseGlobal) getActivity().getApplicationContext()).getPacientes();
+        claseGlobal = (ClaseGlobal) getActivity().getApplicationContext();
+        pacientes = claseGlobal.getPacientes();
+        unidades = claseGlobal.getUnidades();
     }
 
     public void poblarSpinner() {
@@ -198,12 +197,13 @@ public class SeleccionUnidadFragment extends Fragment implements AdapterView.OnI
                                 JSONArray jsonArray = response.getJSONArray("datos_unidades");
                                 for (int i = 0; i < jsonArray.length(); i++) {
                                     JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                    unidades = new Unidades(jsonObject.optInt("id_unidad"), jsonObject.optInt("fk_id_area"),
+                                    Unidades nuevaUnidad = new Unidades(jsonObject.optInt("id_unidad"), jsonObject.optInt("fk_id_area"),
                                             jsonObject.optString("nombre"));
-                                    unidadesArrayList.add(unidades);
-                                    Log.d("datos", unidades.getNombreUnidad());
-                                    listaUnidades.add(unidades.getNombreUnidad());
+                                    unidades.getListaUnidades().add(nuevaUnidad);
+                                    listaUnidades.add(nuevaUnidad.getNombreUnidad());
                                 }
+                                // Actualiza la lista de Unidades en ClaseGlobal
+                                claseGlobal.getUnidades().setListaUnidades(unidades.getListaUnidades());
                                 unidadesAdapter = new ArrayAdapter<>(getContext(), R.layout.my_spinner, listaUnidades);
                                 unidadesAdapter.setDropDownViewResource(R.layout.my_spinner);
                                 unidadesSP.setAdapter(unidadesAdapter);
@@ -223,9 +223,10 @@ public class SeleccionUnidadFragment extends Fragment implements AdapterView.OnI
             unidadesSP.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    String unidadSeleccionada = parent.getSelectedItem().toString();
-                    ((ClaseGlobal) getActivity().getApplicationContext()).setUnidades(unidadesArrayList.get(position));
-                    unidades.setNombreUnidad(unidadSeleccionada);
+                    //String unidadSeleccionada = parent.getSelectedItem().toString();
+                    unidades.setUnidadActual(unidades.getListaUnidades().get(position).getNombreUnidad());
+                    //((ClaseGlobal) getActivity().getApplicationContext()).setUnidades(unidadesArrayList.get(position));
+                    //unidades.setNombreUnidad(unidadSeleccionada);
                 }
 
                 @Override
@@ -243,7 +244,7 @@ public class SeleccionUnidadFragment extends Fragment implements AdapterView.OnI
     }
 
     public void obtieneDatosPacientesUnidad() {
-        String url = Constantes.url_part + "pacientes.php?nombre=" + unidades.getNombreUnidad();
+        String url = Constantes.url_part + "pacientes.php?nombre=" + unidades.getUnidadActual();
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -251,16 +252,19 @@ public class SeleccionUnidadFragment extends Fragment implements AdapterView.OnI
                     JSONArray jsonArray = response.getJSONArray("pacientes");
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        pacientes = new Pacientes(jsonObject.optString("nombre"), jsonObject.optString("apellidos"),
+                        Pacientes nuevoPacientes = new Pacientes(jsonObject.optString("nombre"), jsonObject.optString("apellidos"),
                                 jsonObject.optString("foto"), jsonObject.optString("fecha_nacimiento"),
                                 jsonObject.optString("dni"), jsonObject.optString("lugar_nacimiento"),
                                 jsonObject.optString("sexo"), jsonObject.optString("cip_sns"),
                                 jsonObject.optInt("num_seguridad_social"), jsonObject.optInt("fk_id_unidad"),
                                 jsonObject.optInt("fk_id_seguro"), jsonObject.optInt("fk_num_habitacion"),
                                 jsonObject.optInt("fk_num_historia_clinica"));
-                        listaPacientes.add(pacientes);
+                        // Agrega un nuevo paciente a la lista en tu fragmento
+                        pacientes.getListaPacientes().add(nuevoPacientes);
                     }
-                    pacientes.setListaPacientes(listaPacientes);
+                    // Actualiza la lista de pacientes en ClaseGlobal
+                    pacientes.setListaPacientes(pacientes.getListaPacientes());
+
                     obtenerDatosCallback.onDatosObtenidos(); // Llama al callback en caso de éxito
                 } catch (JSONException e) {
                     e.printStackTrace();

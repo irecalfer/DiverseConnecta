@@ -25,4 +25,9 @@
     <string name="avisos">Avisos</string>
     <string name="svRecyclerViewRutinas">Contiene las rutinas diarias de los pacientes</string>
     <string name="rutinas">Rutina del día</string>
+    <string name="tabVisitas">Visitas</string>
+    <string name="tabSalidas">Salidas</string>
+    <string name="tabFisio">Fisioterapeuta</string>
+    <string name="tabCuras">Curas</string>
+    <string name="tabConsultasMedicas">Consultas Médicas</string>
 </resources>

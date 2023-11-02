@@ -1,41 +1,27 @@
 package com.calferinnovate.mediconnecta.clases;
 
+import java.util.ArrayList;
+
 public class Rutinas {
-    private String nombre, apellidos, horaRutina, diario;
-    // String diario
+
+    private int idTipoRutina;
+    private String diario;
+    private ArrayList<Rutinas> listaRutinas;
 
     public Rutinas() {
     }
 
-    public Rutinas(String nombre, String apellidos, String horaRutina) {
-        this.nombre = nombre;
-        this.apellidos = apellidos;
-        this.horaRutina = horaRutina;
-        //this.diario = diario;
+    public Rutinas(int idTipoRutina, String diario) {
+        this.idTipoRutina = idTipoRutina;
+        this.diario = diario;
     }
 
-    public String getNombre() {
-        return nombre;
+    public int getIdTipoRutina() {
+        return idTipoRutina;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getApellidos() {
-        return apellidos;
-    }
-
-    public void setApellidos(String apellidos) {
-        this.apellidos = apellidos;
-    }
-
-    public String getHoraRutina() {
-        return horaRutina;
-    }
-
-    public void setHoraRutina(String horaRutina) {
-        this.horaRutina = horaRutina;
+    public void setIdTipoRutina(int idTipoRutina) {
+        this.idTipoRutina = idTipoRutina;
     }
 
     public String getDiario() {
@@ -46,5 +32,11 @@ public class Rutinas {
         this.diario = diario;
     }
 
+    public ArrayList<Rutinas> getListaRutinas() {
+        return listaRutinas;
+    }
 
+    public void setListaRutinas(ArrayList<Rutinas> listaRutinas) {
+        this.listaRutinas = listaRutinas;
+    }
 }

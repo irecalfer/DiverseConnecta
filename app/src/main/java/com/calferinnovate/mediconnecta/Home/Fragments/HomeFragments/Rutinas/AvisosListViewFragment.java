@@ -40,6 +40,7 @@ public class AvisosListViewFragment extends Fragment {
     private Avisos avisos;
     private Fechas fechas;
     private String url;
+    private ClaseGlobal claseGlobal;
     private ArrayList<String> listaContenidoAvisos = new ArrayList<>();
     private ArrayAdapter<String> avisosAdapter;
     private RequestQueue requestQueue;
@@ -59,9 +60,10 @@ public class AvisosListViewFragment extends Fragment {
     }
 
     private void llamadaAObjetosGlobales(View view) {
-        avisos = ((ClaseGlobal) getActivity().getApplicationContext()).getAvisos();
-        fechas = ((ClaseGlobal) getActivity().getApplicationContext()).getFechas();
-        avisosLV = (ListView) view.findViewById(R.id.listViewAvisos);
+        claseGlobal = (ClaseGlobal) getActivity().getApplicationContext();
+        avisos = claseGlobal.getAvisos();
+        fechas = claseGlobal.getFechas();
+        avisosLV = view.findViewById(R.id.listViewAvisos);
     }
 
     @Override
@@ -81,7 +83,7 @@ public class AvisosListViewFragment extends Fragment {
     //Tras terminar podremos ver como en HomeFragment se encuentra el lisview completado con los avisos
     //correspondientes a la fecha elegida.
     public void rellenaListView(){
-        url = Constantes.url_part+"avisos.php?fecha_aviso="+Constantes.comillas+fechas.getFechaActual()+Constantes.comillas;
+        url = Constantes.url_part+"avisos.php?fecha_aviso="+fechas.getFechaActual();
 
         requestQueue = Volley.newRequestQueue(getContext());
 
@@ -92,15 +94,15 @@ public class AvisosListViewFragment extends Fragment {
                     JSONArray jsonArray = response.getJSONArray("avisos");
                     for(int i = 0; i<jsonArray.length(); i++){
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        //avisos = new Avisos(jsonObject.optInt("num_aviso"), jsonObject.optString(("fecha_aviso")), jsonObject.optString("contenido"));
-                        avisos.setNum_aviso(jsonObject.optInt("num_aviso"));
-                        avisos.setFecha_aviso(jsonObject.optString("fecha_aviso"));
-                        avisos.setContenido(jsonObject.optString("contenido"));
-                        listaContenidoAvisos.add(avisos.getContenido());
+                        Avisos nuevoAvisos = new Avisos(jsonObject.optInt("num_aviso"), jsonObject.optString(("fecha_aviso")), jsonObject.optString("contenido"));
+                        //avisos.setNum_aviso(jsonObject.optInt("num_aviso"));
+                        //avisos.setFecha_aviso(jsonObject.optString("fecha_aviso"));
+                        //avisos.setContenido(jsonObject.optString("contenido"));
+                        listaContenidoAvisos.add(nuevoAvisos.getContenido());
+
                     }
                     avisosAdapter = new ArrayAdapter<>(getActivity(), R.layout.items_avisos_listview, R.id.itemAvisoListView, listaContenidoAvisos);
                     avisosLV.setAdapter(avisosAdapter);
-                    Log.d("aviso", avisos.getContenido());
                 }catch(JSONException jsonException){
                     throw new RuntimeException(jsonException);
                 }

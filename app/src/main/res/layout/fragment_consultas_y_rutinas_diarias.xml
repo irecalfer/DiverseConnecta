@@ -50,6 +50,50 @@
         app:layout_constraintStart_toEndOf="@+id/vertIzq"
         app:layout_constraintTop_toTopOf="@+id/guiaHorTop" />
 
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLAyoutRutinas"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@color/md_theme_light_surfaceTint"
+        app:layout_constraintBottom_toTopOf="@+id/rvRutinas"
+        app:layout_constraintEnd_toStartOf="@+id/vertDer"
+        app:layout_constraintStart_toStartOf="@+id/vertIzq"
+        app:layout_constraintTop_toBottomOf="@+id/fechaActual"
+        app:tabIndicatorColor="@color/md_theme_white"
+        app:tabTextColor="@color/md_theme_white">
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/tabVisitas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tabVisitas" />
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/tabSalidas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tabSalidas" />
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/tabFisio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tabFisio" />
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/tabCuras"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tabCuras" />
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/tabConsultas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tabConsultasMedicas" />
+    </com.google.android.material.tabs.TabLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvRutinas"
         android:layout_width="0dp"
@@ -60,6 +104,6 @@
         app:layout_constraintEnd_toStartOf="@+id/vertDer"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/vertIzq"
-        app:layout_constraintTop_toBottomOf="@+id/fechaActual" />
+        app:layout_constraintTop_toBottomOf="@+id/tabLAyoutRutinas" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

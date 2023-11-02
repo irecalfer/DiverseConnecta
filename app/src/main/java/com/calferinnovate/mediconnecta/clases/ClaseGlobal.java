@@ -2,6 +2,8 @@ package com.calferinnovate.mediconnecta.clases;
 
 import android.app.Application;
 
+import java.util.ArrayList;
+
 public class ClaseGlobal extends Application {
     private Empleado empleado;
     private Unidades unidades;
@@ -14,6 +16,9 @@ public class ClaseGlobal extends Application {
 
     @Override public void onCreate(){
         super.onCreate();
+    }
+
+    public ClaseGlobal() {
         empleado = new Empleado();
         unidades = new Unidades();
         area = new Area();
@@ -22,9 +27,9 @@ public class ClaseGlobal extends Application {
         pacientes = new Pacientes();
         rutinas = new Rutinas();
         pacientesAgrupadosRutinas = new PacientesAgrupadosRutinas();
-    }
-
-    public ClaseGlobal() {
+        pacientes.setListaPacientes(new ArrayList<>()); // Inicializa la lista de pacientes vacía
+        pacientesAgrupadosRutinas.setListaProgramacion(new ArrayList<>());
+        unidades.setListaUnidades(new ArrayList<>());
     }
 
     public Empleado getEmpleado() {
