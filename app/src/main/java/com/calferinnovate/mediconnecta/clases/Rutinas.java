@@ -2,15 +2,16 @@ package com.calferinnovate.mediconnecta.clases;
 
 public class Rutinas {
     private String nombre, apellidos, horaRutina, diario;
+    // String diario
 
     public Rutinas() {
     }
 
-    public Rutinas(String nombre, String apellidos, String horaRutina, String diario) {
+    public Rutinas(String nombre, String apellidos, String horaRutina) {
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.horaRutina = horaRutina;
-        this.diario = diario;
+        //this.diario = diario;
     }
 
     public String getNombre() {

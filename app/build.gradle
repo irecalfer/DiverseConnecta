@@ -4,11 +4,11 @@ plugins {
 
 android {
     namespace 'com.calferinnovate.mediconnecta'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.calferinnovate.mediconnecta"
-        minSdk 32
+        minSdk 33
         targetSdk 33
         versionCode 1
         versionName "1.0"
@@ -22,6 +22,8 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -36,6 +38,8 @@ android {
     }
 
 }
+
+
 
 dependencies {
 
@@ -61,7 +65,7 @@ dependencies {
     implementation 'androidx.viewpager2:viewpager2:1.0.0'
     implementation 'com.google.android.material:material:1.11.0-beta01'
     //Dependencias para tener recyclerView con secciones
-    implementation 'com.github.gabrielemariotti:recyclerview-adv-v3.1.0'
+    implementation 'com.github.luizgrp:SectionedRecyclerViewAdapter:v3.2.0'
 
 
 }

@@ -60,7 +60,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
-        android:text="@string/avisos"
+        android:text="@string/rutinas"
         app:layout_constraintEnd_toStartOf="@+id/guiaVertDer"
         app:layout_constraintStart_toStartOf="@+id/guiaVertIzq"
         app:layout_constraintTop_toBottomOf="@+id/abrirAvisos" />
@@ -72,7 +72,8 @@
         app:layout_constraintBottom_toTopOf="@id/guiaHorBot"
         app:layout_constraintEnd_toStartOf="@+id/guiaVertDer"
         app:layout_constraintStart_toStartOf="@+id/guiaVertIzq"
-        app:layout_constraintTop_toBottomOf="@+id/abrirRutinas">
+        app:layout_constraintTop_toBottomOf="@+id/abrirRutinas"
+        android:contentDescription="@string/svRecyclerViewRutinas">
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/fragmentContainerViewLIstView"

@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,27 +17,26 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.calferinnovate.mediconnecta.Home.Fragments.HomeFragments.Rutinas.AdapterRutinas;
 import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.clases.ClaseGlobal;
 import com.calferinnovate.mediconnecta.clases.Constantes;
 import com.calferinnovate.mediconnecta.clases.Fechas;
 import com.calferinnovate.mediconnecta.clases.PacientesAgrupadosRutinas;
 import com.calferinnovate.mediconnecta.clases.Rutinas;
+import com.calferinnovate.mediconnecta.clases.Secciones.SeccionesRutinas;
 import com.calferinnovate.mediconnecta.clases.Unidades;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
+import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
 
-public class consultasYRutinasDiariasFragment extends Fragment implements Response.Listener<JSONObject>, Response.ErrorListener {
+public class consultasYRutinasDiariasFragment extends Fragment {
 
     private RecyclerView principalRV;
-    private AdapterRutinas rutinasAdapter;
     private String url;
-
+    private SectionedRecyclerViewAdapter sectionAdapter;
     private PacientesAgrupadosRutinas pacientesAgrupadosRutinas;
     private Fechas fechas;
     private Unidades unidades;
@@ -52,10 +52,11 @@ public class consultasYRutinasDiariasFragment extends Fragment implements Respon
         referenciaVariables(vista);
         llamadaObjetosGlobales();
         requestQueue = Volley.newRequestQueue(getContext());
-        principalRV.setLayoutManager(new LinearLayoutManager(getContext()));
-        rutinasAdapter = new AdapterRutinas();
-        principalRV.setAdapter(rutinasAdapter);
-
+        //principalRV.setLayoutManager(new LinearLayoutManager(getContext()));
+        // Create an instance of SectionedRecyclerViewAdapter
+        sectionAdapter = new SectionedRecyclerViewAdapter();
+        //principalRV.setAdapter(rutinasAdapter);
+        //Log.d("UnidadActual", unidades.getNombreUnidad());
         //Agregamos secciones y elementos al adaptador
         obtieneDatosRutinasDia();
         //agregaSeccionesyElementos();
@@ -75,34 +76,36 @@ public class consultasYRutinasDiariasFragment extends Fragment implements Respon
     }
 
     public void obtieneDatosRutinasDia(){
-        url = Constantes.url_part+"rutinas.php?"+Constantes.comillas+fechas.getFechaActual()+Constantes.comillas+"&nombre="+unidades.getUnidadActual();
-        jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, null, this, this);
-    }
-
-    public void agregaSeccionesyElementos(){
-        for(int i=0; i < 5; i++){
-
-        }
-    }
-
-    @Override
-    public void onResponse(JSONObject response) {
-        try {
-            JSONArray jsonArray = response.getJSONArray("rutina");
-            for(int i =0; i<jsonArray.length(); i++){
-                JSONObject jsonObject = jsonArray.getJSONObject(i);
-                rutinas = new Rutinas(jsonObject.optString("diario"), jsonObject.optString("nombre"),
-                        jsonObject.optString("apellidos"), jsonObject.optString("hora_rutina"));
-                pacientesAgrupadosRutinas.getListRutinas().add(rutinas);
+        url = Constantes.url_part+"rutinas.php?"+Constantes.comillas+fechas.getFechaActual()+Constantes.comillas+"&nombre="+unidades.getNombreUnidad();
+        jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    //jsonObject.optString("diario")
+                    JSONArray jsonArray = response.getJSONArray("pacientesAgrupados");
+                    for(int i =0; i<jsonArray.length(); i++){
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        rutinas = new Rutinas(jsonObject.optString("nombre"),
+                                jsonObject.optString("apellidos"), jsonObject.optString("hora_rutina"));
+                        pacientesAgrupadosRutinas.getListRutinas().add(rutinas);
+                        // Add your Sections
+                        sectionAdapter.addSection(new SeccionesRutinas());
+                        principalRV.setLayoutManager(new LinearLayoutManager(getContext()));
+                        principalRV.setAdapter(sectionAdapter);
+                    }
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
             }
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
-        }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        requestQueue.add(jsonObjectRequest);
     }
 
-    @Override
-    public void onErrorResponse(VolleyError error) {
-
-    }
+ //HACER DE NUEVO PHP DE RUTINAS Y MODELARLO EN JAVA
 
 }

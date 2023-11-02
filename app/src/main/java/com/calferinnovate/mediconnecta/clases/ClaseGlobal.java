@@ -24,6 +24,9 @@ public class ClaseGlobal extends Application {
         pacientesAgrupadosRutinas = new PacientesAgrupadosRutinas();
     }
 
+    public ClaseGlobal() {
+    }
+
     public Empleado getEmpleado() {
         return empleado;
     }
@@ -56,4 +59,35 @@ public class ClaseGlobal extends Application {
         return pacientesAgrupadosRutinas;
     }
 
+    public void setEmpleado(Empleado empleado) {
+        this.empleado = empleado;
+    }
+
+    public void setUnidades(Unidades unidades) {
+        this.unidades = unidades;
+    }
+
+    public void setArea(Area area) {
+        this.area = area;
+    }
+
+    public void setAvisos(Avisos avisos) {
+        this.avisos = avisos;
+    }
+
+    public void setFechas(Fechas fechas) {
+        this.fechas = fechas;
+    }
+
+    public void setPacientes(Pacientes pacientes) {
+        this.pacientes = pacientes;
+    }
+
+    public void setRutinas(Rutinas rutinas) {
+        this.rutinas = rutinas;
+    }
+
+    public void setPacientesAgrupadosRutinas(PacientesAgrupadosRutinas pacientesAgrupadosRutinas) {
+        this.pacientesAgrupadosRutinas = pacientesAgrupadosRutinas;
+    }
 }
