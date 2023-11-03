@@ -203,7 +203,7 @@ public class SeleccionUnidadFragment extends Fragment implements AdapterView.OnI
                                     listaUnidades.add(nuevaUnidad.getNombreUnidad());
                                 }
                                 // Actualiza la lista de Unidades en ClaseGlobal
-                                claseGlobal.getUnidades().setListaUnidades(unidades.getListaUnidades());
+                                unidades.setListaUnidades(unidades.getListaUnidades());
                                 unidadesAdapter = new ArrayAdapter<>(getContext(), R.layout.my_spinner, listaUnidades);
                                 unidadesAdapter.setDropDownViewResource(R.layout.my_spinner);
                                 unidadesSP.setAdapter(unidadesAdapter);
@@ -223,10 +223,7 @@ public class SeleccionUnidadFragment extends Fragment implements AdapterView.OnI
             unidadesSP.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    //String unidadSeleccionada = parent.getSelectedItem().toString();
-                    unidades.setUnidadActual(unidades.getListaUnidades().get(position).getNombreUnidad());
-                    //((ClaseGlobal) getActivity().getApplicationContext()).setUnidades(unidadesArrayList.get(position));
-                    //unidades.setNombreUnidad(unidadSeleccionada);
+                    claseGlobal.setUnidades(unidades.getListaUnidades().get(position));
                 }
 
                 @Override
@@ -244,7 +241,7 @@ public class SeleccionUnidadFragment extends Fragment implements AdapterView.OnI
     }
 
     public void obtieneDatosPacientesUnidad() {
-        String url = Constantes.url_part + "pacientes.php?nombre=" + unidades.getUnidadActual();
+        String url = Constantes.url_part + "pacientes.php?nombre=" + claseGlobal.getUnidades().getNombreUnidad();
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {

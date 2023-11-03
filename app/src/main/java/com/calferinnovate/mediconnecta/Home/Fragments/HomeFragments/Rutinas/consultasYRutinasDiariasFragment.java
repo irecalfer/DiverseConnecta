@@ -98,7 +98,7 @@ public class consultasYRutinasDiariasFragment extends Fragment {
         //pacientes = ((ClaseGlobal) getActivity().getApplication()).getPacientes().getListaPacientes();
     }
 
-    public void obtencionRutinas(){
+   /* public void obtencionRutinas(){
         String url = Constantes.url_part+"rutinas.php";
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
@@ -122,10 +122,10 @@ public class consultasYRutinasDiariasFragment extends Fragment {
 
             }
         });
-    }
+    }*/
 
     public void obtieneDatosRutinasDiaPacientes(String tipoRutina){
-        url = Constantes.url_part+"programacionRutinas.php?fecha_rutina="+fechas.getFechaActual()+"&nombre="+unidades.getUnidadActual()+
+        url = Constantes.url_part+"programacionRutinas.php?fecha_rutina="+fechas.getFechaActual()+"&nombre="+unidades.getNombreUnidad()+
         "&diario="+tipoRutina;
         requestQueue = Volley.newRequestQueue(getContext());
         jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
