@@ -223,7 +223,13 @@ public class SeleccionUnidadFragment extends Fragment implements AdapterView.OnI
             unidadesSP.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    claseGlobal.setUnidades(unidades.getListaUnidades().get(position));
+                    if (parent.getId() == R.id.spinnerUnidad) {
+                        // Obtiene la unidad seleccionada del spinner
+                        Unidades unidadSeleccionada = unidades.getListaUnidades().get(position);
+
+                        // Establece la unidad seleccionada en ClaseGlobal
+                        claseGlobal.setUnidades(unidadSeleccionada);
+                    }
                 }
 
                 @Override
@@ -242,7 +248,9 @@ public class SeleccionUnidadFragment extends Fragment implements AdapterView.OnI
 
     //Prueba commit
     public void obtieneDatosPacientesUnidad() {
-        String url = Constantes.url_part + "pacientes.php?nombre=" + claseGlobal.getUnidades().getNombreUnidad();
+        Unidades unidadSeleccionada = claseGlobal.getUnidades();
+        String nombreUnidad = unidadSeleccionada.getNombreUnidad();
+        String url = Constantes.url_part + "pacientes.php?nombre=" + unidadSeleccionada.getNombreUnidad();
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
