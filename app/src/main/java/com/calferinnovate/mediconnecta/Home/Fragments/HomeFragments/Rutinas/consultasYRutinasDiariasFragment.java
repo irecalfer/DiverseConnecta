@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -48,7 +49,6 @@ public class consultasYRutinasDiariasFragment extends Fragment {
     private RutinasAdapter rutinasAdapter;
     private TabLayout tabLayout;
     private PacientesAgrupadosRutinas pacientesAgrupadosRutinas;
-    private ArrayList<PacientesAgrupadosRutinas> listaAgrupados;
     private Fechas fechas;
     private Unidades unidades;
     private Rutinas rutinas;
@@ -57,6 +57,7 @@ public class consultasYRutinasDiariasFragment extends Fragment {
     private RequestQueue requestQueue;
     private JsonObjectRequest jsonObjectRequest;
     private ArrayList<Rutinas> listaRutinas = new ArrayList<>();
+    private EditText fechaRutina;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -66,6 +67,8 @@ public class consultasYRutinasDiariasFragment extends Fragment {
         referenciaVariables(vista);
         llamadaObjetosGlobales();
 
+        //Seteamos la fecha en el EditText
+        fechaRutina.setText(fechas.getFechaActual()); // FORMATEAR FECHA PARA QUE APAREZCA DE FORMA dd/MM/YYYY
         // Inicializa el adaptador una sola vez
         rutinasAdapter = new RutinasAdapter(pacientesAgrupadosRutinas.getListaProgramacion(), pacientes.getListaPacientes());
         rvConsultas.setAdapter(rutinasAdapter);
@@ -82,6 +85,7 @@ public class consultasYRutinasDiariasFragment extends Fragment {
     public void referenciaVariables(View view){
         rvConsultas = view.findViewById(R.id.rvRutinas);
         tabLayout = view.findViewById(R.id.tabLAyoutRutinas);
+        fechaRutina = view.findViewById(R.id.fechaActual);
     }
 
     public void llamadaObjetosGlobales(){
