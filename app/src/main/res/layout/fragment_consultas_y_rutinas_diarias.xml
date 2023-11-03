@@ -56,7 +56,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:background="@color/md_theme_light_surfaceTint"
-        app:layout_constraintBottom_toTopOf="@+id/rvRutinas"
         app:layout_constraintEnd_toStartOf="@+id/vertDer"
         app:layout_constraintStart_toStartOf="@+id/vertIzq"
         app:layout_constraintTop_toBottomOf="@+id/fechaActual"
@@ -94,16 +93,25 @@
             android:text="@string/tabConsultasMedicas" />
     </com.google.android.material.tabs.TabLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvRutinas"
+    <LinearLayout
+        android:id="@+id/linerLsyoutConsultas"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="24dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:layout_marginTop="8dp"
+        android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/horBot"
         app:layout_constraintEnd_toStartOf="@+id/vertDer"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/vertIzq"
-        app:layout_constraintTop_toBottomOf="@+id/tabLAyoutRutinas" />
+        app:layout_constraintTop_toBottomOf="@+id/tabLAyoutRutinas">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvRutinas"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="24dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintEnd_toStartOf="@+id/vertDer"
+            app:layout_constraintStart_toStartOf="@+id/vertIzq" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

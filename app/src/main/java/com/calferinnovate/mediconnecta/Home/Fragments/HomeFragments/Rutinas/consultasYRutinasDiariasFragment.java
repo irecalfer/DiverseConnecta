@@ -52,7 +52,8 @@ public class consultasYRutinasDiariasFragment extends Fragment {
     private Fechas fechas;
     private Unidades unidades;
     private Rutinas rutinas;
-    private ArrayList<Pacientes> pacientes;
+    private ClaseGlobal claseGlobal;
+    private Pacientes pacientes;
     private RequestQueue requestQueue;
     private JsonObjectRequest jsonObjectRequest;
     private ArrayList<Rutinas> listaRutinas = new ArrayList<>();
@@ -65,12 +66,18 @@ public class consultasYRutinasDiariasFragment extends Fragment {
         referenciaVariables(vista);
         llamadaObjetosGlobales();
 
-
-       // obtencionRutinas();
+        // Inicializa el adaptador una sola vez
+        rutinasAdapter = new RutinasAdapter(pacientesAgrupadosRutinas.getListaProgramacion(), pacientes.getListaPacientes());
+        rvConsultas.setAdapter(rutinasAdapter);
         seleccionDeTabs();
         return vista;
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+    }
 
     public void referenciaVariables(View view){
         rvConsultas = view.findViewById(R.id.rvRutinas);
@@ -78,11 +85,13 @@ public class consultasYRutinasDiariasFragment extends Fragment {
     }
 
     public void llamadaObjetosGlobales(){
-        fechas = ((ClaseGlobal) getActivity().getApplicationContext()).getFechas();
-        unidades = ((ClaseGlobal) getActivity().getApplicationContext()).getUnidades();
-        rutinas = ((ClaseGlobal) getActivity().getApplicationContext()).getRutinas();
-        pacientesAgrupadosRutinas = ((ClaseGlobal) getActivity().getApplicationContext()).getPacientesAgrupadosRutinas();
-        pacientes = ((ClaseGlobal) getActivity().getApplication()).getPacientes().getListaPacientes();
+        claseGlobal = (ClaseGlobal) getActivity().getApplicationContext();
+        fechas = claseGlobal.getFechas();
+        unidades = claseGlobal.getUnidades();
+        rutinas = claseGlobal.getRutinas();
+        pacientesAgrupadosRutinas = claseGlobal.getPacientesAgrupadosRutinas();
+        pacientes = claseGlobal.getPacientes();
+        //pacientes = ((ClaseGlobal) getActivity().getApplication()).getPacientes().getListaPacientes();
     }
 
     public void obtencionRutinas(){
@@ -112,22 +121,24 @@ public class consultasYRutinasDiariasFragment extends Fragment {
     }
 
     public void obtieneDatosRutinasDiaPacientes(String tipoRutina){
-        url = Constantes.url_part+"programacionRutinas.php?fecha_rutina="+fechas.getFechaActual()+"&nombre="+unidades.getNombreUnidad()+
+        url = Constantes.url_part+"programacionRutinas.php?fecha_rutina="+fechas.getFechaActual()+"&nombre="+unidades.getUnidadActual()+
         "&diario="+tipoRutina;
         requestQueue = Volley.newRequestQueue(getContext());
         jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    listaAgrupados = new ArrayList<>();
                     JSONArray jsonArray = response.getJSONArray("programacion");
                     for(int i =0; i<jsonArray.length(); i++){
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        pacientesAgrupadosRutinas = new PacientesAgrupadosRutinas(jsonObject.optString("fk_cip_sns"), jsonObject.optInt("fk_id_rutina"), jsonObject.optString("hora_rutina"));
-                        listaAgrupados.add(pacientesAgrupadosRutinas);
+                        PacientesAgrupadosRutinas newPacientesAgrupadosRutinas = new PacientesAgrupadosRutinas(jsonObject.optString("fk_cip_sns"), jsonObject.optInt("fk_id_rutina"), jsonObject.optString("hora_rutina"));
+                        // Agrega una nueva programacion a la lista en tu fragmento
+                        pacientesAgrupadosRutinas.getListaProgramacion().add(newPacientesAgrupadosRutinas);
                     }
-                    pacientesAgrupadosRutinas.setListaProgramacion(listaAgrupados);
-                    rutinasAdapter = new RutinasAdapter(getActivity().getApplicationContext(), listaAgrupados, pacientes);
+                    // Actualiza la lista de pacientes en ClaseGlobal
+                    pacientesAgrupadosRutinas.setListaProgramacion(pacientesAgrupadosRutinas.getListaProgramacion());
+                    // Notifica al adaptador que los datos han cambiado
+                    rutinasAdapter.notifyDataSetChanged();
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
                 }
@@ -145,6 +156,10 @@ public class consultasYRutinasDiariasFragment extends Fragment {
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
+                // Limpia los datos actuales en el adaptador
+                pacientesAgrupadosRutinas.getListaProgramacion().clear();
+                // Notifica al adaptador que los datos han cambiado
+                rutinasAdapter.notifyDataSetChanged();
                 obtieneDatosRutinasDiaPacientes((String) tab.getText());
             }
 
@@ -155,11 +170,13 @@ public class consultasYRutinasDiariasFragment extends Fragment {
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
+                // Limpia los datos actuales en el adaptador
+                pacientesAgrupadosRutinas.getListaProgramacion().clear();
+                // Notifica al adaptador que los datos han cambiado
+                rutinasAdapter.notifyDataSetChanged();
                 obtieneDatosRutinasDiaPacientes((String) tab.getText());
             }
         });
    }
-
-    //HACER DE NUEVO PHP DE RUTINAS Y MODELARLO EN JAVA
 
 }
