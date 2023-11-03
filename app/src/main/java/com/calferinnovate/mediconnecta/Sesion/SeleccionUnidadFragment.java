@@ -240,6 +240,7 @@ public class SeleccionUnidadFragment extends Fragment implements AdapterView.OnI
 
     }
 
+    //Prueba commit
     public void obtieneDatosPacientesUnidad() {
         String url = Constantes.url_part + "pacientes.php?nombre=" + claseGlobal.getUnidades().getNombreUnidad();
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
