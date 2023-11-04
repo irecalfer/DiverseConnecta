@@ -5,49 +5,32 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentContainerView;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
 import com.calferinnovate.mediconnecta.Adaptadores.RutinasAdapter;
 import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.clases.ClaseGlobal;
-import com.calferinnovate.mediconnecta.clases.Constantes;
 import com.calferinnovate.mediconnecta.clases.Fechas;
 import com.calferinnovate.mediconnecta.clases.Pacientes;
 import com.calferinnovate.mediconnecta.clases.PacientesAgrupadosRutinas;
-import com.calferinnovate.mediconnecta.clases.PeticionesHTTP.HiloPeticiones;
 import com.calferinnovate.mediconnecta.clases.PeticionesHTTP.PeticionesJson;
 import com.calferinnovate.mediconnecta.clases.PeticionesHTTP.ViewModel.ConsultasYRutinasDiariasViewModel;
 import com.calferinnovate.mediconnecta.clases.PeticionesHTTP.ViewModel.ViewModelArgs;
 import com.calferinnovate.mediconnecta.clases.PeticionesHTTP.ViewModel.ViewModelFactory;
 import com.calferinnovate.mediconnecta.clases.Rutinas;
 import com.calferinnovate.mediconnecta.clases.Unidades;
-import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
-
-import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
 
 public class consultasYRutinasDiariasFragment extends Fragment {
 
@@ -81,9 +64,12 @@ public class consultasYRutinasDiariasFragment extends Fragment {
         //Seteamos la fecha en el EditText
         fechaRutina.setText(fechas.getFechaActual()); // FORMATEAR FECHA PARA QUE APAREZCA DE FORMA dd/MM/YYYY
         // Inicializa el adaptador una sola vez
+        //Configuras el adaptador rutinasAdapter y lo estableces en el RecyclerView (rvConsultas).
         rutinasAdapter = new RutinasAdapter(claseGlobal.getListaProgramacion(), claseGlobal.getListaPacientes());
         rvConsultas.setAdapter(rutinasAdapter);
 
+        //Creas un objeto ViewModelFactory y obtienes una instancia de ConsultasYRutinasDiariasViewModel utilizando este factory.
+        //Luego, observas el LiveData del ViewModel para mantener actualizada la lista de programación en el RecyclerView.
         viewModelArgs = new ViewModelArgs() {
             @Override
             public PeticionesJson getPeticionesJson() {
@@ -100,7 +86,8 @@ public class consultasYRutinasDiariasFragment extends Fragment {
         // Inicializa el ViewModel
         consultasYRutinasDiariasViewModel = new ViewModelProvider(this, factory).get(ConsultasYRutinasDiariasViewModel.class);
 
-        // Observa el LiveData y actualiza el adaptador cuando cambien los datos
+        // Observación de LiveData: Has configurado la observación de un LiveData en el ViewModel utilizando el método observe(). Cuando los datos cambian en el LiveData,
+        // el adaptador se actualiza automáticamente para reflejar los cambios en el RecyclerView.
         consultasYRutinasDiariasViewModel.getListaProgramacionLiveData(fechas.getFechaActual(), unidades.getNombreUnidad(), tipoRutinaActual)
                 .observe(getViewLifecycleOwner(), new Observer<ArrayList<PacientesAgrupadosRutinas>>() {
                     @Override
@@ -110,7 +97,8 @@ public class consultasYRutinasDiariasFragment extends Fragment {
                     }
                 });
 
-        //Eatablece el listener de los tabs
+        //Estableces un listener en el TabLayout para manejar eventos cuando se seleccionan diferentes pestañas (tabs)
+        // y obtienes datos de rutinas correspondientes.
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
