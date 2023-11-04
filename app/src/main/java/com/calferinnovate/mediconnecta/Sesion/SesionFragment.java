@@ -19,7 +19,6 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.Volley;
@@ -33,8 +32,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-
 public class SesionFragment extends Fragment implements Response.Listener<JSONObject>, Response.ErrorListener {
 
     private RequestQueue rq;
@@ -47,10 +44,7 @@ public class SesionFragment extends Fragment implements Response.Listener<JSONOb
     private Button btnAcceso;
     private NavController navController;
     private Empleado empleado;
-
-
-
-
+    private ClaseGlobal claseGlobal;
 
 
     @Override
@@ -82,7 +76,7 @@ public class SesionFragment extends Fragment implements Response.Listener<JSONOb
         });
     }
 
-    public void asociacionVariableComponente(View view){
+    public void asociacionVariableComponente(View view) {
         // Vamos a referenciar estos objetos con el XML
         username = view.findViewById(R.id.user);
         password = view.findViewById(R.id.pass);
@@ -90,25 +84,20 @@ public class SesionFragment extends Fragment implements Response.Listener<JSONOb
 
     }
 
-    public void llamadaAClaseGlobal(){
-        ClaseGlobal claseGlobal = ClaseGlobal.getInstance();
-        empleado = claseGlobal.getEmpleado();
+    public void llamadaAClaseGlobal() {
+        claseGlobal = ClaseGlobal.getInstance();
     }
 
     // Programamos el botón de Acceso con el método iniciarSesion
     private void iniciarSesion() {
         // Guardamos en un string nuestra dirección ip y la direccion en donde está nuestro archivo php.
         // y concatenamos con nuestros parámetros de comunicación.
-        String url = Constantes.url_part+"inicio_sesion.php?user="+username.getText().toString()+
-                "&pwd="+password.getText().toString();
-
-        // Vamos a crear un objeto Empleado, para que lo que nos pase Json podamos parsearlo y pasarselo
-        // a esos atributos de la clase Empleado.
-        //empleado = ((ClaseGlobal) getActivity().getApplicationContext()).getEmpleado();
+        String url = Constantes.url_part + "inicio_sesion.php?user=" + username.getText().toString() +
+                "&pwd=" + password.getText().toString();
 
 
         //Request a string response from the provided url
-        jrq = new JsonObjectRequest(Request.Method.GET,url, null,this, this);
+        jrq = new JsonObjectRequest(Request.Method.GET, url, null, this, this);
         rq.add(jrq);
     }
 
@@ -123,18 +112,19 @@ public class SesionFragment extends Fragment implements Response.Listener<JSONOb
         // Creamos un objeto Json de tipo array para recuperar ese array que estamos creando en el archivos php
         // con el formato Json. datos es el nombre del array que hemos declarado en el archivo php.
         try {
-            JSONArray jsonArray = response.getJSONArray("datos");
+            JSONArray jsonArray = response.getJSONArray("empleados");
             // Recorrer los datos del usuario
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject object = jsonArray.getJSONObject(i);
-                empleado.setUser(object.optString("user"));
-                empleado.setPass(object.optString("pwd"));
-                empleado.setCod_empleado(object.optInt("cod_empleado"));
-                Toast.makeText(getContext(), "Permitiendo el acceso al usuario "+ username.getText().toString(), Toast.LENGTH_SHORT).show();
+                Empleado empleadoLogueado = new Empleado(object.optString("user"), object.optString("pwd"),
+                        object.optString("nombre"), object.optString("apellidos"), object.optString("nombreCargo"),
+                        object.optInt("cod_empleado"), object.optInt("fk_cargo"), object.getString("foto"));
+                claseGlobal.setEmpleado(empleadoLogueado);
+                Toast.makeText(getContext(), "Permitiendo el acceso al usuario " + username.getText().toString(), Toast.LENGTH_SHORT).show();
 
-                // Ahora vamos a guardar los datos del empleado con su código
-                String urlDatos = Constantes.url_part+"datos_empleados.php?cod_empleado="+empleado.getCod_empleado();
-                guardar_datos_empleado(urlDatos);
+                //pasoDeDatosAlSiguienteFragmento();
+                navController.navigate(R.id.action_sesionFragment_to_seleccionUnidadFragment);
+
             }
 
         } catch (JSONException e) {
@@ -144,28 +134,4 @@ public class SesionFragment extends Fragment implements Response.Listener<JSONOb
 
     }
 
-    //Cogeremos todos los datos del empleado a través de su código de empleado obtenido anteriormente.
-    //Guardaremos todos los datos en un objeto de tipo empleado.
-    public void guardar_datos_empleado(String url){
-        JsonObjectRequest jsonObjectRequest= new JsonObjectRequest(url, response -> {
-            try{
-                    empleado.setFoto(response.optString("foto"));
-                    empleado.setNombre(response.optString("nombre"));
-                    empleado.setApellidos(response.optString("apellidos"));
-                    empleado.setFk_cargo(response.optInt("fk_cargo"));
-                    empleado.setNombreCargo(response.optString("nombreCargo"));
-                    //pasoDeDatosAlSiguienteFragmento();
-                    navController.navigate(R.id.action_sesionFragment_to_seleccionUnidadFragment);
-                    Log.d("datos", "Nombre= " + empleado.getNombre().toString() + "Apellidos= " + empleado.getApellidos().toString() + "Cargo= " + empleado.getFk_cargo());
-                    Log.d("Cargo", empleado.getNombreCargo());
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-
-        }, error -> {
-            Toast.makeText(getContext(), "Error al obtener los datos", Toast.LENGTH_SHORT).show();
-        });
-        rq = Volley.newRequestQueue(getContext());
-        rq.add(jsonObjectRequest);
-    }
 }

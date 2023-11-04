@@ -33,8 +33,6 @@ public class ClaseGlobal extends Application {
         fechas = new Fechas();
         pacientes = new Pacientes();
         rutinas = new Rutinas();
-        pacientesAgrupadosRutinas = new PacientesAgrupadosRutinas();
-        pacientesAgrupadosRutinas.setListaProgramacion(new ArrayList<>());
         listaUnidades = new ArrayList<>();
         listaPacientes = new ArrayList<>(); // Inicializa la lista de pacientes vacía
         listaProgramacion = new ArrayList<>();
