@@ -53,6 +53,7 @@ public class HomeFragment extends Fragment{
     private JsonObjectRequest jsonObjectRequest;
     private RequestQueue requestQueue;
     private Rutinas rutinas;
+    private ClaseGlobal claseGlobal;
 
 
 
@@ -111,8 +112,9 @@ public class HomeFragment extends Fragment{
     }
 
     public void declaracionObjetosClaseGlobal(){
-        avisos = ((ClaseGlobal) getActivity().getApplicationContext()).getAvisos();
-        fechaSeleccionada = ((ClaseGlobal) getActivity().getApplicationContext()).getFechas();
+        claseGlobal = ClaseGlobal.getInstance();
+        avisos = claseGlobal.getAvisos();
+        fechaSeleccionada = claseGlobal.getFechas();
     }
 
     public void asociarVariablesConComponentes(View view){

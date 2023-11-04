@@ -6,6 +6,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentContainerView;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -29,6 +31,11 @@ import com.calferinnovate.mediconnecta.clases.Constantes;
 import com.calferinnovate.mediconnecta.clases.Fechas;
 import com.calferinnovate.mediconnecta.clases.Pacientes;
 import com.calferinnovate.mediconnecta.clases.PacientesAgrupadosRutinas;
+import com.calferinnovate.mediconnecta.clases.PeticionesHTTP.HiloPeticiones;
+import com.calferinnovate.mediconnecta.clases.PeticionesHTTP.PeticionesJson;
+import com.calferinnovate.mediconnecta.clases.PeticionesHTTP.ViewModel.ConsultasYRutinasDiariasViewModel;
+import com.calferinnovate.mediconnecta.clases.PeticionesHTTP.ViewModel.ViewModelArgs;
+import com.calferinnovate.mediconnecta.clases.PeticionesHTTP.ViewModel.ViewModelFactory;
 import com.calferinnovate.mediconnecta.clases.Rutinas;
 import com.calferinnovate.mediconnecta.clases.Unidades;
 import com.google.android.material.tabs.TabItem;
@@ -58,6 +65,10 @@ public class consultasYRutinasDiariasFragment extends Fragment {
     private JsonObjectRequest jsonObjectRequest;
     private ArrayList<Rutinas> listaRutinas = new ArrayList<>();
     private EditText fechaRutina;
+    private ConsultasYRutinasDiariasViewModel consultasYRutinasDiariasViewModel;
+    String tipoRutinaActual;
+    private PeticionesJson peticionesJson;
+    private ViewModelArgs viewModelArgs;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -72,7 +83,62 @@ public class consultasYRutinasDiariasFragment extends Fragment {
         // Inicializa el adaptador una sola vez
         rutinasAdapter = new RutinasAdapter(claseGlobal.getListaProgramacion(), claseGlobal.getListaPacientes());
         rvConsultas.setAdapter(rutinasAdapter);
-        seleccionDeTabs();
+
+        viewModelArgs = new ViewModelArgs() {
+            @Override
+            public PeticionesJson getPeticionesJson() {
+                return peticionesJson = new PeticionesJson(requireContext());
+            }
+
+            @Override
+            public ClaseGlobal getClaseGlobal() {
+                return claseGlobal;
+            }
+        };
+
+        ViewModelFactory<ConsultasYRutinasDiariasViewModel> factory = new ViewModelFactory<>(viewModelArgs);
+        // Inicializa el ViewModel
+        consultasYRutinasDiariasViewModel = new ViewModelProvider(this, factory).get(ConsultasYRutinasDiariasViewModel.class);
+
+        // Observa el LiveData y actualiza el adaptador cuando cambien los datos
+        consultasYRutinasDiariasViewModel.getListaProgramacionLiveData(fechas.getFechaActual(), unidades.getNombreUnidad(), tipoRutinaActual)
+                .observe(getViewLifecycleOwner(), new Observer<ArrayList<PacientesAgrupadosRutinas>>() {
+                    @Override
+                    public void onChanged(ArrayList<PacientesAgrupadosRutinas> newData) {
+                        // Actualizar el adaptador con los nuevos datos
+                        rutinasAdapter.actualizarDatos(newData);
+                    }
+                });
+
+        //Eatablece el listener de los tabs
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                tipoRutinaActual = (String) tab.getText();
+                // Limpia los datos actuales en el adaptador
+                claseGlobal.getListaProgramacion().clear();
+                // Notifica al adaptador que los datos han cambiado
+                //rutinasAdapter.notifyDataSetChanged();
+                obtenerDatosRutinas();
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                // No es necesario implementar esto
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+                // No es necesario implementar esto
+            }
+        });
+
+        // Inicialmente, obtén los datos para el tab actual
+        if (tabLayout.getTabCount() > 0) {
+            tipoRutinaActual = (String) tabLayout.getTabAt(0).getText();
+            obtenerDatosRutinas();
+        }
+
         return vista;
     }
 
@@ -97,70 +163,12 @@ public class consultasYRutinasDiariasFragment extends Fragment {
         pacientes = claseGlobal.getPacientes();
     }
 
+    private void obtenerDatosRutinas() {
+        // Realiza la solicitud HTTP utilizando el ViewModel y pasa la fecha, unidad y tipo de rutina
+        consultasYRutinasDiariasViewModel.obtieneDatosRutinasDiaPacientes(fechas.getFechaActual(),
+                unidades.getNombreUnidad(), tipoRutinaActual);
 
-    public void obtieneDatosRutinasDiaPacientes(String tipoRutina){
-        url = Constantes.url_part+"programacionRutinas.php?fecha_rutina="+fechas.getFechaActual()+"&nombre="+unidades.getNombreUnidad()+
-        "&diario="+tipoRutina;
-        for(Unidades unidad: claseGlobal.getListaUnidades()){
-            Log.d("PruebaNull", unidad.getNombreUnidad());
-        }
-        for(Pacientes paciente: claseGlobal.getListaPacientes()){
-            Log.d("PruebaNull", paciente.getNombre());
-        }
-        requestQueue = Volley.newRequestQueue(getContext());
-        jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    JSONArray jsonArray = response.getJSONArray("programacion");
-                    for(int i =0; i<jsonArray.length(); i++){
-                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        pacientesAgrupadosRutinas = new PacientesAgrupadosRutinas(jsonObject.optString("fk_cip_sns"), jsonObject.optInt("fk_id_rutina"), jsonObject.optString("hora_rutina"));
-                        // Agrega una nueva programacion a la lista en tu fragmento
-                        claseGlobal.getListaProgramacion().add(pacientesAgrupadosRutinas);
-                    }
-                    // Actualiza la lista de pacientes en ClaseGlobal
-                    claseGlobal.setListaProgramacion(claseGlobal.getListaProgramacion());
-                    // Notifica al adaptador que los datos han cambiado
-                    rutinasAdapter.notifyDataSetChanged();
-                } catch (JSONException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
 
-            }
-        });
-        requestQueue.add(jsonObjectRequest);
     }
-
-   public void seleccionDeTabs(){
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                // Limpia los datos actuales en el adaptador
-                claseGlobal.getListaProgramacion().clear();
-                // Notifica al adaptador que los datos han cambiado
-                rutinasAdapter.notifyDataSetChanged();
-                obtieneDatosRutinasDiaPacientes((String) tab.getText());
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-                // Limpia los datos actuales en el adaptador
-                claseGlobal.getListaProgramacion().clear();
-                // Notifica al adaptador que los datos han cambiado
-                rutinasAdapter.notifyDataSetChanged();
-                obtieneDatosRutinasDiaPacientes((String) tab.getText());
-            }
-        });
-   }
 
 }
