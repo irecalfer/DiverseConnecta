@@ -89,7 +89,7 @@ public class consultasYRutinasDiariasFragment extends Fragment {
     }
 
     public void llamadaObjetosGlobales(){
-        claseGlobal = (ClaseGlobal) getActivity().getApplication();
+        claseGlobal = ClaseGlobal.getInstance();
         fechas = claseGlobal.getFechas();
         unidades = claseGlobal.getUnidades();
         rutinas = claseGlobal.getRutinas();

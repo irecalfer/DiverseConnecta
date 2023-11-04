@@ -58,6 +58,7 @@ public class SesionFragment extends Fragment implements Response.Listener<JSONOb
                              Bundle savedInstanceState) {
         // Necesitamos un objeto de tipo View
         View vista = inflater.inflate(R.layout.fragment_sesion, container, false);
+        llamadaAClaseGlobal();
         return vista;
     }
 
@@ -89,6 +90,11 @@ public class SesionFragment extends Fragment implements Response.Listener<JSONOb
 
     }
 
+    public void llamadaAClaseGlobal(){
+        ClaseGlobal claseGlobal = ClaseGlobal.getInstance();
+        empleado = claseGlobal.getEmpleado();
+    }
+
     // Programamos el botón de Acceso con el método iniciarSesion
     private void iniciarSesion() {
         // Guardamos en un string nuestra dirección ip y la direccion en donde está nuestro archivo php.
@@ -98,7 +104,7 @@ public class SesionFragment extends Fragment implements Response.Listener<JSONOb
 
         // Vamos a crear un objeto Empleado, para que lo que nos pase Json podamos parsearlo y pasarselo
         // a esos atributos de la clase Empleado.
-        empleado = ((ClaseGlobal) getActivity().getApplicationContext()).getEmpleado();
+        //empleado = ((ClaseGlobal) getActivity().getApplicationContext()).getEmpleado();
 
 
         //Request a string response from the provided url

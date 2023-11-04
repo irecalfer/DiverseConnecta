@@ -5,6 +5,10 @@ import android.app.Application;
 import java.util.ArrayList;
 
 public class ClaseGlobal extends Application {
+
+    //Variable para almacenar una única instancia de ClaseGlobal
+    private static ClaseGlobal instance;
+    //
     private Empleado empleado;
     private Unidades unidades;
     private Area area;
@@ -35,6 +39,31 @@ public class ClaseGlobal extends Application {
         listaPacientes = new ArrayList<>(); // Inicializa la lista de pacientes vacía
         listaProgramacion = new ArrayList<>();
 
+    }
+
+    //  método público y estático que se utiliza para obtener la única instancia de la clase ClaseGlobal.
+    //  Es estático para que pueda ser llamado sin crear una instancia previa de la clase.
+    public static  ClaseGlobal getInstance(){
+        // Aquí se verifica si la variable instance es nula. La primera vez que se llama a getInstance(),
+        // instance será nula porque aún no se ha creado una instancia de ClaseGlobal.
+        if (instance == null) {
+            //Esto inicia una sección crítica sincronizada en la clase ClaseGlobal. El bloque sincronizado garantiza que solo un hilo a
+            // la vez pueda ejecutar el código dentro de ese bloque. Esto es importante para evitar que
+            // varios hilos creen múltiples instancias de la clase en caso de concurrencia.
+            synchronized (ClaseGlobal.class) {
+                //entro del bloque sincronizado, se realiza una segunda verificación de si instance es nula. Esto es necesario porque,
+                // después de adquirir el bloque sincronizado, otro hilo podría haber creado la instancia de
+                // ClaseGlobal, por lo que necesitas verificar nuevamente si instance es nula.
+                if (instance == null) {
+                    //Si, en la segunda verificación, instance aún es nula, se crea una nueva instancia de la clase ClaseGlobal y se asigna a la variable instance.
+                    instance = new ClaseGlobal();
+                }
+            }
+        }
+        //Finalmente, se devuelve la instancia de ClaseGlobal. Si es la primera vez que se llama a getInstance(),
+        // se crea una nueva instancia. Si no es la primera vez, se devuelve la instancia existente.
+        // Esto asegura que siempre se utilice la misma instancia en toda la aplicación.
+        return instance;
     }
 
     public Empleado getEmpleado() {
