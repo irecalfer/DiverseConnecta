@@ -5,7 +5,6 @@ import java.util.ArrayList;
 public class Pacientes {
    private String nombre, apellidos, foto, fechaNacimiento, dni, lugarNacimiento, sexo, cipSns;
    private int numSeguridadSocial, fkIdUnidad, fkIdSeguro, fkNumHabitacion, fkNumHistoriaClinica;
-   private ArrayList<Pacientes> listaPacientes;
 
     public Pacientes() {
     }
@@ -132,11 +131,4 @@ public class Pacientes {
         this.fkNumHistoriaClinica = fkNumHistoriaClinica;
     }
 
-    public ArrayList<Pacientes> getListaPacientes() {
-        return listaPacientes;
-    }
-
-    public void setListaPacientes(ArrayList<Pacientes> listaPacientes) {
-        this.listaPacientes = listaPacientes;
-    }
 }

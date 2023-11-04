@@ -9,7 +9,6 @@ public class Unidades{
     private int id_unidad, fk_area;
     private String nombreUnidad;
     private String unidadActual;
-    private ArrayList<Unidades> listaUnidades;
 
     public Unidades() {
     }
@@ -48,13 +47,6 @@ public class Unidades{
         return nombreUnidad;
     }
 
-    public ArrayList<Unidades> getListaUnidades() {
-        return listaUnidades;
-    }
-
-    public void setListaUnidades(ArrayList<Unidades> listaUnidades) {
-        this.listaUnidades = listaUnidades;
-    }
 
     public String getUnidadActual() {
         return unidadActual;

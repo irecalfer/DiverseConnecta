@@ -13,6 +13,9 @@ public class ClaseGlobal extends Application {
     private Pacientes pacientes;
     private Rutinas rutinas;
     private PacientesAgrupadosRutinas pacientesAgrupadosRutinas;
+    private ArrayList<Unidades> listaUnidades;
+    private ArrayList<Pacientes> listaPacientes;
+    private ArrayList<PacientesAgrupadosRutinas> listaProgramacion;
 
     @Override public void onCreate(){
         super.onCreate();
@@ -27,9 +30,11 @@ public class ClaseGlobal extends Application {
         pacientes = new Pacientes();
         rutinas = new Rutinas();
         pacientesAgrupadosRutinas = new PacientesAgrupadosRutinas();
-        pacientes.setListaPacientes(new ArrayList<>()); // Inicializa la lista de pacientes vacía
         pacientesAgrupadosRutinas.setListaProgramacion(new ArrayList<>());
-        unidades.setListaUnidades(new ArrayList<>());
+        listaUnidades = new ArrayList<>();
+        listaPacientes = new ArrayList<>(); // Inicializa la lista de pacientes vacía
+        listaProgramacion = new ArrayList<>();
+
     }
 
     public Empleado getEmpleado() {
@@ -94,5 +99,29 @@ public class ClaseGlobal extends Application {
 
     public void setPacientesAgrupadosRutinas(PacientesAgrupadosRutinas pacientesAgrupadosRutinas) {
         this.pacientesAgrupadosRutinas = pacientesAgrupadosRutinas;
+    }
+
+    public ArrayList<Unidades> getListaUnidades() {
+        return listaUnidades;
+    }
+
+    public void setListaUnidades(ArrayList<Unidades> listaUnidades) {
+        this.listaUnidades = listaUnidades;
+    }
+
+    public ArrayList<Pacientes> getListaPacientes() {
+        return listaPacientes;
+    }
+
+    public void setListaPacientes(ArrayList<Pacientes> listaPacientes) {
+        this.listaPacientes = listaPacientes;
+    }
+
+    public ArrayList<PacientesAgrupadosRutinas> getListaProgramacion() {
+        return listaProgramacion;
+    }
+
+    public void setListaProgramacion(ArrayList<PacientesAgrupadosRutinas> listaProgramacion) {
+        this.listaProgramacion = listaProgramacion;
     }
 }

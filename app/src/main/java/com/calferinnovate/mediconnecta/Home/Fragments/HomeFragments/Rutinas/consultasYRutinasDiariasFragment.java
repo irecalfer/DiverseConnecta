@@ -70,7 +70,7 @@ public class consultasYRutinasDiariasFragment extends Fragment {
         //Seteamos la fecha en el EditText
         fechaRutina.setText(fechas.getFechaActual()); // FORMATEAR FECHA PARA QUE APAREZCA DE FORMA dd/MM/YYYY
         // Inicializa el adaptador una sola vez
-        rutinasAdapter = new RutinasAdapter(pacientesAgrupadosRutinas.getListaProgramacion(), pacientes.getListaPacientes());
+        rutinasAdapter = new RutinasAdapter(claseGlobal.getListaProgramacion(), claseGlobal.getListaPacientes());
         rvConsultas.setAdapter(rutinasAdapter);
         seleccionDeTabs();
         return vista;
@@ -89,44 +89,24 @@ public class consultasYRutinasDiariasFragment extends Fragment {
     }
 
     public void llamadaObjetosGlobales(){
-        claseGlobal = (ClaseGlobal) getActivity().getApplicationContext();
+        claseGlobal = (ClaseGlobal) getActivity().getApplication();
         fechas = claseGlobal.getFechas();
         unidades = claseGlobal.getUnidades();
         rutinas = claseGlobal.getRutinas();
         pacientesAgrupadosRutinas = claseGlobal.getPacientesAgrupadosRutinas();
         pacientes = claseGlobal.getPacientes();
-        //pacientes = ((ClaseGlobal) getActivity().getApplication()).getPacientes().getListaPacientes();
     }
 
-   /* public void obtencionRutinas(){
-        String url = Constantes.url_part+"rutinas.php";
-        jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    JSONArray jsonArray = response.getJSONArray("rutina");
-                    for(int i =0; i<jsonArray.length(); i++){
-                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        rutinas = new Rutinas(jsonObject.optInt("id_tipo_rutina"),
-                                jsonObject.optString("diario"));
-                        listaRutinas.add(rutinas);
-                    }
-                    rutinas.setListaRutinas(listaRutinas);
-                } catch (JSONException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        });
-    }*/
 
     public void obtieneDatosRutinasDiaPacientes(String tipoRutina){
         url = Constantes.url_part+"programacionRutinas.php?fecha_rutina="+fechas.getFechaActual()+"&nombre="+unidades.getNombreUnidad()+
         "&diario="+tipoRutina;
+        for(Unidades unidad: claseGlobal.getListaUnidades()){
+            Log.d("PruebaNull", unidad.getNombreUnidad());
+        }
+        for(Pacientes paciente: claseGlobal.getListaPacientes()){
+            Log.d("PruebaNull", paciente.getNombre());
+        }
         requestQueue = Volley.newRequestQueue(getContext());
         jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
             @Override
@@ -135,12 +115,12 @@ public class consultasYRutinasDiariasFragment extends Fragment {
                     JSONArray jsonArray = response.getJSONArray("programacion");
                     for(int i =0; i<jsonArray.length(); i++){
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        PacientesAgrupadosRutinas newPacientesAgrupadosRutinas = new PacientesAgrupadosRutinas(jsonObject.optString("fk_cip_sns"), jsonObject.optInt("fk_id_rutina"), jsonObject.optString("hora_rutina"));
+                        pacientesAgrupadosRutinas = new PacientesAgrupadosRutinas(jsonObject.optString("fk_cip_sns"), jsonObject.optInt("fk_id_rutina"), jsonObject.optString("hora_rutina"));
                         // Agrega una nueva programacion a la lista en tu fragmento
-                        pacientesAgrupadosRutinas.getListaProgramacion().add(newPacientesAgrupadosRutinas);
+                        claseGlobal.getListaProgramacion().add(pacientesAgrupadosRutinas);
                     }
                     // Actualiza la lista de pacientes en ClaseGlobal
-                    pacientesAgrupadosRutinas.setListaProgramacion(pacientesAgrupadosRutinas.getListaProgramacion());
+                    claseGlobal.setListaProgramacion(claseGlobal.getListaProgramacion());
                     // Notifica al adaptador que los datos han cambiado
                     rutinasAdapter.notifyDataSetChanged();
                 } catch (JSONException e) {
@@ -161,7 +141,7 @@ public class consultasYRutinasDiariasFragment extends Fragment {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 // Limpia los datos actuales en el adaptador
-                pacientesAgrupadosRutinas.getListaProgramacion().clear();
+                claseGlobal.getListaProgramacion().clear();
                 // Notifica al adaptador que los datos han cambiado
                 rutinasAdapter.notifyDataSetChanged();
                 obtieneDatosRutinasDiaPacientes((String) tab.getText());
@@ -175,7 +155,7 @@ public class consultasYRutinasDiariasFragment extends Fragment {
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
                 // Limpia los datos actuales en el adaptador
-                pacientesAgrupadosRutinas.getListaProgramacion().clear();
+                claseGlobal.getListaProgramacion().clear();
                 // Notifica al adaptador que los datos han cambiado
                 rutinasAdapter.notifyDataSetChanged();
                 obtieneDatosRutinasDiaPacientes((String) tab.getText());
