@@ -60,7 +60,7 @@ public class AvisosListViewFragment extends Fragment {
     }
 
     private void llamadaAObjetosGlobales(View view) {
-        claseGlobal = (ClaseGlobal) getActivity().getApplicationContext();
+        claseGlobal = ClaseGlobal.getInstance();
         avisos = claseGlobal.getAvisos();
         fechas = claseGlobal.getFechas();
         avisosLV = view.findViewById(R.id.listViewAvisos);

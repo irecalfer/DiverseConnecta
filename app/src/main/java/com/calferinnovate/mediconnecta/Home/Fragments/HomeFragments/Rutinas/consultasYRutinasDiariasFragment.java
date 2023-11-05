@@ -106,7 +106,7 @@ public class consultasYRutinasDiariasFragment extends Fragment {
                 // Limpia los datos actuales en el adaptador
                 claseGlobal.getListaProgramacion().clear();
                 // Notifica al adaptador que los datos han cambiado
-                //rutinasAdapter.notifyDataSetChanged();
+                rutinasAdapter.notifyDataSetChanged();
                 obtenerDatosRutinas();
             }
 
