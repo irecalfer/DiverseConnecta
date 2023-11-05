@@ -9,8 +9,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.calferinnovate.mediconnecta.Adaptadores.PacientesAdapter;
+import com.calferinnovate.mediconnecta.Home.Fragments.HomeFragments.Rutinas.consultasYRutinasDiariasFragment;
+import com.calferinnovate.mediconnecta.Home.Fragments.Residentes.DetallePacientesFragment;
 import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.clases.ClaseGlobal;
 import com.calferinnovate.mediconnecta.clases.Pacientes;
@@ -18,7 +21,7 @@ import com.calferinnovate.mediconnecta.clases.Pacientes;
 import java.util.ArrayList;
 
 
-public class ResidentesFragment extends Fragment {
+public class ResidentesFragment extends Fragment implements PacientesAdapter.ItemClickListener{
 
     /*
     Declarar instancias globales
@@ -48,11 +51,19 @@ public class ResidentesFragment extends Fragment {
         recycler.setLayoutManager(layoutManager);
         recycler.setAdapter(adapter);
 
+        //Implementamos la escucha al item
+        adapter.setOnClickListener(this);
+
         return view;
     }
 
     public void llamaAClaseGLobalYObjetos(){
         claseGlobal = ClaseGlobal.getInstance();
         listaPacientes = claseGlobal.getListaPacientes();
+    }
+
+    @Override
+    public void onClick(View view, int position) {
+        getParentFragmentManager().beginTransaction().replace(R.id.fragment_container, new DetallePacientesFragment()).commit();
     }
 }
