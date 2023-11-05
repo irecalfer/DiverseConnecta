@@ -65,4 +65,25 @@
     <string name="tabCuras">Curas</string>
     <string name="tabConsultasMedicas">Consultas Médicas</string>
     <string name="content_description_foto_residente">Imagen de cada uno de los pacientes</string>
+    <string name="content_description_foto_paciente_detalle">Foto del paciente en el detalle</string>
+    <string name="nombrePacienteLabel">Nombre</string>
+    <string name="apellidoPacienteLabel">Apellidos</string>
+    <string name="dniPacienteLabel">DNI</string>
+    <string name="edadPacienteLabel">Edad</string>
+    <string name="FechaNacimientoPacienteLabel">Fecha nacimiento</string>
+    <string name="estadoCivilPacienteLabel">Estado Civil</string>
+    <string name="FechaIngresoPacienteLabel">Fecha ingreso</string>
+    <string name="sexoPacienteLabel">Sexo</string>
+    <string name="unidadPacienteLabel">Unidad</string>
+    <string name="habitacionPacienteLabel">Habitación</string>
+    <string name="lugarNacimientoPacienteLabel">Lugar de Nacimiento</string>
+    <string name="seguroPacienteLabel">Seguro</string>
+    <string name="cipSnsPacienteLabel">CIP SNS</string>
+    <string name="numSeguridadSocialPacienteLabel">Nº Seguridad Social</string>
+    <string name="general">General</string>
+    <string name="contacto">Contactos</string>
+    <string name="clinica">Clínica</string>
+    <string name="pautas">Pautas</string>
+    <string name="parte">Parte</string>
+    <string name="parteCaidas">Parte Caídas</string>
 </resources>
