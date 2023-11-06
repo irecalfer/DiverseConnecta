@@ -158,10 +158,11 @@ public class SeleccionUnidadFragment extends Fragment implements AdapterView.OnI
                     JSONArray jsonArray = response.getJSONArray("datos_area");
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        area.setId_area(jsonObject.optInt("id_area"));
-                        area.setNombre(jsonObject.optString("nombre_area"));
-                        listaAreas.add(area.getNombre());
+                        Area nuevaArea = new Area(jsonObject.optInt("id_area"), jsonObject.optString("nombre_area"));
+                        claseGlobal.getListaAreas().add(nuevaArea);
+                        listaAreas.add(nuevaArea.getNombre());
                     }
+                    claseGlobal.setListaAreas(claseGlobal.getListaAreas());
                     areasAdapter = new ArrayAdapter<>(getContext(), R.layout.my_spinner, listaAreas);
                     areasAdapter.setDropDownViewResource(R.layout.my_spinner);
                     areaSP.setAdapter(areasAdapter);

@@ -22,6 +22,7 @@ public class ClaseGlobal extends Application {
     private ArrayList<Unidades> listaUnidades;
     private ArrayList<Pacientes> listaPacientes;
     private ArrayList<PacientesAgrupadosRutinas> listaProgramacion;
+    private ArrayList<Area> listaAreas;
 
     @Override public void onCreate(){
         super.onCreate();
@@ -40,6 +41,7 @@ public class ClaseGlobal extends Application {
         listaPacientes = new ArrayList<>(); // Inicializa la lista de pacientes vacía
         listaProgramacion = new ArrayList<>();
         listaSeguros = new ArrayList<>();
+        listaAreas = new ArrayList<>();
 
     }
 
@@ -170,5 +172,13 @@ public class ClaseGlobal extends Application {
 
     public void setListaSeguros(ArrayList<Seguro> listaSeguros) {
         this.listaSeguros = listaSeguros;
+    }
+
+    public ArrayList<Area> getListaAreas() {
+        return listaAreas;
+    }
+
+    public void setListaAreas(ArrayList<Area> listaAreas) {
+        this.listaAreas = listaAreas;
     }
 }
