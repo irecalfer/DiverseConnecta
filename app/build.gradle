@@ -71,6 +71,8 @@ dependencies {
     implementation "androidx.gridlayout:gridlayout:1.0.0"
     //CardView
     implementation "androidx.cardview:cardview:1.0.0"
+    //Coroutines
+    implementation "androidx.lifecycle:lifecycle-viewmodel:2.3.1"
 
 
 

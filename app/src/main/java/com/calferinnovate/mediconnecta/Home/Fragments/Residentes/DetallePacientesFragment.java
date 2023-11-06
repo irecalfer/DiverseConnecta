@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentContainerView;
 
 import com.calferinnovate.mediconnecta.R;
+import com.calferinnovate.mediconnecta.clases.PeticionesHTTP.ViewModel.SharedPacientesViewModel;
 import com.google.android.material.tabs.TabLayout;
 
 public class DetallePacientesFragment extends Fragment {
@@ -67,6 +68,7 @@ public class DetallePacientesFragment extends Fragment {
         }
 
     }
+
 
 
 }

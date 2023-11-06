@@ -16,6 +16,8 @@ public class ClaseGlobal extends Application {
     private Fechas fechas;
     private Pacientes pacientes;
     private Rutinas rutinas;
+    private Seguro seguro;
+    private ArrayList<Seguro> listaSeguros;
     private PacientesAgrupadosRutinas pacientesAgrupadosRutinas;
     private ArrayList<Unidades> listaUnidades;
     private ArrayList<Pacientes> listaPacientes;
@@ -33,9 +35,11 @@ public class ClaseGlobal extends Application {
         fechas = new Fechas();
         pacientes = new Pacientes();
         rutinas = new Rutinas();
+        seguro = new Seguro();
         listaUnidades = new ArrayList<>();
         listaPacientes = new ArrayList<>(); // Inicializa la lista de pacientes vacía
         listaProgramacion = new ArrayList<>();
+        listaSeguros = new ArrayList<>();
 
     }
 
@@ -150,5 +154,21 @@ public class ClaseGlobal extends Application {
 
     public void setListaProgramacion(ArrayList<PacientesAgrupadosRutinas> listaProgramacion) {
         this.listaProgramacion = listaProgramacion;
+    }
+
+    public Seguro getSeguro() {
+        return seguro;
+    }
+
+    public void setSeguro(Seguro seguro) {
+        this.seguro = seguro;
+    }
+
+    public ArrayList<Seguro> getListaSeguros() {
+        return listaSeguros;
+    }
+
+    public void setListaSeguros(ArrayList<Seguro> listaSeguros) {
+        this.listaSeguros = listaSeguros;
     }
 }

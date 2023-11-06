@@ -16,11 +16,17 @@ import android.widget.Toast;
 
 import com.calferinnovate.mediconnecta.Adaptadores.PacientesAdapter;
 import com.calferinnovate.mediconnecta.Home.Fragments.Residentes.DetallePacientesFragment;
+import com.calferinnovate.mediconnecta.Home.Fragments.Residentes.GeneralPacientesFragment;
 import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.clases.ClaseGlobal;
 import com.calferinnovate.mediconnecta.clases.Pacientes;
+import com.calferinnovate.mediconnecta.clases.PeticionesHTTP.PeticionesJson;
+import com.calferinnovate.mediconnecta.clases.PeticionesHTTP.ViewModel.ConsultasYRutinasDiariasViewModel;
 import com.calferinnovate.mediconnecta.clases.PeticionesHTTP.ViewModel.SharedPacientesViewModel;
+import com.calferinnovate.mediconnecta.clases.PeticionesHTTP.ViewModel.ViewModelArgs;
+import com.calferinnovate.mediconnecta.clases.PeticionesHTTP.ViewModel.ViewModelFactory;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 
@@ -33,6 +39,10 @@ public class PacientesFragment extends Fragment implements PacientesAdapter.Item
     private ClaseGlobal claseGlobal;
     private ArrayList<Pacientes> listaPacientes;
     private SharedPacientesViewModel sharedPacientesViewModel;
+    private ViewModelFactory viewModelFactory;
+    private ViewModelArgs viewModelArgs;
+    private PeticionesJson peticionesJson;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -56,14 +66,34 @@ public class PacientesFragment extends Fragment implements PacientesAdapter.Item
         recycler.setAdapter(adapter);
         recycler.addItemDecoration(new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL));
 
-        //
-        sharedPacientesViewModel = new ViewModelProvider(requireActivity()).get(SharedPacientesViewModel.class);
+
+        //Creas un objeto ViewModelFactory y obtienes una instancia de ConsultasYRutinasDiariasViewModel utilizando este factory.
+        //Luego, observas el LiveData del ViewModel para mantener actualizada la lista de programación en el RecyclerView.
+        viewModelArgs = new ViewModelArgs() {
+            @Override
+            public PeticionesJson getPeticionesJson() {
+                return peticionesJson = new PeticionesJson(requireContext());
+            }
+
+            @Override
+            public ClaseGlobal getClaseGlobal() {
+                return claseGlobal;
+            }
+        };
+
+        ViewModelFactory<SharedPacientesViewModel> factory = new ViewModelFactory<>(viewModelArgs);
+        // Inicializa el ViewModel
+        sharedPacientesViewModel = new ViewModelProvider(requireActivity(), factory).get(SharedPacientesViewModel.class);
+        //sharedPacientesViewModel = new ViewModelProvider(requireActivity()).get(SharedPacientesViewModel.class);
+        sharedPacientesViewModel.obtieneSeguroPacientes();
         sharedPacientesViewModel.getPacientesList().observe(getViewLifecycleOwner(), new Observer<ArrayList<Pacientes>>() {
             @Override
             public void onChanged(ArrayList<Pacientes> pacientes) {
                 //listaPacientes.clear();
                 //listaPacientes.addAll(pacientes);
                 adapter.notifyDataSetChanged();
+                //adapter = new PacientesAdapter(pacientes, getContext(), this);
+                //recycler.setAdapter(adapter);
             }
         });
 
@@ -83,6 +113,8 @@ public class PacientesFragment extends Fragment implements PacientesAdapter.Item
     public void onClick(int position) {
         //Toast.makeText(requireContext(), listaPacientes.get(position).getNombre(), Toast.LENGTH_SHORT).show();
         sharedPacientesViewModel.setPaciente(position);
+        //Toast.makeText(requireContext(), listaPacientes.get(position).getNombre(), Toast.LENGTH_SHORT).show();
         getParentFragmentManager().beginTransaction().replace(R.id.fragment_container, new DetallePacientesFragment()).commit();
+
     }
 }

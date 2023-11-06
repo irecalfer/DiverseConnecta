@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +18,11 @@ import com.bumptech.glide.Glide;
 import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.clases.ClaseGlobal;
 import com.calferinnovate.mediconnecta.clases.Pacientes;
+import com.calferinnovate.mediconnecta.clases.PeticionesHTTP.PeticionesJson;
 import com.calferinnovate.mediconnecta.clases.PeticionesHTTP.ViewModel.SharedPacientesViewModel;
+import com.calferinnovate.mediconnecta.clases.PeticionesHTTP.ViewModel.ViewModelArgs;
+import com.calferinnovate.mediconnecta.clases.PeticionesHTTP.ViewModel.ViewModelFactory;
+import com.calferinnovate.mediconnecta.clases.Seguro;
 import com.calferinnovate.mediconnecta.clases.Unidades;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textfield.TextInputEditText;
@@ -36,6 +41,9 @@ public class GeneralPacientesFragment extends Fragment {
             estadoCivil, fechaIngreso, unidad, habitacion, cipSns, numSeguridadSocial;
     private SharedPacientesViewModel sharedPacientesViewModel;
     private ClaseGlobal claseGlobal;
+    private ViewModelArgs viewModelArgs;
+    private PeticionesJson peticionesJson;
+    private String nombreSeguro;
 
 
     public GeneralPacientesFragment(){
@@ -56,13 +64,19 @@ public class GeneralPacientesFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+
         sharedPacientesViewModel = new ViewModelProvider(requireActivity()).get(SharedPacientesViewModel.class);
+
+
         sharedPacientesViewModel.getPaciente().observe(getViewLifecycleOwner(), new Observer<Pacientes>() {
             @Override
             public void onChanged(Pacientes pacientes) {
+                Log.d("Paciente", pacientes.getNombre());
                 updateUI(pacientes);
             }
         });
+
     }
 
     public void llamaAClaseGlobal(){
@@ -94,7 +108,7 @@ public class GeneralPacientesFragment extends Fragment {
         sexo.setText(pacientes.getSexo());
         dni.setText(pacientes.getDni());
         lugarNacimiento.setText(pacientes.getLugarNacimiento());
-        //seguro.setText(); FALTA PARSEARLO PARA QUE MUESTRE EL NOMBRE DEL SEGURO Y EL TELEFONO
+        seguro.setText(obtieneNombreSeguro(pacientes));
         edad.setText(String.valueOf(calculaEdad(pacientes)));
         fechaNacimiento.setText(formateaFecha(pacientes));
         estadoCivil.setText(pacientes.getEstadoCivil());
@@ -137,5 +151,14 @@ public class GeneralPacientesFragment extends Fragment {
             }
         }
         return nombreUnidad;
+    }
+
+    public String obtieneNombreSeguro(Pacientes pacientes){
+        for (Seguro seguro: claseGlobal.getListaSeguros()){
+            if(seguro.getIdSeguro() == pacientes.getFkIdSeguro()){
+                nombreSeguro = seguro.getNombreSeguro();
+            }
+        }
+        return nombreSeguro;
     }
 }

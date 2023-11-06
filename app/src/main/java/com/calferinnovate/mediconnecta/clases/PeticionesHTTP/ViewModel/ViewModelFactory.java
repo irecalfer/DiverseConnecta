@@ -18,6 +18,8 @@ public class ViewModelFactory <T extends ViewModel> implements ViewModelProvider
     public <T extends ViewModel> T create(Class<T> modelClass) {
         if (modelClass == ConsultasYRutinasDiariasViewModel.class) {
             return (T) new ConsultasYRutinasDiariasViewModel(viewModelArgs);
+        }else if (modelClass == SharedPacientesViewModel.class) {
+            return (T) new SharedPacientesViewModel(viewModelArgs);
         }
         // Agregar más verificaciones y creación de ViewModel según sea necesario
         throw new IllegalArgumentException("Unknown ViewModel class");
