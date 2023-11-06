@@ -3,7 +3,7 @@ package com.calferinnovate.mediconnecta.clases;
 import java.util.ArrayList;
 
 public class Pacientes {
-   private String nombre, apellidos, foto, fechaNacimiento, dni, lugarNacimiento, sexo, cipSns;
+   private String nombre, apellidos, foto, fechaNacimiento, dni, lugarNacimiento, sexo, cipSns, fechaIngreso;
    private int numSeguridadSocial, fkIdUnidad, fkIdSeguro, fkNumHabitacion, fkNumHistoriaClinica;
 
     public Pacientes() {
@@ -11,7 +11,7 @@ public class Pacientes {
 
     public Pacientes(String nombre, String apellidos, String foto, String fechaNacimiento, String dni, String lugarNacimiento,
                      String sexo, String cipSns, int numSeguridadSocial, int fkIdUnidad, int fkIdSeguro, int fkNumHabitacion,
-                     int fkNumHistoriaClinica) {
+                     int fkNumHistoriaClinica, String fechaIngreso) {
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.foto = foto;
@@ -25,6 +25,7 @@ public class Pacientes {
         this.fkIdSeguro = fkIdSeguro;
         this.fkNumHabitacion = fkNumHabitacion;
         this.fkNumHistoriaClinica = fkNumHistoriaClinica;
+        this.fechaIngreso = fechaIngreso;
     }
 
     public String getNombre() {
@@ -131,4 +132,11 @@ public class Pacientes {
         this.fkNumHistoriaClinica = fkNumHistoriaClinica;
     }
 
+    public String getFechaIngreso() {
+        return fechaIngreso;
+    }
+
+    public void setFechaIngreso(String fechaIngreso) {
+        this.fechaIngreso = fechaIngreso;
+    }
 }

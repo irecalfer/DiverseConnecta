@@ -293,6 +293,6 @@ public class SeleccionUnidadFragment extends Fragment implements AdapterView.OnI
                 jsonObject.optString("sexo"), jsonObject.optString("cip_sns"),
                 jsonObject.optInt("num_seguridad_social"), jsonObject.optInt("fk_id_unidad"),
                 jsonObject.optInt("fk_id_seguro"), jsonObject.optInt("fk_num_habitacion"),
-                jsonObject.optInt("fk_num_historia_clinica"));
+                jsonObject.optInt("fk_num_historia_clinica"), jsonObject.optString("fecha_ingreso"));
     }
 }

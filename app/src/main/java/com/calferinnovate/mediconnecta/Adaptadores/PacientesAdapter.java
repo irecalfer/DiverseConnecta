@@ -21,15 +21,16 @@ public class PacientesAdapter extends RecyclerView.Adapter<PacientesAdapter.Paci
 
     //Interface para que el fragment implemente el listener y poder capturar el evento fuera del adaptador
     public interface ItemClickListener{
-        public void onClick(View view, int position);
+        public void onClick(int position);
     }
     private ArrayList<Pacientes> listaPacientes;
     private Context mContext;
     private ItemClickListener clickListener;
 
-    public PacientesAdapter(ArrayList<Pacientes> listaPacientes, Context context){
+    public PacientesAdapter(ArrayList<Pacientes> listaPacientes, Context context, ItemClickListener clickListener){
         this.listaPacientes = listaPacientes;
         mContext = context;
+        this.clickListener = clickListener;
     }
 
     @NonNull
@@ -61,7 +62,7 @@ public class PacientesAdapter extends RecyclerView.Adapter<PacientesAdapter.Paci
     }
 
 
-    public class PacientesViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class PacientesViewHolder extends RecyclerView.ViewHolder{
         // Campos respectivos de un item
         private final ImageView fotoPacienteImageView;
         private final TextView nombreCompletoTextView;
@@ -70,10 +71,18 @@ public class PacientesAdapter extends RecyclerView.Adapter<PacientesAdapter.Paci
 
         public PacientesViewHolder(@NonNull View itemView) {
             super(itemView);
-            itemView.setOnClickListener(this);
             fotoPacienteImageView = itemView.findViewById(R.id.idResidenteFoto);
             nombreCompletoTextView = itemView.findViewById(R.id.idNombreCompleto);
             habitacionTextView = itemView.findViewById(R.id.idHabitacion);
+
+            //Esto propaga el evento hacia afuera, así podemos capturarlo en el punto que queramos de
+            //nuestra aplicación
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    clickListener.onClick(getAdapterPosition());
+                }
+            });
 
         }
 
@@ -89,12 +98,8 @@ public class PacientesAdapter extends RecyclerView.Adapter<PacientesAdapter.Paci
             return habitacionTextView;
         }
 
-        //Esto propaga el evento hacia afuera, así podemos capturarlo en el punto que queramos de
-        //nuestra aplicación
-        @Override
-        public void onClick(View v) {
-            clickListener.onClick(v, getAdapterPosition());
-        }
+
+
     }
 
     //Este metodo se utiliza desde el fragmento que captura el evento de clic de los items

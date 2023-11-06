@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/residentesFragment"
-        android:name="com.calferinnovate.mediconnecta.Home.Fragments.ResidentesFragment"
+        android:name="com.calferinnovate.mediconnecta.Home.Fragments.PacientesFragment"
         android:label="fragment_residentes"
         tools:layout="@layout/fragment_residentes" />
     <fragment

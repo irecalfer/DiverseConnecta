@@ -85,17 +85,15 @@
         android:id="@+id/fotoPacienteDetalle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="70dp"
         android:adjustViewBounds="true"
-        android:background="@color/md_theme_light_surfaceTint"
         android:contentDescription="@string/content_description_foto_paciente_detalle"
         android:maxWidth="400dp"
         android:maxHeight="400dp"
-        android:padding="7dp"
         android:scaleType="fitCenter"
-        app:layout_constraintBottom_toBottomOf="@+id/labelDNIPaciente"
+        app:layout_constraintEnd_toStartOf="@+id/labelNombrePaciente"
         app:layout_constraintStart_toEndOf="@+id/guidelineVertIzq"
         app:layout_constraintTop_toBottomOf="@+id/tabLayoutDetallePacientes"
+        app:layout_constraintTop_toTopOf="@+id/labelNombrePaciente"
         tools:src="@tools:sample/avatars" />
 
     <com.google.android.material.textfield.TextInputLayout
@@ -103,7 +101,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="50dp"
         android:autoSizeMaxTextSize="100sp"
         android:autoSizeMinTextSize="12sp"
         android:hint="@string/nombrePacienteLabel"
@@ -112,7 +110,7 @@
         app:hintTextColor="@color/md_theme_black"
         app:layout_constraintEnd_toStartOf="@id/guidelineVertDer"
         app:layout_constraintStart_toEndOf="@+id/fotoPacienteDetalle"
-        app:layout_constraintTop_toBottomOf="@+id/guidelineHorTop">
+        app:layout_constraintTop_toBottomOf="@+id/tabLayoutDetallePacientes">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/nombrePaciente"
@@ -181,14 +179,13 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="8dp"
         android:autoSizeMaxTextSize="100sp"
         android:autoSizeMinTextSize="12sp"
         android:hint="@string/dniPacienteLabel"
         android:textColorHint="@color/md_theme_black"
         app:autoSizeTextType="uniform"
         app:hintTextColor="@color/md_theme_black"
-        app:layout_constraintBottom_toBottomOf="@+id/fotoPacienteDetalle"
         app:layout_constraintEnd_toStartOf="@id/guidelineVertDer"
         app:layout_constraintStart_toEndOf="@+id/fotoPacienteDetalle"
         app:layout_constraintTop_toBottomOf="@+id/labelSexoPaciente">

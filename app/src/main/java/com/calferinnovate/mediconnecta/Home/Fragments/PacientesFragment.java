@@ -3,6 +3,9 @@ package com.calferinnovate.mediconnecta.Home.Fragments;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -12,16 +15,16 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.calferinnovate.mediconnecta.Adaptadores.PacientesAdapter;
-import com.calferinnovate.mediconnecta.Home.Fragments.HomeFragments.Rutinas.consultasYRutinasDiariasFragment;
 import com.calferinnovate.mediconnecta.Home.Fragments.Residentes.DetallePacientesFragment;
 import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.clases.ClaseGlobal;
 import com.calferinnovate.mediconnecta.clases.Pacientes;
+import com.calferinnovate.mediconnecta.clases.PeticionesHTTP.ViewModel.SharedPacientesViewModel;
 
 import java.util.ArrayList;
 
 
-public class ResidentesFragment extends Fragment implements PacientesAdapter.ItemClickListener{
+public class PacientesFragment extends Fragment implements PacientesAdapter.ItemClickListener{
 
     /*
     Declarar instancias globales
@@ -29,6 +32,7 @@ public class ResidentesFragment extends Fragment implements PacientesAdapter.Ite
     private RecyclerView recycler;
     private ClaseGlobal claseGlobal;
     private ArrayList<Pacientes> listaPacientes;
+    private SharedPacientesViewModel sharedPacientesViewModel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,7 +45,7 @@ public class ResidentesFragment extends Fragment implements PacientesAdapter.Ite
         recycler.setHasFixedSize(true);
 
         // added data from arraylist to adapter class.
-        PacientesAdapter adapter = new PacientesAdapter(listaPacientes, getContext());
+        PacientesAdapter adapter = new PacientesAdapter(listaPacientes, getContext(), this);
 
         // setting grid layout manager to implement grid view.
         // in this method '2' represents number of columns to be displayed in grid view.
@@ -50,6 +54,19 @@ public class ResidentesFragment extends Fragment implements PacientesAdapter.Ite
         // at last set adapter to recycler view.
         recycler.setLayoutManager(layoutManager);
         recycler.setAdapter(adapter);
+        recycler.addItemDecoration(new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL));
+
+        //
+        sharedPacientesViewModel = new ViewModelProvider(requireActivity()).get(SharedPacientesViewModel.class);
+        sharedPacientesViewModel.getPacientesList().observe(getViewLifecycleOwner(), new Observer<ArrayList<Pacientes>>() {
+            @Override
+            public void onChanged(ArrayList<Pacientes> pacientes) {
+                //listaPacientes.clear();
+                //listaPacientes.addAll(pacientes);
+                adapter.notifyDataSetChanged();
+            }
+        });
+
 
         //Implementamos la escucha al item
         adapter.setOnClickListener(this);
@@ -63,7 +80,9 @@ public class ResidentesFragment extends Fragment implements PacientesAdapter.Ite
     }
 
     @Override
-    public void onClick(View view, int position) {
+    public void onClick(int position) {
+        //Toast.makeText(requireContext(), listaPacientes.get(position).getNombre(), Toast.LENGTH_SHORT).show();
+        sharedPacientesViewModel.setPaciente(position);
         getParentFragmentManager().beginTransaction().replace(R.id.fragment_container, new DetallePacientesFragment()).commit();
     }
 }

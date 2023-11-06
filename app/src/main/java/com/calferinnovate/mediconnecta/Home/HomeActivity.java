@@ -6,13 +6,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.FragmentActivity;
 
 import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.calferinnovate.mediconnecta.Home.Fragments.HomeFragment;
-import com.calferinnovate.mediconnecta.Home.Fragments.ResidentesFragment;
+import com.calferinnovate.mediconnecta.Home.Fragments.PacientesFragment;
 import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.clases.Backpressedlistener;
 import com.google.android.material.navigation.NavigationView;
@@ -49,7 +48,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         if (item.getItemId() == R.id.home_item_id){
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
         }else if(item.getItemId() == R.id.residentes_item_id){
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ResidentesFragment()).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PacientesFragment()).commit();
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
