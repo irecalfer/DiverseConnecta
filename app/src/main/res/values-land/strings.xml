@@ -52,4 +52,9 @@
     <string name="pautas">Pautas</string>
     <string name="parte">Parte</string>
     <string name="parteCaidas">Parte Caídas</string>
+    <string name="labelNombreFamiliar">Nombre</string>
+    <string name="labelApellidosFamiliar">Apellidos</string>
+    <string name="labelTelefono1">Teléfono 1</string>
+    <string name="labelTelefono2">Teléfono 2</string>
+    <string name="labelDniFamiliar">DNI</string>
 </resources>

@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:layout_editor_absoluteY="25dp">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/vertIzq"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="32dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/vertDer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="32dp" />
+    <!-- Separacion -->
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/labelnombreFamiliar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:autoSizeMaxTextSize="100sp"
+        android:autoSizeMinTextSize="12sp"
+        android:hint="@string/labelNombreFamiliar"
+        android:textColorHint="@color/md_theme_black"
+        app:autoSizeTextType="uniform"
+        app:hintTextColor="@color/md_theme_black"
+        app:layout_constraintEnd_toStartOf="@id/labelApellidosFamiliar"
+        app:layout_constraintStart_toEndOf="@+id/vertIzq"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/nombreFamiliar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:imeOptions="actionNext"
+            android:textColor="@color/md_theme_black"
+            android:textColorHint="@color/md_theme_black" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/labelApellidosFamiliar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:autoSizeMaxTextSize="100sp"
+        android:autoSizeMinTextSize="12sp"
+        android:hint="@string/labelApellidosFamiliar"
+        android:textColorHint="@color/md_theme_black"
+        app:autoSizeTextType="uniform"
+        app:hintTextColor="@color/md_theme_black"
+        app:layout_constraintEnd_toStartOf="@id/vertDer"
+        app:layout_constraintStart_toEndOf="@+id/labelnombreFamiliar"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/apellidosFamiliar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:imeOptions="actionNext"
+            android:textColor="@color/md_theme_black"
+            android:textColorHint="@color/md_theme_black" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Separacion -->
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/labelTelefono1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:autoSizeMaxTextSize="100sp"
+        android:autoSizeMinTextSize="12sp"
+        android:hint="@string/labelTelefono1"
+        android:textColorHint="@color/md_theme_black"
+        app:autoSizeTextType="uniform"
+        app:hintTextColor="@color/md_theme_black"
+        app:layout_constraintTop_toBottomOf="@id/labelnombreFamiliar"
+        app:layout_constraintEnd_toStartOf="@id/labelTelefono2"
+        app:layout_constraintStart_toEndOf="@+id/vertIzq">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/telefono1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:imeOptions="actionNext"
+            android:textColor="@color/md_theme_black"
+            android:textColorHint="@color/md_theme_black" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/labelTelefono2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:autoSizeMaxTextSize="100sp"
+        android:autoSizeMinTextSize="12sp"
+        android:hint="@string/labelTelefono2"
+        android:textColorHint="@color/md_theme_black"
+        app:autoSizeTextType="uniform"
+        app:hintTextColor="@color/md_theme_black"
+        app:layout_constraintTop_toBottomOf="@id/labelApellidosFamiliar"
+        app:layout_constraintEnd_toStartOf="@id/vertDer"
+        app:layout_constraintStart_toEndOf="@+id/labelTelefono1">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/telefono2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:imeOptions="actionNext"
+            android:textColor="@color/md_theme_black"
+            android:textColorHint="@color/md_theme_black" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Separacion -->
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/labelDniFamiliar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:autoSizeMaxTextSize="100sp"
+        android:autoSizeMinTextSize="12sp"
+        android:hint="@string/labelDniFamiliar"
+        android:textColorHint="@color/md_theme_black"
+        app:autoSizeTextType="uniform"
+        app:hintTextColor="@color/md_theme_black"
+        app:layout_constraintTop_toBottomOf="@id/labelTelefono1"
+        app:layout_constraintEnd_toStartOf="@id/vertDer"
+        app:layout_constraintStart_toEndOf="@+id/vertIzq">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/dniFamiliar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:imeOptions="actionNext"
+            android:textColor="@color/md_theme_black"
+            android:textColorHint="@color/md_theme_black" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <View
+        android:id="@+id/divider2"
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/md_theme_light_surfaceTint"
+        app:layout_constraintEnd_toStartOf="@id/vertDer"
+        app:layout_constraintStart_toEndOf="@+id/vertIzq"
+        app:layout_constraintTop_toBottomOf="@id/labelDniFamiliar" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

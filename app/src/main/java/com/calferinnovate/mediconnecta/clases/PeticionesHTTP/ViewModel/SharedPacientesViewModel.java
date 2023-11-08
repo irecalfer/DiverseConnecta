@@ -34,6 +34,7 @@ public class SharedPacientesViewModel extends ViewModel {
     private ClaseGlobal claseGlobal;
     private Context context;
     private boolean segurosCargados = false; // Agrega un indicador para verificar si los seguros se han cargado
+    private boolean familiaresCargados = false; // Agrega un indicador para verificar si los seguros se han cargado
 
     public SharedPacientesViewModel(){
 
@@ -124,46 +125,54 @@ public class SharedPacientesViewModel extends ViewModel {
         return mutableSeguro;
     }
 
-    public LiveData<ArrayList<ContactoFamiliares>> obtieneContactoFamiliares(Pacientes paciente){
-        String url = Constantes.url_part+"familiares.php?cip_sns"+paciente.getCipSns();
-        Executor executor = Executors.newSingleThreadExecutor();
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                peticionesJson.getJsonObjectRequest(url, new PeticionesJson.MyJsonObjectResponseListener() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try{
-                            //Si la lista de contactos está llena para otro familiar la vaciamos para
-                            //llenarla con los datos de los familiares del nuevo paciente.
-                            if(!claseGlobal.getListaContactoFamiliares().isEmpty()){
-                                claseGlobal.getListaContactoFamiliares().clear();
+    public void obtieneContactoFamiliares(Pacientes paciente){
+        if(!familiaresCargados) { // Verifica si los seguros ya se han cargado
+            String url = Constantes.url_part + "familiares.php?cip_sns=" + paciente.getCipSns();
+            Executor executor = Executors.newSingleThreadExecutor();
+            executor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    peticionesJson.getJsonObjectRequest(url, new PeticionesJson.MyJsonObjectResponseListener() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try {
+                                //Si la lista de contactos está llena para otro familiar la vaciamos para
+                                //llenarla con los datos de los familiares del nuevo paciente.
+                                if (!claseGlobal.getListaContactoFamiliares().isEmpty()) {
+                                    claseGlobal.getListaContactoFamiliares().clear();
+                                }
+                                JSONArray jsonArray = response.getJSONArray("familiares_contacto");
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                    ContactoFamiliares nuevoFamiliar = new ContactoFamiliares(jsonObject.optString("dni_familiar"),
+                                            jsonObject.optString("nombre"), jsonObject.optString("apellidos"),
+                                            jsonObject.optInt("telefono_contacto"), jsonObject.optInt("telefono_contacto_2"));
+                                    claseGlobal.getListaContactoFamiliares().add(nuevoFamiliar);
+                                }
+                                familiaresCargados = true; // Marca los seguros como cargados
+                                claseGlobal.setListaContactoFamiliares(claseGlobal.getListaContactoFamiliares());
+                                ArrayList<ContactoFamiliares> contactoFamiliares = claseGlobal.getListaContactoFamiliares();
+                                if (!contactoFamiliares.isEmpty()) {
+                                    mutableFamiliaresList.setValue(new ArrayList<>(contactoFamiliares));
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
-                            JSONArray jsonArray = response.getJSONArray("familiares_contacto");
-                            for(int i =0; i< jsonArray.length();i++){
-                                JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                ContactoFamiliares nuevoFamiliar = new ContactoFamiliares(jsonObject.optString("dni_familiar"),
-                                        jsonObject.optString("nombre"), jsonObject.optString("apellidos"),
-                                        jsonObject.optInt("telefono_contacto"), jsonObject.optInt("telefono_contacto_2"));
-                                claseGlobal.getListaContactoFamiliares().add(nuevoFamiliar);
-                            }
-                            claseGlobal.setListaContactoFamiliares(claseGlobal.getListaContactoFamiliares());
-                            ArrayList<ContactoFamiliares> contactoFamiliares = claseGlobal.getListaContactoFamiliares();
-                            if (!contactoFamiliares.isEmpty()) {
-                                mutableFamiliaresList.setValue(new ArrayList<>(contactoFamiliares));
-                            }
-                        }catch (JSONException e){
-                            e.printStackTrace();
                         }
-                    }
 
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
 
-                    }
-                });
-            }
-        });
+                        }
+                    });
+                }
+            });
+        }
+    }
+
+    public LiveData<ArrayList<ContactoFamiliares>> getListaMutableFamiliares(Pacientes paciente){
+        if (mutableFamiliaresList.getValue() == null) {obtieneContactoFamiliares(paciente);
+        }
         return mutableFamiliaresList;
     }
 

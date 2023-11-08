@@ -51,7 +51,6 @@ public class GeneralPacientesFragment extends Fragment {
     // de seguros se ha cargado correctamente. Estas variables ayudan a determinar cuándo se pueden actualizar
     // los datos en la interfaz de usuario, en el método updateUI.
     private Pacientes pacienteActual;
-    private boolean seguroCargado;
 
 
     public GeneralPacientesFragment(){
