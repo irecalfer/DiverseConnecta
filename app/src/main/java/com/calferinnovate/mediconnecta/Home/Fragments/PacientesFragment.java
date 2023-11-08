@@ -85,7 +85,7 @@ public class PacientesFragment extends Fragment implements PacientesAdapter.Item
         // Inicializa el ViewModel
         sharedPacientesViewModel = new ViewModelProvider(requireActivity(), factory).get(SharedPacientesViewModel.class);
         //sharedPacientesViewModel = new ViewModelProvider(requireActivity()).get(SharedPacientesViewModel.class);
-        sharedPacientesViewModel.obtieneSeguroPacientes();
+        //sharedPacientesViewModel.obtieneSeguroPacientes();
         sharedPacientesViewModel.getPacientesList().observe(getViewLifecycleOwner(), new Observer<ArrayList<Pacientes>>() {
             @Override
             public void onChanged(ArrayList<Pacientes> pacientes) {

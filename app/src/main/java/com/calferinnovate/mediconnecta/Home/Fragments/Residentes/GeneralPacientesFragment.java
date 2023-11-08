@@ -38,7 +38,7 @@ public class GeneralPacientesFragment extends Fragment {
 
 
     private ImageView fotoPaciente;
-    private TextInputEditText nombre, apellidos, sexo, dni, lugarNacimiento, seguro, edad, fechaNacimiento,
+    private TextInputEditText nombre, apellidos, sexo, dni, lugarNacimiento, seguroTextView, edad, fechaNacimiento,
             estadoCivil, fechaIngreso, unidad, habitacion, cipSns, numSeguridadSocial;
     private SharedPacientesViewModel sharedPacientesViewModel;
     private ClaseGlobal claseGlobal;
@@ -51,7 +51,7 @@ public class GeneralPacientesFragment extends Fragment {
     // de seguros se ha cargado correctamente. Estas variables ayudan a determinar cuándo se pueden actualizar
     // los datos en la interfaz de usuario, en el método updateUI.
     private Pacientes pacienteActual;
-    private boolean segurosCargados;
+    private boolean seguroCargado;
 
 
     public GeneralPacientesFragment(){
@@ -66,6 +66,25 @@ public class GeneralPacientesFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_general_pacientes, container, false);
         llamaAClaseGlobal();
         asignaVariablesAComponentes(view);
+
+        //Creas un objeto ViewModelFactory y obtienes una instancia de ConsultasYRutinasDiariasViewModel utilizando este factory.
+        //Luego, observas el LiveData del ViewModel para mantener actualizada la lista de programación en el RecyclerView.
+        viewModelArgs = new ViewModelArgs() {
+            @Override
+            public PeticionesJson getPeticionesJson() {
+                return peticionesJson = new PeticionesJson(requireContext());
+            }
+
+            @Override
+            public ClaseGlobal getClaseGlobal() {
+                return claseGlobal;
+            }
+        };
+
+        ViewModelFactory<SharedPacientesViewModel> factory = new ViewModelFactory<>(viewModelArgs);
+        // Inicializa el ViewModel
+        sharedPacientesViewModel = new ViewModelProvider(requireActivity(), factory).get(SharedPacientesViewModel.class);
+
         return  view;
     }
 
@@ -74,29 +93,28 @@ public class GeneralPacientesFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
 
-        sharedPacientesViewModel = new ViewModelProvider(requireActivity()).get(SharedPacientesViewModel.class);
-
-
         sharedPacientesViewModel.getPaciente().observe(getViewLifecycleOwner(), new Observer<Pacientes>() {
             @Override
             public void onChanged(Pacientes pacientes) {
                 Log.d("Paciente", pacientes.getNombre());
                 pacienteActual = pacientes;
                 updateUI();
+                // Llama al ViewModel para obtener el seguro
+                sharedPacientesViewModel.obtieneSeguroPacientes(pacienteActual);
             }
         });
 
-      sharedPacientesViewModel.getSeguroList().observe(getViewLifecycleOwner(), new Observer<ArrayList<Seguro>>() {
-          @Override
-          public void onChanged(ArrayList<Seguro> seguros) {
-              segurosCargados = true;
-                   updateUI();
-          }
-      });
-
-
+        sharedPacientesViewModel.getSeguro().observe(getViewLifecycleOwner(), new Observer<Seguro>() {
+            @Override
+            public void onChanged(Seguro seguro) {
+               if(seguro!= null){
+                   seguroTextView.setText(seguro.getNombreSeguro()+String.valueOf(seguro.getTelefono()));
+               }
+            }
+        });
 
     }
+
 
     public void llamaAClaseGlobal(){
         claseGlobal = ClaseGlobal.getInstance();
@@ -109,7 +127,7 @@ public class GeneralPacientesFragment extends Fragment {
         sexo = view.findViewById(R.id.sexoPaciente);
         dni = view.findViewById(R.id.dniPaciente);
         lugarNacimiento = view.findViewById(R.id.lugarNacimientoPaciente);
-        seguro = view.findViewById(R.id.seguroPaciente);
+        seguroTextView = view.findViewById(R.id.seguroPaciente);
         edad = view.findViewById(R.id.edadPaciente);
         fechaNacimiento = view.findViewById(R.id.fechaNacimientoPaciente);
         estadoCivil = view.findViewById(R.id.estadoCivilPaciente);
@@ -120,8 +138,8 @@ public class GeneralPacientesFragment extends Fragment {
         numSeguridadSocial = view.findViewById(R.id.numSeguridadSocialPaciente);
     }
 
+
     private void updateUI(){
-        if(pacienteActual !=null && segurosCargados){
             Glide.with(requireContext()).load(pacienteActual.getFoto()).circleCrop().into(fotoPaciente);
             nombre.setText(pacienteActual.getNombre());
             apellidos.setText(pacienteActual.getApellidos());
@@ -136,10 +154,6 @@ public class GeneralPacientesFragment extends Fragment {
             habitacion.setText(String.valueOf(pacienteActual.getFkNumHabitacion()));
             cipSns.setText(pacienteActual.getCipSns());
             numSeguridadSocial.setText(String.valueOf(pacienteActual.getNumSeguridadSocial()));
-            nombreSeguro = obtieneNombreSeguro(pacienteActual);
-            seguro.setText(obtieneNombreSeguro(pacienteActual));
-        }
-
     }
 
     private int calculaEdad(Pacientes pacientes){
@@ -176,12 +190,4 @@ public class GeneralPacientesFragment extends Fragment {
         return nombreUnidad;
     }
 
-    public String obtieneNombreSeguro(Pacientes pacientes){
-        for (Seguro seguro: claseGlobal.getListaSeguros()){
-            if(seguro.getIdSeguro() == pacientes.getFkIdSeguro()){
-                nombreSeguro = seguro.getNombreSeguro();
-            }
-        }
-        return nombreSeguro;
-    }
 }

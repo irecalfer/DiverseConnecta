@@ -56,7 +56,7 @@ public class SharedPacientesViewModel extends ViewModel {
         return mutablePaciente;
     }
 
-    public void obtieneSeguroPacientes() {
+    public void obtieneSeguroPacientes(Pacientes paciente) {
         if(!segurosCargados){ // Verifica si los seguros ya se han cargado
             String url = Constantes.url_part+"seguro.php";
             Executor executor = Executors.newSingleThreadExecutor();
@@ -74,13 +74,17 @@ public class SharedPacientesViewModel extends ViewModel {
                                         Seguro nuevoSeguro = new Seguro(jsonObject.optInt("id_seguro"), jsonObject.optInt("telefono"),
                                                 jsonObject.optString("nombre"));
                                         claseGlobal.getListaSeguros().add(nuevoSeguro);
-                                        segurosCargados = true; // Marca los seguros como cargados
                                     }
+                                    segurosCargados = true; // Marca los seguros como cargados
                                     claseGlobal.setListaSeguros(claseGlobal.getListaSeguros());
                                     ArrayList<Seguro> seguros = claseGlobal.getListaSeguros();
                                     if (!seguros.isEmpty()) {
                                         mutableSeguroList.setValue(new ArrayList<>(seguros));
                                     }
+
+                                    // Una vez que los seguros se hayan cargado, busca el seguro del paciente
+                                    Seguro seguroDelPaciente = obtieneSeguroPacienteSeleccionado(paciente);
+                                    mutableSeguro.setValue(seguroDelPaciente);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
@@ -97,11 +101,27 @@ public class SharedPacientesViewModel extends ViewModel {
                     }
                 }
             });
+        }else{
+            // Los seguros ya se han cargado, busca directamente el seguro del paciente
+            Seguro seguroDelPaciente = obtieneSeguroPacienteSeleccionado(paciente);
+            mutableSeguro.setValue(seguroDelPaciente);
         }
     }
 
+    private Seguro obtieneSeguroPacienteSeleccionado(Pacientes paciente){
+        for (Seguro seguro: claseGlobal.getListaSeguros()) {
+            if (seguro.getIdSeguro() == paciente.getFkIdSeguro()) {
+                Seguro seguroDelPaciente = seguro;
+                return seguroDelPaciente;
+            }
+        }
+        return null; //MANEJAR CASO EN CASO DE QUE NO LO ENCUENTRE
+    }
     public LiveData<ArrayList<Seguro>> getSeguroList(){
         return mutableSeguroList;
+    }
+    public LiveData<Seguro> getSeguro() {
+        return mutableSeguro;
     }
 
     public LiveData<ArrayList<ContactoFamiliares>> obtieneContactoFamiliares(Pacientes paciente){
