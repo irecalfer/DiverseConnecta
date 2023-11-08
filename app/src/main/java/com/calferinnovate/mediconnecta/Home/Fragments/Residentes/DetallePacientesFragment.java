@@ -59,6 +59,8 @@ public class DetallePacientesFragment extends Fragment {
                 String tabSeleccionado = (String) tab.getText();
                 if (tabSeleccionado.equals("General")) {
                     getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new GeneralPacientesFragment()).commit();
+                } else if (tabSeleccionado.equals("Contactos")) {
+                    getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new ContactoFamiliaresPacienteFragment()).commit();
                 } else if (tabSeleccionado.equals("Clínica")) {
                     getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new ClinicaPacientesFragment()).commit();
                 } else if (tabSeleccionado.equals("Pautas")) {

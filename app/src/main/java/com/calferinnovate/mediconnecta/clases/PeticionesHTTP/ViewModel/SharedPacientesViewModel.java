@@ -27,11 +27,13 @@ public class SharedPacientesViewModel extends ViewModel {
     public static final String TAG = "SharedPacientesViewModel";
     private final MutableLiveData<ArrayList<Pacientes>> mutablePacientesList = new MutableLiveData<>();
     private final MutableLiveData<Pacientes> mutablePaciente = new MutableLiveData<>();
+    private final MutableLiveData<Seguro> mutableSeguro= new MutableLiveData<>();
     private final MutableLiveData<ArrayList<Seguro>> mutableSeguroList = new MutableLiveData<>();
     private final MutableLiveData<ArrayList<ContactoFamiliares>> mutableFamiliaresList = new MutableLiveData<>();
     private PeticionesJson peticionesJson;
     private ClaseGlobal claseGlobal;
     private Context context;
+    private boolean segurosCargados = false; // Agrega un indicador para verificar si los seguros se han cargado
 
     public SharedPacientesViewModel(){
 
@@ -55,48 +57,54 @@ public class SharedPacientesViewModel extends ViewModel {
     }
 
     public void obtieneSeguroPacientes() {
-        String url = Constantes.url_part+"seguro.php";
-        Executor executor = Executors.newSingleThreadExecutor();
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    peticionesJson.getJsonObjectRequest(url, new PeticionesJson.MyJsonObjectResponseListener() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            try {
-                                JSONArray jsonArray = response.getJSONArray("seguro");
-                                for (int i = 0; i < jsonArray.length(); i++) {
-                                    JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                    Seguro nuevoSeguro = new Seguro(jsonObject.optInt("id_seguro"), jsonObject.optInt("telefono"),
-                                            jsonObject.optString("nombre"));
-                                    claseGlobal.getListaSeguros().add(nuevoSeguro);
+        if(!segurosCargados){ // Verifica si los seguros ya se han cargado
+            String url = Constantes.url_part+"seguro.php";
+            Executor executor = Executors.newSingleThreadExecutor();
+            executor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        peticionesJson.getJsonObjectRequest(url, new PeticionesJson.MyJsonObjectResponseListener() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                try {
+                                    JSONArray jsonArray = response.getJSONArray("seguro");
+                                    for (int i = 0; i < jsonArray.length(); i++) {
+                                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                        Seguro nuevoSeguro = new Seguro(jsonObject.optInt("id_seguro"), jsonObject.optInt("telefono"),
+                                                jsonObject.optString("nombre"));
+                                        claseGlobal.getListaSeguros().add(nuevoSeguro);
+                                        segurosCargados = true; // Marca los seguros como cargados
+                                    }
+                                    claseGlobal.setListaSeguros(claseGlobal.getListaSeguros());
+                                    ArrayList<Seguro> seguros = claseGlobal.getListaSeguros();
+                                    if (!seguros.isEmpty()) {
+                                        mutableSeguroList.setValue(new ArrayList<>(seguros));
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
                                 }
-                                claseGlobal.setListaSeguros(claseGlobal.getListaSeguros());
-                                ArrayList<Seguro> seguros = claseGlobal.getListaSeguros();
-                                if (!seguros.isEmpty()) {
-                                    mutableSeguroList.setValue(new ArrayList<>(seguros));
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
                             }
-                        }
 
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
 
-                        }
-                    });
+                            }
+                        });
 
-                } catch (Exception e) {
-                    e.printStackTrace();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
-        });
-
+            });
+        }
     }
 
-    public void obtieneContactoFamiliares(Pacientes paciente){
+    public LiveData<ArrayList<Seguro>> getSeguroList(){
+        return mutableSeguroList;
+    }
+
+    public LiveData<ArrayList<ContactoFamiliares>> obtieneContactoFamiliares(Pacientes paciente){
         String url = Constantes.url_part+"familiares.php?cip_sns"+paciente.getCipSns();
         Executor executor = Executors.newSingleThreadExecutor();
         executor.execute(new Runnable() {
@@ -127,7 +135,6 @@ public class SharedPacientesViewModel extends ViewModel {
                         }catch (JSONException e){
                             e.printStackTrace();
                         }
-
                     }
 
                     @Override
@@ -137,6 +144,7 @@ public class SharedPacientesViewModel extends ViewModel {
                 });
             }
         });
+        return mutableFamiliaresList;
     }
 
     public void setPaciente(int position) {

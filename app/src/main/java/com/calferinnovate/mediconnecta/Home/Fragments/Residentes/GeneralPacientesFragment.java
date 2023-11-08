@@ -31,6 +31,7 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.time.Year;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class GeneralPacientesFragment extends Fragment {
@@ -44,6 +45,13 @@ public class GeneralPacientesFragment extends Fragment {
     private ViewModelArgs viewModelArgs;
     private PeticionesJson peticionesJson;
     private String nombreSeguro;
+    // Otras variables miembro
+    //La variable pacienteActual se utiliza para almacenar el paciente actual que proviene del ViewModel
+    // y segurosCargados es una variable booleana que se establece en true cuando la lista
+    // de seguros se ha cargado correctamente. Estas variables ayudan a determinar cuándo se pueden actualizar
+    // los datos en la interfaz de usuario, en el método updateUI.
+    private Pacientes pacienteActual;
+    private boolean segurosCargados;
 
 
     public GeneralPacientesFragment(){
@@ -73,9 +81,20 @@ public class GeneralPacientesFragment extends Fragment {
             @Override
             public void onChanged(Pacientes pacientes) {
                 Log.d("Paciente", pacientes.getNombre());
-                updateUI(pacientes);
+                pacienteActual = pacientes;
+                updateUI();
             }
         });
+
+      sharedPacientesViewModel.getSeguroList().observe(getViewLifecycleOwner(), new Observer<ArrayList<Seguro>>() {
+          @Override
+          public void onChanged(ArrayList<Seguro> seguros) {
+              segurosCargados = true;
+                   updateUI();
+          }
+      });
+
+
 
     }
 
@@ -101,22 +120,26 @@ public class GeneralPacientesFragment extends Fragment {
         numSeguridadSocial = view.findViewById(R.id.numSeguridadSocialPaciente);
     }
 
-    private void updateUI(Pacientes pacientes){
-        Glide.with(requireContext()).load(pacientes.getFoto()).circleCrop().into(fotoPaciente);
-        nombre.setText(pacientes.getNombre());
-        apellidos.setText(pacientes.getApellidos());
-        sexo.setText(pacientes.getSexo());
-        dni.setText(pacientes.getDni());
-        lugarNacimiento.setText(pacientes.getLugarNacimiento());
-        seguro.setText(obtieneNombreSeguro(pacientes));
-        edad.setText(String.valueOf(calculaEdad(pacientes)));
-        fechaNacimiento.setText(formateaFecha(pacientes));
-        estadoCivil.setText(pacientes.getEstadoCivil());
-        fechaIngreso.setText(pacientes.getFechaIngreso());
-        unidad.setText(nombreUnidad(pacientes));
-        habitacion.setText(String.valueOf(pacientes.getFkNumHabitacion()));
-        cipSns.setText(pacientes.getCipSns());
-        numSeguridadSocial.setText(String.valueOf(pacientes.getNumSeguridadSocial()));
+    private void updateUI(){
+        if(pacienteActual !=null && segurosCargados){
+            Glide.with(requireContext()).load(pacienteActual.getFoto()).circleCrop().into(fotoPaciente);
+            nombre.setText(pacienteActual.getNombre());
+            apellidos.setText(pacienteActual.getApellidos());
+            sexo.setText(pacienteActual.getSexo());
+            dni.setText(pacienteActual.getDni());
+            lugarNacimiento.setText(pacienteActual.getLugarNacimiento());
+            edad.setText(String.valueOf(calculaEdad(pacienteActual)));
+            fechaNacimiento.setText(formateaFecha(pacienteActual));
+            estadoCivil.setText(pacienteActual.getEstadoCivil());
+            fechaIngreso.setText(pacienteActual.getFechaIngreso());
+            unidad.setText(nombreUnidad(pacienteActual));
+            habitacion.setText(String.valueOf(pacienteActual.getFkNumHabitacion()));
+            cipSns.setText(pacienteActual.getCipSns());
+            numSeguridadSocial.setText(String.valueOf(pacienteActual.getNumSeguridadSocial()));
+            nombreSeguro = obtieneNombreSeguro(pacienteActual);
+            seguro.setText(obtieneNombreSeguro(pacienteActual));
+        }
+
     }
 
     private int calculaEdad(Pacientes pacientes){

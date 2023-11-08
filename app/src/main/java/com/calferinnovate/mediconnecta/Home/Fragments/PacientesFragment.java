@@ -113,7 +113,6 @@ public class PacientesFragment extends Fragment implements PacientesAdapter.Item
     public void onClick(int position) {
         //Toast.makeText(requireContext(), listaPacientes.get(position).getNombre(), Toast.LENGTH_SHORT).show();
         sharedPacientesViewModel.setPaciente(position);
-
         //Toast.makeText(requireContext(), listaPacientes.get(position).getNombre(), Toast.LENGTH_SHORT).show();
         getParentFragmentManager().beginTransaction().replace(R.id.fragment_container, new DetallePacientesFragment()).commit();
 
