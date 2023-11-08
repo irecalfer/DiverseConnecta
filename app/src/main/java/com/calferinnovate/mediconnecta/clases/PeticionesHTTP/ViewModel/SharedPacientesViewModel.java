@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel;
 import com.android.volley.VolleyError;
 import com.calferinnovate.mediconnecta.clases.ClaseGlobal;
 import com.calferinnovate.mediconnecta.clases.Constantes;
+import com.calferinnovate.mediconnecta.clases.ContactoFamiliares;
 import com.calferinnovate.mediconnecta.clases.Pacientes;
 import com.calferinnovate.mediconnecta.clases.PeticionesHTTP.PeticionesJson;
 import com.calferinnovate.mediconnecta.clases.Seguro;
@@ -27,6 +28,7 @@ public class SharedPacientesViewModel extends ViewModel {
     private final MutableLiveData<ArrayList<Pacientes>> mutablePacientesList = new MutableLiveData<>();
     private final MutableLiveData<Pacientes> mutablePaciente = new MutableLiveData<>();
     private final MutableLiveData<ArrayList<Seguro>> mutableSeguroList = new MutableLiveData<>();
+    private final MutableLiveData<ArrayList<ContactoFamiliares>> mutableFamiliaresList = new MutableLiveData<>();
     private PeticionesJson peticionesJson;
     private ClaseGlobal claseGlobal;
     private Context context;
@@ -92,6 +94,49 @@ public class SharedPacientesViewModel extends ViewModel {
             }
         });
 
+    }
+
+    public void obtieneContactoFamiliares(Pacientes paciente){
+        String url = Constantes.url_part+"familiares.php?cip_sns"+paciente.getCipSns();
+        Executor executor = Executors.newSingleThreadExecutor();
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                peticionesJson.getJsonObjectRequest(url, new PeticionesJson.MyJsonObjectResponseListener() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try{
+                            //Si la lista de contactos está llena para otro familiar la vaciamos para
+                            //llenarla con los datos de los familiares del nuevo paciente.
+                            if(!claseGlobal.getListaContactoFamiliares().isEmpty()){
+                                claseGlobal.getListaContactoFamiliares().clear();
+                            }
+                            JSONArray jsonArray = response.getJSONArray("familiares_contacto");
+                            for(int i =0; i< jsonArray.length();i++){
+                                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                ContactoFamiliares nuevoFamiliar = new ContactoFamiliares(jsonObject.optString("dni_familiar"),
+                                        jsonObject.optString("nombre"), jsonObject.optString("apellidos"),
+                                        jsonObject.optInt("telefono_contacto"), jsonObject.optInt("telefono_contacto_2"));
+                                claseGlobal.getListaContactoFamiliares().add(nuevoFamiliar);
+                            }
+                            claseGlobal.setListaContactoFamiliares(claseGlobal.getListaContactoFamiliares());
+                            ArrayList<ContactoFamiliares> contactoFamiliares = claseGlobal.getListaContactoFamiliares();
+                            if (!contactoFamiliares.isEmpty()) {
+                                mutableFamiliaresList.setValue(new ArrayList<>(contactoFamiliares));
+                            }
+                        }catch (JSONException e){
+                            e.printStackTrace();
+                        }
+
+                    }
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                });
+            }
+        });
     }
 
     public void setPaciente(int position) {
