@@ -5,11 +5,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.clases.Pacientes;
 import com.calferinnovate.mediconnecta.clases.PacientesAgrupadosRutinas;
@@ -20,19 +22,23 @@ import java.util.ArrayList;
 public class RutinasAdapter extends RecyclerView.Adapter<RutinasAdapter.ViewHolder> {
 
     private ArrayList<PacientesAgrupadosRutinas> dataSet;
-    private final ArrayList<Pacientes> pacientes;
+    private ArrayList<Pacientes> pacientes;
+    private Context context;
 
 
 
-
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final TextView nombreApellidos;
-        private final TextView hora;
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        private TextView nombreApellidos;
+        private TextView hora;
+        private TextView habitacion;
+        private ImageView foto;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             nombreApellidos = itemView.findViewById(R.id.nombreApellido);
             hora = itemView.findViewById(R.id.hora);
+            habitacion = itemView.findViewById(R.id.habitacionPacienteRutina);
+            foto = itemView.findViewById(R.id.fotoPacienteRutina);
         }
 
         public TextView getTextViewDatosPersonales(){
@@ -42,10 +48,19 @@ public class RutinasAdapter extends RecyclerView.Adapter<RutinasAdapter.ViewHold
         public TextView getTextViewhora(){
             return hora;
         }
+
+        public TextView getTextViewHabitacion() {
+            return habitacion;
+        }
+
+        public ImageView getImageViewFoto() {
+            return foto;
+        }
     }
-    public RutinasAdapter(ArrayList<PacientesAgrupadosRutinas> data, ArrayList<Pacientes> pacientes){
+    public RutinasAdapter(ArrayList<PacientesAgrupadosRutinas> data, ArrayList<Pacientes> pacientes, Context context){
         dataSet = data;
         this.pacientes = pacientes;
+        this.context = context;
     }
 
     @Override
@@ -65,6 +80,8 @@ public class RutinasAdapter extends RecyclerView.Adapter<RutinasAdapter.ViewHold
         for(Pacientes paciente: pacientes){
             if(dataSet.get(position).getFkCipSns().equals(paciente.getCipSns())){
                 holder.getTextViewDatosPersonales().setText(paciente.getNombre()+" "+paciente.getApellidos());
+                holder.getTextViewHabitacion().setText("Habitacion:"+" "+String.valueOf(paciente.getFkNumHabitacion()));
+                Glide.with(context).load(paciente.getFoto()).circleCrop().into(holder.getImageViewFoto());
                 break;
             }
         }

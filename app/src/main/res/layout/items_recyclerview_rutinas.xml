@@ -7,39 +7,47 @@
     android:layout_height="wrap_content"
     tools:layout_editor_absoluteY="25dp">
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/vertIzq"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="32dp" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/vertDer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_end="32dp" />
+    <ImageView
+        android:id="@+id/fotoPacienteRutina"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:src="@mipmap/ic_launcher"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/nombreApellido"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
         android:text="TextView"
-        android:textSize="32sp"
-        app:layout_constraintStart_toEndOf="@id/vertIzq"
+        android:textSize="28sp"
+        app:layout_constraintStart_toEndOf="@id/fotoPacienteRutina"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/hora"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
         android:text="TextView"
-        android:textSize="32sp"
-        app:layout_constraintEnd_toStartOf="@id/vertDer"
+        android:textSize="28sp"
         app:layout_constraintStart_toEndOf="@id/nombreApellido"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/nombreApellido" />
+
+    <TextView
+        android:id="@+id/habitacionPacienteRutina"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="TextView"
+        android:textSize="28sp"
+        app:layout_constraintStart_toEndOf="@id/fotoPacienteRutina"
+        app:layout_constraintTop_toBottomOf="@id/nombreApellido" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

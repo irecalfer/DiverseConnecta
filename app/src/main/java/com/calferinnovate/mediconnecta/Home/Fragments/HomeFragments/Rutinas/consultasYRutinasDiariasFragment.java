@@ -65,7 +65,7 @@ public class consultasYRutinasDiariasFragment extends Fragment {
         fechaRutina.setText(fechas.getFechaActual()); // FORMATEAR FECHA PARA QUE APAREZCA DE FORMA dd/MM/YYYY
         // Inicializa el adaptador una sola vez
         //Configuras el adaptador rutinasAdapter y lo estableces en el RecyclerView (rvConsultas).
-        rutinasAdapter = new RutinasAdapter(claseGlobal.getListaProgramacion(), claseGlobal.getListaPacientes());
+        rutinasAdapter = new RutinasAdapter(claseGlobal.getListaProgramacion(), claseGlobal.getListaPacientes(),getContext());
         rvConsultas.setAdapter(rutinasAdapter);
 
         //Creas un objeto ViewModelFactory y obtienes una instancia de ConsultasYRutinasDiariasViewModel utilizando este factory.

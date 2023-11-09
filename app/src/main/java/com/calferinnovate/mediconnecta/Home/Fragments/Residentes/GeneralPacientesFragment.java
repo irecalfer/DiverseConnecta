@@ -100,6 +100,7 @@ public class GeneralPacientesFragment extends Fragment {
                 updateUI();
                 // Llama al ViewModel para obtener el seguro
                 sharedPacientesViewModel.obtieneSeguroPacientes(pacienteActual);
+
             }
         });
 
@@ -107,7 +108,9 @@ public class GeneralPacientesFragment extends Fragment {
             @Override
             public void onChanged(Seguro seguro) {
                if(seguro!= null){
-                   seguroTextView.setText(seguro.getNombreSeguro()+String.valueOf(seguro.getTelefono()));
+                   seguroTextView.setText(seguro.getNombreSeguro()+" "+String.valueOf(seguro.getTelefono()));
+               }else{
+                   seguroTextView.setText("Sin seguro");
                }
             }
         });

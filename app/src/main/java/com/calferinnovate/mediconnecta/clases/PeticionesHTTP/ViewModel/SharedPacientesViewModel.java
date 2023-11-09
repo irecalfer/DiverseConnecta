@@ -36,8 +36,6 @@ public class SharedPacientesViewModel extends ViewModel {
     private PeticionesJson peticionesJson;
     private ClaseGlobal claseGlobal;
     private Context context;
-    private boolean segurosCargados = false; // Agrega un indicador para verificar si los seguros se han cargado
-    private boolean informesCargados = false; // Agrega un indicador para verificar si los seguros se han cargado
 
     public SharedPacientesViewModel(){
 
@@ -60,7 +58,7 @@ public class SharedPacientesViewModel extends ViewModel {
         return mutablePaciente;
     }
 
-    public LiveData<Seguro>  obtieneSeguroPacientes(Pacientes paciente) {
+    public void obtieneSeguroPacientes(Pacientes paciente) {
             String url = Constantes.url_part+"seguro.php";
             Executor executor = Executors.newSingleThreadExecutor();
             executor.execute(new Runnable() {
@@ -78,7 +76,6 @@ public class SharedPacientesViewModel extends ViewModel {
                                                 jsonObject.optString("nombre"));
                                         claseGlobal.getListaSeguros().add(nuevoSeguro);
                                     }
-                                    segurosCargados = true; // Marca los seguros como cargados
                                     claseGlobal.setListaSeguros(claseGlobal.getListaSeguros());
                                     ArrayList<Seguro> seguros = claseGlobal.getListaSeguros();
                                     if (!seguros.isEmpty()) {
@@ -104,7 +101,6 @@ public class SharedPacientesViewModel extends ViewModel {
                     }
                 }
             });
-        return mutableSeguro;
     }
 
     private Seguro obtieneSeguroPacienteSeleccionado(Pacientes paciente){
