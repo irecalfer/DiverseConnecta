@@ -5,50 +5,150 @@
     android:id="@+id/frameLayout6"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Home.Fragments.Residentes.ClinicaPacientesFragment" >
+    tools:context=".Home.Fragments.Residentes.ClinicaPacientesFragment">
 
-    <TextView
-        android:id="@+id/textView"
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineVertIzq"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView" />
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="32dp"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineVertDer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="32dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineHorTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="32dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineHorBot"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_end="32dp" />
+
+    <TextView
+        android:id="@+id/labelHistoriaClínica"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/labelHistoriaClinica"
+        app:layout_constraintTop_toBottomOf="@id/guidelineHorTop"
+        app:layout_constraintStart_toEndOf="@id/guidelineVertIzq"
+        app:layout_constraintEnd_toStartOf="@id/guidelineVertDer"/>
 
     <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:id="@+id/svDatos"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toStartOf="@id/svTratamiento"
+        app:layout_constraintStart_toEndOf="@+id/guidelineVertIzq"
+        app:layout_constraintTop_toBottomOf="@+id/labelHistoriaClínica">
 
-        <EditText
-            android:id="@+id/editTextTextMultiLine2"
-            android:layout_width="match_parent"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/labelDatosSalud"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:gravity="start|top"
-            android:inputType="textMultiLine" />
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:autoSizeMaxTextSize="100sp"
+            android:autoSizeMinTextSize="12sp"
+            android:hint="@string/datosSaludLabel"
+            android:textColorHint="@color/md_theme_black"
+            app:autoSizeTextType="uniform"
+            app:hintTextColor="@color/md_theme_black">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/datosSalud"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:imeOptions="actionNext"
+                android:inputType="textMultiLine"
+                android:text="DATOS SALUD"
+                android:textColor="@color/md_theme_black"
+                android:textColorHint="@color/md_theme_black" />
+        </com.google.android.material.textfield.TextInputLayout>
     </ScrollView>
 
     <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:id="@+id/svTratamiento"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toStartOf="@id/guidelineVertDer"
+        app:layout_constraintStart_toEndOf="@+id/svDatos"
+        app:layout_constraintTop_toBottomOf="@+id/labelHistoriaClínica">
 
-        <EditText
-            android:id="@+id/editTextTextMultiLine3"
-            android:layout_width="match_parent"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/labelTratamiento"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:gravity="start|top"
-            android:inputType="textMultiLine" />
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:autoSizeMaxTextSize="100sp"
+            android:autoSizeMinTextSize="12sp"
+            android:hint="@string/labelTratamiento"
+            android:textColorHint="@color/md_theme_black"
+            app:autoSizeTextType="uniform"
+            app:hintTextColor="@color/md_theme_black">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/tratamiento"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:imeOptions="actionNext"
+                android:inputType="textMultiLine"
+                android:text="TRATAMIENTO"
+                android:textColor="@color/md_theme_black"
+                android:textColorHint="@color/md_theme_black" />
+        </com.google.android.material.textfield.TextInputLayout>
     </ScrollView>
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/labelInformes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView" />
+        android:layout_marginTop="16dp"
+        android:text="@string/labelInformes"
+        app:layout_constraintStart_toEndOf="@+id/guidelineVertIzq"
+        app:layout_constraintEnd_toStartOf="@id/guidelineVertDer"
+        app:layout_constraintTop_toBottomOf="@+id/svDatos" />
 
-    <TableLayout
+    <View
+        android:id="@+id/divideHIstoriaClinicaInformes"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="1dp"
+        android:layout_marginTop="16dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintTop_toBottomOf="@+id/labelInformes" />
 
-    </TableLayout>
+    <HorizontalScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineHorBot"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineVertDer"
+        app:layout_constraintStart_toEndOf="@+id/guidelineVertIzq"
+        app:layout_constraintTop_toBottomOf="@+id/divideHIstoriaClinicaInformes">
 
+        <TableLayout
+            android:id="@+id/tableInformes"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:stretchColumns="*"
+            app:layout_constraintBottom_toTopOf="@+id/guidelineHorBot"
+            app:layout_constraintEnd_toStartOf="@+id/guidelineVertDer"
+            app:layout_constraintStart_toEndOf="@+id/guidelineVertIzq"
+            app:layout_constraintTop_toBottomOf="@+id/divideHIstoriaClinicaInformes">
+
+
+        </TableLayout>
+    </HorizontalScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

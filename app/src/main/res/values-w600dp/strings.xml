@@ -57,4 +57,15 @@
     <string name="labelTelefono1">Teléfono 1</string>
     <string name="labelTelefono2">Teléfono 2</string>
     <string name="labelDniFamiliar">DNI</string>
+    <string name="labelHistoriaClinica">Historia Clínica</string>
+    <string name="datosSaludLabel">Datos de Salud</string>
+    <string name="labelTratamiento">Tratamiento</string>
+    <string name="labelInformes">Informes Clínicos</string>
+    <string name="tipoInforme">Tipo de informe</string>
+    <string name="fechaInforme">Fecha</string>
+    <string name="centro">Centro</string>
+    <string name="responsable">Responsable</string>
+    <string name="servicioUnidadDispositivo">Servicio Unidad Dispositivo</string>
+    <string name="servicioSalud">Servicio de Salud</string>
+    <string name="pdf">PDF</string>
 </resources>

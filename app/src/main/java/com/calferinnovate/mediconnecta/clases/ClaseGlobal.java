@@ -18,6 +18,7 @@ public class ClaseGlobal extends Application {
     private Rutinas rutinas;
     private Seguro seguro;
     private ContactoFamiliares contactoFamiliares;
+    private Informes informes;
     private ArrayList<Seguro> listaSeguros;
     private PacientesAgrupadosRutinas pacientesAgrupadosRutinas;
     private ArrayList<Unidades> listaUnidades;
@@ -25,6 +26,7 @@ public class ClaseGlobal extends Application {
     private ArrayList<PacientesAgrupadosRutinas> listaProgramacion;
     private ArrayList<Area> listaAreas;
     private ArrayList<ContactoFamiliares> listaContactoFamiliares;
+    private ArrayList<Informes> listaInformes;
 
     @Override public void onCreate(){
         super.onCreate();
@@ -40,12 +42,14 @@ public class ClaseGlobal extends Application {
         rutinas = new Rutinas();
         seguro = new Seguro();
         contactoFamiliares = new ContactoFamiliares();
+        informes = new Informes();
         listaUnidades = new ArrayList<>();
         listaPacientes = new ArrayList<>(); // Inicializa la lista de pacientes vacía
         listaProgramacion = new ArrayList<>();
         listaSeguros = new ArrayList<>();
         listaAreas = new ArrayList<>();
         listaContactoFamiliares = new ArrayList<>();
+        listaInformes = new ArrayList<>();
 
     }
 
@@ -200,5 +204,21 @@ public class ClaseGlobal extends Application {
 
     public void setListaContactoFamiliares(ArrayList<ContactoFamiliares> listaContactoFamiliares) {
         this.listaContactoFamiliares = listaContactoFamiliares;
+    }
+
+    public Informes getInformes() {
+        return informes;
+    }
+
+    public void setInformes(Informes informes) {
+        this.informes = informes;
+    }
+
+    public ArrayList<Informes> getListaInformes() {
+        return listaInformes;
+    }
+
+    public void setListaInformes(ArrayList<Informes> listaInformes) {
+        this.listaInformes = listaInformes;
     }
 }

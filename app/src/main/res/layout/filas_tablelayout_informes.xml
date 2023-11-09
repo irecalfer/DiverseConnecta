@@ -1,0 +1,111 @@
+
+    <!-- R.layout.table_row_informe.xml -->
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="wrap_content">
+
+
+<TextView
+    android:id="@+id/tvRellenaTipo"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:paddingStart="8dp"
+    android:paddingEnd="8dp"
+    android:paddingTop="4dp"
+    android:paddingBottom="4dp"
+    android:gravity="start"
+    android:text="@string/tipoInforme"
+    android:textColor="#000000"
+    android:textSize="16sp" />
+
+
+<TextView
+    android:id="@+id/tvRellenaFecha"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:paddingStart="8dp"
+    android:paddingEnd="8dp"
+    android:paddingTop="4dp"
+    android:paddingBottom="4dp"
+    android:gravity="start"
+    android:text="@string/fechaInforme"
+    android:textColor="#000000"
+    android:textSize="16sp" />
+
+
+<TextView
+    android:id="@+id/tvRellenaCentro"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:paddingStart="8dp"
+    android:paddingEnd="8dp"
+    android:paddingTop="4dp"
+    android:paddingBottom="4dp"
+    android:gravity="start"
+    android:text="@string/centro"
+    android:textColor="#000000"
+    android:textSize="16sp" />
+
+
+<TextView
+    android:id="@+id/tvRellenaResponsable"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:paddingStart="8dp"
+    android:paddingEnd="8dp"
+    android:paddingTop="4dp"
+    android:paddingBottom="4dp"
+    android:gravity="start"
+    android:text="@string/responsable"
+    android:textColor="#000000"
+    android:textSize="16sp" />
+
+<!-- Columna 3: Fecha -->
+<TextView
+    android:id="@+id/tvRellenaServicioUnidad"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:paddingStart="8dp"
+    android:paddingEnd="8dp"
+    android:paddingTop="4dp"
+    android:paddingBottom="4dp"
+    android:gravity="start"
+    android:text="@string/servicioUnidadDispositivo"
+    android:textColor="#000000"
+    android:textSize="16sp" />
+
+
+<TextView
+    android:id="@+id/tvRellenaServicioSalud"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:paddingStart="8dp"
+    android:paddingEnd="8dp"
+    android:paddingTop="4dp"
+    android:paddingBottom="4dp"
+    android:gravity="start"
+    android:text="@string/servicioSalud"
+    android:textColor="#000000"
+    android:textSize="16sp" />
+
+    <Button
+        android:id="@+id/buttonPDF"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:gravity="start"
+        android:text="PDF"
+        android:textSize="16sp"/>
+
+
+</TableRow>

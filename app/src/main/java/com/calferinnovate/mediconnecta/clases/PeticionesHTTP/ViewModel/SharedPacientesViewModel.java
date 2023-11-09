@@ -10,6 +10,7 @@ import com.android.volley.VolleyError;
 import com.calferinnovate.mediconnecta.clases.ClaseGlobal;
 import com.calferinnovate.mediconnecta.clases.Constantes;
 import com.calferinnovate.mediconnecta.clases.ContactoFamiliares;
+import com.calferinnovate.mediconnecta.clases.Informes;
 import com.calferinnovate.mediconnecta.clases.Pacientes;
 import com.calferinnovate.mediconnecta.clases.PeticionesHTTP.PeticionesJson;
 import com.calferinnovate.mediconnecta.clases.Seguro;
@@ -30,11 +31,13 @@ public class SharedPacientesViewModel extends ViewModel {
     private final MutableLiveData<Seguro> mutableSeguro= new MutableLiveData<>();
     private final MutableLiveData<ArrayList<Seguro>> mutableSeguroList = new MutableLiveData<>();
     private final MutableLiveData<ArrayList<ContactoFamiliares>> mutableFamiliaresList = new MutableLiveData<>();
+    private final MutableLiveData<ArrayList<Informes>> mutableInformesList = new MutableLiveData<>();
     private PeticionesJson peticionesJson;
     private ClaseGlobal claseGlobal;
     private Context context;
     private boolean segurosCargados = false; // Agrega un indicador para verificar si los seguros se han cargado
-    private boolean familiaresCargados = false; // Agrega un indicador para verificar si los seguros se han cargado
+    private boolean familiaresCargados = false; // Agrega un indicador para verificar si los familiares se han cargado
+    private boolean informesCargados = false; // Agrega un indicador para verificar si los seguros se han cargado
 
     public SharedPacientesViewModel(){
 
@@ -174,6 +177,55 @@ public class SharedPacientesViewModel extends ViewModel {
         if (mutableFamiliaresList.getValue() == null) {obtieneContactoFamiliares(paciente);
         }
         return mutableFamiliaresList;
+    }
+
+    public LiveData<ArrayList<Informes>> getListaMutableInformes(Pacientes paciente){
+        if (mutableInformesList.getValue() == null) {obtieneInformesPaciente(paciente);
+        }
+        return mutableInformesList;
+    }
+
+    public void obtieneInformesPaciente(Pacientes paciente){
+        if(!segurosCargados){
+            String url = Constantes.url_part+"informes.php?fk_num_historia_clinica="+paciente.getFkNumHistoriaClinica();
+            Executor executor = Executors.newSingleThreadExecutor();
+            executor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    peticionesJson.getJsonObjectRequest(url, new PeticionesJson.MyJsonObjectResponseListener() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try{
+                                JSONArray jsonArray = response.getJSONArray("informes");
+                                for(int i =0; i<jsonArray.length(); i++){
+                                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                    String pdfBase64 = jsonObject.optString("PDF");
+                                    Informes nuevoInforme = new Informes(jsonObject.optInt("fk_num_historia_clinica"),
+                                            jsonObject.optString("tipo_informe"), jsonObject.optString("fecha"),
+                                            jsonObject.optString("centro"), jsonObject.optString("responsable"),
+                                            jsonObject.optString("servicio_unidad_dispositivo"), jsonObject.optString("servicio_de_salud"),
+                                            jsonObject.optString("PDF").getBytes());
+                                    claseGlobal.getListaInformes().add(nuevoInforme);
+                                }
+                                informesCargados = true;
+                                claseGlobal.setListaInformes(claseGlobal.getListaInformes());
+                                ArrayList<Informes> informesArrayList = claseGlobal.getListaInformes();
+                                if (!informesArrayList.isEmpty()) {
+                                    mutableInformesList.setValue(new ArrayList<>(informesArrayList));
+                                }
+                            }catch(JSONException e){
+                                e.printStackTrace();
+                            }
+                        }
+
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+
+                        }
+                    });
+                }
+            });
+        }
     }
 
     public void setPaciente(int position) {
