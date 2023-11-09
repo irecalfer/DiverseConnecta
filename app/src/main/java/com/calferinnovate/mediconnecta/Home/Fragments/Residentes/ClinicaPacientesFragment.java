@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TableLayout;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
@@ -62,16 +64,23 @@ public class ClinicaPacientesFragment extends Fragment {
         sharedPacientesViewModel = new ViewModelProvider(requireActivity(), factory).get(SharedPacientesViewModel.class);
 
 
+
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
         // Observación de LiveData: Has configurado la observación de un LiveData en el ViewModel utilizando el método observe(). Cuando los datos cambian en el LiveData,
         // el adaptador se actualiza automáticamente para reflejar los cambios en el RecyclerView.
         sharedPacientesViewModel.getPaciente().observe(getViewLifecycleOwner(), new Observer<Pacientes>() {
             @Override
             public void onChanged(Pacientes pacientes) {
-                obtieneInformesDelPaciente(pacientes);
+                Pacientes nuevoPaciente = pacientes;
+                obtieneInformesDelPaciente(nuevoPaciente);
             }
         });
-
-        return view;
     }
 
     public void llamaAClaseGlobal() {
@@ -87,6 +96,8 @@ public class ClinicaPacientesFragment extends Fragment {
             @Override
             public void onChanged(ArrayList<Informes> informes) {
                 informesPaciente = informes;
+                // Limpia las vistas existentes en la tabla
+                tlInformes.removeAllViews();
                 creaLaTabla(); // Mover la llamada a creaLaTabla aquí para asegurarse de que se llame después de obtener los informes
                 informesAdapter.notifyDataSetChanged(); // Notificar al adaptador que los datos han cambiado
 
@@ -118,8 +129,6 @@ public class ClinicaPacientesFragment extends Fragment {
                 transaction.commit();
             }
         });
-        // Limpia las vistas existentes en la tabla
-        tlInformes.removeAllViews();
 
         // Verificar que informesPaciente no sea nulo antes de intentar iterar
         if (informesPaciente != null) {
@@ -130,6 +139,7 @@ public class ClinicaPacientesFragment extends Fragment {
                 tlInformes.addView(rowView);
             }
         }
+        informesAdapter.notifyDataSetChanged();
     }
 }
 

@@ -20,6 +20,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import android.util.Base64;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -36,7 +37,6 @@ public class SharedPacientesViewModel extends ViewModel {
     private ClaseGlobal claseGlobal;
     private Context context;
     private boolean segurosCargados = false; // Agrega un indicador para verificar si los seguros se han cargado
-    private boolean familiaresCargados = false; // Agrega un indicador para verificar si los familiares se han cargado
     private boolean informesCargados = false; // Agrega un indicador para verificar si los seguros se han cargado
 
     public SharedPacientesViewModel(){
@@ -51,7 +51,7 @@ public class SharedPacientesViewModel extends ViewModel {
     public LiveData<ArrayList<Pacientes>> getPacientesList() {
 
         if (mutablePacientesList.getValue() == null) {
-            mutablePacientesList.setValue(ClaseGlobal.getInstance().getListaPacientes());
+            mutablePacientesList.postValue(ClaseGlobal.getInstance().getListaPacientes());
         }
         return mutablePacientesList;
     }
@@ -60,8 +60,7 @@ public class SharedPacientesViewModel extends ViewModel {
         return mutablePaciente;
     }
 
-    public void obtieneSeguroPacientes(Pacientes paciente) {
-        if(!segurosCargados){ // Verifica si los seguros ya se han cargado
+    public LiveData<Seguro>  obtieneSeguroPacientes(Pacientes paciente) {
             String url = Constantes.url_part+"seguro.php";
             Executor executor = Executors.newSingleThreadExecutor();
             executor.execute(new Runnable() {
@@ -83,12 +82,12 @@ public class SharedPacientesViewModel extends ViewModel {
                                     claseGlobal.setListaSeguros(claseGlobal.getListaSeguros());
                                     ArrayList<Seguro> seguros = claseGlobal.getListaSeguros();
                                     if (!seguros.isEmpty()) {
-                                        mutableSeguroList.setValue(new ArrayList<>(seguros));
+                                        mutableSeguroList.postValue(new ArrayList<>(seguros));
                                     }
 
                                     // Una vez que los seguros se hayan cargado, busca el seguro del paciente
                                     Seguro seguroDelPaciente = obtieneSeguroPacienteSeleccionado(paciente);
-                                    mutableSeguro.setValue(seguroDelPaciente);
+                                    mutableSeguro.postValue(seguroDelPaciente);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
@@ -105,11 +104,7 @@ public class SharedPacientesViewModel extends ViewModel {
                     }
                 }
             });
-        }else{
-            // Los seguros ya se han cargado, busca directamente el seguro del paciente
-            Seguro seguroDelPaciente = obtieneSeguroPacienteSeleccionado(paciente);
-            mutableSeguro.setValue(seguroDelPaciente);
-        }
+        return mutableSeguro;
     }
 
     private Seguro obtieneSeguroPacienteSeleccionado(Pacientes paciente){
@@ -121,15 +116,12 @@ public class SharedPacientesViewModel extends ViewModel {
         }
         return null; //MANEJAR CASO EN CASO DE QUE NO LO ENCUENTRE
     }
-    public LiveData<ArrayList<Seguro>> getSeguroList(){
-        return mutableSeguroList;
-    }
+
     public LiveData<Seguro> getSeguro() {
         return mutableSeguro;
     }
 
-    public void obtieneContactoFamiliares(Pacientes paciente){
-        if(!familiaresCargados) { // Verifica si los seguros ya se han cargado
+    public LiveData<ArrayList<ContactoFamiliares>> obtieneContactoFamiliares(Pacientes paciente){
             String url = Constantes.url_part + "familiares.php?cip_sns=" + paciente.getCipSns();
             Executor executor = Executors.newSingleThreadExecutor();
             executor.execute(new Runnable() {
@@ -152,11 +144,10 @@ public class SharedPacientesViewModel extends ViewModel {
                                             jsonObject.optInt("telefono_contacto"), jsonObject.optInt("telefono_contacto_2"));
                                     claseGlobal.getListaContactoFamiliares().add(nuevoFamiliar);
                                 }
-                                familiaresCargados = true; // Marca los seguros como cargados
                                 claseGlobal.setListaContactoFamiliares(claseGlobal.getListaContactoFamiliares());
                                 ArrayList<ContactoFamiliares> contactoFamiliares = claseGlobal.getListaContactoFamiliares();
                                 if (!contactoFamiliares.isEmpty()) {
-                                    mutableFamiliaresList.setValue(new ArrayList<>(contactoFamiliares));
+                                    mutableFamiliaresList.postValue(new ArrayList<>(contactoFamiliares));
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -170,23 +161,18 @@ public class SharedPacientesViewModel extends ViewModel {
                     });
                 }
             });
-        }
-    }
-
-    public LiveData<ArrayList<ContactoFamiliares>> getListaMutableFamiliares(Pacientes paciente){
-        if (mutableFamiliaresList.getValue() == null) {obtieneContactoFamiliares(paciente);
-        }
         return mutableFamiliaresList;
     }
 
-    public LiveData<ArrayList<Informes>> getListaMutableInformes(Pacientes paciente){
-        if (mutableInformesList.getValue() == null) {obtieneInformesPaciente(paciente);
-        }
-        return mutableInformesList;
+    public LiveData<ArrayList<ContactoFamiliares>> getListaMutableFamiliares(Pacientes paciente){
+        return obtieneContactoFamiliares(paciente);
     }
 
-    public void obtieneInformesPaciente(Pacientes paciente){
-        if(!informesCargados){
+    public LiveData<ArrayList<Informes>> getListaMutableInformes(Pacientes paciente){
+        return obtieneInformesPaciente(paciente);
+    }
+
+    public LiveData<ArrayList<Informes>> obtieneInformesPaciente(Pacientes paciente){
             String url = Constantes.url_part+"informes.php?fk_num_historia_clinica="+paciente.getFkNumHistoriaClinica();
             Executor executor = Executors.newSingleThreadExecutor();
             executor.execute(new Runnable() {
@@ -196,19 +182,25 @@ public class SharedPacientesViewModel extends ViewModel {
                         @Override
                         public void onResponse(JSONObject response) {
                             try{
+                                //Si la lista de informes está llena para otro paciente la vaciamos para
+                                //llenarla con los informes del nuevo paciente.
+                                if (!claseGlobal.getListaInformes().isEmpty()) {
+                                    claseGlobal.getListaInformes().clear();
+                                }
                                 // Verificar que claseGlobal y la lista de informes no sean nulos
                                 if (claseGlobal != null && claseGlobal.getListaInformes() != null) {
                                     JSONArray jsonArray = response.getJSONArray("informes");
                                     for (int i = 0; i < jsonArray.length(); i++) {
                                         JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                        String base64String = jsonObject.optString("PDF");
+                                        byte[] pdfBytes = Base64.decode(base64String, Base64.DEFAULT);
                                         Informes nuevoInforme = new Informes(jsonObject.optInt("fk_num_historia_clinica"),
                                                 jsonObject.optString("tipo_informe"), jsonObject.optString("fecha"),
                                                 jsonObject.optString("centro"), jsonObject.optString("responsable"),
                                                 jsonObject.optString("servicio_unidad_dispositivo"), jsonObject.optString("servicio_de_salud"),
-                                                jsonObject.optString("PDF").getBytes());
+                                                pdfBytes);
                                         claseGlobal.getListaInformes().add(nuevoInforme);
                                     }
-                                    informesCargados = true;
                                     claseGlobal.setListaInformes(claseGlobal.getListaInformes());
                                     // Actualizar el LiveData directamente
                                     if (!claseGlobal.getListaInformes().isEmpty()) {
@@ -227,12 +219,12 @@ public class SharedPacientesViewModel extends ViewModel {
                     });
                 }
             });
-        }
+        return mutableInformesList;
     }
 
     public void setPaciente(int position) {
         Pacientes pacienteSeleccionado = mutablePacientesList.getValue().get(position);
-        mutablePaciente.setValue(pacienteSeleccionado);
+        mutablePaciente.postValue(pacienteSeleccionado);
     }
 
 }

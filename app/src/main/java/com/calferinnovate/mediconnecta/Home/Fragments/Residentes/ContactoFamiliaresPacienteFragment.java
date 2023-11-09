@@ -65,20 +65,23 @@ public class ContactoFamiliaresPacienteFragment extends Fragment {
         ViewModelFactory<SharedPacientesViewModel> factory = new ViewModelFactory<>(viewModelArgs);
         // Inicializa el ViewModel
         sharedPacientesViewModel = new ViewModelProvider(requireActivity(), factory).get(SharedPacientesViewModel.class);
-        // Observación de LiveData: Has configurado la observación de un LiveData en el ViewModel utilizando el método observe(). Cuando los datos cambian en el LiveData,
-        // el adaptador se actualiza automáticamente para reflejar los cambios en el RecyclerView.
-        sharedPacientesViewModel.getPaciente().observe(getViewLifecycleOwner(), new Observer<Pacientes>() {
-            @Override
-            public void onChanged(Pacientes pacientes) {
-                obtieneListaFamiliares(pacientes);
-            }
-        });
+
         return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        // Observación de LiveData: Has configurado la observación de un LiveData en el ViewModel utilizando el método observe(). Cuando los datos cambian en el LiveData,
+        // el adaptador se actualiza automáticamente para reflejar los cambios en el RecyclerView.
+        sharedPacientesViewModel.getPaciente().observe(getViewLifecycleOwner(), new Observer<Pacientes>() {
+            @Override
+            public void onChanged(Pacientes pacientes) {
+                Pacientes nuevoPaciente = pacientes;
+                obtieneListaFamiliares(nuevoPaciente);
+            }
+        });
 
     }
 

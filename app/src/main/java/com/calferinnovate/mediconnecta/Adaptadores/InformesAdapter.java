@@ -47,7 +47,6 @@ public class InformesAdapter extends ArrayAdapter<Informes> {
 
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.filas_tablelayout_informes, parent, false);
 
-
             TextView textViewTipoInforme = convertView.findViewById(R.id.tvRellenaTipo);
             TextView textViewFecha = convertView.findViewById(R.id.tvRellenaFecha);
             TextView textViewCentro = convertView.findViewById(R.id.tvRellenaCentro);

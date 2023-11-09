@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <!-- Columna 1: Encabezado para "Número de Informe" -->
     <TextView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -13,12 +12,12 @@
         android:paddingTop="4dp"
         android:paddingBottom="4dp"
         android:gravity="start"
-        android:text="Número de Informe"
+        android:text="@string/tipoInforme"
         android:textColor="#000000"
         android:textSize="16sp"
         android:textStyle="bold" />
 
-    <!-- Columna 2: Encabezado para "Tipo de Informe" -->
+
     <TextView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -28,27 +27,12 @@
         android:paddingTop="4dp"
         android:paddingBottom="4dp"
         android:gravity="start"
-        android:text="Tipo de Informe"
+        android:text="@string/fechaInforme"
         android:textColor="#000000"
         android:textSize="16sp"
         android:textStyle="bold" />
 
-    <!-- Columna 3: Encabezado para "Fecha" -->
-    <TextView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:paddingStart="8dp"
-        android:paddingEnd="8dp"
-        android:paddingTop="4dp"
-        android:paddingBottom="4dp"
-        android:gravity="start"
-        android:text="Fecha"
-        android:textColor="#000000"
-        android:textSize="16sp"
-        android:textStyle="bold" />
 
-    <!-- Columna 3: Encabezado para "Fecha" -->
     <TextView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -58,7 +42,7 @@
         android:paddingTop="4dp"
         android:paddingBottom="4dp"
         android:gravity="start"
-        android:text="Fecha"
+        android:text="@string/centro"
         android:textColor="#000000"
         android:textSize="16sp"
         android:textStyle="bold" />
@@ -73,7 +57,7 @@
         android:paddingTop="4dp"
         android:paddingBottom="4dp"
         android:gravity="start"
-        android:text="Fecha"
+        android:text="@string/responsable"
         android:textColor="#000000"
         android:textSize="16sp"
         android:textStyle="bold" />
@@ -88,7 +72,22 @@
         android:paddingTop="4dp"
         android:paddingBottom="4dp"
         android:gravity="start"
-        android:text="Fecha"
+        android:text="@string/servicioUnidadDispositivo"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <!-- Columna 3: Encabezado para "Fecha" -->
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:gravity="start"
+        android:text="@string/servicioSalud"
         android:textColor="#000000"
         android:textSize="16sp"
         android:textStyle="bold" />

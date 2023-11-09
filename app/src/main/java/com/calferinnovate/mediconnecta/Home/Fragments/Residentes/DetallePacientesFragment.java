@@ -26,11 +26,6 @@ public class DetallePacientesFragment extends Fragment {
     private ClaseGlobal claseGlobal;
     private String nombreArea;
 
-    public DetallePacientesFragment() {
-
-    }
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

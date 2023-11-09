@@ -42,6 +42,7 @@ public class PacientesFragment extends Fragment implements PacientesAdapter.Item
     private ViewModelFactory viewModelFactory;
     private ViewModelArgs viewModelArgs;
     private PeticionesJson peticionesJson;
+    private PacientesAdapter adapter;
 
 
     @Override
@@ -55,7 +56,7 @@ public class PacientesFragment extends Fragment implements PacientesAdapter.Item
         recycler.setHasFixedSize(true);
 
         // added data from arraylist to adapter class.
-        PacientesAdapter adapter = new PacientesAdapter(listaPacientes, getContext(), this);
+        adapter = new PacientesAdapter(listaPacientes, getContext(), this);
 
         // setting grid layout manager to implement grid view.
         // in this method '2' represents number of columns to be displayed in grid view.
@@ -89,8 +90,7 @@ public class PacientesFragment extends Fragment implements PacientesAdapter.Item
         sharedPacientesViewModel.getPacientesList().observe(getViewLifecycleOwner(), new Observer<ArrayList<Pacientes>>() {
             @Override
             public void onChanged(ArrayList<Pacientes> pacientes) {
-                //listaPacientes.clear();
-                //listaPacientes.addAll(pacientes);
+                // Actualizar la lista de pacientes en el adaptador
                 adapter.notifyDataSetChanged();
                 //adapter = new PacientesAdapter(pacientes, getContext(), this);
                 //recycler.setAdapter(adapter);
@@ -113,6 +113,7 @@ public class PacientesFragment extends Fragment implements PacientesAdapter.Item
     public void onClick(int position) {
         //Toast.makeText(requireContext(), listaPacientes.get(position).getNombre(), Toast.LENGTH_SHORT).show();
         sharedPacientesViewModel.setPaciente(position);
+        adapter.notifyDataSetChanged();
         //Toast.makeText(requireContext(), listaPacientes.get(position).getNombre(), Toast.LENGTH_SHORT).show();
         getParentFragmentManager().beginTransaction().replace(R.id.fragment_container, new DetallePacientesFragment()).commit();
 
