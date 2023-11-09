@@ -17,12 +17,14 @@ import androidx.lifecycle.ViewModelProvider;
 import com.calferinnovate.mediconnecta.Adaptadores.InformesAdapter;
 import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.clases.ClaseGlobal;
+import com.calferinnovate.mediconnecta.clases.HistoriaClinica;
 import com.calferinnovate.mediconnecta.clases.Informes;
 import com.calferinnovate.mediconnecta.clases.Pacientes;
 import com.calferinnovate.mediconnecta.clases.PeticionesHTTP.PeticionesJson;
 import com.calferinnovate.mediconnecta.clases.PeticionesHTTP.ViewModel.SharedPacientesViewModel;
 import com.calferinnovate.mediconnecta.clases.PeticionesHTTP.ViewModel.ViewModelArgs;
 import com.calferinnovate.mediconnecta.clases.PeticionesHTTP.ViewModel.ViewModelFactory;
+import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;
 
@@ -36,6 +38,8 @@ public class ClinicaPacientesFragment extends Fragment {
     private ArrayList<Informes> informesPaciente;
     private TableLayout tlInformes;
     private InformesAdapter informesAdapter;
+    private TextInputEditText datosSalud;
+    private TextInputEditText tratamiento;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -79,8 +83,11 @@ public class ClinicaPacientesFragment extends Fragment {
             public void onChanged(Pacientes pacientes) {
                 Pacientes nuevoPaciente = pacientes;
                 obtieneInformesDelPaciente(nuevoPaciente);
+                obtieneHistoriaClinicaDelPaciente(nuevoPaciente);
             }
         });
+
+
     }
 
     public void llamaAClaseGlobal() {
@@ -89,6 +96,9 @@ public class ClinicaPacientesFragment extends Fragment {
 
     public void asignaComponentesAVariables(View view) {
         tlInformes = view.findViewById(R.id.tableInformes);
+        datosSalud = view.findViewById(R.id.datosSalud);
+        tratamiento = view.findViewById(R.id.tratamiento);
+
     }
 
     public ArrayList<Informes> obtieneInformesDelPaciente(Pacientes paciente) {
@@ -140,6 +150,16 @@ public class ClinicaPacientesFragment extends Fragment {
             }
         }
         informesAdapter.notifyDataSetChanged();
+    }
+
+    public void obtieneHistoriaClinicaDelPaciente(Pacientes paciente){
+        sharedPacientesViewModel.obtieneHistoriaClinica(paciente).observe(getViewLifecycleOwner(), new Observer<HistoriaClinica>() {
+            @Override
+            public void onChanged(HistoriaClinica historiaClinica) {
+                datosSalud.setText(historiaClinica.getDatosSalud());
+                tratamiento.setText(historiaClinica.getTratamiento());
+            }
+        });
     }
 }
 

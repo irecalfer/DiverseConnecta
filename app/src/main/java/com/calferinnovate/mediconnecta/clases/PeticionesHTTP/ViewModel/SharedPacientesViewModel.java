@@ -10,6 +10,7 @@ import com.android.volley.VolleyError;
 import com.calferinnovate.mediconnecta.clases.ClaseGlobal;
 import com.calferinnovate.mediconnecta.clases.Constantes;
 import com.calferinnovate.mediconnecta.clases.ContactoFamiliares;
+import com.calferinnovate.mediconnecta.clases.HistoriaClinica;
 import com.calferinnovate.mediconnecta.clases.Informes;
 import com.calferinnovate.mediconnecta.clases.Pacientes;
 import com.calferinnovate.mediconnecta.clases.PeticionesHTTP.PeticionesJson;
@@ -30,6 +31,7 @@ public class SharedPacientesViewModel extends ViewModel {
     private final MutableLiveData<ArrayList<Pacientes>> mutablePacientesList = new MutableLiveData<>();
     private final MutableLiveData<Pacientes> mutablePaciente = new MutableLiveData<>();
     private final MutableLiveData<Seguro> mutableSeguro= new MutableLiveData<>();
+    private final MutableLiveData<HistoriaClinica> mutableHistoriaClinica= new MutableLiveData<>();
     private final MutableLiveData<ArrayList<Seguro>> mutableSeguroList = new MutableLiveData<>();
     private final MutableLiveData<ArrayList<ContactoFamiliares>> mutableFamiliaresList = new MutableLiveData<>();
     private final MutableLiveData<ArrayList<Informes>> mutableInformesList = new MutableLiveData<>();
@@ -222,5 +224,40 @@ public class SharedPacientesViewModel extends ViewModel {
         Pacientes pacienteSeleccionado = mutablePacientesList.getValue().get(position);
         mutablePaciente.postValue(pacienteSeleccionado);
     }
+
+    public LiveData<HistoriaClinica> obtieneHistoriaClinica(Pacientes paciente){
+        String url = Constantes.url_part+"historia_clinica.php?cip_sns="+paciente.getCipSns();
+        Executor executor = Executors.newSingleThreadExecutor();
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                peticionesJson.getJsonObjectRequest(url, new PeticionesJson.MyJsonObjectResponseListener() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try{
+                            JSONArray jsonArray = response.getJSONArray("historia_clinica");
+                            for(int i =0; i<jsonArray.length(); i++){
+                                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                HistoriaClinica nuevaHistoriaClinica = new HistoriaClinica(jsonObject.optString("datos_salud"),
+                                        jsonObject.optString("tratamiento"));
+                                claseGlobal.setHistoriaClinica(nuevaHistoriaClinica);
+                            }
+                            mutableHistoriaClinica.postValue(claseGlobal.getHistoriaClinica());
+                        }catch(JSONException e){
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                });
+            }
+        });
+        return mutableHistoriaClinica;
+    }
+
+
 
 }

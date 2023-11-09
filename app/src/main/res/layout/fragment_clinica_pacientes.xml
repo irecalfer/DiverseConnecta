@@ -44,17 +44,19 @@
         app:layout_constraintStart_toEndOf="@id/guidelineVertIzq"
         app:layout_constraintEnd_toStartOf="@id/guidelineVertDer"/>
 
+
     <ScrollView
         android:id="@+id/svDatos"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="300dp"
+        android:nestedScrollingEnabled="false"
         app:layout_constraintEnd_toStartOf="@id/svTratamiento"
         app:layout_constraintStart_toEndOf="@+id/guidelineVertIzq"
         app:layout_constraintTop_toBottomOf="@+id/labelHistoriaClínica">
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/labelDatosSalud"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
@@ -81,14 +83,15 @@
     <ScrollView
         android:id="@+id/svTratamiento"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="300dp"
+        android:nestedScrollingEnabled="true"
         app:layout_constraintEnd_toStartOf="@id/guidelineVertDer"
         app:layout_constraintStart_toEndOf="@+id/svDatos"
         app:layout_constraintTop_toBottomOf="@+id/labelHistoriaClínica">
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/labelTratamiento"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
