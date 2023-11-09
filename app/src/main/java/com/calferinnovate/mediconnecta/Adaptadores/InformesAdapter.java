@@ -17,8 +17,27 @@ import com.calferinnovate.mediconnecta.clases.Informes;
 import java.util.ArrayList;
 
 public class InformesAdapter extends ArrayAdapter<Informes> {
-    public InformesAdapter(Context context, ArrayList<Informes> informes) {
+
+    private ItemClickListener clickListener;
+    private Context context;
+    private ArrayList<Informes> informes;
+
+
+
+
+    //Interface para que el fragment implemente el listener y poder capturar el evento fuera del adaptador
+    public interface ItemClickListener{
+        public void onClick(int position);
+    }
+
+    public InformesAdapter(Context context, ArrayList<Informes> informes, ItemClickListener clickListener) {
         super(context, 0, informes);
+        this.clickListener = clickListener;
+    }
+
+    public View inflaElHeader(@NonNull ViewGroup parent){
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.header_tablelayout_informes, parent, false);
+        return view;
     }
 
     @NonNull
@@ -26,13 +45,8 @@ public class InformesAdapter extends ArrayAdapter<Informes> {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         Informes informe = getItem(position);
 
-        // Si la vista actual es nula y la posición es 0, infla la primera fila de encabezados
-        if (convertView == null && position == 0) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.header_tablelayout_informes, parent, false);
-        } else {
-            if (convertView == null) {
-                convertView = LayoutInflater.from(getContext()).inflate(R.layout.filas_tablelayout_informes, parent, false);
-            }
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.filas_tablelayout_informes, parent, false);
+
 
             TextView textViewTipoInforme = convertView.findViewById(R.id.tvRellenaTipo);
             TextView textViewFecha = convertView.findViewById(R.id.tvRellenaFecha);
@@ -49,19 +63,26 @@ public class InformesAdapter extends ArrayAdapter<Informes> {
             textViewResponsable.setText(informe.getCentro());
             textViewServicioUnidad.setText(informe.getServicioUnidadDispositivo());
             textViewServicioSalud.setText(informe.getServicioDeSalud());
-
             // Configura un botón para ver el PDF y maneja su acción aquí
+            //Esto propaga el evento hacia afuera, así podemos capturarlo en el punto que queramos de
+            //nuestra aplicación
             buttonPDF.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mostrarPDF(informe.getPdfBytes());
+                    // Invocar el método click del ClickListener
+                    if (clickListener != null) {
+                        clickListener.onClick(position);
+                    }
                 }
             });
-        }
+
+
         return convertView;
     }
 
-    public void mostrarPDF(byte[] pdfBytes){
 
+    //Este metodo se utiliza desde el fragmento que captura el evento de clic de los items
+    public void setOnClickListener(ItemClickListener clickListener){
+        this.clickListener = clickListener;
     }
 }

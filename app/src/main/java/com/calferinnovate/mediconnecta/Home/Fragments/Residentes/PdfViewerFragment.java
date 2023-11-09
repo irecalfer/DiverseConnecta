@@ -12,10 +12,10 @@ import com.calferinnovate.mediconnecta.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link PdfViewerkFragment#newInstance} factory method to
+ * Use the {@link PdfViewerFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class PdfViewerkFragment extends Fragment {
+public class PdfViewerFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -26,7 +26,7 @@ public class PdfViewerkFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public PdfViewerkFragment() {
+    public PdfViewerFragment() {
         // Required empty public constructor
     }
 
@@ -39,8 +39,8 @@ public class PdfViewerkFragment extends Fragment {
      * @return A new instance of fragment PdfViewerkFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static PdfViewerkFragment newInstance(String param1, String param2) {
-        PdfViewerkFragment fragment = new PdfViewerkFragment();
+    public static PdfViewerFragment newInstance(String param1, String param2) {
+        PdfViewerFragment fragment = new PdfViewerFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);

@@ -186,7 +186,7 @@ public class SharedPacientesViewModel extends ViewModel {
     }
 
     public void obtieneInformesPaciente(Pacientes paciente){
-        if(!segurosCargados){
+        if(!informesCargados){
             String url = Constantes.url_part+"informes.php?fk_num_historia_clinica="+paciente.getFkNumHistoriaClinica();
             Executor executor = Executors.newSingleThreadExecutor();
             executor.execute(new Runnable() {
@@ -196,22 +196,24 @@ public class SharedPacientesViewModel extends ViewModel {
                         @Override
                         public void onResponse(JSONObject response) {
                             try{
-                                JSONArray jsonArray = response.getJSONArray("informes");
-                                for(int i =0; i<jsonArray.length(); i++){
-                                    JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                    String pdfBase64 = jsonObject.optString("PDF");
-                                    Informes nuevoInforme = new Informes(jsonObject.optInt("fk_num_historia_clinica"),
-                                            jsonObject.optString("tipo_informe"), jsonObject.optString("fecha"),
-                                            jsonObject.optString("centro"), jsonObject.optString("responsable"),
-                                            jsonObject.optString("servicio_unidad_dispositivo"), jsonObject.optString("servicio_de_salud"),
-                                            jsonObject.optString("PDF").getBytes());
-                                    claseGlobal.getListaInformes().add(nuevoInforme);
-                                }
-                                informesCargados = true;
-                                claseGlobal.setListaInformes(claseGlobal.getListaInformes());
-                                ArrayList<Informes> informesArrayList = claseGlobal.getListaInformes();
-                                if (!informesArrayList.isEmpty()) {
-                                    mutableInformesList.setValue(new ArrayList<>(informesArrayList));
+                                // Verificar que claseGlobal y la lista de informes no sean nulos
+                                if (claseGlobal != null && claseGlobal.getListaInformes() != null) {
+                                    JSONArray jsonArray = response.getJSONArray("informes");
+                                    for (int i = 0; i < jsonArray.length(); i++) {
+                                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                        Informes nuevoInforme = new Informes(jsonObject.optInt("fk_num_historia_clinica"),
+                                                jsonObject.optString("tipo_informe"), jsonObject.optString("fecha"),
+                                                jsonObject.optString("centro"), jsonObject.optString("responsable"),
+                                                jsonObject.optString("servicio_unidad_dispositivo"), jsonObject.optString("servicio_de_salud"),
+                                                jsonObject.optString("PDF").getBytes());
+                                        claseGlobal.getListaInformes().add(nuevoInforme);
+                                    }
+                                    informesCargados = true;
+                                    claseGlobal.setListaInformes(claseGlobal.getListaInformes());
+                                    // Actualizar el LiveData directamente
+                                    if (!claseGlobal.getListaInformes().isEmpty()) {
+                                        mutableInformesList.postValue(new ArrayList<>(claseGlobal.getListaInformes()));
+                                    }
                                 }
                             }catch(JSONException e){
                                 e.printStackTrace();
