@@ -50,7 +50,7 @@ public class SeleccionUnidadFragment extends Fragment implements AdapterView.OnI
     Empleado empleado;
     ImageView foto;
     private Area area;
-    private final ArrayList<Unidades> unidadesArrayList = new ArrayList<>();
+    private ArrayList<Unidades> unidadesArrayList = new ArrayList<>();
     private ClaseGlobal claseGlobal;
     private Pacientes pacientes;
     private Unidades unidades;
@@ -142,6 +142,7 @@ public class SeleccionUnidadFragment extends Fragment implements AdapterView.OnI
 
     public void llamadaAObjetoClaseGlobal() {
         claseGlobal = ClaseGlobal.getInstance();
+        unidadesArrayList = claseGlobal.getListaUnidades();
         pacientes = claseGlobal.getPacientes();
         unidades = claseGlobal.getUnidades();
         empleado = claseGlobal.getEmpleado();
@@ -184,6 +185,7 @@ public class SeleccionUnidadFragment extends Fragment implements AdapterView.OnI
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         if (parent.getId() == R.id.spinnerArea) {
             listaUnidades.clear();
+            unidadesArrayList.clear();
             String areaSeleccionada = parent.getSelectedItem().toString();
             String urlUnidades = Constantes.url_part + "unidades.php?nombre_area=" + areaSeleccionada;
 
@@ -198,9 +200,10 @@ public class SeleccionUnidadFragment extends Fragment implements AdapterView.OnI
                                     JSONObject jsonObject = jsonArray.getJSONObject(i);
                                     Unidades nuevaUnidad = new Unidades(jsonObject.optInt("id_unidad"), jsonObject.optInt("fk_id_area"),
                                             jsonObject.optString("nombre"));
-                                    claseGlobal.getListaUnidades().add(nuevaUnidad);
+                                    unidadesArrayList.add(nuevaUnidad);
                                     listaUnidades.add(nuevaUnidad.getNombreUnidad());
                                 }
+                                claseGlobal.setListaUnidades(unidadesArrayList);
                                 actualizaListaUnidadesYCreaAdaptador();
                             } catch (JSONException e) {
                                 throw new RuntimeException(e);
@@ -220,9 +223,9 @@ public class SeleccionUnidadFragment extends Fragment implements AdapterView.OnI
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     if (parent.getId() == R.id.spinnerUnidad) {
                         // Obtiene la unidad seleccionada del spinner
-                        unidades = claseGlobal.getListaUnidades().get(position);
+                        Unidades unidad = unidadesArrayList.get(position);
                         // Establece la unidad seleccionada en ClaseGlobal
-                        claseGlobal.setUnidades(unidades);
+                        claseGlobal.setUnidades(unidad);
                     }
                 }
 
@@ -242,7 +245,6 @@ public class SeleccionUnidadFragment extends Fragment implements AdapterView.OnI
 
     public void actualizaListaUnidadesYCreaAdaptador() {
         // Actualiza la lista de Unidades en ClaseGlobal
-        claseGlobal.setListaUnidades(claseGlobal.getListaUnidades());
         unidadesAdapter = new ArrayAdapter<>(getContext(), R.layout.my_spinner, listaUnidades);
         unidadesAdapter.setDropDownViewResource(R.layout.my_spinner);
         unidadesSP.setAdapter(unidadesAdapter);
@@ -254,7 +256,7 @@ public class SeleccionUnidadFragment extends Fragment implements AdapterView.OnI
         //De tal manera que podamos utilizar la instancia creada para poder acceder a su nombre y
         //de igual manera poder acceder a los pacientes de dicha unidad.
         //Unidades unidadActual = claseGlobal.getUnidades();
-        String url = Constantes.url_part + "pacientes.php?nombre=" + unidades.getNombreUnidad();
+        String url = Constantes.url_part + "pacientes.php?nombre=" + claseGlobal.getUnidades().getNombreUnidad();
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
