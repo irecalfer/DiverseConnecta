@@ -68,4 +68,13 @@
     <string name="servicioUnidadDispositivo">Servicio Unidad Dispositivo</string>
     <string name="servicioSalud">Servicio de Salud</string>
     <string name="pdf">PDF</string>
+    <string name="anatomicos">Anatómicos</string>
+    <string name="labelPauta">Pauta</string>
+    <string name="labelNombrePauta">Pauta</string>
+    <string name="labelObservacionesPauta">Observaciones</string>
+    <string name="tipoPauta">Tipo Pauta</string>
+    <string name="observacionesPauta">Observaciones</string>
+    <string name="mañanaAnatomicos">Mañana</string>
+    <string name="tardeAnatomicos">Tarde</string>
+    <string name="nocheAnatomicos">Noche</string>
 </resources>

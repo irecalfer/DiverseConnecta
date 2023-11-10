@@ -13,6 +13,7 @@ import com.calferinnovate.mediconnecta.clases.ContactoFamiliares;
 import com.calferinnovate.mediconnecta.clases.HistoriaClinica;
 import com.calferinnovate.mediconnecta.clases.Informes;
 import com.calferinnovate.mediconnecta.clases.Pacientes;
+import com.calferinnovate.mediconnecta.clases.Pautas;
 import com.calferinnovate.mediconnecta.clases.PeticionesHTTP.PeticionesJson;
 import com.calferinnovate.mediconnecta.clases.Seguro;
 
@@ -35,6 +36,7 @@ public class SharedPacientesViewModel extends ViewModel {
     private final MutableLiveData<ArrayList<Seguro>> mutableSeguroList = new MutableLiveData<>();
     private final MutableLiveData<ArrayList<ContactoFamiliares>> mutableFamiliaresList = new MutableLiveData<>();
     private final MutableLiveData<ArrayList<Informes>> mutableInformesList = new MutableLiveData<>();
+    private MutableLiveData<ArrayList<Pautas>> mutablePautasList = new MutableLiveData<>();
     private PeticionesJson peticionesJson;
     private ClaseGlobal claseGlobal;
     private Context context;
@@ -258,6 +260,49 @@ public class SharedPacientesViewModel extends ViewModel {
         return mutableHistoriaClinica;
     }
 
+    public LiveData<ArrayList<Pautas>> obtienePautasPaciente(Pacientes paciente){
+        mutablePautasList.postValue(new ArrayList<>());  // Reiniciar el LiveData
+        String url = Constantes.url_part+"pautas.php?cip_sns="+paciente.getCipSns();
+        Executor executor = Executors.newSingleThreadExecutor();
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                peticionesJson.getJsonObjectRequest(url, new PeticionesJson.MyJsonObjectResponseListener() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try{
+                            if (!claseGlobal.getListaPautas().isEmpty()) {
+                                claseGlobal.getListaPautas().clear();
+                            }
+                            JSONArray jsonArray = response.getJSONArray("pautas");
+                            for(int i=0; i<jsonArray.length(); i++){
+                                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                Pautas nuevaPauta = new Pautas(jsonObject.optString("pauta"),
+                                        jsonObject.optString("observaciones"), jsonObject.optString("mañana"),
+                                        jsonObject.optString("tarde"), jsonObject.optString("noche"));
+                                claseGlobal.getListaPautas().add(nuevaPauta);
+                            }
+                            claseGlobal.setListaPautas(claseGlobal.getListaPautas());
+                            // Actualizar el LiveData directamente
+                            if (!claseGlobal.getListaPautas().isEmpty()) {
+                                mutablePautasList.postValue(new ArrayList<>(claseGlobal.getListaPautas()));
+                            }
+                        }catch(JSONException e){
+                            e.printStackTrace();
+                        }
+                    }
 
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
 
+                    }
+                });
+            }
+        });
+        return mutablePautasList;
+    }
+
+    public LiveData<ArrayList<Pautas>> getListaMutablePautas(Pacientes paciente){
+        return obtienePautasPaciente(paciente);
+    }
 }

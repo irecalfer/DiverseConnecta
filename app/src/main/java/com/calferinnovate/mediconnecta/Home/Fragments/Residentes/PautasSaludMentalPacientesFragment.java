@@ -2,65 +2,96 @@ package com.calferinnovate.mediconnecta.Home.Fragments.Residentes;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.calferinnovate.mediconnecta.Adaptadores.PautasAdapter;
 import com.calferinnovate.mediconnecta.R;
+import com.calferinnovate.mediconnecta.clases.ClaseGlobal;
+import com.calferinnovate.mediconnecta.clases.Pacientes;
+import com.calferinnovate.mediconnecta.clases.Pautas;
+import com.calferinnovate.mediconnecta.clases.PeticionesHTTP.PeticionesJson;
+import com.calferinnovate.mediconnecta.clases.PeticionesHTTP.ViewModel.SharedPacientesViewModel;
+import com.calferinnovate.mediconnecta.clases.PeticionesHTTP.ViewModel.ViewModelArgs;
+import com.calferinnovate.mediconnecta.clases.PeticionesHTTP.ViewModel.ViewModelFactory;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link PautasSaludMentalPacientesFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.ArrayList;
+
 public class PautasSaludMentalPacientesFragment extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public PautasSaludMentalPacientesFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment PautasSaludMentalPacientesFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static PautasSaludMentalPacientesFragment newInstance(String param1, String param2) {
-        PautasSaludMentalPacientesFragment fragment = new PautasSaludMentalPacientesFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
+    private RecyclerView recyclerView;
+    private ViewModelArgs viewModelArgs;
+    private SharedPacientesViewModel sharedPacientesViewModel;
+    private PeticionesJson peticionesJson;
+    private PautasAdapter pautasAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_pautas_salud_mental_pacientes, container, false);
+        View view =  inflater.inflate(R.layout.fragment_pautas_salud_mental_pacientes, container, false);
+
+        ClaseGlobal claseGlobal = ClaseGlobal.getInstance();
+
+        // Obtener el Recycler
+        recyclerView = view.findViewById(R.id.recyclerViewPautasSaludMental);
+        recyclerView.setHasFixedSize(true);
+
+        //Creas un objeto ViewModelFactory y obtienes una instancia de ConsultasYRutinasDiariasViewModel utilizando este factory.
+        //Luego, observas el LiveData del ViewModel para mantener actualizada la lista de programación en el RecyclerView.
+        viewModelArgs = new ViewModelArgs() {
+            @Override
+            public PeticionesJson getPeticionesJson() {
+                return peticionesJson = new PeticionesJson(requireContext());
+            }
+
+            @Override
+            public ClaseGlobal getClaseGlobal() {
+                return claseGlobal;
+            }
+        };
+
+        ViewModelFactory<SharedPacientesViewModel> factory = new ViewModelFactory<>(viewModelArgs);
+        // Inicializa el ViewModel
+        sharedPacientesViewModel = new ViewModelProvider(requireActivity(), factory).get(SharedPacientesViewModel.class);
+
+
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        sharedPacientesViewModel.getPaciente().observe(getViewLifecycleOwner(), new Observer<Pacientes>() {
+            @Override
+            public void onChanged(Pacientes pacientes) {
+                obtienePautasPaciente(pacientes);
+            }
+        });
+    }
+
+    public void obtienePautasPaciente(Pacientes pacientes){
+        sharedPacientesViewModel.getListaMutablePautas(pacientes).observe(getViewLifecycleOwner(), new Observer<ArrayList<Pautas>>() {
+            @Override
+            public void onChanged(ArrayList<Pautas> pautas) {
+                pautasAdapter = new PautasAdapter(pautas, getContext());
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+                // at last set adapter to recycler view.
+                recyclerView.setLayoutManager(linearLayoutManager);
+                recyclerView.setAdapter(pautasAdapter);
+                recyclerView.addItemDecoration(new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL));
+                pautasAdapter.notifyDataSetChanged();
+            }
+        });
     }
 }

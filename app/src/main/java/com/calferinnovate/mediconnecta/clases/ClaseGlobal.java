@@ -20,6 +20,7 @@ public class ClaseGlobal extends Application {
     private ContactoFamiliares contactoFamiliares;
     private Informes informes;
     private HistoriaClinica historiaClinica;
+    private Pautas pautas;
     private ArrayList<Seguro> listaSeguros;
     private PacientesAgrupadosRutinas pacientesAgrupadosRutinas;
     private ArrayList<Unidades> listaUnidades;
@@ -28,6 +29,7 @@ public class ClaseGlobal extends Application {
     private ArrayList<Area> listaAreas;
     private ArrayList<ContactoFamiliares> listaContactoFamiliares;
     private ArrayList<Informes> listaInformes;
+    private ArrayList<Pautas> listaPautas;
 
     @Override public void onCreate(){
         super.onCreate();
@@ -45,6 +47,7 @@ public class ClaseGlobal extends Application {
         contactoFamiliares = new ContactoFamiliares();
         informes = new Informes();
         historiaClinica = new HistoriaClinica();
+        pautas = new Pautas();
         listaUnidades = new ArrayList<>();
         listaPacientes = new ArrayList<>(); // Inicializa la lista de pacientes vacía
         listaProgramacion = new ArrayList<>();
@@ -52,6 +55,7 @@ public class ClaseGlobal extends Application {
         listaAreas = new ArrayList<>();
         listaContactoFamiliares = new ArrayList<>();
         listaInformes = new ArrayList<>();
+        listaPautas = new ArrayList<>();
 
     }
 
@@ -230,5 +234,21 @@ public class ClaseGlobal extends Application {
 
     public void setHistoriaClinica(HistoriaClinica historiaClinica) {
         this.historiaClinica = historiaClinica;
+    }
+
+    public ArrayList<Pautas> getListaPautas() {
+        return listaPautas;
+    }
+
+    public void setListaPautas(ArrayList<Pautas> listaPautas) {
+        this.listaPautas = listaPautas;
+    }
+
+    public Pautas getPautas() {
+        return pautas;
+    }
+
+    public void setPautas(Pautas pautas) {
+        this.pautas = pautas;
     }
 }
