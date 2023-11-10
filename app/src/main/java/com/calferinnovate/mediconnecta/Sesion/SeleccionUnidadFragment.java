@@ -224,6 +224,7 @@ public class SeleccionUnidadFragment extends Fragment implements AdapterView.OnI
                     if (parent.getId() == R.id.spinnerUnidad) {
                         // Obtiene la unidad seleccionada del spinner
                         Unidades unidad = unidadesArrayList.get(position);
+                        unidades = unidad;
                         // Establece la unidad seleccionada en ClaseGlobal
                         claseGlobal.setUnidades(unidad);
                     }
@@ -256,7 +257,8 @@ public class SeleccionUnidadFragment extends Fragment implements AdapterView.OnI
         //De tal manera que podamos utilizar la instancia creada para poder acceder a su nombre y
         //de igual manera poder acceder a los pacientes de dicha unidad.
         //Unidades unidadActual = claseGlobal.getUnidades();
-        String url = Constantes.url_part + "pacientes.php?nombre=" + claseGlobal.getUnidades().getNombreUnidad();
+        String url = Constantes.url_part + "pacientes.php?nombre=" + unidades.getNombreUnidad();
+        //String url = Constantes.url_part + "pacientes.php?nombre=" + claseGlobal.getUnidades().getNombreUnidad();
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
