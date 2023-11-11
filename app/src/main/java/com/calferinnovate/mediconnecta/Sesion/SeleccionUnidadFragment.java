@@ -226,7 +226,7 @@ public class SeleccionUnidadFragment extends Fragment implements AdapterView.OnI
                         Unidades unidad = unidadesArrayList.get(position);
                         unidades = unidad;
                         // Establece la unidad seleccionada en ClaseGlobal
-                        //claseGlobal.setUnidades(unidad);
+                        claseGlobal.setUnidades(unidad);
                     }
                 }
 

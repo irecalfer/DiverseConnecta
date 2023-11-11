@@ -11,8 +11,8 @@
 
     <ImageView
         android:id="@+id/fotoEmpleadoND"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="170dp"
+        android:layout_height="170dp"
         android:layout_gravity="center"
         android:src="@drawable/cierre_sesion_icon" />
 

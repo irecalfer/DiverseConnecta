@@ -111,4 +111,10 @@
     <string name="mañanaAnatomicos">Mañana</string>
     <string name="tardeAnatomicos">Tarde</string>
     <string name="nocheAnatomicos">Noche</string>
+    <string name="seguimiento">Introducción de seguimientos</string>
+    <string name="fechaHoraParte">Fecha y Hora</string>
+    <string name="paciente">Paciente</string>
+    <string name="descParte">Descripción</string>
+    <string name="registrar">Registrar</string>
+    <string name="empleado">Empleado</string>
 </resources>
