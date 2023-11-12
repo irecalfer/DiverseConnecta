@@ -117,4 +117,12 @@
     <string name="descParte">Descripción</string>
     <string name="registrar">Registrar</string>
     <string name="empleado">Empleado</string>
+    <string name="factoresRiesgo">Factores de riesgo</string>
+    <string name="causas">Causas</string>
+    <string name="circunstancias">Circunstancias</string>
+    <string name="consecuencias">Consecuencias</string>
+    <string name="caidaPresenciada">Caída presenciada:</string>
+    <string name="avisadoFamiliares">Avisado a familiares:</string>
+    <string name="si">Sí</string>
+    <string name="no">No</string>
 </resources>

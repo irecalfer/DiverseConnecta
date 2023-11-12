@@ -22,6 +22,7 @@ public class ClaseGlobal extends Application {
     private HistoriaClinica historiaClinica;
     private Pautas pautas;
     private ArrayList<Seguro> listaSeguros;
+    private ArrayList<String> listaLugares;
     private PacientesAgrupadosRutinas pacientesAgrupadosRutinas;
     private ArrayList<Unidades> listaUnidades;
     private ArrayList<Pacientes> listaPacientes;
@@ -56,6 +57,7 @@ public class ClaseGlobal extends Application {
         listaContactoFamiliares = new ArrayList<>();
         listaInformes = new ArrayList<>();
         listaPautas = new ArrayList<>();
+        listaLugares = new ArrayList<>();
 
     }
 
@@ -250,5 +252,13 @@ public class ClaseGlobal extends Application {
 
     public void setPautas(Pautas pautas) {
         this.pautas = pautas;
+    }
+
+    public ArrayList<String> getListaLugares() {
+        return listaLugares;
+    }
+
+    public void setListaLugares(ArrayList<String> listaLugares) {
+        this.listaLugares = listaLugares;
     }
 }

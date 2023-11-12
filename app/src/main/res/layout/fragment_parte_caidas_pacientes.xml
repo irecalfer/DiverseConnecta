@@ -1,14 +1,323 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frameLayout10"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Home.Fragments.Residentes.ParteCaidasPacientesFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
 
-</FrameLayout>
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineHorTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="32dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineHorBot"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_end="32dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineVertIzq"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="32dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineVertDer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="32dp" />
+
+    <TextView
+        android:id="@+id/parteCaidasLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/parteCaidas"
+        app:layout_constraintEnd_toStartOf="@id/guidelineVertDer"
+        app:layout_constraintTop_toBottomOf="@id/guidelineHorTop"
+        app:layout_constraintStart_toEndOf="@id/guidelineVertIzq"/>
+
+    <LinearLayout
+        android:id="@+id/LinearLayoutHor"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toStartOf="@id/guidelineVertDer"
+        app:layout_constraintStart_toEndOf="@id/guidelineVertIzq"
+        app:layout_constraintTop_toBottomOf="@id/parteCaidasLabel">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/fechaHoraCaidaLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:autoSizeMaxTextSize="100sp"
+            android:autoSizeMinTextSize="12sp"
+            android:textColorHint="@color/md_theme_black"
+            app:autoSizeTextType="uniform"
+            app:hintTextColor="@color/md_theme_black">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/fechaHoraCaida"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/fechaHoraParte"
+                android:enabled="false"
+                android:textColor="@color/md_theme_black"
+                android:textColorHint="@color/md_theme_black"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/pacienteCaidaLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:autoSizeMaxTextSize="100sp"
+            android:autoSizeMinTextSize="12sp"
+            android:textColorHint="@color/md_theme_black"
+            app:autoSizeTextType="uniform"
+            app:hintTextColor="@color/md_theme_black">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/pacienteCaida"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/paciente"
+                android:enabled="false"
+                android:textColor="@color/md_theme_black"
+                android:textColorHint="@color/md_theme_black"/>
+        </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toStartOf="@id/guidelineVertDer"
+        app:layout_constraintStart_toEndOf="@id/guidelineVertIzq"
+        app:layout_constraintTop_toBottomOf="@id/LinearLayoutHor"
+        app:layout_constraintBottom_toTopOf="@id/guidelineHorBot">
+
+        <LinearLayout
+            android:id="@+id/linearLayourVert"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@drawable/empty_tall_divider"
+            android:orientation="vertical"
+            android:showDividers="middle">
+
+            <Spinner
+                android:id="@+id/spinnerLugarCaida"
+                android:layout_width="match_parent"
+                android:layout_height="48dp" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/factoresRiesgoLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autoSizeMaxTextSize="100sp"
+                android:autoSizeMinTextSize="12sp"
+                android:textColorHint="@color/md_theme_black"
+                app:autoSizeTextType="uniform"
+                app:hintTextColor="@color/md_theme_black">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/factoresRiesgo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/factoresRiesgo"
+                    android:textColor="@color/md_theme_black"
+                    android:textColorHint="@color/md_theme_black" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/causasLAbel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autoSizeMaxTextSize="100sp"
+                android:autoSizeMinTextSize="12sp"
+                android:textColorHint="@color/md_theme_black"
+                app:autoSizeTextType="uniform"
+                app:hintTextColor="@color/md_theme_black">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/causas"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/causas"
+                    android:textColor="@color/md_theme_black"
+                    android:textColorHint="@color/md_theme_black" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/circunstanciasLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autoSizeMaxTextSize="100sp"
+                android:autoSizeMinTextSize="12sp"
+                android:textColorHint="@color/md_theme_black"
+                app:autoSizeTextType="uniform"
+                app:hintTextColor="@color/md_theme_black">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/circunstancias"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/circunstancias"
+                    android:textColor="@color/md_theme_black"
+                    android:textColorHint="@color/md_theme_black" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/consecuenciasLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autoSizeMaxTextSize="100sp"
+                android:autoSizeMinTextSize="12sp"
+                android:textColorHint="@color/md_theme_black"
+                app:autoSizeTextType="uniform"
+                app:hintTextColor="@color/md_theme_black">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/consecuencias"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/consecuencias"
+                    android:textColor="@color/md_theme_black"
+                    android:textColorHint="@color/md_theme_black" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/unidadCaidaLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autoSizeMaxTextSize="100sp"
+                android:autoSizeMinTextSize="12sp"
+                android:textColorHint="@color/md_theme_black"
+                app:autoSizeTextType="uniform"
+                app:hintTextColor="@color/md_theme_black">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/unidadCaida"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/unidadPacienteLabel"
+                    android:textColor="@color/md_theme_black"
+                    android:textColorHint="@color/md_theme_black" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/empleadoCaidaLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autoSizeMaxTextSize="100sp"
+                android:autoSizeMinTextSize="12sp"
+                android:textColorHint="@color/md_theme_black"
+                app:autoSizeTextType="uniform"
+                app:hintTextColor="@color/md_theme_black">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/empleado"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:hint="@string/empleado"
+                    android:textColor="@color/md_theme_black"
+                    android:textColorHint="@color/md_theme_black" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/caidaPresenciada"
+                android:gravity="center"/>
+
+            <RadioGroup
+                android:id="@+id/caidaPresenciadaLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center">
+
+                <RadioButton
+                    android:id="@+id/siCaida"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/si"
+                    android:checked="true"/>
+
+                <RadioButton
+                    android:id="@+id/noCaida"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no"
+                    android:checked="false"/>
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/avisadoFamiliares"
+                android:gravity="center"/>
+
+            <RadioGroup
+                android:id="@+id/avisadoFamiliaresLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center">
+
+                <RadioButton
+                    android:id="@+id/siAvisado"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/si"
+                    android:checked="true"/>
+
+                <RadioButton
+                    android:id="@+id/noAvisado"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no"
+                    android:checked="false"/>
+            </RadioGroup>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/observacionesCaida"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autoSizeMaxTextSize="100sp"
+                android:autoSizeMinTextSize="12sp"
+                android:textColorHint="@color/md_theme_black"
+                app:autoSizeTextType="uniform"
+                app:hintTextColor="@color/md_theme_black">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"
+                    android:hint="@string/observacionesPauta"
+                    android:textColor="@color/md_theme_black"
+                    android:textColorHint="@color/md_theme_black"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/registrarCaidaBtn"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:text="@string/registrar"
+                android:layout_gravity="center"/>
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
