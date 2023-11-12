@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,6 +19,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -41,12 +43,13 @@ import org.json.JSONObject;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.Map;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 public class ParteCaidasPacientesFragment extends Fragment {
     private ViewModelArgs viewModelArgs;
-    ArrayAdapter<String> lugaresAdapter;
     private SharedPacientesViewModel sharedPacientesViewModel;
     private ClaseGlobal claseGlobal;
     private Spinner lugarSpinner;
@@ -55,8 +58,7 @@ public class ParteCaidasPacientesFragment extends Fragment {
     private Button registrar;
     private RadioButton siCaida, noCaida, siAvisado, noAvisado;
     private RadioGroup radioGroupVisto, radioGroupAvisado;
-    private RequestQueue requestQueue;
-    private ArrayList<String> lugaresArrayList;
+
     private PeticionesJson peticionesJson;
 
 
@@ -164,6 +166,7 @@ public class ParteCaidasPacientesFragment extends Fragment {
         fechaHora.setText(obtieneFechaYHoraFormateada());
         nombreApellidoPaciente.setText(paciente.getNombre() + " " + paciente.getApellidos());
         empleadoCaida.setText(claseGlobal.getEmpleado().getNombre() + " " + claseGlobal.getEmpleado().getApellidos());
+        unidadCaida.setText(claseGlobal.getUnidades().getNombreUnidad());
     }
 
     public String obtieneFechaYHoraFormateada() {
@@ -212,6 +215,75 @@ public class ParteCaidasPacientesFragment extends Fragment {
         final String factoresDeRiesgo = factoresRiesgo.getText().toString();
         final String causasCaida = causas.getText().toString();
         final String circunstanciasCaida = circunstancias.getText().toString();
+        final String consecuenciasCaida = consecuencias.getText().toString();
+        final String unidadCaida = claseGlobal.getUnidades().getNombreUnidad();
+        final int empleadoCod = claseGlobal.getEmpleado().getCod_empleado();
+        final String caidaPresenciada = presenciado;
+        final String avisadoFamilia = avisado;
+        final String observacionesCaida = observaciones.getText().toString();
+
+        Executor executor = Executors.newSingleThreadExecutor();
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                String url = Constantes.url_part+"crear_parte_caidas.php";
+                // creating a new variable for our request queue
+                StringRequest stringRequest;
+                stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonResponse = new JSONObject(response);
+                            String message = jsonResponse.getString("message");
+
+                            if ("Registro exitoso".equals(message)) {
+                                Toast.makeText(getContext(), "Caída registrada correctamente", Toast.LENGTH_SHORT).show();
+                                factoresRiesgo.setText("");
+                                causas.setText("");
+                                circunstancias.setText("");
+                                consecuencias.setText("");
+                                observaciones.setText("");
+                            } else {
+                                Toast.makeText(getContext(), "Error al registrar la caída", Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Toast.makeText(getContext(), "Error en el formato de respuesta", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getContext(), "Ha habido un error al intentar registrar el parte", Toast.LENGTH_SHORT).show();
+                        error.printStackTrace();
+                        Log.d("ErrorVolley", error.toString());
+                    }
+                }){
+                    @Nullable
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String, String> parametros = new Hashtable<String, String>();
+
+                        parametros.put("fecha_y_hora", fecha.trim());
+                        parametros.put("fk_cip_sns_paciente", cipSns.trim());
+                        parametros.put("lugar_caida", lugarCaida.trim());
+                        parametros.put("factores_de_riesgo", factoresDeRiesgo.trim());
+                        parametros.put("causas", causasCaida.trim());
+                        parametros.put("circunstancias", circunstanciasCaida.trim());
+                        parametros.put("consecuencias", consecuenciasCaida.trim());
+                        parametros.put("unidad", unidadCaida.trim());
+                        parametros.put("caida_presenciada", caidaPresenciada.trim());
+                        parametros.put("avisado_a_familiares", avisadoFamilia.trim());
+                        parametros.put("observaciones", observacionesCaida.trim());
+                        parametros.put("fk_cod_empleado", String.valueOf(empleadoCod).trim());
+                        return parametros;
+                    }
+                };
+                RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+                requestQueue.add(stringRequest);
+            }
+        });
+
     }
 
     public String fechaDateTimeSql(){

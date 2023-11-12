@@ -210,6 +210,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/unidadPacienteLabel"
+                    android:enabled="false"
                     android:textColor="@color/md_theme_black"
                     android:textColorHint="@color/md_theme_black" />
             </com.google.android.material.textfield.TextInputLayout>
