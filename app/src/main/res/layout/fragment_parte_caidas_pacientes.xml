@@ -242,7 +242,7 @@
                 android:gravity="center"/>
 
             <RadioGroup
-                android:id="@+id/caidaPresenciadaLabel"
+                android:id="@+id/caidaPresenciadaRadioGroup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -252,15 +252,13 @@
                     android:id="@+id/siCaida"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/si"
-                    android:checked="true"/>
+                    android:text="@string/si" />
 
                 <RadioButton
                     android:id="@+id/noCaida"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/no"
-                    android:checked="false"/>
+                    android:text="@string/no" />
             </RadioGroup>
 
             <TextView
@@ -271,7 +269,7 @@
                 android:gravity="center"/>
 
             <RadioGroup
-                android:id="@+id/avisadoFamiliaresLabel"
+                android:id="@+id/avisadoFamiliaresRadioGroup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -281,19 +279,17 @@
                     android:id="@+id/siAvisado"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/si"
-                    android:checked="true"/>
+                    android:text="@string/si" />
 
                 <RadioButton
                     android:id="@+id/noAvisado"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/no"
-                    android:checked="false"/>
+                    android:text="@string/no" />
             </RadioGroup>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/observacionesCaida"
+                android:id="@+id/observacionesCaidaLabel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:autoSizeMaxTextSize="100sp"
@@ -303,12 +299,13 @@
                 app:hintTextColor="@color/md_theme_black">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/observacionesCaida"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textMultiLine"
                     android:hint="@string/observacionesPauta"
+                    android:inputType="textMultiLine"
                     android:textColor="@color/md_theme_black"
-                    android:textColorHint="@color/md_theme_black"/>
+                    android:textColorHint="@color/md_theme_black" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button

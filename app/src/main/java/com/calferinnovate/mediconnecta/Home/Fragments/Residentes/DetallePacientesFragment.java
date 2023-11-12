@@ -80,7 +80,7 @@ public class DetallePacientesFragment extends Fragment {
                     }
                 }else if(tabSeleccionado.equals("Parte")){
                     getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new PartePacientesFragment()).commit();
-                }else{
+                }else if(tabSeleccionado.equals("Parte Caídas")){
                     getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new ParteCaidasPacientesFragment()).commit();
                 }
             }

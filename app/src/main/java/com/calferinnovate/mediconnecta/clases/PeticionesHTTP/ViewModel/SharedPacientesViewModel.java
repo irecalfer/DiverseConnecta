@@ -6,7 +6,12 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.calferinnovate.mediconnecta.clases.ClaseGlobal;
 import com.calferinnovate.mediconnecta.clases.Constantes;
 import com.calferinnovate.mediconnecta.clases.ContactoFamiliares;
@@ -23,6 +28,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import android.util.Base64;
+import android.util.Log;
+
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -37,6 +44,8 @@ public class SharedPacientesViewModel extends ViewModel {
     private final MutableLiveData<ArrayList<ContactoFamiliares>> mutableFamiliaresList = new MutableLiveData<>();
     private final MutableLiveData<ArrayList<Informes>> mutableInformesList = new MutableLiveData<>();
     private MutableLiveData<ArrayList<Pautas>> mutablePautasList = new MutableLiveData<>();
+    private MutableLiveData<ArrayList<String>> listaLugaresLiveData = new MutableLiveData<>();
+
     private PeticionesJson peticionesJson;
     private ClaseGlobal claseGlobal;
     private Context context;
@@ -305,4 +314,51 @@ public class SharedPacientesViewModel extends ViewModel {
     public LiveData<ArrayList<Pautas>> getListaMutablePautas(Pacientes paciente){
         return obtienePautasPaciente(paciente);
     }
+
+    public LiveData<ArrayList<String>> getListaLugaresLiveData() {
+        return obtieneLosLugaresDeCaidas();
+    }
+
+    public LiveData<ArrayList<String>> obtieneLosLugaresDeCaidas(){
+        String url = Constantes.url_part + "caidas_enum.php";
+        Executor executor = Executors.newSingleThreadExecutor();
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                peticionesJson.getJsonObjectRequest(url, new PeticionesJson.MyJsonObjectResponseListener() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            JSONArray lugarCaida = response.getJSONArray("lugar_caida");
+                            Log.d("Lugares", "Ha entrado en on response");
+                            // Itera sobre los valores ENUM
+                            for (int i = 0; i < lugarCaida.length(); i++) {
+                                String enumLugar = lugarCaida.getString(i);
+                                //Añadimos el valor a nuestro arrayList
+                                claseGlobal.getListaLugares().add(enumLugar);
+                            }
+                            claseGlobal.setListaLugares(claseGlobal.getListaLugares());
+                            // Actualiza el LiveData con la nueva lista
+                            if (!claseGlobal.getListaLugares().isEmpty()) {
+                                listaLugaresLiveData.postValue(new ArrayList<>(claseGlobal.getListaLugares()));
+                            }
+                        } catch (JSONException e) {
+                            Log.d("Lugares", "Ha entrado en el catch de on response");
+                            Log.d("LugaresCatch", e.toString());
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("Lugares", "Ha entrado en on error response");
+                        error.printStackTrace();
+                    }
+                });
+            }
+        });
+        return listaLugaresLiveData;
+    }
+
+
 }

@@ -58,7 +58,6 @@ public class ClaseGlobal extends Application {
         listaInformes = new ArrayList<>();
         listaPautas = new ArrayList<>();
         listaLugares = new ArrayList<>();
-
     }
 
     //  método público y estático que se utiliza para obtener la única instancia de la clase ClaseGlobal.
