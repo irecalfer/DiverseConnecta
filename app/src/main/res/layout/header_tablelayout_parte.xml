@@ -62,10 +62,6 @@
         android:textSize="16sp"
         android:textStyle="bold" />
 
-    <!-- Columna 3: Encabezado para "Fecha" -->
 
-    <!-- Columna 3: Encabezado para "Fecha" -->
-
-    <!-- Agrega más encabezados de columna según sea necesario -->
 </TableRow>
 

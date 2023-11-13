@@ -1,4 +1,4 @@
-package com.calferinnovate.mediconnecta.clases.PeticionesHTTP;
+package com.calferinnovate.mediconnecta.clases;
 
 public class Caidas {
     private String fechaHora, nombreApellidosPaciente, lugarCaida, factoresRiesgo, causas,

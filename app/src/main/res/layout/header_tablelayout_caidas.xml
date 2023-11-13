@@ -4,7 +4,7 @@
     android:layout_height="wrap_content">
 
     <TextView
-        android:layout_width="0dp"
+        android:layout_width="130dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="start"
@@ -19,7 +19,7 @@
 
 
     <TextView
-        android:layout_width="0dp"
+        android:layout_width="130dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="start"
@@ -34,7 +34,7 @@
 
 
     <TextView
-        android:layout_width="0dp"
+        android:layout_width="130dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="start"
@@ -49,7 +49,7 @@
 
     <!-- Columna 3: Encabezado para "Fecha" -->
     <TextView
-        android:layout_width="0dp"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="start"
@@ -64,7 +64,7 @@
 
     <!-- Columna 3: Encabezado para "Fecha" -->
     <TextView
-        android:layout_width="0dp"
+        android:layout_width="130dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="start"
@@ -79,7 +79,7 @@
 
     <!-- Columna 3: Encabezado para "Fecha" -->
     <TextView
-        android:layout_width="0dp"
+        android:layout_width="130dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="start"
@@ -93,7 +93,7 @@
         android:textStyle="bold" />
 
     <TextView
-        android:layout_width="0dp"
+        android:layout_width="130dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="start"
@@ -103,10 +103,11 @@
         android:paddingBottom="4dp"
         android:text="@string/consecuencias"
         android:textColor="#000000"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:textStyle="bold"/>
 
     <TextView
-        android:layout_width="0dp"
+        android:layout_width="130dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="start"
@@ -116,10 +117,11 @@
         android:paddingBottom="4dp"
         android:text="@string/unidadPacienteLabel"
         android:textColor="#000000"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:textStyle="bold"/>
 
     <TextView
-        android:layout_width="0dp"
+        android:layout_width="130dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="start"
@@ -129,10 +131,11 @@
         android:paddingBottom="4dp"
         android:text="@string/caidaPresenciada"
         android:textColor="#000000"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:textStyle="bold"/>
 
     <TextView
-        android:layout_width="0dp"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="start"
@@ -142,10 +145,11 @@
         android:paddingBottom="4dp"
         android:text="@string/avisadoFamiliares"
         android:textColor="#000000"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:textStyle="bold"/>
 
     <TextView
-        android:layout_width="0dp"
+        android:layout_width="130dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="start"
@@ -155,7 +159,22 @@
         android:paddingBottom="4dp"
         android:text="@string/observacionesPauta"
         android:textColor="#000000"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="start"
+        android:paddingStart="8dp"
+        android:paddingTop="4dp"
+        android:paddingEnd="8dp"
+        android:paddingBottom="4dp"
+        android:text="@string/empleado"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        android:textStyle="bold"/>
 
 
     <!-- Agrega más encabezados de columna según sea necesario -->

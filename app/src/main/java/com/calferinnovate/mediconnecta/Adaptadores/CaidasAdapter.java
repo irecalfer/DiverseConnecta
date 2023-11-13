@@ -11,8 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.calferinnovate.mediconnecta.R;
-import com.calferinnovate.mediconnecta.clases.Parte;
-import com.calferinnovate.mediconnecta.clases.PeticionesHTTP.Caidas;
+import com.calferinnovate.mediconnecta.clases.Caidas;
 
 import java.util.ArrayList;
 

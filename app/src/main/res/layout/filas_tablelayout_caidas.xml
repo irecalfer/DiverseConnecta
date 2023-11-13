@@ -7,7 +7,7 @@
 
     <TextView
         android:id="@+id/tvRellenaFechaCaida"
-        android:layout_width="0dp"
+        android:layout_width="130dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="start"
@@ -22,7 +22,7 @@
 
     <TextView
         android:id="@+id/tvRellenaPacienteCaida"
-        android:layout_width="0dp"
+        android:layout_width="130dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="start"
@@ -37,7 +37,7 @@
 
     <TextView
         android:id="@+id/tvRellenaLugarCaida"
-        android:layout_width="0dp"
+        android:layout_width="130dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="start"
@@ -52,7 +52,7 @@
 
     <TextView
         android:id="@+id/tvRellenaFactoresRiesgo"
-        android:layout_width="0dp"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="start"
@@ -67,7 +67,7 @@
     <!-- Columna 3: Fecha -->
     <TextView
         android:id="@+id/tvRellenaCausas"
-        android:layout_width="0dp"
+        android:layout_width="130dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="start"
@@ -82,7 +82,7 @@
 
     <TextView
         android:id="@+id/tvRellenaCircunstancias"
-        android:layout_width="0dp"
+        android:layout_width="130dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="start"
@@ -96,7 +96,7 @@
 
     <TextView
         android:id="@+id/tvRellenaConsecuencias"
-        android:layout_width="0dp"
+        android:layout_width="130dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="start"
@@ -110,7 +110,7 @@
 
     <TextView
         android:id="@+id/tvRellenaUnidadCaida"
-        android:layout_width="0dp"
+        android:layout_width="130dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="start"
@@ -124,7 +124,7 @@
 
     <TextView
         android:id="@+id/tvRellenaCaidaPresenciada"
-        android:layout_width="0dp"
+        android:layout_width="130dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="start"
@@ -138,7 +138,7 @@
 
     <TextView
         android:id="@+id/tvRellenaAvisoFamiliares"
-        android:layout_width="0dp"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="start"
@@ -152,7 +152,7 @@
 
     <TextView
         android:id="@+id/tvRellenaObservacionesCaida"
-        android:layout_width="0dp"
+        android:layout_width="130dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="start"
@@ -166,7 +166,7 @@
 
     <TextView
         android:id="@+id/tvRellenaEmpleadoVeCaida"
-        android:layout_width="0dp"
+        android:layout_width="130dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="start"

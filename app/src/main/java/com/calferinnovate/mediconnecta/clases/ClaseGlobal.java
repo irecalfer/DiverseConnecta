@@ -2,8 +2,6 @@ package com.calferinnovate.mediconnecta.clases;
 
 import android.app.Application;
 
-import com.calferinnovate.mediconnecta.clases.PeticionesHTTP.Caidas;
-
 import java.util.ArrayList;
 
 public class ClaseGlobal extends Application {
