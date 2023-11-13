@@ -2,6 +2,8 @@ package com.calferinnovate.mediconnecta.clases;
 
 import android.app.Application;
 
+import com.calferinnovate.mediconnecta.clases.PeticionesHTTP.Caidas;
+
 import java.util.ArrayList;
 
 public class ClaseGlobal extends Application {
@@ -21,6 +23,8 @@ public class ClaseGlobal extends Application {
     private Informes informes;
     private HistoriaClinica historiaClinica;
     private Pautas pautas;
+    private Parte parte;
+    private Caidas caidas;
     private ArrayList<Seguro> listaSeguros;
     private ArrayList<String> listaLugares;
     private PacientesAgrupadosRutinas pacientesAgrupadosRutinas;
@@ -31,6 +35,9 @@ public class ClaseGlobal extends Application {
     private ArrayList<ContactoFamiliares> listaContactoFamiliares;
     private ArrayList<Informes> listaInformes;
     private ArrayList<Pautas> listaPautas;
+    private ArrayList<Parte> parteArrayList;
+    private ArrayList<Caidas> caidasArrayList;
+
 
     @Override public void onCreate(){
         super.onCreate();
@@ -49,6 +56,8 @@ public class ClaseGlobal extends Application {
         informes = new Informes();
         historiaClinica = new HistoriaClinica();
         pautas = new Pautas();
+        parte = new Parte();
+        caidas = new Caidas();
         listaUnidades = new ArrayList<>();
         listaPacientes = new ArrayList<>(); // Inicializa la lista de pacientes vacía
         listaProgramacion = new ArrayList<>();
@@ -58,6 +67,8 @@ public class ClaseGlobal extends Application {
         listaInformes = new ArrayList<>();
         listaPautas = new ArrayList<>();
         listaLugares = new ArrayList<>();
+        parteArrayList = new ArrayList<>();
+        caidasArrayList = new ArrayList<>();
     }
 
     //  método público y estático que se utiliza para obtener la única instancia de la clase ClaseGlobal.
@@ -259,5 +270,21 @@ public class ClaseGlobal extends Application {
 
     public void setListaLugares(ArrayList<String> listaLugares) {
         this.listaLugares = listaLugares;
+    }
+
+    public ArrayList<Parte> getParteArrayList() {
+        return parteArrayList;
+    }
+
+    public void setParteArrayList(ArrayList<Parte> parteArrayList) {
+        this.parteArrayList = parteArrayList;
+    }
+
+    public ArrayList<Caidas> getCaidasArrayList() {
+        return caidasArrayList;
+    }
+
+    public void setCaidasArrayList(ArrayList<Caidas> caidasArrayList) {
+        this.caidasArrayList = caidasArrayList;
     }
 }

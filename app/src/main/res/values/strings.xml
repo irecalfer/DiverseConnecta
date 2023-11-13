@@ -125,4 +125,7 @@
     <string name="avisadoFamiliares">Avisado a familiares:</string>
     <string name="si">Sí</string>
     <string name="no">No</string>
+    <string name="seleccionarFechas">Seleccionar Fechas</string>
+    <string name="fechaSeleccionada">Fechas seleccionadas</string>
+    <string name="lugarCaida">Lugar Caída</string>
 </resources>

@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.calferinnovate.mediconnecta.Home.Fragments.HomeFragment;
 import com.calferinnovate.mediconnecta.Home.Fragments.PacientesFragment;
+import com.calferinnovate.mediconnecta.Home.Fragments.ParteGeneralFragment;
 import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.clases.Backpressedlistener;
 import com.calferinnovate.mediconnecta.clases.ClaseGlobal;
@@ -84,6 +85,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
         }else if(item.getItemId() == R.id.residentes_item_id){
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PacientesFragment()).commit();
+        }else if(item.getItemId() == R.id.parte_general_item_id){
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ParteGeneralFragment()).commit();
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
