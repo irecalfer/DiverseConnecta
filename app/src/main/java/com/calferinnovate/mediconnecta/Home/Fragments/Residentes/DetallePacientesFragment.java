@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentContainerView;
 import androidx.lifecycle.Observer;
@@ -35,8 +36,11 @@ public class DetallePacientesFragment extends Fragment {
         llamaAClaseGlobal();
         sharedPacientesViewModel = new ViewModelProvider(requireActivity()).get(SharedPacientesViewModel.class);
         nombrePorAsignarParaMoversePorElTabLayout();
+
+
         return view;
     }
+
 
     public void asignaComponentesAVariables(View view) {
         tabLayoutPaciente = view.findViewById(R.id.tabLayoutDetallePacientes);
