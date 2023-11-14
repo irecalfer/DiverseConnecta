@@ -67,9 +67,6 @@ public class consultasYRutinasDiariasFragment extends Fragment implements IOnBac
         // Inflate the layout for this fragment
         View vista = inflater.inflate(R.layout.fragment_consultas_y_rutinas_diarias, container, false);
 
-        ;
-
-
         referenciaVariables(vista);
         llamadaObjetosGlobales();
 

@@ -8,7 +8,7 @@ public class ClaseGlobal extends Application {
 
     //Variable para almacenar una única instancia de ClaseGlobal
     private static ClaseGlobal instance;
-    //
+
     private Empleado empleado;
     private Unidades unidades;
     private Area area;
@@ -23,6 +23,7 @@ public class ClaseGlobal extends Application {
     private Pautas pautas;
     private Parte parte;
     private Caidas caidas;
+    private Normas normas;
     private ArrayList<Seguro> listaSeguros;
     private ArrayList<String> listaLugares;
     private PacientesAgrupadosRutinas pacientesAgrupadosRutinas;
@@ -35,6 +36,7 @@ public class ClaseGlobal extends Application {
     private ArrayList<Pautas> listaPautas;
     private ArrayList<Parte> parteArrayList;
     private ArrayList<Caidas> caidasArrayList;
+    private ArrayList<Normas> listaNormas;
 
 
     @Override public void onCreate(){
@@ -56,6 +58,7 @@ public class ClaseGlobal extends Application {
         pautas = new Pautas();
         parte = new Parte();
         caidas = new Caidas();
+        normas = new Normas();
         listaUnidades = new ArrayList<>();
         listaPacientes = new ArrayList<>(); // Inicializa la lista de pacientes vacía
         listaProgramacion = new ArrayList<>();
@@ -67,6 +70,7 @@ public class ClaseGlobal extends Application {
         listaLugares = new ArrayList<>();
         parteArrayList = new ArrayList<>();
         caidasArrayList = new ArrayList<>();
+        listaNormas = new ArrayList<>();
     }
 
     //  método público y estático que se utiliza para obtener la única instancia de la clase ClaseGlobal.
@@ -284,5 +288,13 @@ public class ClaseGlobal extends Application {
 
     public void setCaidasArrayList(ArrayList<Caidas> caidasArrayList) {
         this.caidasArrayList = caidasArrayList;
+    }
+
+    public ArrayList<Normas> getListaNormas() {
+        return listaNormas;
+    }
+
+    public void setListaNormas(ArrayList<Normas> listaNormas) {
+        this.listaNormas = listaNormas;
     }
 }

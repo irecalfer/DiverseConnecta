@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.calferinnovate.mediconnecta.Home.Fragments.HomeFragment;
+import com.calferinnovate.mediconnecta.Home.Fragments.NormasEmpresaFragment;
 import com.calferinnovate.mediconnecta.Home.Fragments.PacientesFragment;
 import com.calferinnovate.mediconnecta.Home.Fragments.ParteGeneralFragment;
 import com.calferinnovate.mediconnecta.R;
@@ -103,6 +104,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PacientesFragment()).addToBackStack("null").commit();
         }else if(item.getItemId() == R.id.parte_general_item_id){
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ParteGeneralFragment()).addToBackStack(null).commit();
+        }else if(item.getItemId() == R.id.normas_empresa_item_id){
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new NormasEmpresaFragment()).addToBackStack(null).commit();
         }
 
         drawerLayout.closeDrawer(GravityCompat.START);

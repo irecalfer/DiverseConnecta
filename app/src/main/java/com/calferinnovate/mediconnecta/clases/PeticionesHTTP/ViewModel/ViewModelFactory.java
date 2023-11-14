@@ -22,6 +22,8 @@ public class ViewModelFactory <T extends ViewModel> implements ViewModelProvider
             return (T) new SharedPacientesViewModel(viewModelArgs);
         }else if(modelClass == ParteGeneralViewModel.class){
             return (T) new ParteGeneralViewModel(viewModelArgs);
+        }else if(modelClass == NormasViewModel.class){
+            return (T) new NormasViewModel(viewModelArgs);
         }
         // Agregar más verificaciones y creación de ViewModel según sea necesario
         throw new IllegalArgumentException("Unknown ViewModel class");

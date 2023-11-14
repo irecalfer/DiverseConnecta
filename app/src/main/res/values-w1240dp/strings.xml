@@ -95,4 +95,6 @@
     <string name="fechaSeleccionada">Fechas seleccionadas</string>
     <string name="lugarCaida">Lugar Caída</string>
     <string name="placeholder">Placeholder</string>
+    <string name="nombreNorma">Nombre norma</string>
+    <string name="descripcionNorma">Descripción norma</string>
 </resources>
