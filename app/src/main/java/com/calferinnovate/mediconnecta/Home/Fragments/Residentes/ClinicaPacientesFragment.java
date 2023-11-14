@@ -138,7 +138,8 @@ public class ClinicaPacientesFragment extends Fragment implements IOnBackPressed
                 // Reemplazar el fragmento actual con PdfViewerFragment
                 FragmentTransaction transaction = ((FragmentActivity) getContext()).getSupportFragmentManager().beginTransaction();
                 transaction.replace(R.id.fragment_container, pdfViewerFragment);
-                transaction.addToBackStack(null);  // Opcional: Agregar a la pila de retroceso para poder volver al fragmento anterior
+                transaction.setReorderingAllowed(true);
+                transaction.addToBackStack(null); // Opcional: Agregar a la pila de retroceso para poder volver al fragmento anterior
                 transaction.commit();
             }
         });

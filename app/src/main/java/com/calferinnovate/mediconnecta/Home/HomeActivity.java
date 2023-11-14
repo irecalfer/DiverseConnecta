@@ -101,7 +101,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         if (item.getItemId() == R.id.home_item_id){
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
         }else if(item.getItemId() == R.id.residentes_item_id){
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PacientesFragment()).addToBackStack("null").commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PacientesFragment()).addToBackStack(null).commit();
         }else if(item.getItemId() == R.id.parte_general_item_id){
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ParteGeneralFragment()).addToBackStack(null).commit();
         }else if(item.getItemId() == R.id.normas_empresa_item_id){
@@ -141,7 +141,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     fragmentManager.popBackStack(); // Retrocede en la pila de fragmentos
                 } else {
                     // Manejar el retroceso en la actividad según tu lógica
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).addToBackStack(null).commit();
                 }
             }
         };
