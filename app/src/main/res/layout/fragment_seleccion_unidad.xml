@@ -7,31 +7,85 @@
     android:layout_height="match_parent"
     tools:context=".Sesion.SeleccionUnidadFragment">
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineCenter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.40" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineCenterHor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.35" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineCenterHorTopImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.05" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineCenterHorBotImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.28" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guiaVertIzq"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.02" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guiaVertDer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.98"/>
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guiaHorTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.02" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guiaHorBot"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.98" />
+
 
     <ImageView
         android:id="@+id/fotoEmpleado"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:layout_marginEnd="8dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:adjustViewBounds="true"
-        android:background="@color/md_theme_light_surfaceTint"
         android:contentDescription="@string/content_description_foto_empleado"
-        android:maxWidth="400dp"
-        android:maxHeight="400dp"
-        android:padding="7dp"
+        android:minWidth="100dp"
+        android:minHeight="100dp"
         android:scaleType="fitCenter"
-        app:layout_constraintBottom_toBottomOf="@+id/labelCargo"
-        app:layout_constraintEnd_toStartOf="@+id/labelNombreApellidos"
-        app:layout_constraintStart_toStartOf="@+id/guiaVertIzq"
-        app:layout_constraintTop_toTopOf="@+id/guiaHorTop"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineCenterHorBotImage"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineCenter"
+        app:layout_constraintStart_toEndOf="@+id/guiaVertIzq"
+        app:layout_constraintTop_toBottomOf="@+id/guidelineCenterHorTopImage"
         tools:src="@tools:sample/avatars" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/labelNombreApellidos"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="8dp"
         android:autoSizeMaxTextSize="100sp"
         android:autoSizeMinTextSize="12sp"
@@ -40,8 +94,8 @@
         app:autoSizeTextType="uniform"
         app:hintTextColor="@color/md_theme_black"
         app:layout_constraintEnd_toStartOf="@+id/guiaVertDer"
-        app:layout_constraintStart_toEndOf="@+id/fotoEmpleado"
-        app:layout_constraintTop_toTopOf="@+id/guiaHorTop">
+        app:layout_constraintStart_toEndOf="@+id/guidelineCenter"
+        app:layout_constraintTop_toBottomOf="@+id/guidelineCenterHorTopImage">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/nombreYApellidos"
@@ -57,7 +111,7 @@
         android:id="@+id/labelCodigoEmpleado"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:hint="@string/codigo_empleado_label"
@@ -65,7 +119,7 @@
         app:autoSizeTextType="uniform"
         app:hintTextColor="@color/md_theme_black"
         app:layout_constraintEnd_toStartOf="@+id/guiaVertDer"
-        app:layout_constraintStart_toEndOf="@+id/fotoEmpleado"
+        app:layout_constraintStart_toEndOf="@+id/guidelineCenter"
         app:layout_constraintTop_toBottomOf="@+id/labelNombreApellidos">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -80,17 +134,17 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/labelCargo"
-        app:autoSizeTextType="uniform"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:hint="@string/cargo_label"
         android:textColorHint="@color/md_theme_black"
+        app:autoSizeTextType="uniform"
         app:hintTextColor="@color/md_theme_black"
         app:layout_constraintEnd_toStartOf="@+id/guiaVertDer"
-        app:layout_constraintStart_toEndOf="@+id/fotoEmpleado"
+        app:layout_constraintStart_toEndOf="@+id/guidelineCenter"
         app:layout_constraintTop_toBottomOf="@+id/labelCodigoEmpleado">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -108,7 +162,7 @@
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="72dp"
+        android:layout_marginTop="40dp"
         android:layout_marginEnd="24dp"
         android:autoSizeMaxTextSize="100sp"
         android:autoSizeMinTextSize="12sp"
@@ -119,19 +173,16 @@
         app:layout_constraintEnd_toStartOf="@+id/guiaVertDer"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guiaVertIzq"
-        app:layout_constraintTop_toBottomOf="@+id/fotoEmpleado" />
+        app:layout_constraintTop_toBottomOf="@+id/guidelineCenterHor" />
 
     <TextView
         android:id="@+id/labelSeleccionUnidadGeriatria"
         android:layout_width="0dp"
         android:layout_height="50dp"
-        android:layout_marginStart="32dp"
         android:layout_marginTop="24dp"
-        android:layout_marginEnd="32dp"
         android:autoSizeMaxTextSize="24sp"
         android:autoSizeMinTextSize="12sp"
         android:autoSizeStepGranularity="2sp"
-
         android:autoSizeTextType="uniform"
         android:gravity="center"
         android:text="@string/seleccionar_area"
@@ -164,10 +215,9 @@
         android:text="@string/seleccionar_unidad_label"
         app:layout_constraintBottom_toTopOf="@+id/spinnerUnidad"
         app:layout_constraintEnd_toStartOf="@+id/guiaVertDer"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guiaVertIzq"
         app:layout_constraintTop_toBottomOf="@+id/spinnerArea"
-        app:layout_constraintVertical_bias="0.784" />
+        />
 
     <Spinner
         android:id="@+id/spinnerUnidad"
@@ -188,6 +238,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"
+        android:layout_marginBottom="8dp"
         android:onClick="sendMessage"
         android:text="@string/acceso_al_home_btn_label"
         app:autoSizeTextType="uniform"
@@ -197,34 +248,8 @@
         app:layout_constraintTop_toBottomOf="@+id/spinnerUnidad"
         app:layout_constraintVertical_bias="0.25" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guiaVertIzq"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="32dp"/>
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guiaVertDer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_end="32dp"/>
 
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guiaHorTop"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="50dp" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guiaHorBot"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_end="50dp" />
 
     <View
         android:id="@+id/divider"
@@ -235,6 +260,8 @@
         app:layout_constraintEnd_toStartOf="@+id/guiaVertDer"
         app:layout_constraintStart_toStartOf="@+id/guiaVertIzq"
         app:layout_constraintTop_toBottomOf="@+id/labelTextoSeleccionUnidad" />
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

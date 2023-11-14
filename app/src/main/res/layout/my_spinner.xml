@@ -3,7 +3,12 @@
     android:id="@+id/text1"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:textSize="20sp"
+    android:autoSizeMaxTextSize="100sp"
+    android:autoSizeMinTextSize="12sp"
+    android:autoSizeStepGranularity="2sp"
+    android:autoSizeTextType="uniform"
     android:maxLines="1"
-    android:textSize="24sp">
+    android:text="@string/placeholder">
 
 </TextView>

@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.SizeReadyCallback;
 import com.calferinnovate.mediconnecta.Home.Fragments.HomeFragment;
 import com.calferinnovate.mediconnecta.Home.Fragments.PacientesFragment;
 import com.calferinnovate.mediconnecta.Home.Fragments.ParteGeneralFragment;
@@ -93,6 +94,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         unidadND = headerView.findViewById(R.id.unidadND);
 
         Glide.with(getApplicationContext()).load(empleado.getFoto()).circleCrop().into(fotoEmpleadoND);
+
         nombreEmpleadoND.setText(empleado.getNombre()+" "+empleado.getApellidos());
         unidadND.setText(unidad.getNombreUnidad());
     }
@@ -109,6 +111,5 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
-
 
 }

@@ -127,7 +127,7 @@ public class SeleccionUnidadFragment extends Fragment implements AdapterView.OnI
         cargo.setText(String.valueOf(e.getNombreCargo()));
         cod_empleado.setText(String.valueOf(e.getCod_empleado()));
         //Cargamos la foto del empleado con Glide
-        Glide.with(getContext()).load(empleado.getFoto()).into(foto);
+        Glide.with(getContext()).load(empleado.getFoto()).circleCrop().into(foto);
     }
 
     public void asociacionVariableComponente(View view) {

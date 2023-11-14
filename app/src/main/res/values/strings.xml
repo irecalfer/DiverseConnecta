@@ -128,4 +128,5 @@
     <string name="seleccionarFechas">Seleccionar Fechas</string>
     <string name="fechaSeleccionada">Fechas seleccionadas</string>
     <string name="lugarCaida">Lugar Caída</string>
+    <string name="placeholder">Placeholder</string>
 </resources>
