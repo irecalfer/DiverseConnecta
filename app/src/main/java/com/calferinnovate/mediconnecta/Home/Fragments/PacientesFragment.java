@@ -19,6 +19,7 @@ import com.calferinnovate.mediconnecta.Home.Fragments.Residentes.DetallePaciente
 import com.calferinnovate.mediconnecta.Home.Fragments.Residentes.GeneralPacientesFragment;
 import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.clases.ClaseGlobal;
+import com.calferinnovate.mediconnecta.clases.IOnBackPressed;
 import com.calferinnovate.mediconnecta.clases.Pacientes;
 import com.calferinnovate.mediconnecta.clases.PeticionesHTTP.PeticionesJson;
 import com.calferinnovate.mediconnecta.clases.PeticionesHTTP.ViewModel.ConsultasYRutinasDiariasViewModel;
@@ -30,7 +31,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 
-public class PacientesFragment extends Fragment implements PacientesAdapter.ItemClickListener{
+public class PacientesFragment extends Fragment implements PacientesAdapter.ItemClickListener, IOnBackPressed {
 
     /*
     Declarar instancias globales
@@ -117,5 +118,14 @@ public class PacientesFragment extends Fragment implements PacientesAdapter.Item
         //Toast.makeText(requireContext(), listaPacientes.get(position).getNombre(), Toast.LENGTH_SHORT).show();
         getParentFragmentManager().beginTransaction().replace(R.id.fragment_container, new DetallePacientesFragment()).commit();
 
+    }
+
+    @Override
+    public boolean onBackPressed() {
+            // Agrega la lógica específica del fragmento para manejar el retroceso.
+            // Devuelve true si el fragmento maneja el retroceso, de lo contrario, devuelve false.
+            // Por ejemplo, si deseas que al presionar Atrás en este fragmento vuelva a la pantalla principal:
+            requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
+            return true;
     }
 }

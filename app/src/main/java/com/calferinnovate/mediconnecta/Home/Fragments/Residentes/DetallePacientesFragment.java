@@ -11,15 +11,17 @@ import androidx.fragment.app.FragmentContainerView;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.calferinnovate.mediconnecta.Home.Fragments.PacientesFragment;
 import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.clases.Area;
 import com.calferinnovate.mediconnecta.clases.ClaseGlobal;
+import com.calferinnovate.mediconnecta.clases.IOnBackPressed;
 import com.calferinnovate.mediconnecta.clases.Pacientes;
 import com.calferinnovate.mediconnecta.clases.PeticionesHTTP.ViewModel.SharedPacientesViewModel;
 import com.calferinnovate.mediconnecta.clases.Unidades;
 import com.google.android.material.tabs.TabLayout;
 
-public class DetallePacientesFragment extends Fragment {
+public class DetallePacientesFragment extends Fragment implements IOnBackPressed {
 
     private TabLayout tabLayoutPaciente;
     private FragmentContainerView vistasDetallePaciente;
@@ -109,4 +111,9 @@ public class DetallePacientesFragment extends Fragment {
     }
 
 
+    @Override
+    public boolean onBackPressed() {
+        requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PacientesFragment()).commit();
+        return true;
+    }
 }

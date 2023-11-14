@@ -16,8 +16,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.calferinnovate.mediconnecta.Adaptadores.PautasAdapter;
+import com.calferinnovate.mediconnecta.Home.Fragments.PacientesFragment;
 import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.clases.ClaseGlobal;
+import com.calferinnovate.mediconnecta.clases.IOnBackPressed;
 import com.calferinnovate.mediconnecta.clases.Pacientes;
 import com.calferinnovate.mediconnecta.clases.Pautas;
 import com.calferinnovate.mediconnecta.clases.PeticionesHTTP.PeticionesJson;
@@ -27,7 +29,7 @@ import com.calferinnovate.mediconnecta.clases.PeticionesHTTP.ViewModel.ViewModel
 
 import java.util.ArrayList;
 
-public class PautasSaludMentalPacientesFragment extends Fragment {
+public class PautasSaludMentalPacientesFragment extends Fragment implements IOnBackPressed {
     private RecyclerView recyclerView;
     private ViewModelArgs viewModelArgs;
     private SharedPacientesViewModel sharedPacientesViewModel;
@@ -93,5 +95,11 @@ public class PautasSaludMentalPacientesFragment extends Fragment {
                 pautasAdapter.notifyDataSetChanged();
             }
         });
+    }
+
+    @Override
+    public boolean onBackPressed() {
+        requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PacientesFragment()).commit();
+        return true;
     }
 }

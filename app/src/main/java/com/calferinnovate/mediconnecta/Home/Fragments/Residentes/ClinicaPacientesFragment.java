@@ -15,9 +15,12 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.calferinnovate.mediconnecta.Adaptadores.InformesAdapter;
+import com.calferinnovate.mediconnecta.Home.Fragments.HomeFragment;
+import com.calferinnovate.mediconnecta.Home.Fragments.PacientesFragment;
 import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.clases.ClaseGlobal;
 import com.calferinnovate.mediconnecta.clases.HistoriaClinica;
+import com.calferinnovate.mediconnecta.clases.IOnBackPressed;
 import com.calferinnovate.mediconnecta.clases.Informes;
 import com.calferinnovate.mediconnecta.clases.Pacientes;
 import com.calferinnovate.mediconnecta.clases.PeticionesHTTP.PeticionesJson;
@@ -29,7 +32,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import java.util.ArrayList;
 
 
-public class ClinicaPacientesFragment extends Fragment {
+public class ClinicaPacientesFragment extends Fragment implements IOnBackPressed {
 
     private ViewModelArgs viewModelArgs;
     private SharedPacientesViewModel sharedPacientesViewModel;
@@ -160,6 +163,15 @@ public class ClinicaPacientesFragment extends Fragment {
                 tratamiento.setText(historiaClinica.getTratamiento());
             }
         });
+    }
+
+    @Override
+    public boolean onBackPressed() {
+        // Agrega la lógica específica del fragmento para manejar el retroceso.
+        // Devuelve true si el fragmento maneja el retroceso, de lo contrario, devuelve false.
+        // Por ejemplo, si deseas que al presionar Atrás en este fragmento vuelva a la pantalla principal:
+        requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PacientesFragment()).commit();
+        return true;
     }
 }
 

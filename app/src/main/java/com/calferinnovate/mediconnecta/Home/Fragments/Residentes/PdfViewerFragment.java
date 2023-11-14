@@ -8,12 +8,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.calferinnovate.mediconnecta.Home.Fragments.PacientesFragment;
 import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.clases.Constantes;
+import com.calferinnovate.mediconnecta.clases.IOnBackPressed;
 import com.github.barteksc.pdfviewer.PDFView;
 import com.github.barteksc.pdfviewer.util.FitPolicy;
 
-public class PdfViewerFragment extends Fragment {
+public class PdfViewerFragment extends Fragment implements IOnBackPressed {
 
 
 
@@ -43,4 +45,9 @@ public class PdfViewerFragment extends Fragment {
     }
 
 
+    @Override
+    public boolean onBackPressed() {
+        requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new ClinicaPacientesFragment()).commit();
+        return true;
+    }
 }

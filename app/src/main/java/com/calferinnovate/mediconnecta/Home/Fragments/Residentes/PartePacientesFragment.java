@@ -22,9 +22,11 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.calferinnovate.mediconnecta.Home.Fragments.PacientesFragment;
 import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.clases.ClaseGlobal;
 import com.calferinnovate.mediconnecta.clases.Constantes;
+import com.calferinnovate.mediconnecta.clases.IOnBackPressed;
 import com.calferinnovate.mediconnecta.clases.Pacientes;
 import com.calferinnovate.mediconnecta.clases.PeticionesHTTP.ViewModel.SharedPacientesViewModel;
 import com.google.android.material.textfield.TextInputEditText;
@@ -42,7 +44,7 @@ import java.util.Map;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-public class PartePacientesFragment extends Fragment {
+public class PartePacientesFragment extends Fragment implements IOnBackPressed {
 
     private TextInputEditText fechaHora;
     private TextInputEditText pacienteNombreApellido;
@@ -171,5 +173,11 @@ public class PartePacientesFragment extends Fragment {
         // Formatea la fecha en el formato de salida
         String fechaFormateada = fechaHora.format(LocalDateTime.now());
         return fechaFormateada;
+    }
+
+    @Override
+    public boolean onBackPressed() {
+        requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PacientesFragment()).commit();
+        return true;
     }
 }

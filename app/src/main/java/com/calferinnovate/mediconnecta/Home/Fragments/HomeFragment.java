@@ -21,11 +21,13 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.calferinnovate.mediconnecta.Home.Fragments.HomeFragments.Rutinas.AvisosListViewFragment;
 import com.calferinnovate.mediconnecta.Home.Fragments.HomeFragments.Rutinas.consultasYRutinasDiariasFragment;
+import com.calferinnovate.mediconnecta.Home.Fragments.Residentes.ClinicaPacientesFragment;
 import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.clases.Avisos;
 import com.calferinnovate.mediconnecta.clases.ClaseGlobal;
 import com.calferinnovate.mediconnecta.clases.Constantes;
 import com.calferinnovate.mediconnecta.clases.Fechas;
+import com.calferinnovate.mediconnecta.clases.IOnBackPressed;
 import com.calferinnovate.mediconnecta.clases.Pacientes;
 import com.calferinnovate.mediconnecta.clases.Rutinas;
 
@@ -122,5 +124,7 @@ public class HomeFragment extends Fragment{
         abrirFragmentoListaAvisos = view.findViewById(R.id.abrirAvisos);
         rutinasBtn = view.findViewById(R.id.abrirRutinas);
     }
+
+
 
 }

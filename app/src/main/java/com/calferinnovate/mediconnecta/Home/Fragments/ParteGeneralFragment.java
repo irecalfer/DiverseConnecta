@@ -20,6 +20,7 @@ import com.calferinnovate.mediconnecta.Adaptadores.ParteAdapter;
 import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.clases.Caidas;
 import com.calferinnovate.mediconnecta.clases.ClaseGlobal;
+import com.calferinnovate.mediconnecta.clases.IOnBackPressed;
 import com.calferinnovate.mediconnecta.clases.Parte;
 import com.calferinnovate.mediconnecta.clases.PeticionesHTTP.PeticionesJson;
 import com.calferinnovate.mediconnecta.clases.PeticionesHTTP.ViewModel.ParteGeneralViewModel;
@@ -32,7 +33,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class ParteGeneralFragment extends Fragment {
+public class ParteGeneralFragment extends Fragment implements IOnBackPressed {
     private EditText fechasSeleccionadas;
     private Button btnFechas;
     private ClaseGlobal claseGlobal;
@@ -177,4 +178,9 @@ public class ParteGeneralFragment extends Fragment {
         caidasAdapter.notifyDataSetChanged();
     }
 
+    @Override
+    public boolean onBackPressed() {
+        requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
+        return true;
+    }
 }

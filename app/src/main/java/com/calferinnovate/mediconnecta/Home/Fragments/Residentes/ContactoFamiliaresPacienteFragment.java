@@ -18,9 +18,11 @@ import android.view.ViewGroup;
 
 import com.calferinnovate.mediconnecta.Adaptadores.FamiliaresAdapter;
 import com.calferinnovate.mediconnecta.Adaptadores.PacientesAdapter;
+import com.calferinnovate.mediconnecta.Home.Fragments.PacientesFragment;
 import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.clases.ClaseGlobal;
 import com.calferinnovate.mediconnecta.clases.ContactoFamiliares;
+import com.calferinnovate.mediconnecta.clases.IOnBackPressed;
 import com.calferinnovate.mediconnecta.clases.Pacientes;
 import com.calferinnovate.mediconnecta.clases.PeticionesHTTP.PeticionesJson;
 import com.calferinnovate.mediconnecta.clases.PeticionesHTTP.ViewModel.SharedPacientesViewModel;
@@ -29,7 +31,7 @@ import com.calferinnovate.mediconnecta.clases.PeticionesHTTP.ViewModel.ViewModel
 
 import java.util.ArrayList;
 
-public class ContactoFamiliaresPacienteFragment extends Fragment {
+public class ContactoFamiliaresPacienteFragment extends Fragment implements IOnBackPressed {
     private ClaseGlobal claseGlobal;
     private SharedPacientesViewModel sharedPacientesViewModel;
     private RecyclerView recyclerView;
@@ -107,4 +109,9 @@ public class ContactoFamiliaresPacienteFragment extends Fragment {
     }
 
 
+    @Override
+    public boolean onBackPressed() {
+        requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PacientesFragment()).commit();
+        return true;
+    }
 }
