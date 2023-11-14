@@ -262,8 +262,10 @@ public class SeleccionUnidadFragment extends Fragment implements AdapterView.OnI
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-
                 try {
+                    if(!claseGlobal.getListaPacientes().isEmpty()){
+                        claseGlobal.getListaPacientes().clear();
+                    }
                     JSONArray jsonArray = response.getJSONArray("pacientes");
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);

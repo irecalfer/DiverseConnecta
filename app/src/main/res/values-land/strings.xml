@@ -97,4 +97,5 @@
     <string name="placeholder">Placeholder</string>
     <string name="nombreNorma">Nombre norma</string>
     <string name="descripcionNorma">Descripción norma</string>
+    <string name="cerrarSesion">¿Quiere cerrar sesión?</string>
 </resources>

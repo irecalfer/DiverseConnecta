@@ -22,11 +22,6 @@ public class MainActivity extends AppCompatActivity {
         // Inicializa ClaseGlobal y almacena los datos de los pacientes, por ejemplo:
         ClaseGlobal claseGlobal = (ClaseGlobal) getApplicationContext();
 
-
-        //FragmentManager fmSesion = getSupportFragmentManager();
-        //fmSesion.beginTransaction().replace(R.id.HomeView, new SesionFragment()).commit();
-
-
     }
 
 }

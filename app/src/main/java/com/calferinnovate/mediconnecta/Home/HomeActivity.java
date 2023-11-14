@@ -12,12 +12,12 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.calferinnovate.mediconnecta.Home.Fragments.HomeFragment;
@@ -106,6 +106,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ParteGeneralFragment()).addToBackStack(null).commit();
         }else if(item.getItemId() == R.id.normas_empresa_item_id){
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new NormasEmpresaFragment()).addToBackStack(null).commit();
+        }else if(item.getItemId() == R.id.cierre_sesion_item_id){
+            //Si dan a cerrar sesión mostramos el diálogo de salida
+            dialogCerrarSesion();
+        }else if(item.getItemId() == R.id.cambio_unidad_item_id){
+            dialogCambioUnidad();
         }
 
         drawerLayout.closeDrawer(GravityCompat.START);
@@ -143,7 +148,80 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         // Agrega el callback al OnBackPressedDispatcher
         getOnBackPressedDispatcher().addCallback(this, callback);
-
     }
 
+    public void dialogCerrarSesion(){
+        //Creamos un Dialog
+        final Dialog dialog = new Dialog(this);
+
+        //Asignamos al dialog el layout que hemos creado para cerrar sesión
+        dialog.setContentView(R.layout.dialog_cerrar_sesion_y_cambio_unidad);
+
+        //Obtenemos las referencias a los TextView
+        TextView texto = dialog.findViewById(R.id.textViewCierreCambio);
+        texto.setText("¿Quiere cerrar sesión?");
+        TextView siSalir = dialog.findViewById(R.id.textViewSi);
+        TextView noSalir = dialog.findViewById(R.id.textViewNo);
+
+        //Click listener para el no
+        noSalir.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Cerramos el dialogo
+                dialog.dismiss();
+            }
+        });
+
+        //CLick listener para si
+        siSalir.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Cerramos el dialog y salimos
+                dialog.dismiss();
+                //finishAndRemoveTask();
+                finishAffinity();
+            }
+        });
+
+        //mostramos el dialogo de salida
+        dialog.show();
+    }
+
+    public void dialogCambioUnidad(){
+        //Creamos un Dialog
+        final Dialog dialog = new Dialog(this);
+
+        //Asignamos al dialog el layout que hemos creado para cerrar sesión
+        dialog.setContentView(R.layout.dialog_cerrar_sesion_y_cambio_unidad);
+
+        //Obtenemos las referencias a los TextView
+        TextView texto = dialog.findViewById(R.id.textViewCierreCambio);
+        texto.setText("¿Quiere cambiar de unidad?");
+        TextView siSalir = dialog.findViewById(R.id.textViewSi);
+        TextView noSalir = dialog.findViewById(R.id.textViewNo);
+
+
+        //Click listener para el no
+        noSalir.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Cerramos el dialogo
+                dialog.dismiss();
+            }
+        });
+
+        //CLick listener para si
+        siSalir.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Cerramos el dialog y salimos
+                dialog.dismiss();
+                //finishAndRemoveTask();
+                finish();
+            }
+        });
+
+        //mostramos el dialogo de salida
+        dialog.show();
+    }
 }
