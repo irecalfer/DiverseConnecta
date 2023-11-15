@@ -13,30 +13,18 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CalendarView;
 
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.calferinnovate.mediconnecta.Home.Fragments.HomeFragments.Rutinas.AvisosListViewFragment;
 import com.calferinnovate.mediconnecta.Home.Fragments.HomeFragments.Rutinas.consultasYRutinasDiariasFragment;
-import com.calferinnovate.mediconnecta.Home.Fragments.Residentes.ClinicaPacientesFragment;
 import com.calferinnovate.mediconnecta.R;
-import com.calferinnovate.mediconnecta.clases.Avisos;
-import com.calferinnovate.mediconnecta.clases.ClaseGlobal;
-import com.calferinnovate.mediconnecta.clases.Constantes;
-import com.calferinnovate.mediconnecta.clases.Fechas;
-import com.calferinnovate.mediconnecta.clases.IOnBackPressed;
-import com.calferinnovate.mediconnecta.clases.Pacientes;
-import com.calferinnovate.mediconnecta.clases.Rutinas;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.calferinnovate.mediconnecta.Model.Avisos;
+import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
+import com.calferinnovate.mediconnecta.Model.Fechas;
+import com.calferinnovate.mediconnecta.Model.Rutinas;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 
 public class HomeFragment extends Fragment{

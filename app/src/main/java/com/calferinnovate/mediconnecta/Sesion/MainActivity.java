@@ -5,8 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.calferinnovate.mediconnecta.R;
-import com.calferinnovate.mediconnecta.clases.ClaseGlobal;
-import com.calferinnovate.mediconnecta.clases.Empleado;
+import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
 
 
 public class MainActivity extends AppCompatActivity {

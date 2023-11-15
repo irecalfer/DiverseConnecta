@@ -25,10 +25,10 @@ import com.calferinnovate.mediconnecta.Home.Fragments.NormasEmpresaFragment;
 import com.calferinnovate.mediconnecta.Home.Fragments.PacientesFragment;
 import com.calferinnovate.mediconnecta.Home.Fragments.ParteGeneralFragment;
 import com.calferinnovate.mediconnecta.R;
-import com.calferinnovate.mediconnecta.clases.ClaseGlobal;
-import com.calferinnovate.mediconnecta.clases.Empleado;
-import com.calferinnovate.mediconnecta.clases.IOnBackPressed;
-import com.calferinnovate.mediconnecta.clases.Unidades;
+import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
+import com.calferinnovate.mediconnecta.Model.Empleado;
+import com.calferinnovate.mediconnecta.Model.IOnBackPressed;
+import com.calferinnovate.mediconnecta.Model.Unidades;
 import com.google.android.material.navigation.NavigationView;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, OnBackPressedDispatcherOwner {

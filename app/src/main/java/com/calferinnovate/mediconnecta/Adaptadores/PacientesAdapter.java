@@ -12,8 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.calferinnovate.mediconnecta.R;
-import com.calferinnovate.mediconnecta.clases.ClickListener;
-import com.calferinnovate.mediconnecta.clases.Pacientes;
+import com.calferinnovate.mediconnecta.Model.Pacientes;
 
 import java.util.ArrayList;
 

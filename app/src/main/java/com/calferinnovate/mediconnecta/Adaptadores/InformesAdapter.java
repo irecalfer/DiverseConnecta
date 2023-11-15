@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.calferinnovate.mediconnecta.R;
-import com.calferinnovate.mediconnecta.clases.Informes;
+import com.calferinnovate.mediconnecta.Model.Informes;
 
 import java.util.ArrayList;
 

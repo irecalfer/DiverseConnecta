@@ -2,7 +2,6 @@ package com.calferinnovate.mediconnecta.Home.Fragments.HomeFragments.Rutinas;
 
 import android.os.Bundle;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -10,30 +9,27 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.calferinnovate.mediconnecta.Adaptadores.RutinasAdapter;
 import com.calferinnovate.mediconnecta.Home.Fragments.HomeFragment;
-import com.calferinnovate.mediconnecta.Home.HomeActivity;
 import com.calferinnovate.mediconnecta.R;
-import com.calferinnovate.mediconnecta.clases.ClaseGlobal;
-import com.calferinnovate.mediconnecta.clases.Fechas;
-import com.calferinnovate.mediconnecta.clases.IOnBackPressed;
-import com.calferinnovate.mediconnecta.clases.Pacientes;
-import com.calferinnovate.mediconnecta.clases.PacientesAgrupadosRutinas;
-import com.calferinnovate.mediconnecta.clases.PeticionesHTTP.PeticionesJson;
-import com.calferinnovate.mediconnecta.clases.PeticionesHTTP.ViewModel.ConsultasYRutinasDiariasViewModel;
-import com.calferinnovate.mediconnecta.clases.PeticionesHTTP.ViewModel.ViewModelArgs;
-import com.calferinnovate.mediconnecta.clases.PeticionesHTTP.ViewModel.ViewModelFactory;
-import com.calferinnovate.mediconnecta.clases.Rutinas;
-import com.calferinnovate.mediconnecta.clases.Unidades;
+import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
+import com.calferinnovate.mediconnecta.Model.Fechas;
+import com.calferinnovate.mediconnecta.Model.IOnBackPressed;
+import com.calferinnovate.mediconnecta.Model.Pacientes;
+import com.calferinnovate.mediconnecta.Model.PacientesAgrupadosRutinas;
+import com.calferinnovate.mediconnecta.PeticionesHTTP.PeticionesJson;
+import com.calferinnovate.mediconnecta.ViewModel.ConsultasYRutinasDiariasViewModel;
+import com.calferinnovate.mediconnecta.ViewModel.ViewModelArgs;
+import com.calferinnovate.mediconnecta.ViewModel.ViewModelFactory;
+import com.calferinnovate.mediconnecta.Model.Rutinas;
+import com.calferinnovate.mediconnecta.Model.Unidades;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;

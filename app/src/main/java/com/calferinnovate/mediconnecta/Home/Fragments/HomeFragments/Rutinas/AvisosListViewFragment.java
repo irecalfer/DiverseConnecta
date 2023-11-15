@@ -5,7 +5,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,10 +20,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.calferinnovate.mediconnecta.R;
-import com.calferinnovate.mediconnecta.clases.Avisos;
-import com.calferinnovate.mediconnecta.clases.ClaseGlobal;
-import com.calferinnovate.mediconnecta.clases.Constantes;
-import com.calferinnovate.mediconnecta.clases.Fechas;
+import com.calferinnovate.mediconnecta.Model.Avisos;
+import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
+import com.calferinnovate.mediconnecta.Model.Constantes;
+import com.calferinnovate.mediconnecta.Model.Fechas;
 
 import org.json.JSONArray;
 import org.json.JSONException;

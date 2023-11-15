@@ -17,14 +17,13 @@ import android.view.ViewGroup;
 
 import com.calferinnovate.mediconnecta.Adaptadores.NormasAdapter;
 import com.calferinnovate.mediconnecta.R;
-import com.calferinnovate.mediconnecta.clases.ClaseGlobal;
-import com.calferinnovate.mediconnecta.clases.IOnBackPressed;
-import com.calferinnovate.mediconnecta.clases.Normas;
-import com.calferinnovate.mediconnecta.clases.PeticionesHTTP.PeticionesJson;
-import com.calferinnovate.mediconnecta.clases.PeticionesHTTP.ViewModel.NormasViewModel;
-import com.calferinnovate.mediconnecta.clases.PeticionesHTTP.ViewModel.SharedPacientesViewModel;
-import com.calferinnovate.mediconnecta.clases.PeticionesHTTP.ViewModel.ViewModelArgs;
-import com.calferinnovate.mediconnecta.clases.PeticionesHTTP.ViewModel.ViewModelFactory;
+import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
+import com.calferinnovate.mediconnecta.Model.IOnBackPressed;
+import com.calferinnovate.mediconnecta.Model.Normas;
+import com.calferinnovate.mediconnecta.PeticionesHTTP.PeticionesJson;
+import com.calferinnovate.mediconnecta.ViewModel.NormasViewModel;
+import com.calferinnovate.mediconnecta.ViewModel.ViewModelArgs;
+import com.calferinnovate.mediconnecta.ViewModel.ViewModelFactory;
 
 import java.util.ArrayList;
 

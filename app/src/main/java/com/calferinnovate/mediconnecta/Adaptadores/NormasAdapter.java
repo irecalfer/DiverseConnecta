@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.calferinnovate.mediconnecta.R;
-import com.calferinnovate.mediconnecta.clases.Normas;
+import com.calferinnovate.mediconnecta.Model.Normas;
 
 import java.util.ArrayList;
 

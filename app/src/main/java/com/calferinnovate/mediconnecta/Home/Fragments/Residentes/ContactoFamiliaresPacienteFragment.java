@@ -5,7 +5,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -17,17 +16,16 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.calferinnovate.mediconnecta.Adaptadores.FamiliaresAdapter;
-import com.calferinnovate.mediconnecta.Adaptadores.PacientesAdapter;
 import com.calferinnovate.mediconnecta.Home.Fragments.PacientesFragment;
 import com.calferinnovate.mediconnecta.R;
-import com.calferinnovate.mediconnecta.clases.ClaseGlobal;
-import com.calferinnovate.mediconnecta.clases.ContactoFamiliares;
-import com.calferinnovate.mediconnecta.clases.IOnBackPressed;
-import com.calferinnovate.mediconnecta.clases.Pacientes;
-import com.calferinnovate.mediconnecta.clases.PeticionesHTTP.PeticionesJson;
-import com.calferinnovate.mediconnecta.clases.PeticionesHTTP.ViewModel.SharedPacientesViewModel;
-import com.calferinnovate.mediconnecta.clases.PeticionesHTTP.ViewModel.ViewModelArgs;
-import com.calferinnovate.mediconnecta.clases.PeticionesHTTP.ViewModel.ViewModelFactory;
+import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
+import com.calferinnovate.mediconnecta.Model.ContactoFamiliares;
+import com.calferinnovate.mediconnecta.Model.IOnBackPressed;
+import com.calferinnovate.mediconnecta.Model.Pacientes;
+import com.calferinnovate.mediconnecta.PeticionesHTTP.PeticionesJson;
+import com.calferinnovate.mediconnecta.ViewModel.SharedPacientesViewModel;
+import com.calferinnovate.mediconnecta.ViewModel.ViewModelArgs;
+import com.calferinnovate.mediconnecta.ViewModel.ViewModelFactory;
 
 import java.util.ArrayList;
 

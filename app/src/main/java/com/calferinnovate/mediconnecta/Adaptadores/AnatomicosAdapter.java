@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.calferinnovate.mediconnecta.R;
-import com.calferinnovate.mediconnecta.clases.Pautas;
+import com.calferinnovate.mediconnecta.Model.Pautas;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;

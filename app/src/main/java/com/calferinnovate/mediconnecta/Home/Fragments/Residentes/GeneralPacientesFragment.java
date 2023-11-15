@@ -17,24 +17,20 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.calferinnovate.mediconnecta.Home.Fragments.PacientesFragment;
 import com.calferinnovate.mediconnecta.R;
-import com.calferinnovate.mediconnecta.clases.ClaseGlobal;
-import com.calferinnovate.mediconnecta.clases.IOnBackPressed;
-import com.calferinnovate.mediconnecta.clases.Pacientes;
-import com.calferinnovate.mediconnecta.clases.PeticionesHTTP.PeticionesJson;
-import com.calferinnovate.mediconnecta.clases.PeticionesHTTP.ViewModel.SharedPacientesViewModel;
-import com.calferinnovate.mediconnecta.clases.PeticionesHTTP.ViewModel.ViewModelArgs;
-import com.calferinnovate.mediconnecta.clases.PeticionesHTTP.ViewModel.ViewModelFactory;
-import com.calferinnovate.mediconnecta.clases.Seguro;
-import com.calferinnovate.mediconnecta.clases.Unidades;
-import com.google.android.material.tabs.TabLayout;
+import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
+import com.calferinnovate.mediconnecta.Model.IOnBackPressed;
+import com.calferinnovate.mediconnecta.Model.Pacientes;
+import com.calferinnovate.mediconnecta.PeticionesHTTP.PeticionesJson;
+import com.calferinnovate.mediconnecta.ViewModel.SharedPacientesViewModel;
+import com.calferinnovate.mediconnecta.ViewModel.ViewModelArgs;
+import com.calferinnovate.mediconnecta.ViewModel.ViewModelFactory;
+import com.calferinnovate.mediconnecta.Model.Seguro;
+import com.calferinnovate.mediconnecta.Model.Unidades;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.time.LocalDate;
 import java.time.Period;
-import java.time.Year;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Date;
 
 public class GeneralPacientesFragment extends Fragment implements IOnBackPressed {
 

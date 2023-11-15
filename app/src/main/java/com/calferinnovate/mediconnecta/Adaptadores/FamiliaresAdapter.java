@@ -4,14 +4,12 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.calferinnovate.mediconnecta.R;
-import com.calferinnovate.mediconnecta.clases.ContactoFamiliares;
+import com.calferinnovate.mediconnecta.Model.ContactoFamiliares;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;

@@ -12,6 +12,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
@@ -22,10 +24,15 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.Volley;
+import com.calferinnovate.mediconnecta.PeticionesHTTP.PeticionesJson;
 import com.calferinnovate.mediconnecta.R;
-import com.calferinnovate.mediconnecta.clases.ClaseGlobal;
-import com.calferinnovate.mediconnecta.clases.Constantes;
-import com.calferinnovate.mediconnecta.clases.Empleado;
+import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
+import com.calferinnovate.mediconnecta.Model.Constantes;
+import com.calferinnovate.mediconnecta.Model.Empleado;
+import com.calferinnovate.mediconnecta.ViewModel.NormasViewModel;
+import com.calferinnovate.mediconnecta.ViewModel.SesionViewModel;
+import com.calferinnovate.mediconnecta.ViewModel.ViewModelArgs;
+import com.calferinnovate.mediconnecta.ViewModel.ViewModelFactory;
 import com.google.android.material.textfield.TextInputEditText;
 
 import org.json.JSONArray;
@@ -45,6 +52,10 @@ public class SesionFragment extends Fragment implements Response.Listener<JSONOb
     private NavController navController;
     private Empleado empleado;
     private ClaseGlobal claseGlobal;
+    private ViewModelArgs viewModelArgs;
+    private SesionViewModel sesionViewModel;
+    private PeticionesJson peticionesJson;
+    private boolean compruebaDatos;
 
 
     @Override
@@ -53,6 +64,7 @@ public class SesionFragment extends Fragment implements Response.Listener<JSONOb
         // Necesitamos un objeto de tipo View
         View vista = inflater.inflate(R.layout.fragment_sesion, container, false);
         llamadaAClaseGlobal();
+
         return vista;
     }
 
@@ -120,18 +132,14 @@ public class SesionFragment extends Fragment implements Response.Listener<JSONOb
                         object.optString("nombre"), object.optString("apellidos"), object.optString("nombreCargo"),
                         object.optInt("cod_empleado"), object.optInt("fk_cargo"), object.getString("foto"));
                 claseGlobal.setEmpleado(empleadoLogueado);
-                Toast.makeText(getContext(), "Permitiendo el acceso al usuario " + username.getText().toString(), Toast.LENGTH_SHORT).show();
-
-                //pasoDeDatosAlSiguienteFragmento();
-                navController.navigate(R.id.action_sesionFragment_to_seleccionUnidadFragment);
-
             }
+            Toast.makeText(getContext(), "Permitiendo el acceso al usuario " + username.getText().toString(), Toast.LENGTH_SHORT).show();
+
+            //pasoDeDatosAlSiguienteFragmento();
+            navController.navigate(R.id.action_sesionFragment_to_seleccionUnidadFragment);
 
         } catch (JSONException e) {
             Log.d("Exception", String.valueOf(e));
         }
-
-
     }
-
 }

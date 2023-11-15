@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.calferinnovate.mediconnecta.R;
-import com.calferinnovate.mediconnecta.clases.Parte;
+import com.calferinnovate.mediconnecta.Model.Parte;
 
 import java.util.ArrayList;
 
