@@ -22,8 +22,7 @@ public class SesionViewModel extends ViewModel {
 
     private ClaseGlobal claseGlobal;
     private PeticionesJson peticionesJson;
-    private boolean datosCorrectos = false;
-    private MutableLiveData<Empleado> empleadoMutableLiveData = new MutableLiveData<>();
+    private MutableLiveData<Boolean> empleadoIniciaSesionMutableLiveData = new MutableLiveData<>();
 
     public SesionViewModel(){
 
@@ -34,14 +33,11 @@ public class SesionViewModel extends ViewModel {
         peticionesJson = viewModelArgs.getPeticionesJson();
     }
 
-    public LiveData<Empleado> getEmpleadoLiveData(){
-        if(empleadoMutableLiveData == null){
-            empleadoMutableLiveData = new MutableLiveData<>();
-        }
-        return empleadoMutableLiveData;
+    public LiveData<Boolean> getEmpleadoIniciaSesion(){
+        return empleadoIniciaSesionMutableLiveData;
     }
 
-    public boolean compruebaDatosAcceso(String user, String password){
+    public void inicioSesion(String user, String password){
         String url = Constantes.url_part + "inicio_sesion.php?user=" + user +
                 "&pwd=" + password;
         peticionesJson.getJsonObjectRequest(url, new PeticionesJson.MyJsonObjectResponseListener() {
@@ -55,9 +51,9 @@ public class SesionViewModel extends ViewModel {
                         Empleado empleadoLogueado = new Empleado(object.optString("user"), object.optString("pwd"),
                                 object.optString("nombre"), object.optString("apellidos"), object.optString("nombreCargo"),
                                 object.optInt("cod_empleado"), object.optInt("fk_cargo"), object.getString("foto"));
+                        claseGlobal.setEmpleado(empleadoLogueado);
                     }
-                    datosCorrectos = true;
-                    empleadoMutableLiveData.postValue(claseGlobal.getEmpleado());
+                    empleadoIniciaSesionMutableLiveData.setValue(true);
 
                 } catch (JSONException e) {
                     Log.d("Exception", String.valueOf(e));
@@ -66,9 +62,8 @@ public class SesionViewModel extends ViewModel {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                empleadoIniciaSesionMutableLiveData.setValue(false);
             }
         });
-        return datosCorrectos;
     }
 }
