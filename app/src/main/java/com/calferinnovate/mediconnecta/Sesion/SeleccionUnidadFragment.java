@@ -20,15 +20,11 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
+
 import com.bumptech.glide.Glide;
 import com.calferinnovate.mediconnecta.Home.HomeActivity;
-import com.calferinnovate.mediconnecta.Model.Area;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
 import com.calferinnovate.mediconnecta.Model.Empleado;
-import com.calferinnovate.mediconnecta.Model.Pacientes;
 import com.calferinnovate.mediconnecta.Model.Unidades;
 import com.calferinnovate.mediconnecta.PeticionesHTTP.PeticionesJson;
 import com.calferinnovate.mediconnecta.R;
@@ -38,7 +34,6 @@ import com.calferinnovate.mediconnecta.ViewModel.ViewModelFactory;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class SeleccionUnidadFragment extends Fragment {
 
@@ -109,20 +104,47 @@ public class SeleccionUnidadFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                if (seleccionUnidadViewModel.obtieneDatosPacientes(unidades.getNombreUnidad())) {
-                    Intent intent = new Intent(getActivity(), HomeActivity.class);
-                    startActivity(intent);
-                } else {
-                    // Muestra un mensaje de error o toma alguna acción en caso de que los datos no estén disponibles.
-                    // Puedes mostrar un Toast o realizar alguna otra acción.
-                    Toast.makeText(getActivity(), "Error al obtener datos", Toast.LENGTH_SHORT).show();
-                }
+                seleccionUnidadViewModel.obtieneDatosPacientes(unidades.getNombreUnidad()).observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+                    @Override
+                    public void onChanged(Boolean obtenidos) {
+                        if(obtenidos){
+                            Intent intent = new Intent(getActivity(), HomeActivity.class);
+                            startActivity(intent);
+                        }else{
+                            Toast.makeText(getActivity(), "Error al obtener datos", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
             }
         });
 
 
     }
 
+    public void completaDatosEmpleado(Empleado e) {
+        nombre.setText(e.getNombre() + " " + e.getApellidos());
+        cargo.setText(String.valueOf(e.getNombreCargo()));
+        cod_empleado.setText(String.valueOf(e.getCod_empleado()));
+        //Cargamos la foto del empleado con Glide
+        Glide.with(getContext()).load(empleado.getFoto()).circleCrop().into(foto);
+    }
+
+    public void asociacionVariableComponente(View view) {
+        botonFinalizar = view.findViewById(R.id.AccesoAlHome);
+        nombre = view.findViewById(R.id.nombreYApellidos);
+        cod_empleado = view.findViewById(R.id.cod_empleado);
+        cargo = view.findViewById(R.id.cargo);
+        areaSP = view.findViewById(R.id.spinnerArea);
+        unidadesSP = view.findViewById(R.id.spinnerUnidad);
+        foto = view.findViewById(R.id.fotoEmpleado);
+    }
+
+    public void llamadaAObjetoClaseGlobal() {
+        claseGlobal = ClaseGlobal.getInstance();
+        unidadesArrayList = claseGlobal.getListaUnidades();
+        unidades = claseGlobal.getUnidades();
+        empleado = claseGlobal.getEmpleado();
+    }
 
     private void obtieneAreasyPoblaSpinner() {
         seleccionUnidadViewModel.obtenerDatosAreas().observe(getViewLifecycleOwner(), new Observer<ArrayList<String>>() {
@@ -188,30 +210,7 @@ public class SeleccionUnidadFragment extends Fragment {
     }
 
 
-    public void completaDatosEmpleado(Empleado e) {
-        nombre.setText(e.getNombre() + " " + e.getApellidos());
-        cargo.setText(String.valueOf(e.getNombreCargo()));
-        cod_empleado.setText(String.valueOf(e.getCod_empleado()));
-        //Cargamos la foto del empleado con Glide
-        Glide.with(getContext()).load(empleado.getFoto()).circleCrop().into(foto);
-    }
 
-    public void asociacionVariableComponente(View view) {
-        botonFinalizar = view.findViewById(R.id.AccesoAlHome);
-        nombre = view.findViewById(R.id.nombreYApellidos);
-        cod_empleado = view.findViewById(R.id.cod_empleado);
-        cargo = view.findViewById(R.id.cargo);
-        areaSP = view.findViewById(R.id.spinnerArea);
-        unidadesSP = view.findViewById(R.id.spinnerUnidad);
-        foto = view.findViewById(R.id.fotoEmpleado);
-    }
-
-    public void llamadaAObjetoClaseGlobal() {
-        claseGlobal = ClaseGlobal.getInstance();
-        unidadesArrayList = claseGlobal.getListaUnidades();
-        unidades = claseGlobal.getUnidades();
-        empleado = claseGlobal.getEmpleado();
-    }
 
 
 

@@ -29,12 +29,12 @@ import java.util.ArrayList;
 public class SeleccionUnidadViewModel extends ViewModel {
     private PeticionesJson peticionesJson;
     private ClaseGlobal claseGlobal;
-    private boolean pacientesObtenidos;
     private ArrayList<String> listaAreas = new ArrayList<>();
     private ArrayList<String> listaUnidadesNombre = new ArrayList<>();
     private ArrayList<Unidades> listaUnidades = new ArrayList<>();
     private MutableLiveData<ArrayList<String>> arrayListMutableLiveData = new MutableLiveData<>();
     private MutableLiveData<ArrayList<String>> arrayListMutableLiveDataUnidades = new MutableLiveData<>();
+    private MutableLiveData<Boolean> pacientesObtenidos = new MutableLiveData<>();
 
     public SeleccionUnidadViewModel(){
 
@@ -130,7 +130,7 @@ public class SeleccionUnidadViewModel extends ViewModel {
     }
 
     // Método para completar los datos del empleado
-    public boolean obtieneDatosPacientes(String nombreUnidad) {
+    public LiveData<Boolean> obtieneDatosPacientes(String nombreUnidad) {
         //Volvemos a asignar unidad, ya que hemos cambiado el valor que unidades en la clase global
         //De tal manera que podamos utilizar la instancia creada para poder acceder a su nombre y
         //de igual manera poder acceder a los pacientes de dicha unidad.
@@ -153,7 +153,7 @@ public class SeleccionUnidadViewModel extends ViewModel {
                     }
                     // Actualiza la lista de pacientes en ClaseGlobal
                     claseGlobal.setListaPacientes(claseGlobal.getListaPacientes());
-                    pacientesObtenidos = true;
+                    pacientesObtenidos.postValue(true);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -162,6 +162,7 @@ public class SeleccionUnidadViewModel extends ViewModel {
             @Override
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
+                pacientesObtenidos.postValue(false);
             }
         });
 
