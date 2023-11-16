@@ -33,7 +33,7 @@ public class DetallePacientesFragment extends Fragment implements IOnBackPressed
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_detalle_pacientes, container, false);
-        asignaVariables(view);
+        asignarValoresAVariables(view);
         sharedPacientesViewModel = new ViewModelProvider(requireActivity()).get(SharedPacientesViewModel.class);
         listenerTabLayoutDetalle();
 
@@ -42,7 +42,7 @@ public class DetallePacientesFragment extends Fragment implements IOnBackPressed
     }
 
 
-    public void asignaVariables(View view) {
+    public void asignarValoresAVariables(View view) {
         claseGlobal = ClaseGlobal.getInstance();
         tabLayoutPaciente = view.findViewById(R.id.tabLayoutDetallePacientes);
         vistasDetallePaciente = view.findViewById(R.id.fragmentContainerDetallePacientes);

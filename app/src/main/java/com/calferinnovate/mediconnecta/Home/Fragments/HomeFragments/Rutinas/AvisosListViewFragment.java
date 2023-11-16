@@ -62,7 +62,7 @@ public class AvisosListViewFragment extends Fragment {
         // Inflate the layout for this fragment
         View vista = inflater.inflate(R.layout.fragment_avisos_list_view, container, false);
         //Declaramos los objetos globales y rellenaremos el ListView
-        asignaVariables(vista);
+        inicializaVariables(vista);
 
         viewModelArgs = new ViewModelArgs() {
             @Override
@@ -84,7 +84,7 @@ public class AvisosListViewFragment extends Fragment {
         return vista;
     }
 
-    private void asignaVariables(View view) {
+    private void inicializaVariables(View view) {
         claseGlobal = ClaseGlobal.getInstance();
         avisos = claseGlobal.getAvisos();
         fechas = claseGlobal.getFechas();

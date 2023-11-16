@@ -52,21 +52,18 @@ public class HomeFragment extends Fragment {
         //componentes xml
         View vista = inflater.inflate(R.layout.fragment_home, container, false);
 
-        asignaObjetosClaseGlobal();
         //Obtenemos la referencia al ListView desde onCreateView
-        asociarVariablesConComponentes(vista);
+        inicializaVariables(vista);
 
         return vista;
 
     }
 
-    public void asignaObjetosClaseGlobal() {
+    public void inicializaVariables(View view) {
         claseGlobal = ClaseGlobal.getInstance();
         avisos = claseGlobal.getAvisos();
         fechaSeleccionada = claseGlobal.getFechas();
-    }
 
-    public void asociarVariablesConComponentes(View view) {
         calendario = view.findViewById(R.id.calendarView);
         abrirFragmentoListaAvisos = view.findViewById(R.id.abrirAvisos);
         rutinasBtn = view.findViewById(R.id.abrirRutinas);

@@ -54,8 +54,7 @@ public class ConsultasYRutinasDiariasFragment extends Fragment implements IOnBac
         // Inflate the layout for this fragment
         View vista = inflater.inflate(R.layout.fragment_consultas_y_rutinas_diarias, container, false);
 
-        referenciaVariables(vista);
-        llamadaObjetosGlobales();
+        inicializaVariables(vista);
         setearFecha();
 
 
@@ -81,18 +80,17 @@ public class ConsultasYRutinasDiariasFragment extends Fragment implements IOnBac
         return vista;
     }
 
-    public void referenciaVariables(View view) {
+    public void inicializaVariables(View view) {
+        claseGlobal = ClaseGlobal.getInstance();
+        fechas = claseGlobal.getFechas();
+        unidades = claseGlobal.getUnidades();
+        listaPacientes = claseGlobal.getListaPacientes();
+
         rvConsultas = view.findViewById(R.id.rvRutinas);
         tabLayout = view.findViewById(R.id.tabLAyoutRutinas);
         fechaRutina = view.findViewById(R.id.fechaActual);
     }
 
-    public void llamadaObjetosGlobales() {
-        claseGlobal = ClaseGlobal.getInstance();
-        fechas = claseGlobal.getFechas();
-        unidades = claseGlobal.getUnidades();
-        listaPacientes = claseGlobal.getListaPacientes();
-    }
 
     private void setearFecha() {
         //Seteamos la fecha en el EditText

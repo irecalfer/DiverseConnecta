@@ -66,8 +66,7 @@ public class SeleccionUnidadFragment extends Fragment {
         // Inflate the layout for this fragment
 
         View vista = inflater.inflate(R.layout.fragment_seleccion_unidad, container, false);
-        asociacionVariableComponente(vista);
-        llamadaAObjetoClaseGlobal();
+        inicializaVariables(vista);
 
         viewModelArgs = new ViewModelArgs() {
             @Override
@@ -88,6 +87,20 @@ public class SeleccionUnidadFragment extends Fragment {
         return vista;
     }
 
+    public void inicializaVariables(View view) {
+        claseGlobal = ClaseGlobal.getInstance();
+        unidadesArrayList = claseGlobal.getListaUnidades();
+        unidades = claseGlobal.getUnidades();
+        empleado = claseGlobal.getEmpleado();
+
+        botonFinalizar = view.findViewById(R.id.AccesoAlHome);
+        nombre = view.findViewById(R.id.nombreYApellidos);
+        cod_empleado = view.findViewById(R.id.cod_empleado);
+        cargo = view.findViewById(R.id.cargo);
+        areaSP = view.findViewById(R.id.spinnerArea);
+        unidadesSP = view.findViewById(R.id.spinnerUnidad);
+        foto = view.findViewById(R.id.fotoEmpleado);
+    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -129,22 +142,8 @@ public class SeleccionUnidadFragment extends Fragment {
         Glide.with(getContext()).load(empleado.getFoto()).circleCrop().into(foto);
     }
 
-    public void asociacionVariableComponente(View view) {
-        botonFinalizar = view.findViewById(R.id.AccesoAlHome);
-        nombre = view.findViewById(R.id.nombreYApellidos);
-        cod_empleado = view.findViewById(R.id.cod_empleado);
-        cargo = view.findViewById(R.id.cargo);
-        areaSP = view.findViewById(R.id.spinnerArea);
-        unidadesSP = view.findViewById(R.id.spinnerUnidad);
-        foto = view.findViewById(R.id.fotoEmpleado);
-    }
 
-    public void llamadaAObjetoClaseGlobal() {
-        claseGlobal = ClaseGlobal.getInstance();
-        unidadesArrayList = claseGlobal.getListaUnidades();
-        unidades = claseGlobal.getUnidades();
-        empleado = claseGlobal.getEmpleado();
-    }
+
 
     private void obtieneAreasyPoblaSpinner() {
         seleccionUnidadViewModel.obtenerDatosAreas().observe(getViewLifecycleOwner(), new Observer<ArrayList<String>>() {

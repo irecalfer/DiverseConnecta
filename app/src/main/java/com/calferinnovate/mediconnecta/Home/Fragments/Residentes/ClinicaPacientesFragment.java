@@ -48,7 +48,7 @@ public class ClinicaPacientesFragment extends Fragment implements IOnBackPressed
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_clinica_pacientes, container, false);
-        asignaVariables(view);
+        asignarValoresAVariables(view);
 
         //Creas un objeto ViewModelFactory y obtienes una instancia de ConsultasYRutinasDiariasViewModel utilizando este factory.
         //Luego, observas el LiveData del ViewModel para mantener actualizada la lista de programación en el RecyclerView.
@@ -71,7 +71,7 @@ public class ClinicaPacientesFragment extends Fragment implements IOnBackPressed
         return view;
     }
 
-    public void asignaVariables(View view) {
+    public void asignarValoresAVariables(View view) {
         claseGlobal = ClaseGlobal.getInstance();
         tlInformes = view.findViewById(R.id.tableInformes);
         datosSalud = view.findViewById(R.id.datosSalud);

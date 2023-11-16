@@ -56,7 +56,7 @@ public class PartePacientesFragment extends Fragment implements IOnBackPressed {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_parte_pacientes, container, false);
         claseGlobal = ClaseGlobal.getInstance();
-        asociaComponentesAVariables(view);
+        inicializaVariables(view);
         sharedPacientesViewModel = new ViewModelProvider(requireActivity()).get(SharedPacientesViewModel.class);
         return view;
     }
@@ -84,7 +84,7 @@ public class PartePacientesFragment extends Fragment implements IOnBackPressed {
 
     }
 
-    public void asociaComponentesAVariables(View view){
+    public void inicializaVariables(View view){
         fechaHora = view.findViewById(R.id.fechaHoraParte);
         pacienteNombreApellido = view.findViewById(R.id.pacienteParte);
         descripcion = view.findViewById(R.id.descripcionParte);

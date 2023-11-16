@@ -43,7 +43,7 @@ public class ContactoFamiliaresPacienteFragment extends Fragment implements IOnB
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_contacto_familiares_paciente, container, false);
-        asignarVariables(view);
+        asignarValoresAVariables(view);
         recyclerView.setHasFixedSize(true);
 
         //Creas un objeto ViewModelFactory y obtienes una instancia de ConsultasYRutinasDiariasViewModel utilizando este factory.
@@ -67,7 +67,7 @@ public class ContactoFamiliaresPacienteFragment extends Fragment implements IOnB
         return view;
     }
 
-    public void asignarVariables(View view){
+    public void asignarValoresAVariables(View view){
         claseGlobal = ClaseGlobal.getInstance();
         recyclerView = view.findViewById(R.id.recyclerViewFamiliares);
     }

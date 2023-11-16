@@ -69,7 +69,7 @@ public class ParteCaidasPacientesFragment extends Fragment implements IOnBackPre
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_parte_caidas_pacientes, container, false);
         claseGlobal = ClaseGlobal.getInstance();
-        asociaVariablesAComponentes(view);
+        inicializaVariables(view);
 
 
         //Creas un objeto ViewModelFactory y obtienes una instancia de ConsultasYRutinasDiariasViewModel utilizando este factory.
@@ -91,6 +91,26 @@ public class ParteCaidasPacientesFragment extends Fragment implements IOnBackPre
         sharedPacientesViewModel = new ViewModelProvider(requireActivity(), factory).get(SharedPacientesViewModel.class);
 
         return view;
+    }
+
+    private void inicializaVariables(View view) {
+        lugarSpinner = view.findViewById(R.id.spinnerLugarCaida);
+        fechaHora = view.findViewById(R.id.fechaHoraCaida);
+        nombreApellidoPaciente = view.findViewById(R.id.pacienteCaida);
+        factoresRiesgo = view.findViewById(R.id.factoresRiesgo);
+        causas = view.findViewById(R.id.causas);
+        circunstancias = view.findViewById(R.id.circunstancias);
+        consecuencias = view.findViewById(R.id.consecuencias);
+        unidadCaida = view.findViewById(R.id.unidadCaida);
+        empleadoCaida = view.findViewById(R.id.empleado);
+        observaciones = view.findViewById(R.id.observacionesCaida);
+        registrar = view.findViewById(R.id.registrarCaidaBtn);
+        radioGroupVisto = view.findViewById(R.id.caidaPresenciadaRadioGroup);
+        radioGroupAvisado = view.findViewById(R.id.avisadoFamiliaresRadioGroup);
+        siCaida = view.findViewById(R.id.siCaida);
+        noCaida = view.findViewById(R.id.noCaida);
+        siAvisado = view.findViewById(R.id.siAvisado);
+        noAvisado = view.findViewById(R.id.noAvisado);
     }
 
     @Override
@@ -125,25 +145,7 @@ public class ParteCaidasPacientesFragment extends Fragment implements IOnBackPre
         });
     }
 
-    private void asociaVariablesAComponentes(View view) {
-        lugarSpinner = view.findViewById(R.id.spinnerLugarCaida);
-        fechaHora = view.findViewById(R.id.fechaHoraCaida);
-        nombreApellidoPaciente = view.findViewById(R.id.pacienteCaida);
-        factoresRiesgo = view.findViewById(R.id.factoresRiesgo);
-        causas = view.findViewById(R.id.causas);
-        circunstancias = view.findViewById(R.id.circunstancias);
-        consecuencias = view.findViewById(R.id.consecuencias);
-        unidadCaida = view.findViewById(R.id.unidadCaida);
-        empleadoCaida = view.findViewById(R.id.empleado);
-        observaciones = view.findViewById(R.id.observacionesCaida);
-        registrar = view.findViewById(R.id.registrarCaidaBtn);
-        radioGroupVisto = view.findViewById(R.id.caidaPresenciadaRadioGroup);
-        radioGroupAvisado = view.findViewById(R.id.avisadoFamiliaresRadioGroup);
-        siCaida = view.findViewById(R.id.siCaida);
-        noCaida = view.findViewById(R.id.noCaida);
-        siAvisado = view.findViewById(R.id.siAvisado);
-        noAvisado = view.findViewById(R.id.noAvisado);
-    }
+
 
     public void lugarSeleccionado() {
        lugarSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

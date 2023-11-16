@@ -46,7 +46,7 @@ public class PautasPacientesGeriatriaFragment extends Fragment implements IOnBac
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_pautas_pacientes_geriatria, container, false);
 
-        llamaAClaseGlobal();
+        inicializaVariables();
 
         // Obtener el Recycler
         recyclerView = view.findViewById(R.id.recyclerViewPautas);
@@ -89,7 +89,7 @@ public class PautasPacientesGeriatriaFragment extends Fragment implements IOnBac
         });
     }
 
-    public void llamaAClaseGlobal() {
+    public void inicializaVariables() {
         claseGlobal = ClaseGlobal.getInstance();
     }
 

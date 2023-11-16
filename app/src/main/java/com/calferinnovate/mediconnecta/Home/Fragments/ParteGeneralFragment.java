@@ -53,7 +53,7 @@ public class ParteGeneralFragment extends Fragment implements IOnBackPressed {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_parte_general, container, false);
         claseGlobal = ClaseGlobal.getInstance();
-        inicializaVAriables(view);
+        inicializaVariables(view);
         //Creas un objeto ViewModelFactory y obtienes una instancia de ConsultasYRutinasDiariasViewModel utilizando este factory.
         //Luego, observas el LiveData del ViewModel para mantener actualizada la lista de programación en el RecyclerView.
         viewModelArgs = new ViewModelArgs() {
@@ -74,7 +74,7 @@ public class ParteGeneralFragment extends Fragment implements IOnBackPressed {
         return view;
     }
 
-    public void inicializaVAriables(View view) {
+    public void inicializaVariables(View view) {
         fechasSeleccionadas = view.findViewById(R.id.fechaSeleccionadaEditText);
         btnFechas = view.findViewById(R.id.buttonFechas);
         tableLayoutPartes = view.findViewById(R.id.tableLayoutParte);

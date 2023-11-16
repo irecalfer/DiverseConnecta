@@ -58,7 +58,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         drawerLayout = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         headerView = navigationView.getHeaderView(0);
-        llamaAClaseGlobal();
+        inicializaVariables();
         rellenaDatosPersonalesNavigationDrawer(headerView);
 
         navigationView.setNavigationItemSelectedListener(this);
@@ -80,7 +80,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
-    public void llamaAClaseGlobal(){
+    public void inicializaVariables(){
         claseGlobal = ClaseGlobal.getInstance();
         empleado = claseGlobal.getEmpleado();
         unidad = claseGlobal.getUnidades();

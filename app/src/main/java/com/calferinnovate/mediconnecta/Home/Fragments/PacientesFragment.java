@@ -45,7 +45,7 @@ public class PacientesFragment extends Fragment implements PacientesAdapter.Item
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_residentes, container, false);
-        asignarVariables();
+        inicializaVariables();
         poblaRecyclerPacientes(view);
 
 
@@ -83,7 +83,7 @@ public class PacientesFragment extends Fragment implements PacientesAdapter.Item
         return view;
     }
 
-    public void asignarVariables() {
+    public void inicializaVariables() {
         claseGlobal = ClaseGlobal.getInstance();
         listaPacientes = claseGlobal.getListaPacientes();
     }

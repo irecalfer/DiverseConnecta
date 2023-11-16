@@ -60,7 +60,7 @@ public class SesionFragment extends Fragment{
     /**
      * Método llamado cuando se crea la vista del fragmento.
      * Infla el diseño de la UI desde el archivo XML fragment_sesion.xml.
-     * Llama a llamadaAClaseGlobal() para obtener la instancia de ClaseGlobal.
+     * Llama a inicializaVariables() para obtener la instancia de ClaseGlobal.
      * Configura el ViewModel SesionViewModel mediante la creación de un ViewModelFactory que proporciona
      * instancias de Peticiones Json y ClaseGloabl al ViewModel.
      *
@@ -76,7 +76,7 @@ public class SesionFragment extends Fragment{
                              Bundle savedInstanceState) {
         // Necesitamos un objeto de tipo View
         View vista = inflater.inflate(R.layout.fragment_sesion, container, false);
-        llamadaAClaseGlobal();
+        inicializaVariables();
 
         viewModelArgs = new ViewModelArgs() {
             @Override
@@ -101,7 +101,7 @@ public class SesionFragment extends Fragment{
     /**
      * Método que obtiene la instancia de ClaseGlobal.
      */
-    public void llamadaAClaseGlobal() {
+    public void inicializaVariables() {
         claseGlobal = ClaseGlobal.getInstance();
     }
 
