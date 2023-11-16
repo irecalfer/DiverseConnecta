@@ -23,7 +23,14 @@ public class PdfViewerFragment extends Fragment implements IOnBackPressed {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_pdf_viewer, container, false);
         PDFView pdfView = view.findViewById(R.id.pdfView);
+        obtieneBytesPDF(pdfView);
 
+
+        return view;
+    }
+
+
+    public void obtieneBytesPDF(PDFView pdfView){
         // Obtén los bytes del PDF de los argumentos del fragmento
         Bundle bundle = getArguments();
         if (bundle != null) {
@@ -35,13 +42,10 @@ public class PdfViewerFragment extends Fragment implements IOnBackPressed {
                         .enableSwipe(true)
                         .swipeHorizontal(false)
                         .pageFitPolicy(FitPolicy.WIDTH)
-                .load();
+                        .load();
             }
         }
-
-        return view;
     }
-
 
     @Override
     public boolean onBackPressed() {

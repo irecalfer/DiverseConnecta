@@ -8,18 +8,18 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.Model.Pautas;
+import com.calferinnovate.mediconnecta.R;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;
 
 public class PautasAdapter extends RecyclerView.Adapter<PautasAdapter.PautasViewHolder> {
 
-    private ArrayList<Pautas> listaPautas;
-    private Context context;
+    private final ArrayList<Pautas> listaPautas;
+    private final Context context;
 
-    public PautasAdapter(ArrayList<Pautas> listaPautas, Context context){
+    public PautasAdapter(ArrayList<Pautas> listaPautas, Context context) {
         this.listaPautas = listaPautas;
         this.context = context;
     }
@@ -37,6 +37,8 @@ public class PautasAdapter extends RecyclerView.Adapter<PautasAdapter.PautasView
         Pautas pautas = listaPautas.get(position);
         holder.tipoPauta.setText(pautas.getTipoPauta());
         holder.observacionesPauta.setText(pautas.getObservaciones());
+
+
     }
 
     @Override
@@ -46,10 +48,10 @@ public class PautasAdapter extends RecyclerView.Adapter<PautasAdapter.PautasView
 
 
     public class PautasViewHolder extends RecyclerView.ViewHolder {
-        private TextInputEditText tipoPauta;
-        private TextInputEditText observacionesPauta;
+        private final TextInputEditText tipoPauta;
+        private final TextInputEditText observacionesPauta;
 
-        public PautasViewHolder(View itemView){
+        public PautasViewHolder(View itemView) {
             super(itemView);
             tipoPauta = itemView.findViewById(R.id.tipoPauta);
             observacionesPauta = itemView.findViewById(R.id.observacionespauta);

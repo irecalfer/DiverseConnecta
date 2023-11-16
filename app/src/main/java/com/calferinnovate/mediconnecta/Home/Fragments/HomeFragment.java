@@ -79,16 +79,12 @@ public class HomeFragment extends Fragment {
 
         setearFechaSeleccionada();
         abrirFragmentoAvisos();
+        listenerButtonRutinas();
 
 
-        //Cuando clcikememos en el botón mostraremos el fragment que contiene las rutinas
-        rutinasBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getParentFragmentManager().beginTransaction().replace(R.id.fragment_container, new ConsultasYRutinasDiariasFragment()).commit();
-            }
-        });
     }
+
+
 
 
     public void setearFechaSeleccionada() {
@@ -112,6 +108,16 @@ public class HomeFragment extends Fragment {
             public void onClick(View v) {
                 getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerViewLIstView, new AvisosListViewFragment()).commit();
                 Log.d("avisos", "Se ha implementado el nuevo fragmento");
+            }
+        });
+    }
+
+    public void listenerButtonRutinas(){
+        //Cuando clcikememos en el botón mostraremos el fragment que contiene las rutinas
+        rutinasBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getParentFragmentManager().beginTransaction().replace(R.id.fragment_container, new ConsultasYRutinasDiariasFragment()).commit();
             }
         });
     }

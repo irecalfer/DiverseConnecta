@@ -35,6 +35,7 @@ public class PautasSaludMentalPacientesFragment extends Fragment implements IOnB
     private SharedPacientesViewModel sharedPacientesViewModel;
     private PeticionesJson peticionesJson;
     private PautasAdapter pautasAdapter;
+    private ClaseGlobal claseGlobal;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -42,12 +43,22 @@ public class PautasSaludMentalPacientesFragment extends Fragment implements IOnB
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_pautas_salud_mental_pacientes, container, false);
 
-        ClaseGlobal claseGlobal = ClaseGlobal.getInstance();
+        claseGlobal = ClaseGlobal.getInstance();
 
+
+        obtieneRecyclerView(view);
+        inicializaViewModel();
+
+
+        return view;
+    }
+
+    public void obtieneRecyclerView(View view){
         // Obtener el Recycler
         recyclerView = view.findViewById(R.id.recyclerViewPautasSaludMental);
         recyclerView.setHasFixedSize(true);
-
+    }
+    public void inicializaViewModel(){
         //Creas un objeto ViewModelFactory y obtienes una instancia de ConsultasYRutinasDiariasViewModel utilizando este factory.
         //Luego, observas el LiveData del ViewModel para mantener actualizada la lista de programación en el RecyclerView.
         viewModelArgs = new ViewModelArgs() {
@@ -65,9 +76,6 @@ public class PautasSaludMentalPacientesFragment extends Fragment implements IOnB
         ViewModelFactory<SharedPacientesViewModel> factory = new ViewModelFactory<>(viewModelArgs);
         // Inicializa el ViewModel
         sharedPacientesViewModel = new ViewModelProvider(requireActivity(), factory).get(SharedPacientesViewModel.class);
-
-
-        return view;
     }
 
     @Override

@@ -52,8 +52,19 @@ public class GeneralPacientesFragment extends Fragment implements IOnBackPressed
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_general_pacientes, container, false);
-        asignarValoresAVariables(view);
+        inicializaVariables(view);
+        inicializaViewModel();
+        return view;
+    }
 
+
+
+    public void inicializaVariables(View view) {
+        claseGlobal = ClaseGlobal.getInstance();
+        seguroTextView = view.findViewById(R.id.seguroPaciente);
+    }
+
+    public void inicializaViewModel(){
         //Creas un objeto ViewModelFactory y obtienes una instancia de ConsultasYRutinasDiariasViewModel utilizando este factory.
         //Luego, observas el LiveData del ViewModel para mantener actualizada la lista de programación en el RecyclerView.
         viewModelArgs = new ViewModelArgs() {
@@ -71,15 +82,6 @@ public class GeneralPacientesFragment extends Fragment implements IOnBackPressed
         ViewModelFactory<SharedPacientesViewModel> factory = new ViewModelFactory<>(viewModelArgs);
         // Inicializa el ViewModel
         sharedPacientesViewModel = new ViewModelProvider(requireActivity(), factory).get(SharedPacientesViewModel.class);
-
-        return view;
-    }
-
-
-
-    public void asignarValoresAVariables(View view) {
-        claseGlobal = ClaseGlobal.getInstance();
-        seguroTextView = view.findViewById(R.id.seguroPaciente);
     }
 
     @Override

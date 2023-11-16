@@ -44,6 +44,20 @@ public class NormasEmpresaFragment extends Fragment implements IOnBackPressed {
         View view =  inflater.inflate(R.layout.fragment_normas_empresa, container, false);
         inicializaVariables(view);
 
+        inicializaViewModel();
+
+        //Hacemos la petición para obtener las normas
+        normasViewModel.obtieneNormasEmpresa();
+
+        return view;
+    }
+
+    public void inicializaVariables(View view){
+        claseGlobal = ClaseGlobal.getInstance();
+        recyclerNormas = view.findViewById(R.id.recyclerViewNormas);
+    }
+
+    public void inicializaViewModel(){
         viewModelArgs = new ViewModelArgs() {
             @Override
             public PeticionesJson getPeticionesJson() {
@@ -59,21 +73,15 @@ public class NormasEmpresaFragment extends Fragment implements IOnBackPressed {
         ViewModelFactory<NormasViewModel> factory = new ViewModelFactory<>(viewModelArgs);
         // Inicializa el ViewModel
         normasViewModel = new ViewModelProvider(requireActivity(), factory).get(NormasViewModel.class);
-
-        //Hacemos la petición para obtener las normas
-        normasViewModel.obtieneNormasEmpresa();
-
-        return view;
     }
 
-    public void inicializaVariables(View view){
-        claseGlobal = ClaseGlobal.getInstance();
-        recyclerNormas = view.findViewById(R.id.recyclerViewNormas);
-    }
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        llenaRecyclerView();
+    }
 
+    public void llenaRecyclerView(){
         normasViewModel.getArrayListLiveData().observe(getViewLifecycleOwner(), new Observer<ArrayList<Normas>>() {
             @Override
             public void onChanged(ArrayList<Normas> normas) {

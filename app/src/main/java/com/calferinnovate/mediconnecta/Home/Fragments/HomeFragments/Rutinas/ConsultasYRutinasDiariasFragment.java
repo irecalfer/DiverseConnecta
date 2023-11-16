@@ -56,25 +56,7 @@ public class ConsultasYRutinasDiariasFragment extends Fragment implements IOnBac
 
         inicializaVariables(vista);
         setearFecha();
-
-
-        //Creas un objeto ViewModelFactory y obtienes una instancia de ConsultasYRutinasDiariasViewModel utilizando este factory.
-        //Luego, observas el LiveData del ViewModel para mantener actualizada la lista de programación en el RecyclerView.
-        viewModelArgs = new ViewModelArgs() {
-            @Override
-            public PeticionesJson getPeticionesJson() {
-                return peticionesJson = new PeticionesJson(requireContext());
-            }
-
-            @Override
-            public ClaseGlobal getClaseGlobal() {
-                return claseGlobal;
-            }
-        };
-
-        ViewModelFactory<ConsultasYRutinasDiariasViewModel> factory = new ViewModelFactory<>(viewModelArgs);
-        // Inicializa el ViewModel
-        consultasYRutinasDiariasViewModel = new ViewModelProvider(this, factory).get(ConsultasYRutinasDiariasViewModel.class);
+        inicializaViewModel();
 
 
         return vista;
@@ -106,6 +88,26 @@ public class ConsultasYRutinasDiariasFragment extends Fragment implements IOnBac
     }
 
 
+    public void inicializaViewModel(){
+        //Creas un objeto ViewModelFactory y obtienes una instancia de ConsultasYRutinasDiariasViewModel utilizando este factory.
+        //Luego, observas el LiveData del ViewModel para mantener actualizada la lista de programación en el RecyclerView.
+        viewModelArgs = new ViewModelArgs() {
+            @Override
+            public PeticionesJson getPeticionesJson() {
+                return peticionesJson = new PeticionesJson(requireContext());
+            }
+
+            @Override
+            public ClaseGlobal getClaseGlobal() {
+                return claseGlobal;
+            }
+        };
+
+        ViewModelFactory<ConsultasYRutinasDiariasViewModel> factory = new ViewModelFactory<>(viewModelArgs);
+        // Inicializa el ViewModel
+        consultasYRutinasDiariasViewModel = new ViewModelProvider(this, factory).get(ConsultasYRutinasDiariasViewModel.class);
+    }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -127,7 +129,6 @@ public class ConsultasYRutinasDiariasFragment extends Fragment implements IOnBac
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 tipoRutinaActual = (String) tab.getText();
-                // Limpia los datos actuales en el adaptador
                 claseGlobal.getListaProgramacion().clear();
                 obtenerDatosRutinas();
             }

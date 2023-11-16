@@ -1,9 +1,15 @@
 package com.calferinnovate.mediconnecta.Home.Fragments.Residentes;
 
+import android.app.ActionBar;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TableLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -54,6 +60,17 @@ public class PautasPacientesGeriatriaFragment extends Fragment implements IOnBac
         recyclerViewAnatomicos = view.findViewById(R.id.recyclerViewAnatomicos);
         recyclerViewAnatomicos.setHasFixedSize(true);
 
+        inicializaViewModel();
+
+
+        return view;
+    }
+
+    public void inicializaVariables() {
+        claseGlobal = ClaseGlobal.getInstance();
+    }
+
+    public void inicializaViewModel(){
         //Creas un objeto ViewModelFactory y obtienes una instancia de ConsultasYRutinasDiariasViewModel utilizando este factory.
         //Luego, observas el LiveData del ViewModel para mantener actualizada la lista de programación en el RecyclerView.
         viewModelArgs = new ViewModelArgs() {
@@ -71,11 +88,7 @@ public class PautasPacientesGeriatriaFragment extends Fragment implements IOnBac
         ViewModelFactory<SharedPacientesViewModel> factory = new ViewModelFactory<>(viewModelArgs);
         // Inicializa el ViewModel
         sharedPacientesViewModel = new ViewModelProvider(requireActivity(), factory).get(SharedPacientesViewModel.class);
-
-
-        return view;
     }
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -89,34 +102,37 @@ public class PautasPacientesGeriatriaFragment extends Fragment implements IOnBac
         });
     }
 
-    public void inicializaVariables() {
-        claseGlobal = ClaseGlobal.getInstance();
-    }
+
 
     public void obtienePautasGeneralesDelPaciente(Pacientes pacientes) {
         sharedPacientesViewModel.getListaMutablePautas(pacientes).observe(getViewLifecycleOwner(), new Observer<ArrayList<Pautas>>() {
             @Override
             public void onChanged(ArrayList<Pautas> pautas) {
 
-                pautasAdapter = new PautasAdapter(pautas, getContext());
-                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-                // at last set adapter to recycler view.
-                recyclerView.setLayoutManager(linearLayoutManager);
-                recyclerView.setAdapter(pautasAdapter);
-                recyclerView.addItemDecoration(new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL));
-
-                anatomicosAdapter = new AnatomicosAdapter(pautas, getContext());
-                LinearLayoutManager linearLayoutManager2 = new LinearLayoutManager(getContext());
-                recyclerViewAnatomicos.setLayoutManager(linearLayoutManager2);
-                recyclerViewAnatomicos.setAdapter(anatomicosAdapter);
-                recyclerView.addItemDecoration(new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL));
-
-                pautasAdapter.notifyDataSetChanged();
-                anatomicosAdapter.notifyDataSetChanged();
-
-
+                rellenaPautasGenerales(pautas);
+                rellenaPautasPañal(pautas);
             }
         });
+
+    }
+
+    public void rellenaPautasGenerales(ArrayList<Pautas> pautas){
+        pautasAdapter = new PautasAdapter(pautas, getContext());
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        // at last set adapter to recycler view.
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setAdapter(pautasAdapter);
+        recyclerView.addItemDecoration(new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL));
+        pautasAdapter.notifyDataSetChanged();
+    }
+
+    public void rellenaPautasPañal(ArrayList<Pautas> pautas){
+        anatomicosAdapter = new AnatomicosAdapter(pautas, getContext());
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        recyclerViewAnatomicos.setLayoutManager(linearLayoutManager);
+        recyclerViewAnatomicos.setAdapter(anatomicosAdapter);
+        recyclerView.addItemDecoration(new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL));
+        anatomicosAdapter.notifyDataSetChanged();
 
     }
 

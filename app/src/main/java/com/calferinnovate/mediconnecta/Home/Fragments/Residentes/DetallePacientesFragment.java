@@ -60,19 +60,7 @@ public class DetallePacientesFragment extends Fragment implements IOnBackPressed
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 String tabSeleccionado = (String) tab.getText();
-                if (tabSeleccionado.equals("General")) {
-                    getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new GeneralPacientesFragment()).commit();
-                } else if (tabSeleccionado.equals("Contactos")) {
-                    getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new ContactoFamiliaresPacienteFragment()).commit();
-                } else if (tabSeleccionado.equals("Clínica")) {
-                    getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new ClinicaPacientesFragment()).commit();
-                } else if (tabSeleccionado.equals("Pautas")) {
-                    seleccionarTipoPautasAreas();
-                } else if (tabSeleccionado.equals("Parte")) {
-                    getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new PartePacientesFragment()).commit();
-                } else if (tabSeleccionado.equals("Parte Caídas")) {
-                    getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new ParteCaidasPacientesFragment()).commit();
-                }
+                navegaAlFragmento(tabSeleccionado);
             }
 
 
@@ -87,6 +75,22 @@ public class DetallePacientesFragment extends Fragment implements IOnBackPressed
             }
         });
 
+    }
+
+    public void navegaAlFragmento(String tabSeleccionado){
+        if (tabSeleccionado.equals("General")) {
+            getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new GeneralPacientesFragment()).commit();
+        } else if (tabSeleccionado.equals("Contactos")) {
+            getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new ContactoFamiliaresPacienteFragment()).commit();
+        } else if (tabSeleccionado.equals("Clínica")) {
+            getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new ClinicaPacientesFragment()).commit();
+        } else if (tabSeleccionado.equals("Pautas")) {
+            seleccionarTipoPautasAreas();
+        } else if (tabSeleccionado.equals("Parte")) {
+            getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new PartePacientesFragment()).commit();
+        } else if (tabSeleccionado.equals("Parte Caídas")) {
+            getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new ParteCaidasPacientesFragment()).commit();
+        }
     }
 
     public void seleccionarTipoPautasAreas() {

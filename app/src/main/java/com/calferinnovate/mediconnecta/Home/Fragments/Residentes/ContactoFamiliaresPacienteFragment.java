@@ -45,7 +45,17 @@ public class ContactoFamiliaresPacienteFragment extends Fragment implements IOnB
         View view = inflater.inflate(R.layout.fragment_contacto_familiares_paciente, container, false);
         asignarValoresAVariables(view);
         recyclerView.setHasFixedSize(true);
+        inicializaViewModel();
 
+        return view;
+    }
+
+    public void asignarValoresAVariables(View view){
+        claseGlobal = ClaseGlobal.getInstance();
+        recyclerView = view.findViewById(R.id.recyclerViewFamiliares);
+    }
+
+    public void inicializaViewModel(){
         //Creas un objeto ViewModelFactory y obtienes una instancia de ConsultasYRutinasDiariasViewModel utilizando este factory.
         //Luego, observas el LiveData del ViewModel para mantener actualizada la lista de programación en el RecyclerView.
         viewModelArgs = new ViewModelArgs() {
@@ -63,19 +73,16 @@ public class ContactoFamiliaresPacienteFragment extends Fragment implements IOnB
         ViewModelFactory<SharedPacientesViewModel> factory = new ViewModelFactory<>(viewModelArgs);
         // Inicializa el ViewModel
         sharedPacientesViewModel = new ViewModelProvider(requireActivity(), factory).get(SharedPacientesViewModel.class);
-
-        return view;
-    }
-
-    public void asignarValoresAVariables(View view){
-        claseGlobal = ClaseGlobal.getInstance();
-        recyclerView = view.findViewById(R.id.recyclerViewFamiliares);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        observaPacienteYObtieneContactos();
 
+    }
+
+    public void observaPacienteYObtieneContactos(){
         // Observación de LiveData: Has configurado la observación de un LiveData en el ViewModel utilizando el método observe(). Cuando los datos cambian en el LiveData,
         // el adaptador se actualiza automáticamente para reflejar los cambios en el RecyclerView.
         sharedPacientesViewModel.getPaciente().observe(getViewLifecycleOwner(), new Observer<Pacientes>() {
@@ -85,10 +92,7 @@ public class ContactoFamiliaresPacienteFragment extends Fragment implements IOnB
                 obtieneListaFamiliares(nuevoPaciente);
             }
         });
-
     }
-
-
 
     public void obtieneListaFamiliares(Pacientes paciente){
         sharedPacientesViewModel.getListaMutableFamiliares(paciente).observe(getViewLifecycleOwner(), new Observer<ArrayList<ContactoFamiliares>>() {

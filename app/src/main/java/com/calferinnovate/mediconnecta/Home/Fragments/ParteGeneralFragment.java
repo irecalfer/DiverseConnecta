@@ -54,6 +54,20 @@ public class ParteGeneralFragment extends Fragment implements IOnBackPressed {
         View view = inflater.inflate(R.layout.fragment_parte_general, container, false);
         claseGlobal = ClaseGlobal.getInstance();
         inicializaVariables(view);
+        inicializaViewModel();
+
+        return view;
+    }
+
+    public void inicializaVariables(View view) {
+        fechasSeleccionadas = view.findViewById(R.id.fechaSeleccionadaEditText);
+        btnFechas = view.findViewById(R.id.buttonFechas);
+        tableLayoutPartes = view.findViewById(R.id.tableLayoutParte);
+        tableLayoutCaidas = view.findViewById(R.id.tableLayoutCaidas);
+    }
+
+
+    public void inicializaViewModel(){
         //Creas un objeto ViewModelFactory y obtienes una instancia de ConsultasYRutinasDiariasViewModel utilizando este factory.
         //Luego, observas el LiveData del ViewModel para mantener actualizada la lista de programación en el RecyclerView.
         viewModelArgs = new ViewModelArgs() {
@@ -70,17 +84,7 @@ public class ParteGeneralFragment extends Fragment implements IOnBackPressed {
 
         ViewModelFactory<ParteGeneralViewModel> factory = new ViewModelFactory<>(viewModelArgs);
         parteGeneralViewModel = new ViewModelProvider(requireActivity(), factory).get(ParteGeneralViewModel.class);
-
-        return view;
     }
-
-    public void inicializaVariables(View view) {
-        fechasSeleccionadas = view.findViewById(R.id.fechaSeleccionadaEditText);
-        btnFechas = view.findViewById(R.id.buttonFechas);
-        tableLayoutPartes = view.findViewById(R.id.tableLayoutParte);
-        tableLayoutCaidas = view.findViewById(R.id.tableLayoutCaidas);
-    }
-
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -100,6 +104,12 @@ public class ParteGeneralFragment extends Fragment implements IOnBackPressed {
         //Creamos una instancia del material date picker
         final MaterialDatePicker materialDatePicker = materialFechaBuilder.build();
 
+        muestraDatePicker(materialDatePicker);
+        obtieneFechasSeleccionadas(materialDatePicker);
+
+    }
+
+    public void muestraDatePicker(MaterialDatePicker materialDatePicker){
         //Cuando se clicke le botón se abrirá el Date Picker
         btnFechas.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,7 +119,9 @@ public class ParteGeneralFragment extends Fragment implements IOnBackPressed {
                 materialDatePicker.show(getActivity().getSupportFragmentManager(), "MATERIAL_DATE_PICKER");
             }
         });
+    }
 
+    public void obtieneFechasSeleccionadas(MaterialDatePicker materialDatePicker){
         //Ahora manejamos el click del botón del selector de fecha del material design
         materialDatePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Pair<Long, Long>>() {
             @Override
@@ -127,7 +139,6 @@ public class ParteGeneralFragment extends Fragment implements IOnBackPressed {
                 rellenaCaidas();
             }
         });
-
     }
 
     public void rellenaPartes() {
@@ -177,6 +188,7 @@ public class ParteGeneralFragment extends Fragment implements IOnBackPressed {
         }
         caidasAdapter.notifyDataSetChanged();
     }
+
 
     @Override
     public boolean onBackPressed() {

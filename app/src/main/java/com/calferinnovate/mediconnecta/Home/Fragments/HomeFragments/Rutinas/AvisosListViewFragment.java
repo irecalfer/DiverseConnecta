@@ -63,7 +63,20 @@ public class AvisosListViewFragment extends Fragment {
         View vista = inflater.inflate(R.layout.fragment_avisos_list_view, container, false);
         //Declaramos los objetos globales y rellenaremos el ListView
         inicializaVariables(vista);
+        inicializaViewModel();
 
+        Log.d("aviso", "HA llegado aquí");
+        return vista;
+    }
+
+    private void inicializaVariables(View view) {
+        claseGlobal = ClaseGlobal.getInstance();
+        avisos = claseGlobal.getAvisos();
+        fechas = claseGlobal.getFechas();
+        avisosLV = view.findViewById(R.id.listViewAvisos);
+    }
+
+    private void inicializaViewModel(){
         viewModelArgs = new ViewModelArgs() {
             @Override
             public PeticionesJson getPeticionesJson() {
@@ -79,18 +92,7 @@ public class AvisosListViewFragment extends Fragment {
         ViewModelFactory<AvisosViewModel> factory = new ViewModelFactory<>(viewModelArgs);
         // Inicializa el ViewModel
         avisosViewModel = new ViewModelProvider(requireActivity(), factory).get(AvisosViewModel.class);
-
-        Log.d("aviso", "HA llegado aquí");
-        return vista;
     }
-
-    private void inicializaVariables(View view) {
-        claseGlobal = ClaseGlobal.getInstance();
-        avisos = claseGlobal.getAvisos();
-        fechas = claseGlobal.getFechas();
-        avisosLV = view.findViewById(R.id.listViewAvisos);
-    }
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);

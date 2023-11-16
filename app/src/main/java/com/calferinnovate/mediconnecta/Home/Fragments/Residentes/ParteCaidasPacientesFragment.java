@@ -1,6 +1,7 @@
 package com.calferinnovate.mediconnecta.Home.Fragments.Residentes;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -54,11 +55,13 @@ public class ParteCaidasPacientesFragment extends Fragment implements IOnBackPre
     private ClaseGlobal claseGlobal;
     private Spinner lugarSpinner;
     private String lugarSeleccionado, presenciado, avisado;
-    private TextInputEditText fechaHora, nombreApellidoPaciente, factoresRiesgo, causas, circunstancias, consecuencias, unidadCaida, empleadoCaida, observaciones;
+    private TextInputEditText factoresRiesgo, causas, circunstancias, consecuencias, observaciones;
     private Button registrar;
     private RadioButton siCaida, noCaida, siAvisado, noAvisado;
     private RadioGroup radioGroupVisto, radioGroupAvisado;
     private ParteCaidasAdapter parteCaidasAdapter;
+    // Lista para almacenar mensajes de error
+    private ArrayList<String> errores = new ArrayList<>();
 
     private PeticionesJson peticionesJson;
 
@@ -223,6 +226,8 @@ public class ParteCaidasPacientesFragment extends Fragment implements IOnBackPre
         final String avisadoFamilia = avisado;
         final String observacionesCaida = observaciones.getText().toString();
 
+        validacionesDatos(factoresDeRiesgo, causasCaida, circunstanciasCaida,consecuenciasCaida,
+                observacionesCaida, caidaPresenciada, avisadoFamilia);
 
         String url = Constantes.url_part + "crear_parte_caidas.php";
         // creating a new variable for our request queue
@@ -281,6 +286,33 @@ public class ParteCaidasPacientesFragment extends Fragment implements IOnBackPre
         requestQueue.add(stringRequest);
     }
 
+
+    public void validacionesDatos(String factoresDeRiesgo, String causasCaida, String circunstanciasCaida,
+                                  String consecuenciasCaida, String observacionesCaida, String caidaPresenciada,
+                                  String avisadoAFamiliares){
+        //Realizamos las validaciones
+        if(TextUtils.isEmpty(factoresDeRiesgo)){
+            factoresRiesgo.setError("Los factores de riesgo no pueden estar vacíos");
+        }
+        if(TextUtils.isEmpty(causasCaida)){
+            causas.setError("Las causas no pueden estar vacías");
+        }
+        if(TextUtils.isEmpty(circunstanciasCaida)){
+            circunstancias.setError("Las circunstancias no pueden estar vacías");
+        }
+        if(TextUtils.isEmpty(consecuenciasCaida)){
+            consecuencias.setError("Las consecuencias no pueden estar vacías");
+        }
+        if(TextUtils.isEmpty(observacionesCaida)){
+            observaciones.setError("Las observaciones no pueden estar vacías");
+        }
+        if(TextUtils.isEmpty(caidaPresenciada)){
+            Toast.makeText(getContext(), "Tiene que indicar si la caída ha sido presenciada", Toast.LENGTH_SHORT).show();
+        }
+        if(TextUtils.isEmpty(avisadoAFamiliares)){
+            Toast.makeText(getContext(), "Tiene que indicar si se ha avisado a los familiares", Toast.LENGTH_SHORT).show();
+        }
+    }
 
     public String fechaDateTimeSql() {
         DateTimeFormatter fechaHora = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");

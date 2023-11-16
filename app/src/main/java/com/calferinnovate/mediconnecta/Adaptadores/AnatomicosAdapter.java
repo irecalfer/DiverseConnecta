@@ -8,18 +8,18 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.Model.Pautas;
+import com.calferinnovate.mediconnecta.R;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;
 
 public class AnatomicosAdapter extends RecyclerView.Adapter<AnatomicosAdapter.AnatomicosViewHolder> {
 
-    private ArrayList<Pautas> listaPautas;
-    private Context context;
+    private final ArrayList<Pautas> listaPautas;
+    private final Context context;
 
-    public AnatomicosAdapter(ArrayList<Pautas> listaPautas, Context context){
+    public AnatomicosAdapter(ArrayList<Pautas> listaPautas, Context context) {
         this.listaPautas = listaPautas;
         this.context = context;
     }
@@ -37,7 +37,8 @@ public class AnatomicosAdapter extends RecyclerView.Adapter<AnatomicosAdapter.An
         Pautas pautas = listaPautas.get(position);
         holder.mañana.setText(pautas.getMañana());
         holder.tarde.setText(pautas.getTarde());
-        holder.noche.setText(pautas.getNoche());
+        holder.noche.setText(pautas.getTarde());
+
     }
 
     @Override
@@ -46,11 +47,11 @@ public class AnatomicosAdapter extends RecyclerView.Adapter<AnatomicosAdapter.An
     }
 
     public class AnatomicosViewHolder extends RecyclerView.ViewHolder {
-        private TextInputEditText mañana;
-        private TextInputEditText tarde;
-        private TextInputEditText noche;
+        private final TextInputEditText mañana;
+        private final TextInputEditText tarde;
+        private final TextInputEditText noche;
 
-        public AnatomicosViewHolder(View itemView){
+        public AnatomicosViewHolder(View itemView) {
             super(itemView);
             mañana = itemView.findViewById(R.id.mañanaET);
             tarde = itemView.findViewById(R.id.tardeET);

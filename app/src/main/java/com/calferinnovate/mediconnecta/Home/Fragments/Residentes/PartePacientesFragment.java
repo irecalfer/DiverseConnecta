@@ -102,6 +102,7 @@ public class PartePacientesFragment extends Fragment implements IOnBackPressed {
         final String cipSns = paciente.getCipSns();
         final String descripcionParte = descripcion.getText().toString();
         final int codEmpleado = claseGlobal.getEmpleado().getCod_empleado();
+
         //Realizamos validaciones
         if(TextUtils.isEmpty(descripcionParte)){
             descripcion.setError("La descripción no puede estar vacía");

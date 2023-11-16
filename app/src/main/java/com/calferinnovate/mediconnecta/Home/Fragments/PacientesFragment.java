@@ -47,8 +47,23 @@ public class PacientesFragment extends Fragment implements PacientesAdapter.Item
         View view = inflater.inflate(R.layout.fragment_residentes, container, false);
         inicializaVariables();
         poblaRecyclerPacientes(view);
+        inicializaViewModel();
+        actualizaListaPacientes();
 
 
+
+        //Implementamos la escucha al item
+        adapter.setOnClickListener(this);
+
+        return view;
+    }
+
+    public void inicializaVariables() {
+        claseGlobal = ClaseGlobal.getInstance();
+        listaPacientes = claseGlobal.getListaPacientes();
+    }
+
+    public void inicializaViewModel(){
         //Creas un objeto ViewModelFactory y obtienes una instancia de ConsultasYRutinasDiariasViewModel utilizando este factory.
         //Luego, observas el LiveData del ViewModel para mantener actualizada la lista de programación en el RecyclerView.
         viewModelArgs = new ViewModelArgs() {
@@ -66,26 +81,6 @@ public class PacientesFragment extends Fragment implements PacientesAdapter.Item
         ViewModelFactory<SharedPacientesViewModel> factory = new ViewModelFactory<>(viewModelArgs);
         // Inicializa el ViewModel
         sharedPacientesViewModel = new ViewModelProvider(requireActivity(), factory).get(SharedPacientesViewModel.class);
-        //sharedPacientesViewModel = new ViewModelProvider(requireActivity()).get(SharedPacientesViewModel.class);
-        //sharedPacientesViewModel.obtieneSeguroPacientes();
-        sharedPacientesViewModel.getPacientesList().observe(getViewLifecycleOwner(), new Observer<ArrayList<Pacientes>>() {
-            @Override
-            public void onChanged(ArrayList<Pacientes> pacientes) {
-                // Actualizar la lista de pacientes en el adaptador
-                adapter.notifyDataSetChanged();
-            }
-        });
-
-
-        //Implementamos la escucha al item
-        adapter.setOnClickListener(this);
-
-        return view;
-    }
-
-    public void inicializaVariables() {
-        claseGlobal = ClaseGlobal.getInstance();
-        listaPacientes = claseGlobal.getListaPacientes();
     }
 
     public void poblaRecyclerPacientes(View view) {
@@ -104,6 +99,16 @@ public class PacientesFragment extends Fragment implements PacientesAdapter.Item
         recycler.setLayoutManager(layoutManager);
         recycler.setAdapter(adapter);
         recycler.addItemDecoration(new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL));
+    }
+
+    public void actualizaListaPacientes(){
+        sharedPacientesViewModel.getPacientesList().observe(getViewLifecycleOwner(), new Observer<ArrayList<Pacientes>>() {
+            @Override
+            public void onChanged(ArrayList<Pacientes> pacientes) {
+                // Actualizar la lista de pacientes en el adaptador
+                adapter.notifyDataSetChanged();
+            }
+        });
     }
 
     @Override
