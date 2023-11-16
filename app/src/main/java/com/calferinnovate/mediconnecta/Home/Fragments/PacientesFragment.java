@@ -1,6 +1,9 @@
 package com.calferinnovate.mediconnecta.Home.Fragments;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -9,17 +12,13 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import com.calferinnovate.mediconnecta.Adaptadores.PacientesAdapter;
 import com.calferinnovate.mediconnecta.Home.Fragments.Residentes.DetallePacientesFragment;
-import com.calferinnovate.mediconnecta.R;
-import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
 import com.calferinnovate.mediconnecta.Interfaces.IOnBackPressed;
+import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
 import com.calferinnovate.mediconnecta.Model.Pacientes;
 import com.calferinnovate.mediconnecta.PeticionesHTTP.PeticionesJson;
+import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.ViewModel.SharedPacientesViewModel;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelArgs;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelFactory;
@@ -36,7 +35,6 @@ public class PacientesFragment extends Fragment implements PacientesAdapter.Item
     private ClaseGlobal claseGlobal;
     private ArrayList<Pacientes> listaPacientes;
     private SharedPacientesViewModel sharedPacientesViewModel;
-    private ViewModelFactory viewModelFactory;
     private ViewModelArgs viewModelArgs;
     private PeticionesJson peticionesJson;
     private PacientesAdapter adapter;
@@ -47,22 +45,8 @@ public class PacientesFragment extends Fragment implements PacientesAdapter.Item
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_residentes, container, false);
-        llamaAClaseGLobalYObjetos();
-        // Obtener el Recycler
-        recycler = view.findViewById(R.id.recyclerViewResidentes);
-        recycler.setHasFixedSize(true);
-
-        // added data from arraylist to adapter class.
-        adapter = new PacientesAdapter(listaPacientes, getContext(), this);
-
-        // setting grid layout manager to implement grid view.
-        // in this method '2' represents number of columns to be displayed in grid view.
-        GridLayoutManager layoutManager=new GridLayoutManager(getContext(),2);
-
-        // at last set adapter to recycler view.
-        recycler.setLayoutManager(layoutManager);
-        recycler.setAdapter(adapter);
-        recycler.addItemDecoration(new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL));
+        asignarVariables();
+        poblaRecyclerPacientes(view);
 
 
         //Creas un objeto ViewModelFactory y obtienes una instancia de ConsultasYRutinasDiariasViewModel utilizando este factory.
@@ -89,8 +73,6 @@ public class PacientesFragment extends Fragment implements PacientesAdapter.Item
             public void onChanged(ArrayList<Pacientes> pacientes) {
                 // Actualizar la lista de pacientes en el adaptador
                 adapter.notifyDataSetChanged();
-                //adapter = new PacientesAdapter(pacientes, getContext(), this);
-                //recycler.setAdapter(adapter);
             }
         });
 
@@ -101,27 +83,43 @@ public class PacientesFragment extends Fragment implements PacientesAdapter.Item
         return view;
     }
 
-    public void llamaAClaseGLobalYObjetos(){
+    public void asignarVariables() {
         claseGlobal = ClaseGlobal.getInstance();
         listaPacientes = claseGlobal.getListaPacientes();
     }
 
+    public void poblaRecyclerPacientes(View view) {
+        // Obtener el Recycler
+        recycler = view.findViewById(R.id.recyclerViewResidentes);
+        recycler.setHasFixedSize(true);
+
+        // added data from arraylist to adapter class.
+        adapter = new PacientesAdapter(listaPacientes, getContext(), this);
+
+        // setting grid layout manager to implement grid view.
+        // in this method '2' represents number of columns to be displayed in grid view.
+        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
+
+        // at last set adapter to recycler view.
+        recycler.setLayoutManager(layoutManager);
+        recycler.setAdapter(adapter);
+        recycler.addItemDecoration(new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL));
+    }
+
     @Override
     public void onClick(int position) {
-        //Toast.makeText(requireContext(), listaPacientes.get(position).getNombre(), Toast.LENGTH_SHORT).show();
         sharedPacientesViewModel.setPaciente(position);
         adapter.notifyDataSetChanged();
-        //Toast.makeText(requireContext(), listaPacientes.get(position).getNombre(), Toast.LENGTH_SHORT).show();
         getParentFragmentManager().beginTransaction().replace(R.id.fragment_container, new DetallePacientesFragment()).commit();
 
     }
 
     @Override
     public boolean onBackPressed() {
-            // Agrega la lógica específica del fragmento para manejar el retroceso.
-            // Devuelve true si el fragmento maneja el retroceso, de lo contrario, devuelve false.
-            // Por ejemplo, si deseas que al presionar Atrás en este fragmento vuelva a la pantalla principal:
-            requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
-            return true;
+        // Agrega la lógica específica del fragmento para manejar el retroceso.
+        // Devuelve true si el fragmento maneja el retroceso, de lo contrario, devuelve false.
+        // Por ejemplo, si deseas que al presionar Atrás en este fragmento vuelva a la pantalla principal:
+        requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
+        return true;
     }
 }

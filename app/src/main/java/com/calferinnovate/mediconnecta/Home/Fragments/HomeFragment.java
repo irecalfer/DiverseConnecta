@@ -1,11 +1,6 @@
 package com.calferinnovate.mediconnecta.Home.Fragments;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,21 +8,24 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CalendarView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
 import com.calferinnovate.mediconnecta.Home.Fragments.HomeFragments.Rutinas.AvisosListViewFragment;
 import com.calferinnovate.mediconnecta.Home.Fragments.HomeFragments.Rutinas.consultasYRutinasDiariasFragment;
-import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.Model.Avisos;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
 import com.calferinnovate.mediconnecta.Model.Fechas;
 import com.calferinnovate.mediconnecta.Model.Rutinas;
+import com.calferinnovate.mediconnecta.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-public class HomeFragment extends Fragment{
+public class HomeFragment extends Fragment {
 
     private CalendarView calendario;
     private AvisosListViewFragment avisosListViewFragment;
@@ -46,7 +44,6 @@ public class HomeFragment extends Fragment{
     private ClaseGlobal claseGlobal;
 
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -55,12 +52,24 @@ public class HomeFragment extends Fragment{
         //componentes xml
         View vista = inflater.inflate(R.layout.fragment_home, container, false);
 
-            requestQueue = Volley.newRequestQueue(getContext());
-            //Obtenemos la referencia al ListView desde onCreateView
-            asociarVariablesConComponentes(vista);
-            declaracionObjetosClaseGlobal();
-            return vista;
+        asignaObjetosClaseGlobal();
+        //Obtenemos la referencia al ListView desde onCreateView
+        asociarVariablesConComponentes(vista);
 
+        return vista;
+
+    }
+
+    public void asignaObjetosClaseGlobal() {
+        claseGlobal = ClaseGlobal.getInstance();
+        avisos = claseGlobal.getAvisos();
+        fechaSeleccionada = claseGlobal.getFechas();
+    }
+
+    public void asociarVariablesConComponentes(View view) {
+        calendario = view.findViewById(R.id.calendarView);
+        abrirFragmentoListaAvisos = view.findViewById(R.id.abrirAvisos);
+        rutinasBtn = view.findViewById(R.id.abrirRutinas);
     }
 
     @Override
@@ -71,26 +80,9 @@ public class HomeFragment extends Fragment{
         calendar = Calendar.getInstance();
 
 
-        //Si clickamos en algún día del CalendarView, setearemos en el calendario de java el día clickeado
-        //y llamando a fechaSeleccionada guardaremos esa fecha en formato de año/mes/dia para poder pasarla
-        //la base de datos
-        calendario.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-            @Override
-            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
-                calendar.set(year, month, dayOfMonth);
-                fechaSeleccionada.setFechaActual(new SimpleDateFormat("yyyy-MM-dd").format(calendar.getTime()));
-            }
-        });
+        setearFechaSeleccionada();
+        abrirFragmentoAvisos();
 
-        //CUando clcikememos en el botón mostraremos en el fragmentContainer el fragment que contiene el
-        //ListView
-        abrirFragmentoListaAvisos.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerViewLIstView, new AvisosListViewFragment()).commit();
-                Log.d("avisos", "Se ha implementado el nuevo fragmento");
-            }
-        });
 
         //Cuando clcikememos en el botón mostraremos el fragment que contiene las rutinas
         rutinasBtn.setOnClickListener(new View.OnClickListener() {
@@ -101,18 +93,30 @@ public class HomeFragment extends Fragment{
         });
     }
 
-    public void declaracionObjetosClaseGlobal(){
-        claseGlobal = ClaseGlobal.getInstance();
-        avisos = claseGlobal.getAvisos();
-        fechaSeleccionada = claseGlobal.getFechas();
+
+    public void setearFechaSeleccionada() {
+        //Si clickamos en algún día del CalendarView, setearemos en el calendario de java el día clickeado
+        //y llamando a fechaSeleccionada guardaremos esa fecha en formato de año/mes/dia para poder pasarla
+        //la base de datos
+        calendario.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+            @Override
+            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
+                calendar.set(year, month, dayOfMonth);
+                fechaSeleccionada.setFechaActual(new SimpleDateFormat("yyyy-MM-dd").format(calendar.getTime()));
+            }
+        });
     }
 
-    public void asociarVariablesConComponentes(View view){
-        calendario = view.findViewById(R.id.calendarView);
-        abrirFragmentoListaAvisos = view.findViewById(R.id.abrirAvisos);
-        rutinasBtn = view.findViewById(R.id.abrirRutinas);
+    public void abrirFragmentoAvisos() {
+        //CUando clcikememos en el botón mostraremos en el fragmentContainer el fragment que contiene el
+        //ListView
+        abrirFragmentoListaAvisos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerViewLIstView, new AvisosListViewFragment()).commit();
+                Log.d("avisos", "Se ha implementado el nuevo fragmento");
+            }
+        });
     }
-
-
 
 }

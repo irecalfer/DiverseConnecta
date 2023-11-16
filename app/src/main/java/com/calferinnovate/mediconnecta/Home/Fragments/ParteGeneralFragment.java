@@ -17,12 +17,12 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.calferinnovate.mediconnecta.Adaptadores.CaidasAdapter;
 import com.calferinnovate.mediconnecta.Adaptadores.ParteAdapter;
-import com.calferinnovate.mediconnecta.R;
+import com.calferinnovate.mediconnecta.Interfaces.IOnBackPressed;
 import com.calferinnovate.mediconnecta.Model.Caidas;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
-import com.calferinnovate.mediconnecta.Interfaces.IOnBackPressed;
 import com.calferinnovate.mediconnecta.Model.Parte;
 import com.calferinnovate.mediconnecta.PeticionesHTTP.PeticionesJson;
+import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.ViewModel.ParteGeneralViewModel;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelArgs;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelFactory;
@@ -52,6 +52,7 @@ public class ParteGeneralFragment extends Fragment implements IOnBackPressed {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_parte_general, container, false);
+        claseGlobal = ClaseGlobal.getInstance();
         inicializaVAriables(view);
         //Creas un objeto ViewModelFactory y obtienes una instancia de ConsultasYRutinasDiariasViewModel utilizando este factory.
         //Luego, observas el LiveData del ViewModel para mantener actualizada la lista de programación en el RecyclerView.
@@ -74,7 +75,6 @@ public class ParteGeneralFragment extends Fragment implements IOnBackPressed {
     }
 
     public void inicializaVAriables(View view) {
-        claseGlobal = ClaseGlobal.getInstance();
         fechasSeleccionadas = view.findViewById(R.id.fechaSeleccionadaEditText);
         btnFechas = view.findViewById(R.id.buttonFechas);
         tableLayoutPartes = view.findViewById(R.id.tableLayoutParte);
@@ -156,7 +156,7 @@ public class ParteGeneralFragment extends Fragment implements IOnBackPressed {
         parteAdapter.notifyDataSetChanged();
     }
 
-    public void rellenaCaidas(){
+    public void rellenaCaidas() {
         parteGeneralViewModel.getListaCaidas(fechaInicio, fechaFin).observe(getViewLifecycleOwner(), new Observer<ArrayList<Caidas>>() {
             @Override
             public void onChanged(ArrayList<Caidas> caidas) {
@@ -168,10 +168,10 @@ public class ParteGeneralFragment extends Fragment implements IOnBackPressed {
         });
     }
 
-    public void creaTablaCaidas(){
+    public void creaTablaCaidas() {
         View headerView = caidasAdapter.inflaElHeader(tableLayoutCaidas);
         tableLayoutCaidas.addView(headerView);
-        for(Caidas caida: listaCaidas){
+        for (Caidas caida : listaCaidas) {
             View rowView = caidasAdapter.getView(listaCaidas.indexOf(caida), null, tableLayoutCaidas);
             tableLayoutCaidas.addView(rowView);
         }
