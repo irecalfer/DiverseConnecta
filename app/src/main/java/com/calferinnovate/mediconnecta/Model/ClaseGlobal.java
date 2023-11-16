@@ -4,11 +4,19 @@ import android.app.Application;
 
 import java.util.ArrayList;
 
+/**
+ * Implementación del patrón de diseño Singleton. Garantizados que una clase tenga solo una instancia
+ * y proporciona un punto de acceso global a esa instancia.
+ * @author Irene Caldelas Fernández
+ */
+
 public class ClaseGlobal extends Application {
+
 
     //Variable para almacenar una única instancia de ClaseGlobal
     private static ClaseGlobal instance;
 
+    //Declaración de objetos
     private Empleado empleado;
     private Unidades unidades;
     private Area area;
@@ -24,6 +32,8 @@ public class ClaseGlobal extends Application {
     private Parte parte;
     private Caidas caidas;
     private Normas normas;
+
+    //Declaración de listas que contienen los objetos de la aplicación
     private ArrayList<Seguro> listaSeguros;
     private ArrayList<String> listaLugares;
     private PacientesAgrupadosRutinas pacientesAgrupadosRutinas;
@@ -43,6 +53,10 @@ public class ClaseGlobal extends Application {
         super.onCreate();
     }
 
+    /**
+     * Constructor para evitar la creación de instancias fuera de la clase.
+     * Cuando se accede a getInstance() asegura que la instancia ya tenga valores.
+     */
     public ClaseGlobal() {
         empleado = new Empleado();
         unidades = new Unidades();
@@ -73,8 +87,12 @@ public class ClaseGlobal extends Application {
         listaNormas = new ArrayList<>();
     }
 
-    //  método público y estático que se utiliza para obtener la única instancia de la clase ClaseGlobal.
-    //  Es estático para que pueda ser llamado sin crear una instancia previa de la clase.
+    /**
+     * Método público y estático que se utiliza para obtener la única instancia de la clase ClaseGlobal.
+     * Es estático para que pueda ser llamado sin crear una instancia previa de la clase.
+     * @return instance Es la instancia de la clase global
+     */
+    //
     public static  ClaseGlobal getInstance(){
         // Aquí se verifica si la variable instance es nula. La primera vez que se llama a getInstance(),
         // instance será nula porque aún no se ha creado una instancia de ClaseGlobal.
@@ -83,7 +101,7 @@ public class ClaseGlobal extends Application {
             // la vez pueda ejecutar el código dentro de ese bloque. Esto es importante para evitar que
             // varios hilos creen múltiples instancias de la clase en caso de concurrencia.
             synchronized (ClaseGlobal.class) {
-                //entro del bloque sincronizado, se realiza una segunda verificación de si instance es nula. Esto es necesario porque,
+                //dentro del bloque sincronizado, se realiza una segunda verificación de si instance es nula. Esto es necesario porque,
                 // después de adquirir el bloque sincronizado, otro hilo podría haber creado la instancia de
                 // ClaseGlobal, por lo que necesitas verificar nuevamente si instance es nula.
                 if (instance == null) {
@@ -98,6 +116,7 @@ public class ClaseGlobal extends Application {
         return instance;
     }
 
+    //Getters y Setters de los diferentes objetos.
     public Empleado getEmpleado() {
         return empleado;
     }

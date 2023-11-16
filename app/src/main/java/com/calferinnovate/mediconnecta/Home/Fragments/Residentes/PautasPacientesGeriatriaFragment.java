@@ -19,7 +19,7 @@ import com.calferinnovate.mediconnecta.Adaptadores.PautasAdapter;
 import com.calferinnovate.mediconnecta.Home.Fragments.PacientesFragment;
 import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
-import com.calferinnovate.mediconnecta.Model.IOnBackPressed;
+import com.calferinnovate.mediconnecta.Interfaces.IOnBackPressed;
 import com.calferinnovate.mediconnecta.Model.Pacientes;
 import com.calferinnovate.mediconnecta.Model.Pautas;
 import com.calferinnovate.mediconnecta.PeticionesHTTP.PeticionesJson;
@@ -104,6 +104,7 @@ public class PautasPacientesGeriatriaFragment extends Fragment implements IOnBac
                 recyclerView.setLayoutManager(linearLayoutManager);
                 recyclerView.setAdapter(pautasAdapter);
                 recyclerView.addItemDecoration(new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL));
+
                 anatomicosAdapter = new AnatomicosAdapter(pautas, getContext());
                 LinearLayoutManager linearLayoutManager2 = new LinearLayoutManager(getContext());
                 recyclerViewAnatomicos.setLayoutManager(linearLayoutManager2);

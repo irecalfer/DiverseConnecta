@@ -20,7 +20,7 @@ import com.calferinnovate.mediconnecta.Adaptadores.ParteAdapter;
 import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.Model.Caidas;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
-import com.calferinnovate.mediconnecta.Model.IOnBackPressed;
+import com.calferinnovate.mediconnecta.Interfaces.IOnBackPressed;
 import com.calferinnovate.mediconnecta.Model.Parte;
 import com.calferinnovate.mediconnecta.PeticionesHTTP.PeticionesJson;
 import com.calferinnovate.mediconnecta.ViewModel.ParteGeneralViewModel;

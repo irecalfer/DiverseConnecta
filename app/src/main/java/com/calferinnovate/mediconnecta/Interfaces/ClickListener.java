@@ -1,4 +1,4 @@
-package com.calferinnovate.mediconnecta.Model;
+package com.calferinnovate.mediconnecta.Interfaces;
 
 public interface ClickListener {
 

@@ -20,7 +20,7 @@ import com.calferinnovate.mediconnecta.Home.Fragments.PacientesFragment;
 import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
 import com.calferinnovate.mediconnecta.Model.ContactoFamiliares;
-import com.calferinnovate.mediconnecta.Model.IOnBackPressed;
+import com.calferinnovate.mediconnecta.Interfaces.IOnBackPressed;
 import com.calferinnovate.mediconnecta.Model.Pacientes;
 import com.calferinnovate.mediconnecta.PeticionesHTTP.PeticionesJson;
 import com.calferinnovate.mediconnecta.ViewModel.SharedPacientesViewModel;

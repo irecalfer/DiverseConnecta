@@ -27,7 +27,7 @@ import com.calferinnovate.mediconnecta.Home.Fragments.ParteGeneralFragment;
 import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
 import com.calferinnovate.mediconnecta.Model.Empleado;
-import com.calferinnovate.mediconnecta.Model.IOnBackPressed;
+import com.calferinnovate.mediconnecta.Interfaces.IOnBackPressed;
 import com.calferinnovate.mediconnecta.Model.Unidades;
 import com.google.android.material.navigation.NavigationView;
 
