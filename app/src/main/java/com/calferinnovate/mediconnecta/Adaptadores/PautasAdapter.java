@@ -36,8 +36,13 @@ public class PautasAdapter extends RecyclerView.Adapter<PautasAdapter.PautasView
     public void onBindViewHolder(@NonNull PautasViewHolder holder, int position) {
         Pautas pautas = listaPautas.get(position);
         holder.tipoPauta.setText(pautas.getTipoPauta());
-        holder.observacionesPauta.setText(pautas.getObservaciones());
-
+        // Verificar si las observaciones son nulas o vacías
+        String observaciones = pautas.getObservaciones();
+        if (observaciones != null && !observaciones.isEmpty()) {
+            holder.observacionesPauta.setText(pautas.getObservaciones());
+        } else {
+            holder.observacionesPauta.setText("No tiene observaciones.");
+        }
 
     }
 

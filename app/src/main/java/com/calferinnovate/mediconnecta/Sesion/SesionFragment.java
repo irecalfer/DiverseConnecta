@@ -77,7 +77,20 @@ public class SesionFragment extends Fragment{
         // Necesitamos un objeto de tipo View
         View vista = inflater.inflate(R.layout.fragment_sesion, container, false);
         inicializaVariables();
+        inicializacionViewModel();
 
+
+        return vista;
+    }
+
+    /**
+     * Método que obtiene la instancia de ClaseGlobal.
+     */
+    public void inicializaVariables() {
+        claseGlobal = ClaseGlobal.getInstance();
+    }
+
+    public void inicializacionViewModel(){
         viewModelArgs = new ViewModelArgs() {
             @Override
             public PeticionesJson getPeticionesJson() {
@@ -93,16 +106,6 @@ public class SesionFragment extends Fragment{
         ViewModelFactory<SesionViewModel> factory = new ViewModelFactory<>(viewModelArgs);
         // Inicializa el ViewModel
         sesionViewModel = new ViewModelProvider(requireActivity(), factory).get(SesionViewModel.class);
-
-
-        return vista;
-    }
-
-    /**
-     * Método que obtiene la instancia de ClaseGlobal.
-     */
-    public void inicializaVariables() {
-        claseGlobal = ClaseGlobal.getInstance();
     }
 
     /**

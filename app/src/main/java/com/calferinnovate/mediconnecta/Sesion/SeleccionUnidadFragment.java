@@ -68,21 +68,7 @@ public class SeleccionUnidadFragment extends Fragment {
         View vista = inflater.inflate(R.layout.fragment_seleccion_unidad, container, false);
         inicializaVariables(vista);
 
-        viewModelArgs = new ViewModelArgs() {
-            @Override
-            public PeticionesJson getPeticionesJson() {
-                return peticionesJson = new PeticionesJson(requireContext());
-            }
-
-            @Override
-            public ClaseGlobal getClaseGlobal() {
-                return claseGlobal;
-            }
-        };
-
-        ViewModelFactory<SeleccionUnidadViewModel> factory = new ViewModelFactory<>(viewModelArgs);
-        // Inicializa el ViewModel
-        seleccionUnidadViewModel = new ViewModelProvider(requireActivity(), factory).get(SeleccionUnidadViewModel.class);
+        inicializaViewModel();
 
         return vista;
     }
@@ -102,6 +88,23 @@ public class SeleccionUnidadFragment extends Fragment {
         foto = view.findViewById(R.id.fotoEmpleado);
     }
 
+    public void inicializaViewModel(){
+        viewModelArgs = new ViewModelArgs() {
+            @Override
+            public PeticionesJson getPeticionesJson() {
+                return peticionesJson = new PeticionesJson(requireContext());
+            }
+
+            @Override
+            public ClaseGlobal getClaseGlobal() {
+                return claseGlobal;
+            }
+        };
+
+        ViewModelFactory<SeleccionUnidadViewModel> factory = new ViewModelFactory<>(viewModelArgs);
+        // Inicializa el ViewModel
+        seleccionUnidadViewModel = new ViewModelProvider(requireActivity(), factory).get(SeleccionUnidadViewModel.class);
+    }
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -111,26 +114,7 @@ public class SeleccionUnidadFragment extends Fragment {
 
         completaDatosEmpleado(empleado);
         obtieneAreasyPoblaSpinner();
-
-
-        botonFinalizar.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                seleccionUnidadViewModel.obtieneDatosPacientes(unidades.getNombreUnidad()).observe(getViewLifecycleOwner(), new Observer<Boolean>() {
-                    @Override
-                    public void onChanged(Boolean obtenidos) {
-                        if(obtenidos){
-                            Intent intent = new Intent(getActivity(), HomeActivity.class);
-                            startActivity(intent);
-                        }else{
-                            Toast.makeText(getActivity(), "Error al obtener datos", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-            }
-        });
-
+        listenerButtonAcceso();
 
     }
 
@@ -208,7 +192,26 @@ public class SeleccionUnidadFragment extends Fragment {
 
     }
 
+public void listenerButtonAcceso(){
+    botonFinalizar.setOnClickListener(new View.OnClickListener() {
 
+        @Override
+        public void onClick(View v) {
+            seleccionUnidadViewModel.obtieneDatosPacientes(unidades.getNombreUnidad()).observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+                @Override
+                public void onChanged(Boolean obtenidos) {
+                    if(obtenidos){
+                        Intent intent = new Intent(getActivity(), HomeActivity.class);
+                        startActivity(intent);
+                    }else{
+                        Toast.makeText(getActivity(), "Error al obtener datos", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        }
+    });
+
+}
 
 
 

@@ -35,10 +35,26 @@ public class AnatomicosAdapter extends RecyclerView.Adapter<AnatomicosAdapter.An
     @Override
     public void onBindViewHolder(@NonNull AnatomicosViewHolder holder, int position) {
         Pautas pautas = listaPautas.get(position);
-        holder.mañana.setText(pautas.getMañana());
-        holder.tarde.setText(pautas.getTarde());
-        holder.noche.setText(pautas.getTarde());
+        String mañanaPauta = pautas.getMañana();
+        if(mañanaPauta != null && !mañanaPauta.isEmpty()){
+            holder.mañana.setText(pautas.getMañana());
+        }else{
+            holder.mañana.setText("Sin snatómico");
+        }
 
+        String tardePauta = pautas.getTarde();
+        if(tardePauta != null && !tardePauta.isEmpty()){
+            holder.tarde.setText(pautas.getTarde());
+        }else{
+            holder.tarde.setText("Sin anatómico");
+        }
+
+        String nochePauta = pautas.getNoche();
+        if(nochePauta != null && !nochePauta.isEmpty()){
+            holder.noche.setText(pautas.getNoche());
+        }else{
+            holder.noche.setText("Sin pañal");
+        }
     }
 
     @Override
