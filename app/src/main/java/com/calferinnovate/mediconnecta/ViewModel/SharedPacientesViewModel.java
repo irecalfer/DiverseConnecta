@@ -44,9 +44,6 @@ public class SharedPacientesViewModel extends ViewModel {
     private final MutableLiveData<ArrayList<Informes>> mutableInformesList = new MutableLiveData<>();
     private MutableLiveData<ArrayList<Pautas>> mutablePautasList = new MutableLiveData<>();
     private MutableLiveData<ArrayList<String>> listaLugaresLiveData = new MutableLiveData<>();
-    private MutableLiveData<Boolean> registroParteExiosoLiveData = new MutableLiveData<>();
-    private MutableLiveData<Boolean> registroParteCaidasExiosoLiveData = new MutableLiveData<>();
-
     private PeticionesJson peticionesJson;
     private ClaseGlobal claseGlobal;
     private Context context;
@@ -360,12 +357,6 @@ public class SharedPacientesViewModel extends ViewModel {
         });
         return listaLugaresLiveData;
     }
-
-   public LiveData<Boolean> registraParteCaidas(Pacientes paciente, String lugarSeleccionado, String factoresDeRiesgo,
-                                                String causasCaida, String circunstanciasCaida, String consecuenciasCaida,
-                                                String observacionesCaida, String caidaPresenciada, String avisadoFamilia){
-
-   }
 
 
 }
