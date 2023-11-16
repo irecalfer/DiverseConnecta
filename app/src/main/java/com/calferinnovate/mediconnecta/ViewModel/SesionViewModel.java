@@ -16,25 +16,47 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * ViewModel encargado de gestionar el inicio de sesión.
+ * Contiene métodos para iniciar sesión y proporciona un LiveDara para observar el estado de la sesión.
+ */
 public class SesionViewModel extends ViewModel {
 
     private ClaseGlobal claseGlobal;
     private PeticionesJson peticionesJson;
     private MutableLiveData<Boolean> empleadoIniciaSesionMutableLiveData = new MutableLiveData<>();
 
+    /**
+     * Constructor vacío del ViewModel
+     */
     public SesionViewModel(){
 
     }
 
+    /**
+     * Constructor que recive ViewModelArgs para inicializar dependencias.
+     * @param viewModelArgs contiene las instancias de ClaseGlobal y PeticionesJson necesarias para el
+     *                      ViewModel.
+     */
     public SesionViewModel(ViewModelArgs viewModelArgs){
         claseGlobal = viewModelArgs.getClaseGlobal();
         peticionesJson = viewModelArgs.getPeticionesJson();
     }
 
+    /**
+     * Obtiene un LiveData para observar el estado de inicio de sesión del empleado.
+     * @return empleadoIniciaSesionMutableLiveData LiveData que indica si el empleado ha iniciado sesión.
+     */
     public LiveData<Boolean> getEmpleadoIniciaSesion(){
         return empleadoIniciaSesionMutableLiveData;
     }
 
+    /**
+     * Inicia sesión del empleado haciendo una solicitud JSON al servidor.
+     * Actualiza el estado de inicio de sesión en LiveData según la respuesta del servidor.
+     * @param user Nombre de usuario del empleado. Obtenido del TextView username del fragmento SesionFragment.
+     * @param password Contraseña del empleado. Obtenido del TextView password del fragmento SesionFragment.
+     */
     public void inicioSesion(String user, String password){
         String url = Constantes.url_part + "inicio_sesion.php?user=" + user +
                 "&pwd=" + password;
