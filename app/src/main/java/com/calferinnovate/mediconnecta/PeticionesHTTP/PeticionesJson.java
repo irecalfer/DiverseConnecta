@@ -2,13 +2,19 @@ package com.calferinnovate.mediconnecta.PeticionesHTTP;
 
 import android.content.Context;
 
+import androidx.annotation.Nullable;
+
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONObject;
+
+import java.util.Map;
 
 /**
  * Clase para gestionar las peticiones HTTP utilizando la biblioteca Volley.
@@ -67,5 +73,33 @@ public class PeticionesJson {
     public interface MyJsonObjectResponseListener {
         void onResponse(JSONObject response);
         void onErrorResponse(VolleyError error);
+    }
+
+    public interface MyStringRequestResponseListener{
+        void onResponse(String response);
+        void onErrorResponse(VolleyError error);
+    }
+    public void postStringRequest(String url, MyStringRequestResponseListener listener) {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                response -> {
+                    if (listener != null) {
+                        listener.onResponse(response);
+                    }
+                },
+                error -> {
+                    if (listener != null) {
+                        listener.onErrorResponse(error);
+                    }
+                }){
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                return super.getParams();
+            }
+        };
+
+        requestQueue.add(stringRequest);
+
+
     }
 }

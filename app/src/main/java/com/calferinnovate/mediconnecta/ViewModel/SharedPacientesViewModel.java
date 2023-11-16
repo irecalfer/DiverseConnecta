@@ -2,10 +2,12 @@ package com.calferinnovate.mediconnecta.ViewModel;
 
 import android.content.Context;
 
+import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.VolleyError;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
 import com.calferinnovate.mediconnecta.Model.Constantes;
@@ -25,6 +27,8 @@ import java.util.ArrayList;
 import android.util.Base64;
 import android.util.Log;
 
+import java.util.Hashtable;
+import java.util.Map;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -40,6 +44,8 @@ public class SharedPacientesViewModel extends ViewModel {
     private final MutableLiveData<ArrayList<Informes>> mutableInformesList = new MutableLiveData<>();
     private MutableLiveData<ArrayList<Pautas>> mutablePautasList = new MutableLiveData<>();
     private MutableLiveData<ArrayList<String>> listaLugaresLiveData = new MutableLiveData<>();
+    private MutableLiveData<Boolean> registroParteExiosoLiveData = new MutableLiveData<>();
+    private MutableLiveData<Boolean> registroParteCaidasExiosoLiveData = new MutableLiveData<>();
 
     private PeticionesJson peticionesJson;
     private ClaseGlobal claseGlobal;
@@ -354,6 +360,12 @@ public class SharedPacientesViewModel extends ViewModel {
         });
         return listaLugaresLiveData;
     }
+
+   public LiveData<Boolean> registraParteCaidas(Pacientes paciente, String lugarSeleccionado, String factoresDeRiesgo,
+                                                String causasCaida, String circunstanciasCaida, String consecuenciasCaida,
+                                                String observacionesCaida, String caidaPresenciada, String avisadoFamilia){
+
+   }
 
 
 }
