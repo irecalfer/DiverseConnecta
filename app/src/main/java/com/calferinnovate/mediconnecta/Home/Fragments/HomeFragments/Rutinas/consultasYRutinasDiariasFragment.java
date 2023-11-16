@@ -46,8 +46,6 @@ public class consultasYRutinasDiariasFragment extends Fragment implements IOnBac
     private Rutinas rutinas;
     private ClaseGlobal claseGlobal;
     private Pacientes pacientes;
-    private RequestQueue requestQueue;
-    private JsonObjectRequest jsonObjectRequest;
     private ArrayList<Rutinas> listaRutinas = new ArrayList<>();
     private EditText fechaRutina;
     private ConsultasYRutinasDiariasViewModel consultasYRutinasDiariasViewModel;
@@ -65,13 +63,9 @@ public class consultasYRutinasDiariasFragment extends Fragment implements IOnBac
 
         referenciaVariables(vista);
         llamadaObjetosGlobales();
+        setearFecha();
+        configurarAdaptador();
 
-        //Seteamos la fecha en el EditText
-        fechaRutina.setText(fechas.getFechaActual()); // FORMATEAR FECHA PARA QUE APAREZCA DE FORMA dd/MM/YYYY
-        // Inicializa el adaptador una sola vez
-        //Configuras el adaptador rutinasAdapter y lo estableces en el RecyclerView (rvConsultas).
-        rutinasAdapter = new RutinasAdapter(claseGlobal.getListaProgramacion(), claseGlobal.getListaPacientes(),getContext());
-        rvConsultas.setAdapter(rutinasAdapter);
 
         //Creas un objeto ViewModelFactory y obtienes una instancia de ConsultasYRutinasDiariasViewModel utilizando este factory.
         //Luego, observas el LiveData del ViewModel para mantener actualizada la lista de programación en el RecyclerView.
@@ -166,7 +160,17 @@ public class consultasYRutinasDiariasFragment extends Fragment implements IOnBac
 
     }
 
+    private void setearFecha(){
+        //Seteamos la fecha en el EditText
+        fechaRutina.setText(fechas.getFechaActual()); // FORMATEAR FECHA PARA QUE APAREZCA DE FORMA dd/MM/YYYY
+    }
 
+    private void configurarAdaptador(){
+        // Inicializa el adaptador una sola vez
+        //Configuras el adaptador rutinasAdapter y lo estableces en el RecyclerView (rvConsultas).
+        rutinasAdapter = new RutinasAdapter(claseGlobal.getListaProgramacion(), claseGlobal.getListaPacientes(),getContext());
+        rvConsultas.setAdapter(rutinasAdapter);
+    }
 
 
     @Override

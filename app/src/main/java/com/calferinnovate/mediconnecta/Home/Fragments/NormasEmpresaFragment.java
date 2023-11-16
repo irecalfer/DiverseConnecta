@@ -42,9 +42,7 @@ public class NormasEmpresaFragment extends Fragment implements IOnBackPressed {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_normas_empresa, container, false);
-        claseGlobal = ClaseGlobal.getInstance();
-
-        recyclerNormas = view.findViewById(R.id.recyclerViewNormas);
+        asignaVariables(view);
 
         viewModelArgs = new ViewModelArgs() {
             @Override
@@ -68,6 +66,10 @@ public class NormasEmpresaFragment extends Fragment implements IOnBackPressed {
         return view;
     }
 
+    public void asignaVariables(View view){
+        claseGlobal = ClaseGlobal.getInstance();
+        recyclerNormas = view.findViewById(R.id.recyclerViewNormas);
+    }
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);

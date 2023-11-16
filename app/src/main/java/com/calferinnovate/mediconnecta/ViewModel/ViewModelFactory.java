@@ -28,6 +28,8 @@ public class ViewModelFactory <T extends ViewModel> implements ViewModelProvider
             return (T) new SesionViewModel(viewModelArgs);
         }else if(modelClass == SeleccionUnidadViewModel.class){
             return (T) new SeleccionUnidadViewModel(viewModelArgs);
+        }else if(modelClass == AvisosViewModel.class){
+            return (T) new AvisosViewModel(viewModelArgs);
         }
         // Agregar más verificaciones y creación de ViewModel según sea necesario
         throw new IllegalArgumentException("Unknown ViewModel class");

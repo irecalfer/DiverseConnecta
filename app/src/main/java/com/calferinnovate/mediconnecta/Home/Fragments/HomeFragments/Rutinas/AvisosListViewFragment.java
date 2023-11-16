@@ -5,6 +5,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,11 +21,16 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.calferinnovate.mediconnecta.PeticionesHTTP.PeticionesJson;
 import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.Model.Avisos;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
 import com.calferinnovate.mediconnecta.Model.Constantes;
 import com.calferinnovate.mediconnecta.Model.Fechas;
+import com.calferinnovate.mediconnecta.ViewModel.AvisosViewModel;
+import com.calferinnovate.mediconnecta.ViewModel.NormasViewModel;
+import com.calferinnovate.mediconnecta.ViewModel.ViewModelArgs;
+import com.calferinnovate.mediconnecta.ViewModel.ViewModelFactory;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,6 +47,9 @@ public class AvisosListViewFragment extends Fragment {
     private Fechas fechas;
     private String url;
     private ClaseGlobal claseGlobal;
+    private AvisosViewModel avisosViewModel;
+    private ViewModelArgs viewModelArgs;
+    private PeticionesJson peticionesJson;
     private ArrayList<String> listaContenidoAvisos = new ArrayList<>();
     private ArrayAdapter<String> avisosAdapter;
     private RequestQueue requestQueue;
@@ -52,13 +62,29 @@ public class AvisosListViewFragment extends Fragment {
         // Inflate the layout for this fragment
         View vista = inflater.inflate(R.layout.fragment_avisos_list_view, container, false);
         //Declaramos los objetos globales y rellenaremos el ListView
-        llamadaAObjetosGlobales(vista);
-        rellenaListView();
+        asignaVariables(vista);
+
+        viewModelArgs = new ViewModelArgs() {
+            @Override
+            public PeticionesJson getPeticionesJson() {
+                return peticionesJson = new PeticionesJson(requireContext());
+            }
+
+            @Override
+            public ClaseGlobal getClaseGlobal() {
+                return claseGlobal;
+            }
+        };
+
+        ViewModelFactory<AvisosViewModel> factory = new ViewModelFactory<>(viewModelArgs);
+        // Inicializa el ViewModel
+        avisosViewModel = new ViewModelProvider(requireActivity(), factory).get(AvisosViewModel.class);
+
         Log.d("aviso", "HA llegado aquí");
         return vista;
     }
 
-    private void llamadaAObjetosGlobales(View view) {
+    private void asignaVariables(View view) {
         claseGlobal = ClaseGlobal.getInstance();
         avisos = claseGlobal.getAvisos();
         fechas = claseGlobal.getFechas();
@@ -68,8 +94,7 @@ public class AvisosListViewFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-
+        rellenaListView();
     }
 
     //Accederemos a nuestro avisos.php e iremos cogiendo cada fila y la guardaremos en el objeto avisos
@@ -82,39 +107,14 @@ public class AvisosListViewFragment extends Fragment {
     //Tras terminar podremos ver como en HomeFragment se encuentra el lisview completado con los avisos
     //correspondientes a la fecha elegida.
     public void rellenaListView(){
-        url = Constantes.url_part+"avisos.php?fecha_aviso="+fechas.getFechaActual();
-
-        requestQueue = Volley.newRequestQueue(getContext());
-
-        jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
+        avisosViewModel.obtieneAvisosFecha(fechas.getFechaActual()).observe(getViewLifecycleOwner(), new Observer<ArrayList<String>>() {
             @Override
-            public void onResponse(JSONObject response) {
-                try{
-                    JSONArray jsonArray = response.getJSONArray("avisos");
-                    for(int i = 0; i<jsonArray.length(); i++){
-                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        Avisos nuevoAvisos = new Avisos(jsonObject.optInt("num_aviso"), jsonObject.optString(("fecha_aviso")), jsonObject.optString("contenido"));
-                        //avisos.setNum_aviso(jsonObject.optInt("num_aviso"));
-                        //avisos.setFecha_aviso(jsonObject.optString("fecha_aviso"));
-                        //avisos.setContenido(jsonObject.optString("contenido"));
-                        listaContenidoAvisos.add(nuevoAvisos.getContenido());
-
-                    }
-                    avisosAdapter = new ArrayAdapter<>(getActivity(), R.layout.items_avisos_listview, R.id.itemAvisoListView, listaContenidoAvisos);
-                    avisosLV.setAdapter(avisosAdapter);
-                }catch(JSONException jsonException){
-                    throw new RuntimeException(jsonException);
-                }
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.toString();
-                Log.d("error", error.toString());
+            public void onChanged(ArrayList<String> strings) {
+                listaContenidoAvisos = strings;
+                avisosAdapter = new ArrayAdapter<>(getActivity(), R.layout.items_avisos_listview, R.id.itemAvisoListView, listaContenidoAvisos);
+                avisosLV.setAdapter(avisosAdapter);
             }
         });
-        requestQueue.add(jsonObjectRequest);
     }
 
 }
