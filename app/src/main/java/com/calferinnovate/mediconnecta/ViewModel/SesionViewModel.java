@@ -1,7 +1,6 @@
 package com.calferinnovate.mediconnecta.ViewModel;
 
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -12,7 +11,6 @@ import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
 import com.calferinnovate.mediconnecta.Model.Constantes;
 import com.calferinnovate.mediconnecta.Model.Empleado;
 import com.calferinnovate.mediconnecta.PeticionesHTTP.PeticionesJson;
-import com.calferinnovate.mediconnecta.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
