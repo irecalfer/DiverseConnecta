@@ -1,6 +1,10 @@
 package com.calferinnovate.mediconnecta.Home.Fragments.HomeFragments.Rutinas;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -9,50 +13,39 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.EditText;
-
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.calferinnovate.mediconnecta.Adaptadores.RutinasAdapter;
 import com.calferinnovate.mediconnecta.Home.Fragments.HomeFragment;
-import com.calferinnovate.mediconnecta.R;
+import com.calferinnovate.mediconnecta.Interfaces.IOnBackPressed;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
 import com.calferinnovate.mediconnecta.Model.Fechas;
-import com.calferinnovate.mediconnecta.Interfaces.IOnBackPressed;
 import com.calferinnovate.mediconnecta.Model.Pacientes;
 import com.calferinnovate.mediconnecta.Model.PacientesAgrupadosRutinas;
+import com.calferinnovate.mediconnecta.Model.Unidades;
 import com.calferinnovate.mediconnecta.PeticionesHTTP.PeticionesJson;
+import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.ViewModel.ConsultasYRutinasDiariasViewModel;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelArgs;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelFactory;
-import com.calferinnovate.mediconnecta.Model.Rutinas;
-import com.calferinnovate.mediconnecta.Model.Unidades;
 import com.google.android.material.tabs.TabLayout;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-public class consultasYRutinasDiariasFragment extends Fragment implements IOnBackPressed {
+public class ConsultasYRutinasDiariasFragment extends Fragment implements IOnBackPressed {
 
     private RecyclerView rvConsultas;
-    private String url;
     private RutinasAdapter rutinasAdapter;
     private TabLayout tabLayout;
-    private PacientesAgrupadosRutinas pacientesAgrupadosRutinas;
     private Fechas fechas;
     private Unidades unidades;
-    private Rutinas rutinas;
     private ClaseGlobal claseGlobal;
-    private Pacientes pacientes;
-    private ArrayList<Rutinas> listaRutinas = new ArrayList<>();
+    private ArrayList<Pacientes> listaPacientes;
     private EditText fechaRutina;
     private ConsultasYRutinasDiariasViewModel consultasYRutinasDiariasViewModel;
-    String tipoRutinaActual;
+    private String tipoRutinaActual;
     private PeticionesJson peticionesJson;
     private ViewModelArgs viewModelArgs;
-
 
 
     @Override
@@ -64,7 +57,6 @@ public class consultasYRutinasDiariasFragment extends Fragment implements IOnBac
         referenciaVariables(vista);
         llamadaObjetosGlobales();
         setearFecha();
-        configurarAdaptador();
 
 
         //Creas un objeto ViewModelFactory y obtienes una instancia de ConsultasYRutinasDiariasViewModel utilizando este factory.
@@ -85,16 +77,51 @@ public class consultasYRutinasDiariasFragment extends Fragment implements IOnBac
         // Inicializa el ViewModel
         consultasYRutinasDiariasViewModel = new ViewModelProvider(this, factory).get(ConsultasYRutinasDiariasViewModel.class);
 
-        // Observación de LiveData: Has configurado la observación de un LiveData en el ViewModel utilizando el método observe(). Cuando los datos cambian en el LiveData,
-        // el adaptador se actualiza automáticamente para reflejar los cambios en el RecyclerView.
-        consultasYRutinasDiariasViewModel.getListaProgramacionLiveData(fechas.getFechaActual(), unidades.getNombreUnidad(), tipoRutinaActual)
-                .observe(getViewLifecycleOwner(), new Observer<ArrayList<PacientesAgrupadosRutinas>>() {
-                    @Override
-                    public void onChanged(ArrayList<PacientesAgrupadosRutinas> newData) {
-                        // Actualizar el adaptador con los nuevos datos
-                        rutinasAdapter.actualizarDatos(newData);
-                    }
-                });
+
+        return vista;
+    }
+
+    public void referenciaVariables(View view) {
+        rvConsultas = view.findViewById(R.id.rvRutinas);
+        tabLayout = view.findViewById(R.id.tabLAyoutRutinas);
+        fechaRutina = view.findViewById(R.id.fechaActual);
+    }
+
+    public void llamadaObjetosGlobales() {
+        claseGlobal = ClaseGlobal.getInstance();
+        fechas = claseGlobal.getFechas();
+        unidades = claseGlobal.getUnidades();
+        listaPacientes = claseGlobal.getListaPacientes();
+    }
+
+    private void setearFecha() {
+        //Seteamos la fecha en el EditText
+        DateTimeFormatter formatoEntrada = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        // Formato de salida (día-mes-año abreviado)
+        DateTimeFormatter formatoSalida = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        // Parsea la fecha de entrada
+        LocalDate fechaEntrada = LocalDate.parse(fechas.getFechaActual(), formatoEntrada);
+
+        // Formatea la fecha en el formato de salida
+        String fechaFormateada = fechaEntrada.format(formatoSalida);
+        fechaRutina.setText(fechaFormateada); // FORMATEAR FECHA PARA QUE APAREZCA DE FORMA dd/MM/YYYY
+    }
+
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        listenerTabs();
+
+
+    }
+
+    public void listenerTabs() {
+        // Inicialmente, obtén los datos para el tab actual
+        if (tabLayout.getTabCount() > 0) {
+            tipoRutinaActual = (String) tabLayout.getTabAt(0).getText();
+            obtenerDatosRutinas();
+        }
 
         //Estableces un listener en el TabLayout para manejar eventos cuando se seleccionan diferentes pestañas (tabs)
         // y obtienes datos de rutinas correspondientes.
@@ -104,8 +131,6 @@ public class consultasYRutinasDiariasFragment extends Fragment implements IOnBac
                 tipoRutinaActual = (String) tab.getText();
                 // Limpia los datos actuales en el adaptador
                 claseGlobal.getListaProgramacion().clear();
-                // Notifica al adaptador que los datos han cambiado
-                rutinasAdapter.notifyDataSetChanged();
                 obtenerDatosRutinas();
             }
 
@@ -119,57 +144,22 @@ public class consultasYRutinasDiariasFragment extends Fragment implements IOnBac
                 // No es necesario implementar esto
             }
         });
-
-        // Inicialmente, obtén los datos para el tab actual
-        if (tabLayout.getTabCount() > 0) {
-            tipoRutinaActual = (String) tabLayout.getTabAt(0).getText();
-            obtenerDatosRutinas();
-        }
-
-        return vista;
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-
-
-    }
-
-    public void referenciaVariables(View view){
-        rvConsultas = view.findViewById(R.id.rvRutinas);
-        tabLayout = view.findViewById(R.id.tabLAyoutRutinas);
-        fechaRutina = view.findViewById(R.id.fechaActual);
-    }
-
-    public void llamadaObjetosGlobales(){
-        claseGlobal = ClaseGlobal.getInstance();
-        fechas = claseGlobal.getFechas();
-        unidades = claseGlobal.getUnidades();
-        rutinas = claseGlobal.getRutinas();
-        pacientesAgrupadosRutinas = claseGlobal.getPacientesAgrupadosRutinas();
-        pacientes = claseGlobal.getPacientes();
     }
 
     private void obtenerDatosRutinas() {
         // Realiza la solicitud HTTP utilizando el ViewModel y pasa la fecha, unidad y tipo de rutina
         consultasYRutinasDiariasViewModel.obtieneDatosRutinasDiaPacientes(fechas.getFechaActual(),
-                unidades.getNombreUnidad(), tipoRutinaActual);
+                unidades.getNombreUnidad(), tipoRutinaActual).observe(getViewLifecycleOwner(), new Observer<ArrayList<PacientesAgrupadosRutinas>>() {
+            @Override
+            public void onChanged(ArrayList<PacientesAgrupadosRutinas> pacientesAgrupadosRutinas) {
+                rutinasAdapter = new RutinasAdapter(pacientesAgrupadosRutinas, listaPacientes, getContext());
+                rvConsultas.setAdapter(rutinasAdapter);
+                // Notifica al adaptador que los datos han cambiado
+                rutinasAdapter.notifyDataSetChanged();
+            }
+        });
 
 
-    }
-
-    private void setearFecha(){
-        //Seteamos la fecha en el EditText
-        fechaRutina.setText(fechas.getFechaActual()); // FORMATEAR FECHA PARA QUE APAREZCA DE FORMA dd/MM/YYYY
-    }
-
-    private void configurarAdaptador(){
-        // Inicializa el adaptador una sola vez
-        //Configuras el adaptador rutinasAdapter y lo estableces en el RecyclerView (rvConsultas).
-        rutinasAdapter = new RutinasAdapter(claseGlobal.getListaProgramacion(), claseGlobal.getListaPacientes(),getContext());
-        rvConsultas.setAdapter(rutinasAdapter);
     }
 
 

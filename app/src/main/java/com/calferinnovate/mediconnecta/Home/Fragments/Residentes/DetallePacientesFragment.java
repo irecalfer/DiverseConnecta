@@ -11,13 +11,13 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.calferinnovate.mediconnecta.Home.Fragments.PacientesFragment;
-import com.calferinnovate.mediconnecta.R;
+import com.calferinnovate.mediconnecta.Interfaces.IOnBackPressed;
 import com.calferinnovate.mediconnecta.Model.Area;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
-import com.calferinnovate.mediconnecta.Interfaces.IOnBackPressed;
 import com.calferinnovate.mediconnecta.Model.Pacientes;
-import com.calferinnovate.mediconnecta.ViewModel.SharedPacientesViewModel;
 import com.calferinnovate.mediconnecta.Model.Unidades;
+import com.calferinnovate.mediconnecta.R;
+import com.calferinnovate.mediconnecta.ViewModel.SharedPacientesViewModel;
 import com.google.android.material.tabs.TabLayout;
 
 public class DetallePacientesFragment extends Fragment implements IOnBackPressed {
@@ -33,26 +33,29 @@ public class DetallePacientesFragment extends Fragment implements IOnBackPressed
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_detalle_pacientes, container, false);
-        asignaComponentesAVariables(view);
-        llamaAClaseGlobal();
+        asignaVariables(view);
         sharedPacientesViewModel = new ViewModelProvider(requireActivity()).get(SharedPacientesViewModel.class);
-        nombrePorAsignarParaMoversePorElTabLayout();
+        listenerTabLayoutDetalle();
 
 
         return view;
     }
 
 
-    public void asignaComponentesAVariables(View view) {
+    public void asignaVariables(View view) {
+        claseGlobal = ClaseGlobal.getInstance();
         tabLayoutPaciente = view.findViewById(R.id.tabLayoutDetallePacientes);
         vistasDetallePaciente = view.findViewById(R.id.fragmentContainerDetallePacientes);
     }
 
-    public void llamaAClaseGlobal() {
-        claseGlobal = ClaseGlobal.getInstance();
-    }
 
-    public void nombrePorAsignarParaMoversePorElTabLayout() {
+    public void listenerTabLayoutDetalle() {
+
+        // Inicialmente, obtén los datos para el tab actual
+        if (tabLayoutPaciente.getTabCount() > 0) {
+            getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new GeneralPacientesFragment()).commit();
+        }
+
         tabLayoutPaciente.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -64,28 +67,10 @@ public class DetallePacientesFragment extends Fragment implements IOnBackPressed
                 } else if (tabSeleccionado.equals("Clínica")) {
                     getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new ClinicaPacientesFragment()).commit();
                 } else if (tabSeleccionado.equals("Pautas")) {
-                    sharedPacientesViewModel.getPaciente().observe(getViewLifecycleOwner(), new Observer<Pacientes>() {
-                        @Override
-                        public void onChanged(Pacientes pacientes) {
-                            for (Unidades unidades : claseGlobal.getListaUnidades()) {
-                                if (unidades.getId_unidad() == pacientes.getFkIdUnidad()) {
-                                    for (Area areas : claseGlobal.getListaAreas()) {
-                                        if (unidades.getFk_area() == areas.getId_area()) {
-                                            nombreArea = areas.getNombre();
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    });
-                    if(nombreArea.equals("Geriatría")){
-                        getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new PautasPacientesGeriatriaFragment()).commit();
-                    }else{
-                        getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new PautasSaludMentalPacientesFragment()).commit();
-                    }
-                }else if(tabSeleccionado.equals("Parte")){
+                    seleccionarTipoPautasAreas();
+                } else if (tabSeleccionado.equals("Parte")) {
                     getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new PartePacientesFragment()).commit();
-                }else if(tabSeleccionado.equals("Parte Caídas")){
+                } else if (tabSeleccionado.equals("Parte Caídas")) {
                     getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new ParteCaidasPacientesFragment()).commit();
                 }
             }
@@ -102,13 +87,29 @@ public class DetallePacientesFragment extends Fragment implements IOnBackPressed
             }
         });
 
-        // Inicialmente, obtén los datos para el tab actual
-        if (tabLayoutPaciente.getTabCount() > 0) {
-            getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new GeneralPacientesFragment()).commit();
-        }
-
     }
 
+    public void seleccionarTipoPautasAreas() {
+        sharedPacientesViewModel.getPaciente().observe(getViewLifecycleOwner(), new Observer<Pacientes>() {
+            @Override
+            public void onChanged(Pacientes pacientes) {
+                for (Unidades unidades : claseGlobal.getListaUnidades()) {
+                    if (unidades.getId_unidad() == pacientes.getFkIdUnidad()) {
+                        for (Area areas : claseGlobal.getListaAreas()) {
+                            if (unidades.getFk_area() == areas.getId_area()) {
+                                nombreArea = areas.getNombre();
+                            }
+                        }
+                    }
+                }
+            }
+        });
+        if (nombreArea.equals("Geriatría")) {
+            getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new PautasPacientesGeriatriaFragment()).commit();
+        } else {
+            getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new PautasSaludMentalPacientesFragment()).commit();
+        }
+    }
 
     @Override
     public boolean onBackPressed() {

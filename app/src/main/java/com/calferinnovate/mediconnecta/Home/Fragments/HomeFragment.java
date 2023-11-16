@@ -15,7 +15,7 @@ import androidx.fragment.app.Fragment;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.calferinnovate.mediconnecta.Home.Fragments.HomeFragments.Rutinas.AvisosListViewFragment;
-import com.calferinnovate.mediconnecta.Home.Fragments.HomeFragments.Rutinas.consultasYRutinasDiariasFragment;
+import com.calferinnovate.mediconnecta.Home.Fragments.HomeFragments.Rutinas.ConsultasYRutinasDiariasFragment;
 import com.calferinnovate.mediconnecta.Model.Avisos;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
 import com.calferinnovate.mediconnecta.Model.Fechas;
@@ -88,7 +88,7 @@ public class HomeFragment extends Fragment {
         rutinasBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getParentFragmentManager().beginTransaction().replace(R.id.fragment_container, new consultasYRutinasDiariasFragment()).commit();
+                getParentFragmentManager().beginTransaction().replace(R.id.fragment_container, new ConsultasYRutinasDiariasFragment()).commit();
             }
         });
     }

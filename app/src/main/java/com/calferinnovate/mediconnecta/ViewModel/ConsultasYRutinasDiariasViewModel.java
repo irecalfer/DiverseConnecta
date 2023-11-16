@@ -35,19 +35,16 @@ public class ConsultasYRutinasDiariasViewModel extends ViewModel {
 
     //Este método se utiliza para obtener el LiveData de la lista de programación de rutinas. Comprueba si el LiveData ya tiene datos (diferentes de nulo), y si no, realiza una solicitud HTTP para obtener los datos de rutinas
     // utilizando el método obtieneDatosRutinasDiaPacientes(). Luego, devuelve el LiveData de la lista de programación.
-    public LiveData<ArrayList<PacientesAgrupadosRutinas>> getListaProgramacionLiveData(String fechaRutina, String nombreUnidad, String tipoRutina) {
-        if (listaProgramacionLiveData.getValue() == null) {obtieneDatosRutinasDiaPacientes(fechaRutina, nombreUnidad, tipoRutina);
-        }
-        return listaProgramacionLiveData;
-    }
-
-    public void obtieneDatosRutinasDiaPacientes(String fechaRutina, String nombreUnidad, String tipoRutina) {
+    public LiveData<ArrayList<PacientesAgrupadosRutinas>> obtieneDatosRutinasDiaPacientes(String fechaRutina, String nombreUnidad, String tipoRutina) {
         String url = Constantes.url_part + "programacionRutinas.php?fecha_rutina=" + fechaRutina + "&nombre=" + nombreUnidad + "&diario=" + tipoRutina;
 
         peticionesJson.getJsonObjectRequest(url, new PeticionesJson.MyJsonObjectResponseListener() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
+                    if(!claseGlobal.getListaProgramacion().isEmpty()){
+                        claseGlobal.getListaProgramacion().clear();
+                    }
                     JSONArray jsonArray = response.getJSONArray("programacion");
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
@@ -56,7 +53,7 @@ public class ConsultasYRutinasDiariasViewModel extends ViewModel {
                     }
                     claseGlobal.setListaProgramacion(claseGlobal.getListaProgramacion());
                     // actualiza el LiveData con la nueva lista de programación, notificando a los observadores.
-                    listaProgramacionLiveData.setValue(claseGlobal.getListaProgramacion());
+                    listaProgramacionLiveData.postValue(claseGlobal.getListaProgramacion());
                 } catch (JSONException e) {
                     // Maneja errores, si es necesario
                 }
@@ -67,5 +64,6 @@ public class ConsultasYRutinasDiariasViewModel extends ViewModel {
 
             }
         });
+        return listaProgramacionLiveData;
     }
 }

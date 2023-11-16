@@ -48,8 +48,7 @@ public class ClinicaPacientesFragment extends Fragment implements IOnBackPressed
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_clinica_pacientes, container, false);
-        llamaAClaseGlobal();
-        asignaComponentesAVariables(view);
+        asignaVariables(view);
 
         //Creas un objeto ViewModelFactory y obtienes una instancia de ConsultasYRutinasDiariasViewModel utilizando este factory.
         //Luego, observas el LiveData del ViewModel para mantener actualizada la lista de programación en el RecyclerView.
@@ -69,9 +68,14 @@ public class ClinicaPacientesFragment extends Fragment implements IOnBackPressed
         // Inicializa el ViewModel
         sharedPacientesViewModel = new ViewModelProvider(requireActivity(), factory).get(SharedPacientesViewModel.class);
 
-
-
         return view;
+    }
+
+    public void asignaVariables(View view) {
+        claseGlobal = ClaseGlobal.getInstance();
+        tlInformes = view.findViewById(R.id.tableInformes);
+        datosSalud = view.findViewById(R.id.datosSalud);
+        tratamiento = view.findViewById(R.id.tratamiento);
     }
 
     @Override
@@ -92,16 +96,6 @@ public class ClinicaPacientesFragment extends Fragment implements IOnBackPressed
 
     }
 
-    public void llamaAClaseGlobal() {
-        claseGlobal = ClaseGlobal.getInstance();
-    }
-
-    public void asignaComponentesAVariables(View view) {
-        tlInformes = view.findViewById(R.id.tableInformes);
-        datosSalud = view.findViewById(R.id.datosSalud);
-        tratamiento = view.findViewById(R.id.tratamiento);
-
-    }
 
     public ArrayList<Informes> obtieneInformesDelPaciente(Pacientes paciente) {
         sharedPacientesViewModel.getListaMutableInformes(paciente).observe(getViewLifecycleOwner(), new Observer<ArrayList<Informes>>() {
