@@ -216,8 +216,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             public void onClick(View v) {
                 //Cerramos el dialog y salimos
                 dialog.dismiss();
-                //finishAndRemoveTask();
-                finish();
+                finishAffinity();
+                //finish();
             }
         });
 

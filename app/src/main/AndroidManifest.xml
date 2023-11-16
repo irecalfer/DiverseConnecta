@@ -26,12 +26,12 @@
         android:enableOnBackInvokedCallback="true">
         <activity
             android:name=".Home.HomeActivity"
+            android:launchMode="singleInstance"
             android:exported="false" />
-        <activity
-            android:name=".Home.Fragments.HomeFragment"
-            android:exported="false" />
+
         <activity
             android:name=".Sesion.MainActivity"
+            android:launchMode="singleInstance"
             android:exported="true"
             android:label="Home" >
             <intent-filter>

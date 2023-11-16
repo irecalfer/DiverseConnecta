@@ -7,6 +7,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TextView;
@@ -109,21 +110,25 @@ public class PautasPacientesGeriatriaFragment extends Fragment implements IOnBac
             @Override
             public void onChanged(ArrayList<Pautas> pautas) {
 
-                rellenaPautasGenerales(pautas);
-                rellenaPautasPañal(pautas);
+                    rellenaPautasGenerales(pautas);
+                    rellenaPautasPañal(pautas);
             }
         });
 
     }
 
     public void rellenaPautasGenerales(ArrayList<Pautas> pautas){
-        pautasAdapter = new PautasAdapter(pautas, getContext());
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        // at last set adapter to recycler view.
-        recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setAdapter(pautasAdapter);
-        recyclerView.addItemDecoration(new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL));
-        pautasAdapter.notifyDataSetChanged();
+        if(pautas.isEmpty()){
+            noTienePautas();
+        }else{
+            pautasAdapter = new PautasAdapter(pautas, getContext());
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+            // at last set adapter to recycler view.
+            recyclerView.setLayoutManager(linearLayoutManager);
+            recyclerView.setAdapter(pautasAdapter);
+            recyclerView.addItemDecoration(new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL));
+            pautasAdapter.notifyDataSetChanged();
+        }
     }
 
     public void rellenaPautasPañal(ArrayList<Pautas> pautas){
@@ -136,6 +141,16 @@ public class PautasPacientesGeriatriaFragment extends Fragment implements IOnBac
 
     }
 
+    private void noTienePautas(){
+        // Agrega dinámicamente un EditText al layout indicando que no hay pautas
+        EditText editText = new EditText(requireContext());
+        editText.setText("Este paciente no tiene pautas.");
+        editText.setEnabled(false);
+        // Agrega el EditText al contenedor adecuado en tu diseño
+        // Por ejemplo, si tu diseño tiene un LinearLayout llamado "contenedor", puedes hacer algo como:
+        //recyclerView.addView(editText);
+        //contenedor.addView(editText);
+    }
     @Override
     public boolean onBackPressed() {
         requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PacientesFragment()).commit();
