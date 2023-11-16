@@ -47,7 +47,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.98"/>
+        app:layout_constraintGuide_percent="0.98" />
 
 
     <androidx.constraintlayout.widget.Guideline
@@ -68,16 +68,18 @@
     <ImageView
         android:id="@+id/fotoEmpleado"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="205dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="2dp"
         android:adjustViewBounds="true"
         android:contentDescription="@string/content_description_foto_empleado"
         android:minWidth="100dp"
         android:minHeight="100dp"
         android:scaleType="fitCenter"
-        app:layout_constraintBottom_toTopOf="@+id/guidelineCenterHorBotImage"
-        app:layout_constraintEnd_toStartOf="@+id/guidelineCenter"
-        app:layout_constraintStart_toEndOf="@+id/guiaVertIzq"
-        app:layout_constraintTop_toBottomOf="@+id/guidelineCenterHorTopImage"
+        app:layout_constraintBottom_toTopOf="@+id/labelCodigoEmpleado"
+        app:layout_constraintEnd_toEndOf="@+id/guidelineCenter"
+        app:layout_constraintStart_toEndOf="@+id/guidelineCenterHorTopImage"
+        app:layout_constraintTop_toTopOf="@+id/labelCodigoEmpleado"
         tools:src="@tools:sample/avatars" />
 
     <com.google.android.material.textfield.TextInputLayout
@@ -216,8 +218,7 @@
         app:layout_constraintBottom_toTopOf="@+id/spinnerUnidad"
         app:layout_constraintEnd_toStartOf="@+id/guiaVertDer"
         app:layout_constraintStart_toStartOf="@+id/guiaVertIzq"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerArea"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/spinnerArea" />
 
     <Spinner
         android:id="@+id/spinnerUnidad"
@@ -249,8 +250,6 @@
         app:layout_constraintVertical_bias="0.25" />
 
 
-
-
     <View
         android:id="@+id/divider"
         android:layout_width="599dp"
@@ -260,8 +259,6 @@
         app:layout_constraintEnd_toStartOf="@+id/guiaVertDer"
         app:layout_constraintStart_toStartOf="@+id/guiaVertIzq"
         app:layout_constraintTop_toBottomOf="@+id/labelTextoSeleccionUnidad" />
-
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
