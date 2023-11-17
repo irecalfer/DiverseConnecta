@@ -109,9 +109,9 @@ public class PautasPacientesGeriatriaFragment extends Fragment implements IOnBac
         sharedPacientesViewModel.getListaMutablePautas(pacientes).observe(getViewLifecycleOwner(), new Observer<ArrayList<Pautas>>() {
             @Override
             public void onChanged(ArrayList<Pautas> pautas) {
-
-                    rellenaPautasGenerales(pautas);
-                    rellenaPautasPañal(pautas);
+                    ArrayList<Pautas> nuevaPauta = pautas;
+                    rellenaPautasGenerales(nuevaPauta);
+                    rellenaPautasPañal(nuevaPauta);
             }
         });
 
@@ -130,7 +130,8 @@ public class PautasPacientesGeriatriaFragment extends Fragment implements IOnBac
     }
 
     public void rellenaPautasPañal(ArrayList<Pautas> pautas){
-        anatomicosAdapter = new AnatomicosAdapter(pautas, getContext());
+        boolean mostrarEditTextNoAnatomicos = determinaSiTieneAnatomicos(pautas);
+        anatomicosAdapter = new AnatomicosAdapter(pautas, getContext(), mostrarEditTextNoAnatomicos);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerViewAnatomicos.setLayoutManager(linearLayoutManager);
         recyclerViewAnatomicos.setAdapter(anatomicosAdapter);
@@ -140,6 +141,14 @@ public class PautasPacientesGeriatriaFragment extends Fragment implements IOnBac
     }
 
     private boolean determinaSiHayPautas(ArrayList<Pautas> pautas){
+        if(pautas.isEmpty()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    private boolean determinaSiTieneAnatomicos (ArrayList<Pautas> pautas){
         if(pautas.isEmpty()){
             return true;
         }else{
