@@ -118,17 +118,15 @@ public class PautasPacientesGeriatriaFragment extends Fragment implements IOnBac
     }
 
     public void rellenaPautasGenerales(ArrayList<Pautas> pautas){
-        if(pautas.isEmpty()){
-            noTienePautas();
-        }else{
-            pautasAdapter = new PautasAdapter(pautas, getContext());
+        boolean mostrarEditTextNoPautas = determinaSiHayPautas(pautas);
+            pautasAdapter = new PautasAdapter(pautas, getContext(), mostrarEditTextNoPautas);
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
             // at last set adapter to recycler view.
             recyclerView.setLayoutManager(linearLayoutManager);
             recyclerView.setAdapter(pautasAdapter);
             recyclerView.addItemDecoration(new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL));
             pautasAdapter.notifyDataSetChanged();
-        }
+
     }
 
     public void rellenaPautasPañal(ArrayList<Pautas> pautas){
@@ -141,15 +139,12 @@ public class PautasPacientesGeriatriaFragment extends Fragment implements IOnBac
 
     }
 
-    private void noTienePautas(){
-        // Agrega dinámicamente un EditText al layout indicando que no hay pautas
-        EditText editText = new EditText(requireContext());
-        editText.setText("Este paciente no tiene pautas.");
-        editText.setEnabled(false);
-        // Agrega el EditText al contenedor adecuado en tu diseño
-        // Por ejemplo, si tu diseño tiene un LinearLayout llamado "contenedor", puedes hacer algo como:
-        //recyclerView.addView(editText);
-        //contenedor.addView(editText);
+    private boolean determinaSiHayPautas(ArrayList<Pautas> pautas){
+        if(pautas.isEmpty()){
+            return true;
+        }else{
+            return false;
+        }
     }
     @Override
     public boolean onBackPressed() {

@@ -15,14 +15,19 @@ import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.Model.Pacientes;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class PacientesAdapter extends RecyclerView.Adapter<PacientesAdapter.PacientesViewHolder>{
+
+
 
     //Interface para que el fragment implemente el listener y poder capturar el evento fuera del adaptador
     public interface ItemClickListener{
         public void onClick(int position);
     }
     private ArrayList<Pacientes> listaPacientes;
+    ArrayList<Pacientes> listaOriginal;
     private Context mContext;
     private ItemClickListener clickListener;
 
@@ -30,6 +35,8 @@ public class PacientesAdapter extends RecyclerView.Adapter<PacientesAdapter.Paci
         this.listaPacientes = listaPacientes;
         mContext = context;
         this.clickListener = clickListener;
+        listaOriginal = new ArrayList<>();
+        listaOriginal.addAll(listaPacientes);
     }
 
     @NonNull
@@ -55,6 +62,20 @@ public class PacientesAdapter extends RecyclerView.Adapter<PacientesAdapter.Paci
 
     }
 
+    public void filtrado(String busqueda){
+        int longitud = busqueda.length();
+        if(longitud == 0){
+            listaPacientes.clear();
+            listaPacientes.addAll(listaOriginal);
+        }else{
+            List<Pacientes> collection = listaPacientes.stream()
+                    .filter(i -> i.getNombre().toLowerCase().contains(busqueda.toLowerCase()))
+                    .collect(Collectors.toList());
+            listaPacientes.clear();
+            listaPacientes.addAll(collection);
+        }
+        notifyDataSetChanged();
+    }
     @Override
     public int getItemCount() {
         return listaPacientes.size();

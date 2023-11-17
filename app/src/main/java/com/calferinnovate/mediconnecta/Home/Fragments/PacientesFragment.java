@@ -4,7 +4,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -32,6 +35,7 @@ public class PacientesFragment extends Fragment implements PacientesAdapter.Item
     Declarar instancias globales
     */
     private RecyclerView recycler;
+    private SearchView searchView;
     private ClaseGlobal claseGlobal;
     private ArrayList<Pacientes> listaPacientes;
     private SharedPacientesViewModel sharedPacientesViewModel;
@@ -44,12 +48,11 @@ public class PacientesFragment extends Fragment implements PacientesAdapter.Item
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_residentes, container, false);
-        inicializaVariables();
-        poblaRecyclerPacientes(view);
+        View view = inflater.inflate(R.layout.fragment_pacientes, container, false);
+        inicializaVariables(view);
+        poblaRecyclerPacientes();
         inicializaViewModel();
         actualizaListaPacientes();
-
 
 
         //Implementamos la escucha al item
@@ -58,9 +61,11 @@ public class PacientesFragment extends Fragment implements PacientesAdapter.Item
         return view;
     }
 
-    public void inicializaVariables() {
+    public void inicializaVariables(View view) {
         claseGlobal = ClaseGlobal.getInstance();
         listaPacientes = claseGlobal.getListaPacientes();
+        recycler = view.findViewById(R.id.recyclerViewPacientes);
+        searchView = view.findViewById(R.id.searchPacientes);
     }
 
     public void inicializaViewModel(){
@@ -83,9 +88,8 @@ public class PacientesFragment extends Fragment implements PacientesAdapter.Item
         sharedPacientesViewModel = new ViewModelProvider(requireActivity(), factory).get(SharedPacientesViewModel.class);
     }
 
-    public void poblaRecyclerPacientes(View view) {
+    public void poblaRecyclerPacientes() {
         // Obtener el Recycler
-        recycler = view.findViewById(R.id.recyclerViewResidentes);
         recycler.setHasFixedSize(true);
 
         // added data from arraylist to adapter class.
@@ -111,12 +115,33 @@ public class PacientesFragment extends Fragment implements PacientesAdapter.Item
         });
     }
 
+    public void listenerSearchView(){
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                adapter.filtrado(newText);
+                return false;
+            }
+        });
+    }
+
     @Override
     public void onClick(int position) {
         sharedPacientesViewModel.setPaciente(position);
         adapter.notifyDataSetChanged();
         getParentFragmentManager().beginTransaction().replace(R.id.fragment_container, new DetallePacientesFragment()).commit();
 
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        listenerSearchView();
     }
 
     @Override
@@ -127,4 +152,5 @@ public class PacientesFragment extends Fragment implements PacientesAdapter.Item
         requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
         return true;
     }
+
 }

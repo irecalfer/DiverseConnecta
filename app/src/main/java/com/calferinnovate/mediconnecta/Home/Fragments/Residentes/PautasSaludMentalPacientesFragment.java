@@ -94,7 +94,8 @@ public class PautasSaludMentalPacientesFragment extends Fragment implements IOnB
         sharedPacientesViewModel.getListaMutablePautas(pacientes).observe(getViewLifecycleOwner(), new Observer<ArrayList<Pautas>>() {
             @Override
             public void onChanged(ArrayList<Pautas> pautas) {
-                pautasAdapter = new PautasAdapter(pautas, getContext());
+                boolean mostrarEditTextNoPautas = determinaSiHayPautas(pautas);
+                pautasAdapter = new PautasAdapter(pautas, getContext(), mostrarEditTextNoPautas);
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
                 // at last set adapter to recycler view.
                 recyclerView.setLayoutManager(linearLayoutManager);
@@ -104,7 +105,13 @@ public class PautasSaludMentalPacientesFragment extends Fragment implements IOnB
             }
         });
     }
-
+    private boolean determinaSiHayPautas(ArrayList<Pautas> pautas){
+        if(pautas.isEmpty()){
+            return true;
+        }else{
+            return false;
+        }
+    }
     @Override
     public boolean onBackPressed() {
         requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PacientesFragment()).commit();
