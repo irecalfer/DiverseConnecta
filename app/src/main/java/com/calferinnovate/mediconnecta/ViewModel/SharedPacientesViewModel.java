@@ -134,23 +134,19 @@ public class SharedPacientesViewModel extends ViewModel {
                         @Override
                         public void onResponse(JSONObject response) {
                             try {
+                                ArrayList<ContactoFamiliares> contactoFamiliaresArrayList = new ArrayList<>();
                                 //Si la lista de contactos está llena para otro familiar la vaciamos para
                                 //llenarla con los datos de los familiares del nuevo paciente.
-                                if (!claseGlobal.getListaContactoFamiliares().isEmpty()) {
-                                    claseGlobal.getListaContactoFamiliares().clear();
-                                }
                                 JSONArray jsonArray = response.getJSONArray("familiares_contacto");
                                 for (int i = 0; i < jsonArray.length(); i++) {
                                     JSONObject jsonObject = jsonArray.getJSONObject(i);
                                     ContactoFamiliares nuevoFamiliar = new ContactoFamiliares(jsonObject.optString("dni_familiar"),
                                             jsonObject.optString("nombre"), jsonObject.optString("apellidos"),
                                             jsonObject.optInt("telefono_contacto"), jsonObject.optInt("telefono_contacto_2"));
-                                    claseGlobal.getListaContactoFamiliares().add(nuevoFamiliar);
+                                   contactoFamiliaresArrayList.add(nuevoFamiliar);
                                 }
-                                claseGlobal.setListaContactoFamiliares(claseGlobal.getListaContactoFamiliares());
-                                ArrayList<ContactoFamiliares> contactoFamiliares = claseGlobal.getListaContactoFamiliares();
-                                if (!contactoFamiliares.isEmpty()) {
-                                    mutableFamiliaresList.postValue(new ArrayList<>(contactoFamiliares));
+                                if (!contactoFamiliaresArrayList.isEmpty()) {
+                                    mutableFamiliaresList.postValue(new ArrayList<>(contactoFamiliaresArrayList));
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -184,37 +180,33 @@ public class SharedPacientesViewModel extends ViewModel {
                     peticionesJson.getJsonObjectRequest(url, new PeticionesJson.MyJsonObjectResponseListener() {
                         @Override
                         public void onResponse(JSONObject response) {
-                            try{
+                            try {
                                 //Si la lista de informes está llena para otro paciente la vaciamos para
                                 //llenarla con los informes del nuevo paciente.
-                                if (!claseGlobal.getListaInformes().isEmpty()) {
-                                    claseGlobal.getListaInformes().clear();
-                                }
+                                ArrayList<Informes> informesArrayList = new ArrayList<>();
                                 // Verificar que claseGlobal y la lista de informes no sean nulos
-                                if (claseGlobal != null && claseGlobal.getListaInformes() != null) {
-                                    JSONArray jsonArray = response.getJSONArray("informes");
-                                    for (int i = 0; i < jsonArray.length(); i++) {
-                                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                        String base64String = jsonObject.optString("PDF");
-                                        byte[] pdfBytes = Base64.decode(base64String, Base64.DEFAULT);
-                                        Informes nuevoInforme = new Informes(jsonObject.optInt("fk_num_historia_clinica"),
-                                                jsonObject.optString("tipo_informe"), jsonObject.optString("fecha"),
-                                                jsonObject.optString("centro"), jsonObject.optString("responsable"),
-                                                jsonObject.optString("servicio_unidad_dispositivo"), jsonObject.optString("servicio_de_salud"),
-                                                pdfBytes);
-                                        claseGlobal.getListaInformes().add(nuevoInforme);
-                                    }
-                                    claseGlobal.setListaInformes(claseGlobal.getListaInformes());
-                                    // Actualizar el LiveData directamente
-                                    if (!claseGlobal.getListaInformes().isEmpty()) {
-                                        mutableInformesList.postValue(new ArrayList<>(claseGlobal.getListaInformes()));
-                                    }
+
+                                JSONArray jsonArray = response.getJSONArray("informes");
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                    String base64String = jsonObject.optString("PDF");
+                                    byte[] pdfBytes = Base64.decode(base64String, Base64.DEFAULT);
+                                    Informes nuevoInforme = new Informes(jsonObject.optInt("fk_num_historia_clinica"),
+                                            jsonObject.optString("tipo_informe"), jsonObject.optString("fecha"),
+                                            jsonObject.optString("centro"), jsonObject.optString("responsable"),
+                                            jsonObject.optString("servicio_unidad_dispositivo"), jsonObject.optString("servicio_de_salud"),
+                                            pdfBytes);
+                                    informesArrayList.add(nuevoInforme);
                                 }
-                            }catch(JSONException e){
+                                // Actualizar el LiveData directamente
+                                if (!informesArrayList.isEmpty()) {
+                                    mutableInformesList.postValue(new ArrayList<>(informesArrayList));
+                                }
+
+                            } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                         }
-
                         @Override
                         public void onErrorResponse(VolleyError error) {
 
