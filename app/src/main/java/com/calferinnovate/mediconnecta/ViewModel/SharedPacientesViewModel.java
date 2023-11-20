@@ -307,18 +307,18 @@ public class SharedPacientesViewModel extends ViewModel {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
+                            ArrayList<String> lugaresCaidaArrayList = new ArrayList<>();
                             JSONArray lugarCaida = response.getJSONArray("lugar_caida");
                             Log.d("Lugares", "Ha entrado en on response");
                             // Itera sobre los valores ENUM
                             for (int i = 0; i < lugarCaida.length(); i++) {
                                 String enumLugar = lugarCaida.getString(i);
                                 //Añadimos el valor a nuestro arrayList
-                                claseGlobal.getListaLugares().add(enumLugar);
+                                lugaresCaidaArrayList.add(enumLugar);
                             }
-                            claseGlobal.setListaLugares(claseGlobal.getListaLugares());
                             // Actualiza el LiveData con la nueva lista
-                            if (!claseGlobal.getListaLugares().isEmpty()) {
-                                listaLugaresLiveData.postValue(new ArrayList<>(claseGlobal.getListaLugares()));
+                            if (!lugaresCaidaArrayList.isEmpty()) {
+                                listaLugaresLiveData.postValue(new ArrayList<>(lugaresCaidaArrayList));
                             }
                         } catch (JSONException e) {
                             Log.d("Lugares", "Ha entrado en el catch de on response");
