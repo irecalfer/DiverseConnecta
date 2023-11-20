@@ -23,6 +23,7 @@ import com.calferinnovate.mediconnecta.Model.Normas;
 import com.calferinnovate.mediconnecta.Model.PeticionesJson;
 import com.calferinnovate.mediconnecta.ViewModel.NormasViewModel;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelArgs;
+import com.calferinnovate.mediconnecta.ViewModel.ViewModelArgsJson;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelFactory;
 
 import java.util.ArrayList;
@@ -31,7 +32,7 @@ import java.util.ArrayList;
 public class NormasEmpresaFragment extends Fragment implements IOnBackPressed {
 
     private ClaseGlobal claseGlobal;
-    private ViewModelArgs viewModelArgs;
+    private ViewModelArgsJson viewModelArgs;
     private PeticionesJson peticionesJson;
     private NormasAdapter normasAdapter;
     private NormasViewModel normasViewModel;
@@ -58,17 +59,7 @@ public class NormasEmpresaFragment extends Fragment implements IOnBackPressed {
     }
 
     public void inicializaViewModel(){
-        viewModelArgs = new ViewModelArgs() {
-            @Override
-            public PeticionesJson getPeticionesJson() {
-                return peticionesJson = new PeticionesJson(requireContext());
-            }
-
-            @Override
-            public ClaseGlobal getClaseGlobal() {
-                return claseGlobal;
-            }
-        };
+        viewModelArgs = () -> peticionesJson = new PeticionesJson(requireContext());
 
         ViewModelFactory<NormasViewModel> factory = new ViewModelFactory<>(viewModelArgs);
         // Inicializa el ViewModel

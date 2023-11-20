@@ -22,8 +22,6 @@ public class ClaseGlobal extends Application {
     private ArrayList<Unidades> listaUnidades;
     private ArrayList<Pacientes> listaPacientes;
     private ArrayList<Area> listaAreas;
-    private ArrayList<Parte> parteArrayList;
-    private ArrayList<Caidas> caidasArrayList;
 
 
 
@@ -40,8 +38,6 @@ public class ClaseGlobal extends Application {
         unidades = new Unidades();
         listaUnidades = new ArrayList<>();
         listaPacientes = new ArrayList<>(); // Inicializa la lista de pacientes vacía
-        parteArrayList = new ArrayList<>();
-        caidasArrayList = new ArrayList<>();
     }
 
     /**
@@ -103,7 +99,6 @@ public class ClaseGlobal extends Application {
         this.listaPacientes = listaPacientes;
     }
 
-
     public ArrayList<Area> getListaAreas() {
         return listaAreas;
     }
@@ -112,22 +107,5 @@ public class ClaseGlobal extends Application {
         this.listaAreas = listaAreas;
     }
 
-
-
-    public ArrayList<Parte> getParteArrayList() {
-        return parteArrayList;
-    }
-
-    public void setParteArrayList(ArrayList<Parte> parteArrayList) {
-        this.parteArrayList = parteArrayList;
-    }
-
-    public ArrayList<Caidas> getCaidasArrayList() {
-        return caidasArrayList;
-    }
-
-    public void setCaidasArrayList(ArrayList<Caidas> caidasArrayList) {
-        this.caidasArrayList = caidasArrayList;
-    }
 
 }

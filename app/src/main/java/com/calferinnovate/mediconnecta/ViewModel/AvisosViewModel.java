@@ -29,9 +29,8 @@ public class AvisosViewModel extends ViewModel {
 
     }
 
-    public AvisosViewModel(ViewModelArgs viewModelArgs){
-        claseGlobal = viewModelArgs.getClaseGlobal();
-        peticionesJson = viewModelArgs.getPeticionesJson();
+    public AvisosViewModel(ViewModelArgsJson viewModelArgsJson){
+        peticionesJson = viewModelArgsJson.getPeticionesJson();
     }
 
     public LiveData<ArrayList<String>> obtieneAvisosFecha(String fecha){

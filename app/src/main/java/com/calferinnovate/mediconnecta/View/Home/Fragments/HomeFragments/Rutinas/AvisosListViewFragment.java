@@ -24,6 +24,7 @@ import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
 import com.calferinnovate.mediconnecta.Model.Fechas;
 import com.calferinnovate.mediconnecta.ViewModel.AvisosViewModel;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelArgs;
+import com.calferinnovate.mediconnecta.ViewModel.ViewModelArgsJson;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelFactory;
 
 import java.util.ArrayList;
@@ -34,9 +35,8 @@ public class AvisosListViewFragment extends Fragment {
 
     private ListView avisosLV;
     private String fecha;
-    private ClaseGlobal claseGlobal;
     private AvisosViewModel avisosViewModel;
-    private ViewModelArgs viewModelArgs;
+    private ViewModelArgsJson viewModelArgs;
     private PeticionesJson peticionesJson;
     private ArrayList<String> listaContenidoAvisos = new ArrayList<>();
     private ArrayAdapter<String> avisosAdapter;
@@ -56,22 +56,11 @@ public class AvisosListViewFragment extends Fragment {
     }
 
     private void inicializaVariables(View view) {
-        claseGlobal = ClaseGlobal.getInstance();
         avisosLV = view.findViewById(R.id.listViewAvisos);
     }
 
     private void inicializaViewModel(){
-        viewModelArgs = new ViewModelArgs() {
-            @Override
-            public PeticionesJson getPeticionesJson() {
-                return peticionesJson = new PeticionesJson(requireContext());
-            }
-
-            @Override
-            public ClaseGlobal getClaseGlobal() {
-                return claseGlobal;
-            }
-        };
+        viewModelArgs = () -> peticionesJson = new PeticionesJson(requireContext());
 
         ViewModelFactory<AvisosViewModel> factory = new ViewModelFactory<>(viewModelArgs);
         // Inicializa el ViewModel

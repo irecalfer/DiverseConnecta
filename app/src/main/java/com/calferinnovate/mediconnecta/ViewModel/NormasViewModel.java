@@ -27,9 +27,8 @@ public class NormasViewModel extends ViewModel {
 
     }
 
-    public NormasViewModel(ViewModelArgs viewModelArgs){
-        this.peticionesJson = viewModelArgs.getPeticionesJson();
-        this.claseGlobal = viewModelArgs.getClaseGlobal();
+    public NormasViewModel(ViewModelArgsJson viewModelArgsJson){
+        this.peticionesJson = viewModelArgsJson.getPeticionesJson();
     }
 
     public LiveData<ArrayList<Normas>> getArrayListLiveData(){
