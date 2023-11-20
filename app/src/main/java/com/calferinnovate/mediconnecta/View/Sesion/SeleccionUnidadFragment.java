@@ -1,4 +1,4 @@
-package com.calferinnovate.mediconnecta.Sesion;
+package com.calferinnovate.mediconnecta.View.Sesion;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,11 +22,11 @@ import androidx.navigation.Navigation;
 
 
 import com.bumptech.glide.Glide;
-import com.calferinnovate.mediconnecta.Home.HomeActivity;
+import com.calferinnovate.mediconnecta.View.Home.HomeActivity;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
 import com.calferinnovate.mediconnecta.Model.Empleado;
 import com.calferinnovate.mediconnecta.Model.Unidades;
-import com.calferinnovate.mediconnecta.PeticionesHTTP.PeticionesJson;
+import com.calferinnovate.mediconnecta.Model.PeticionesJson;
 import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.ViewModel.SeleccionUnidadViewModel;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelArgs;

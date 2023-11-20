@@ -1,4 +1,4 @@
-package com.calferinnovate.mediconnecta.Home.Fragments.Residentes;
+package com.calferinnovate.mediconnecta.View.Home.Fragments.Residentes;
 
 import android.os.Bundle;
 
@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.calferinnovate.mediconnecta.R;
-import com.calferinnovate.mediconnecta.Interfaces.IOnBackPressed;
+import com.calferinnovate.mediconnecta.View.IOnBackPressed;
 import com.github.barteksc.pdfviewer.PDFView;
 import com.github.barteksc.pdfviewer.util.FitPolicy;
 

@@ -1,4 +1,4 @@
-package com.calferinnovate.mediconnecta.Sesion;
+package com.calferinnovate.mediconnecta.View.Sesion;
 
 import androidx.appcompat.app.AppCompatActivity;
 

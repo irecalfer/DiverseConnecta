@@ -2,12 +2,10 @@ package com.calferinnovate.mediconnecta.ViewModel;
 
 import android.content.Context;
 
-import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.VolleyError;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
 import com.calferinnovate.mediconnecta.Model.Constantes;
@@ -16,7 +14,7 @@ import com.calferinnovate.mediconnecta.Model.HistoriaClinica;
 import com.calferinnovate.mediconnecta.Model.Informes;
 import com.calferinnovate.mediconnecta.Model.Pacientes;
 import com.calferinnovate.mediconnecta.Model.Pautas;
-import com.calferinnovate.mediconnecta.PeticionesHTTP.PeticionesJson;
+import com.calferinnovate.mediconnecta.Model.PeticionesJson;
 import com.calferinnovate.mediconnecta.Model.Seguro;
 
 import org.json.JSONArray;
@@ -27,8 +25,6 @@ import java.util.ArrayList;
 import android.util.Base64;
 import android.util.Log;
 
-import java.util.Hashtable;
-import java.util.Map;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 

@@ -1,4 +1,4 @@
-package com.calferinnovate.mediconnecta.Home.Fragments.HomeFragments.Rutinas;
+package com.calferinnovate.mediconnecta.View.Home.Fragments.HomeFragments.Rutinas;
 
 import android.os.Bundle;
 
@@ -15,26 +15,16 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
-import com.calferinnovate.mediconnecta.PeticionesHTTP.PeticionesJson;
+import com.calferinnovate.mediconnecta.Model.PeticionesJson;
 import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.Model.Avisos;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
-import com.calferinnovate.mediconnecta.Model.Constantes;
 import com.calferinnovate.mediconnecta.Model.Fechas;
 import com.calferinnovate.mediconnecta.ViewModel.AvisosViewModel;
-import com.calferinnovate.mediconnecta.ViewModel.NormasViewModel;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelArgs;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelFactory;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 

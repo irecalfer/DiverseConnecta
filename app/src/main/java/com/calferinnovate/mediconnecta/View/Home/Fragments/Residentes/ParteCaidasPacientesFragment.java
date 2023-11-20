@@ -1,4 +1,4 @@
-package com.calferinnovate.mediconnecta.Home.Fragments.Residentes;
+package com.calferinnovate.mediconnecta.View.Home.Fragments.Residentes;
 
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -28,12 +28,12 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.calferinnovate.mediconnecta.Adaptadores.ParteCaidasAdapter;
-import com.calferinnovate.mediconnecta.Home.Fragments.PacientesFragment;
-import com.calferinnovate.mediconnecta.Interfaces.IOnBackPressed;
+import com.calferinnovate.mediconnecta.View.Home.Fragments.PacientesFragment;
+import com.calferinnovate.mediconnecta.View.IOnBackPressed;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
 import com.calferinnovate.mediconnecta.Model.Constantes;
 import com.calferinnovate.mediconnecta.Model.Pacientes;
-import com.calferinnovate.mediconnecta.PeticionesHTTP.PeticionesJson;
+import com.calferinnovate.mediconnecta.Model.PeticionesJson;
 import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.ViewModel.SharedPacientesViewModel;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelArgs;

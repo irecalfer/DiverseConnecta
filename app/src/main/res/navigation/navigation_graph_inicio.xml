@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/sesionFragment"
-        android:name="com.calferinnovate.mediconnecta.Sesion.SesionFragment"
+        android:name="com.calferinnovate.mediconnecta.View.Sesion.SesionFragment"
         android:label="fragment_sesion"
         tools:layout="@layout/fragment_sesion" >
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/seleccionUnidadFragment"
-        android:name="com.calferinnovate.mediconnecta.Sesion.SeleccionUnidadFragment"
+        android:name="com.calferinnovate.mediconnecta.View.Sesion.SeleccionUnidadFragment"
         android:label="fragment_seleccion_unidad"
         tools:layout="@layout/fragment_seleccion_unidad" />
 </navigation>

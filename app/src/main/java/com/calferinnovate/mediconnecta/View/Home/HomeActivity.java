@@ -1,4 +1,4 @@
-package com.calferinnovate.mediconnecta.Home;
+package com.calferinnovate.mediconnecta.View.Home;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.activity.OnBackPressedDispatcherOwner;
@@ -20,14 +20,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.calferinnovate.mediconnecta.Home.Fragments.HomeFragment;
-import com.calferinnovate.mediconnecta.Home.Fragments.NormasEmpresaFragment;
-import com.calferinnovate.mediconnecta.Home.Fragments.PacientesFragment;
-import com.calferinnovate.mediconnecta.Home.Fragments.ParteGeneralFragment;
+import com.calferinnovate.mediconnecta.View.Home.Fragments.HomeFragment;
+import com.calferinnovate.mediconnecta.View.Home.Fragments.NormasEmpresaFragment;
+import com.calferinnovate.mediconnecta.View.Home.Fragments.PacientesFragment;
+import com.calferinnovate.mediconnecta.View.Home.Fragments.ParteGeneralFragment;
 import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
 import com.calferinnovate.mediconnecta.Model.Empleado;
-import com.calferinnovate.mediconnecta.Interfaces.IOnBackPressed;
+import com.calferinnovate.mediconnecta.View.IOnBackPressed;
 import com.calferinnovate.mediconnecta.Model.Unidades;
 import com.google.android.material.navigation.NavigationView;
 
@@ -179,7 +179,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 //Cerramos el dialog y salimos
                 dialog.dismiss();
                 //finishAndRemoveTask();
-                finishAffinity();
+                //finishAffinity();
+                finishAndRemoveTask();
             }
         });
 

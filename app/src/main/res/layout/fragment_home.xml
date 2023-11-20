@@ -5,7 +5,7 @@
     android:id="@+id/relativeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Home.Fragments.HomeFragment">
+    tools:context=".View.Home.Fragments.HomeFragment">
 
 
     <androidx.constraintlayout.widget.Guideline
@@ -67,7 +67,7 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentContainerViewLIstView"
-        android:name="com.calferinnovate.mediconnecta.Home.Fragments.HomeFragments.Rutinas.AvisosListViewFragment"
+        android:name="com.calferinnovate.mediconnecta.View.Home.Fragments.HomeFragments.Rutinas.AvisosListViewFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@id/guiaHorBot"

@@ -1,4 +1,4 @@
-package com.calferinnovate.mediconnecta.Home.Fragments;
+package com.calferinnovate.mediconnecta.View.Home.Fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,11 +17,11 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.calferinnovate.mediconnecta.Adaptadores.CaidasAdapter;
 import com.calferinnovate.mediconnecta.Adaptadores.ParteAdapter;
-import com.calferinnovate.mediconnecta.Interfaces.IOnBackPressed;
+import com.calferinnovate.mediconnecta.View.IOnBackPressed;
 import com.calferinnovate.mediconnecta.Model.Caidas;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
 import com.calferinnovate.mediconnecta.Model.Parte;
-import com.calferinnovate.mediconnecta.PeticionesHTTP.PeticionesJson;
+import com.calferinnovate.mediconnecta.Model.PeticionesJson;
 import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.ViewModel.ParteGeneralViewModel;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelArgs;

@@ -1,4 +1,4 @@
-package com.calferinnovate.mediconnecta.Interfaces;
+package com.calferinnovate.mediconnecta.View;
 
 public interface IOnBackPressed {
 

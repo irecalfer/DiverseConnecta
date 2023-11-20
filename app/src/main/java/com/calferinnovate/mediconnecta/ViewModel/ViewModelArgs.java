@@ -1,7 +1,7 @@
 package com.calferinnovate.mediconnecta.ViewModel;
 
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
-import com.calferinnovate.mediconnecta.PeticionesHTTP.PeticionesJson;
+import com.calferinnovate.mediconnecta.Model.PeticionesJson;
 
 import java.io.Serializable;
 

@@ -1,16 +1,9 @@
-package com.calferinnovate.mediconnecta.Home.Fragments.Residentes;
+package com.calferinnovate.mediconnecta.View.Home.Fragments.Residentes;
 
-import android.app.ActionBar;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.TableLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,13 +16,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.calferinnovate.mediconnecta.Adaptadores.AnatomicosAdapter;
 import com.calferinnovate.mediconnecta.Adaptadores.PautasAdapter;
-import com.calferinnovate.mediconnecta.Home.Fragments.PacientesFragment;
+import com.calferinnovate.mediconnecta.View.Home.Fragments.PacientesFragment;
 import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
-import com.calferinnovate.mediconnecta.Interfaces.IOnBackPressed;
+import com.calferinnovate.mediconnecta.View.IOnBackPressed;
 import com.calferinnovate.mediconnecta.Model.Pacientes;
 import com.calferinnovate.mediconnecta.Model.Pautas;
-import com.calferinnovate.mediconnecta.PeticionesHTTP.PeticionesJson;
+import com.calferinnovate.mediconnecta.Model.PeticionesJson;
 import com.calferinnovate.mediconnecta.ViewModel.SharedPacientesViewModel;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelArgs;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelFactory;

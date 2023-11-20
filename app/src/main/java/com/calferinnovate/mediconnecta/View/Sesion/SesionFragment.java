@@ -1,8 +1,7 @@
-package com.calferinnovate.mediconnecta.Sesion;
+package com.calferinnovate.mediconnecta.View.Sesion;
 
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,28 +16,13 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.JsonRequest;
-import com.android.volley.toolbox.Volley;
-import com.calferinnovate.mediconnecta.PeticionesHTTP.PeticionesJson;
+import com.calferinnovate.mediconnecta.Model.PeticionesJson;
 import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
-import com.calferinnovate.mediconnecta.Model.Constantes;
-import com.calferinnovate.mediconnecta.Model.Empleado;
-import com.calferinnovate.mediconnecta.ViewModel.NormasViewModel;
-import com.calferinnovate.mediconnecta.ViewModel.SeleccionUnidadViewModel;
 import com.calferinnovate.mediconnecta.ViewModel.SesionViewModel;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelArgs;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelFactory;
 import com.google.android.material.textfield.TextInputEditText;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  * Fragmento donde se realiza el autenticación del inicio de sesión del empleado.

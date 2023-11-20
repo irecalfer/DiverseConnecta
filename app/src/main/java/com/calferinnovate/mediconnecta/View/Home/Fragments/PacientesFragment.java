@@ -1,4 +1,4 @@
-package com.calferinnovate.mediconnecta.Home.Fragments;
+package com.calferinnovate.mediconnecta.View.Home.Fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,11 +16,11 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.calferinnovate.mediconnecta.Adaptadores.PacientesAdapter;
-import com.calferinnovate.mediconnecta.Home.Fragments.Residentes.DetallePacientesFragment;
-import com.calferinnovate.mediconnecta.Interfaces.IOnBackPressed;
+import com.calferinnovate.mediconnecta.View.Home.Fragments.Residentes.DetallePacientesFragment;
+import com.calferinnovate.mediconnecta.View.IOnBackPressed;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
 import com.calferinnovate.mediconnecta.Model.Pacientes;
-import com.calferinnovate.mediconnecta.PeticionesHTTP.PeticionesJson;
+import com.calferinnovate.mediconnecta.Model.PeticionesJson;
 import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.ViewModel.SharedPacientesViewModel;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelArgs;

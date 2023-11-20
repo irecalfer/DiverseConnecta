@@ -1,4 +1,4 @@
-package com.calferinnovate.mediconnecta.Home.Fragments.Residentes;
+package com.calferinnovate.mediconnecta.View.Home.Fragments.Residentes;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,8 +10,8 @@ import androidx.fragment.app.FragmentContainerView;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.calferinnovate.mediconnecta.Home.Fragments.PacientesFragment;
-import com.calferinnovate.mediconnecta.Interfaces.IOnBackPressed;
+import com.calferinnovate.mediconnecta.View.Home.Fragments.PacientesFragment;
+import com.calferinnovate.mediconnecta.View.IOnBackPressed;
 import com.calferinnovate.mediconnecta.Model.Area;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
 import com.calferinnovate.mediconnecta.Model.Pacientes;
