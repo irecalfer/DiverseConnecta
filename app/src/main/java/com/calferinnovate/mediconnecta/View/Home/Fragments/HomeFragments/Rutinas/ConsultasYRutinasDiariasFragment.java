@@ -137,7 +137,6 @@ public class ConsultasYRutinasDiariasFragment extends Fragment implements IOnBac
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 tipoRutinaActual = (String) tab.getText();
-                claseGlobal.getListaProgramacion().clear();
                 obtenerDatosRutinas();
             }
 

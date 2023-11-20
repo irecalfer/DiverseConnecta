@@ -42,17 +42,16 @@ public class NormasViewModel extends ViewModel {
             @Override
             public void onResponse(JSONObject response) {
                 try{
+                    ArrayList<Normas> normasArrayList = new ArrayList<>();
                     JSONArray jsonArray = response.getJSONArray("normas");
                     for(int i = 0; i<jsonArray.length(); i++){
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                         Normas norma = new Normas(jsonObject.optString("nombre_norma"),
                                 jsonObject.optString("contenido"));
-                        claseGlobal.getListaNormas().add(norma);
+                        normasArrayList.add(norma);
                     }
-                    claseGlobal.setListaNormas(claseGlobal.getListaNormas());
-                    ArrayList<Normas> listaNormas = claseGlobal.getListaNormas();
-                    if(!listaNormas.isEmpty()){
-                        arrayListLiveData.postValue(new ArrayList<>(listaNormas));
+                    if(!normasArrayList.isEmpty()){
+                        arrayListLiveData.postValue(new ArrayList<>(normasArrayList));
                     }
                 }catch(JSONException e){
                     e.printStackTrace();

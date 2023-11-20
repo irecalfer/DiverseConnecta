@@ -64,8 +64,6 @@ public class HomeFragment extends Fragment {
 
     public void inicializaVariables(View view) {
         claseGlobal = ClaseGlobal.getInstance();
-        avisos = claseGlobal.getAvisos();
-        fechaSeleccionada = claseGlobal.getFechas();
 
         calendario = view.findViewById(R.id.calendarView);
         abrirFragmentoListaAvisos = view.findViewById(R.id.abrirAvisos);

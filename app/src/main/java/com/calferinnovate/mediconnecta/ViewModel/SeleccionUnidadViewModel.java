@@ -23,7 +23,7 @@ import java.util.ArrayList;
 public class SeleccionUnidadViewModel extends ViewModel {
     private PeticionesJson peticionesJson;
     private ClaseGlobal claseGlobal;
-    private ArrayList<String> listaAreas = new ArrayList<>();
+    private ArrayList<Area> listaAreas = new ArrayList<>();
     private ArrayList<String> listaUnidadesNombre = new ArrayList<>();
     private ArrayList<Unidades> listaUnidades = new ArrayList<>();
     private MutableLiveData<ArrayList<String>> arrayListMutableLiveData = new MutableLiveData<>();
@@ -51,24 +51,21 @@ public class SeleccionUnidadViewModel extends ViewModel {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    if(!claseGlobal.getListaAreas().isEmpty()){
-                        claseGlobal.getListaAreas().clear();
-                    }
+                   ArrayList<String> areaArrayList = new ArrayList<>();
                     Log.d("ErrorSeleccion", "Entra en try");
                     JSONArray jsonArray = response.getJSONArray("datos_area");
                     for (int i = 0; i < jsonArray.length(); i++) {
                         Log.d("ErrorSeleccion", "Entra en el for");
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                         Area nuevaArea = new Area(jsonObject.optInt("id_area"), jsonObject.optString("nombre_area"));
-                        claseGlobal.getListaAreas().add(nuevaArea);
-                        Log.d("ErrorSeleccion", nuevaArea.getNombre());
-                        listaAreas.add(nuevaArea.getNombre());
+                        listaAreas.add(nuevaArea);
+                        areaArrayList.add(nuevaArea.getNombre());
                     }
                     Log.d("ErrorSeleccion", "finaliza for");
-                    claseGlobal.setListaAreas(claseGlobal.getListaAreas());
-                    if(!listaAreas.isEmpty()){
+                    if(!areaArrayList.isEmpty()){
                         Log.d("ErrorSeleccion", "Entra en el empty");
-                        arrayListMutableLiveData.postValue(new ArrayList<>(listaAreas));
+                        arrayListMutableLiveData.postValue(new ArrayList<>(areaArrayList));
+                        claseGlobal.setListaAreas(listaAreas);
                     }
                 } catch (JSONException e) {
                     Log.d("ErrorSeleccion", e.toString());
@@ -93,22 +90,17 @@ public class SeleccionUnidadViewModel extends ViewModel {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    if(!claseGlobal.getListaUnidades().isEmpty() || !listaUnidadesNombre.isEmpty()){
-                        claseGlobal.getListaUnidades().clear();
-                        listaUnidadesNombre.clear();
-                    }
-
+                    ArrayList<String> unidadesArrayList = new ArrayList<>();
                     JSONArray jsonArray = response.getJSONArray("datos_unidades");
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                         Unidades nuevaUnidad = new Unidades(jsonObject.optInt("id_unidad"), jsonObject.optInt("fk_id_area"),
                                 jsonObject.optString("nombre"));
                         claseGlobal.getListaUnidades().add(nuevaUnidad);
-                        listaUnidadesNombre.add(nuevaUnidad.getNombreUnidad());
+                        unidadesArrayList.add(nuevaUnidad.getNombreUnidad());
                     }
-                    claseGlobal.setListaUnidades(claseGlobal.getListaUnidades());
-                    if(!listaUnidadesNombre.isEmpty()){
-                        arrayListMutableLiveDataUnidades.postValue(new ArrayList<>(listaUnidadesNombre));
+                    if(!unidadesArrayList.isEmpty()){
+                        arrayListMutableLiveDataUnidades.postValue(new ArrayList<>(unidadesArrayList));
                     }
                 } catch (JSONException e) {
                     throw new RuntimeException(e);

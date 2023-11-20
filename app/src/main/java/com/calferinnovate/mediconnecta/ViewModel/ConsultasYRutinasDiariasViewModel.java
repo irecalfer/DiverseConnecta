@@ -42,18 +42,18 @@ public class ConsultasYRutinasDiariasViewModel extends ViewModel {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    if(!claseGlobal.getListaProgramacion().isEmpty()){
-                        claseGlobal.getListaProgramacion().clear();
-                    }
+                    ArrayList<PacientesAgrupadosRutinas> pacientesAgrupadosRutinasArrayList = new ArrayList<>();
                     JSONArray jsonArray = response.getJSONArray("programacion");
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                         PacientesAgrupadosRutinas pacientesAgrupadosRutinas = new PacientesAgrupadosRutinas(jsonObject.optString("fk_cip_sns"), jsonObject.optInt("fk_id_rutina"), jsonObject.optString("hora_rutina"));
-                        claseGlobal.getListaProgramacion().add(pacientesAgrupadosRutinas);
+                        pacientesAgrupadosRutinasArrayList.add(pacientesAgrupadosRutinas);
                     }
-                    claseGlobal.setListaProgramacion(claseGlobal.getListaProgramacion());
-                    // actualiza el LiveData con la nueva lista de programación, notificando a los observadores.
-                    listaProgramacionLiveData.postValue(claseGlobal.getListaProgramacion());
+                    if(!pacientesAgrupadosRutinasArrayList.isEmpty()){
+                        // actualiza el LiveData con la nueva lista de programación, notificando a los observadores.
+                        listaProgramacionLiveData.postValue(pacientesAgrupadosRutinasArrayList);
+                    }
+
                 } catch (JSONException e) {
                     // Maneja errores, si es necesario
                 }
