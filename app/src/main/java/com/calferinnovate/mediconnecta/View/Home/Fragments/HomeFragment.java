@@ -11,6 +11,8 @@ import android.widget.CalendarView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
@@ -21,6 +23,7 @@ import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
 import com.calferinnovate.mediconnecta.Model.Fechas;
 import com.calferinnovate.mediconnecta.Model.Rutinas;
 import com.calferinnovate.mediconnecta.R;
+import com.calferinnovate.mediconnecta.View.Home.Fragments.Residentes.PdfViewerFragment;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -36,7 +39,7 @@ public class HomeFragment extends Fragment {
 
     private Avisos avisos;
     private Fechas fechaSeleccionada;
-
+        private String fechaActual;
 
     private JsonObjectRequest jsonObjectRequest;
     private RequestQueue requestQueue;
@@ -78,7 +81,7 @@ public class HomeFragment extends Fragment {
 
 
         setearFechaSeleccionada();
-        abrirFragmentoAvisos();
+        //abrirFragmentoAvisos();
         listenerButtonRutinas();
 
 
@@ -95,19 +98,35 @@ public class HomeFragment extends Fragment {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
                 calendar.set(year, month, dayOfMonth);
-                fechaSeleccionada.setFechaActual(new SimpleDateFormat("yyyy-MM-dd").format(calendar.getTime()));
+                fechaActual = new SimpleDateFormat("yyyy-MM-dd").format(calendar.getTime());
+                abrirFragmentoAvisos(fechaActual);
+
             }
         });
     }
 
-    public void abrirFragmentoAvisos() {
+    public void abrirFragmentoAvisos(String fechaActual) {
         //CUando clcikememos en el botón mostraremos en el fragmentContainer el fragment que contiene el
         //ListView
         abrirFragmentoListaAvisos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerViewLIstView, new AvisosListViewFragment()).commit();
-                Log.d("avisos", "Se ha implementado el nuevo fragmento");
+                // Crear un nuevo fragmento PdfViewerFragment
+                AvisosListViewFragment avisosListViewFragment = new AvisosListViewFragment();
+
+                Bundle bundleFecha = new Bundle();
+                bundleFecha.putString("fecha", fechaActual);
+                avisosListViewFragment.setArguments(bundleFecha);
+
+                // Reemplazar el fragmento actual con AvisosListViewFragment
+                FragmentTransaction transaction = ((FragmentActivity) getContext()).getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragmentContainerViewLIstView, avisosListViewFragment);
+                transaction.setReorderingAllowed(true);
+                transaction.addToBackStack(null); // Opcional: Agregar a la pila de retroceso para poder volver al fragmento anterior
+                transaction.commit();
+
+                //getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerViewLIstView, new AvisosListViewFragment()).commit();
+                //Log.d("avisos", "Se ha implementado el nuevo fragmento");
             }
         });
     }

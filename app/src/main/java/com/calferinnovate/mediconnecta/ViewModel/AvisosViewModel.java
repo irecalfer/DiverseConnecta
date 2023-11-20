@@ -40,17 +40,15 @@ public class AvisosViewModel extends ViewModel {
             @Override
             public void onResponse(JSONObject response) {
                 try{
-                    if(!contenidoAvisosArrayList.isEmpty()){
-                        contenidoAvisosArrayList.clear();
-                    }
+                    ArrayList<String> contenidoArrayList = new ArrayList<>();
                     JSONArray jsonArray = response.getJSONArray("avisos");
                     for(int i = 0; i<jsonArray.length(); i++){
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                         Avisos nuevoAvisos = new Avisos(jsonObject.optInt("num_aviso"), jsonObject.optString(("fecha_aviso")), jsonObject.optString("contenido"));
-                        contenidoAvisosArrayList.add(nuevoAvisos.getContenido());
+                        contenidoArrayList.add(nuevoAvisos.getContenido());
                     }
-                    if(!contenidoAvisosArrayList.isEmpty()){
-                        arrayListAvisosMutableLiveData.postValue(new ArrayList<>(contenidoAvisosArrayList));
+                    if(!contenidoArrayList.isEmpty()){
+                        arrayListAvisosMutableLiveData.postValue(new ArrayList<>(contenidoArrayList));
                     }
                 }catch(JSONException jsonException){
                     throw new RuntimeException(jsonException);

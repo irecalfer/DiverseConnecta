@@ -33,17 +33,13 @@ public class AvisosListViewFragment extends Fragment {
 
 
     private ListView avisosLV;
-    private Avisos avisos;
-    private Fechas fechas;
-    private String url;
+    private String fecha;
     private ClaseGlobal claseGlobal;
     private AvisosViewModel avisosViewModel;
     private ViewModelArgs viewModelArgs;
     private PeticionesJson peticionesJson;
     private ArrayList<String> listaContenidoAvisos = new ArrayList<>();
     private ArrayAdapter<String> avisosAdapter;
-    private RequestQueue requestQueue;
-    private JsonObjectRequest jsonObjectRequest;
 
 
     @Override
@@ -54,15 +50,13 @@ public class AvisosListViewFragment extends Fragment {
         //Declaramos los objetos globales y rellenaremos el ListView
         inicializaVariables(vista);
         inicializaViewModel();
-
+        obtieneFecha();
         Log.d("aviso", "HA llegado aquí");
         return vista;
     }
 
     private void inicializaVariables(View view) {
         claseGlobal = ClaseGlobal.getInstance();
-        avisos = claseGlobal.getAvisos();
-        fechas = claseGlobal.getFechas();
         avisosLV = view.findViewById(R.id.listViewAvisos);
     }
 
@@ -83,11 +77,18 @@ public class AvisosListViewFragment extends Fragment {
         // Inicializa el ViewModel
         avisosViewModel = new ViewModelProvider(requireActivity(), factory).get(AvisosViewModel.class);
     }
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        rellenaListView();
+
+    public void obtieneFecha(){
+        Bundle bundle = getArguments();
+        if(bundle != null){
+            fecha = bundle.getString("fecha");
+
+            if(fecha != null && !fecha.isEmpty()){
+                rellenaListView();
+            }
+        }
     }
+
 
     //Accederemos a nuestro avisos.php e iremos cogiendo cada fila y la guardaremos en el objeto avisos
     //Guardaremos el contenido de los mensajes en una lista, ya que es lo único que deseamos que se
@@ -99,7 +100,7 @@ public class AvisosListViewFragment extends Fragment {
     //Tras terminar podremos ver como en HomeFragment se encuentra el lisview completado con los avisos
     //correspondientes a la fecha elegida.
     public void rellenaListView(){
-        avisosViewModel.obtieneAvisosFecha(fechas.getFechaActual()).observe(getViewLifecycleOwner(), new Observer<ArrayList<String>>() {
+        avisosViewModel.obtieneAvisosFecha(fecha).observe(getViewLifecycleOwner(), new Observer<ArrayList<String>>() {
             @Override
             public void onChanged(ArrayList<String> strings) {
                 listaContenidoAvisos = strings;
