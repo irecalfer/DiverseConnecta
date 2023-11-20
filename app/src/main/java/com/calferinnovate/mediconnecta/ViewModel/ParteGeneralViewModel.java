@@ -48,25 +48,18 @@ public class ParteGeneralViewModel extends ViewModel {
             @Override
             public void onResponse(JSONObject response) {
                 try{
-                    if(!claseGlobal.getParteArrayList().isEmpty()){
-                        claseGlobal.getParteArrayList().clear();
-                    }
+                    ArrayList<Parte> parteArrayList = new ArrayList<>();
                     JSONArray jsonArray = response.getJSONArray("parte");
                     Log.d("fallo", "ha entradao en el try");
                     for (int i = 0; i<jsonArray.length();i++){
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                         Parte parte = new Parte(jsonObject.optString("nombrePaciente"), jsonObject.optString("descripcion"),
                                 jsonObject.optString("empleado"), jsonObject.optString("fecha"));
-                        claseGlobal.getParteArrayList().add(parte);
+                       parteArrayList.add(parte);
                     }
-                    claseGlobal.setParteArrayList(claseGlobal.getParteArrayList());
-                    Log.d("fallo", "Ha llegado aquí");
-                    ArrayList<Parte> partes = claseGlobal.getParteArrayList();
-                    Log.d("fallo", String.valueOf(partes.size()));
-                    if(!partes.isEmpty()){
-                        arrayListParteMutableLiveData.postValue(partes);
+                    if(!parteArrayList.isEmpty()){
+                        arrayListParteMutableLiveData.postValue(parteArrayList);
                     }
-                    Log.d("fallo", String.valueOf(arrayListParteMutableLiveData.getValue()));
                 }catch(JSONException e){
                     Log.d("fallo", e.toString());
                     e.printStackTrace();
@@ -92,9 +85,7 @@ public class ParteGeneralViewModel extends ViewModel {
             @Override
             public void onResponse(JSONObject response) {
                 try{
-                    if(!claseGlobal.getCaidasArrayList().isEmpty()){
-                        claseGlobal.getCaidasArrayList().clear();
-                    }
+                    ArrayList<Caidas> caidasArrayList = new ArrayList<>();
                     JSONArray jsonArray = response.getJSONArray("parte_caidas");
                     for(int i =0; i<jsonArray.length(); i++){
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
@@ -104,11 +95,10 @@ public class ParteGeneralViewModel extends ViewModel {
                                 jsonObject.optString("consecuencias"), jsonObject.optString("unidad"),
                                 jsonObject.optString("caida_presenciada"), jsonObject.optString("avisado_a_familiares"),
                                 jsonObject.optString("observaciones"), jsonObject.optString("empleado"));
-                        claseGlobal.getCaidasArrayList().add(caida);
+                        caidasArrayList.add(caida);
                     }
-                    claseGlobal.setCaidasArrayList(claseGlobal.getCaidasArrayList());
-                    if(!claseGlobal.getCaidasArrayList().isEmpty()){
-                        arrayListCaidasMutableLiveData.postValue(new ArrayList<>(claseGlobal.getCaidasArrayList()));
+                    if(!caidasArrayList.isEmpty()){
+                        arrayListCaidasMutableLiveData.postValue(new ArrayList<>(caidasArrayList));
                     }
                 }catch(JSONException e){
                     e.printStackTrace();

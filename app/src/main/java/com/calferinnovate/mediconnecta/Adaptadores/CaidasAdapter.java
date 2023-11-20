@@ -38,7 +38,8 @@ public class CaidasAdapter extends ArrayAdapter<Caidas> {
 
         TextView textViewFecha = convertView.findViewById(R.id.tvRellenaFechaCaida);
         TextView textViewPaciente = convertView.findViewById(R.id.tvRellenaPacienteCaida);
-        TextView textViewLugar = convertView.findViewById(R.id.tvRellenaFactoresRiesgo);
+        TextView textViewLugar = convertView.findViewById(R.id.tvRellenaLugarCaida);
+        TextView textViewFactoresRiesgo = convertView.findViewById(R.id.tvRellenaFactoresRiesgo);
         TextView textViewCausas = convertView.findViewById(R.id.tvRellenaCausas);
         TextView textViewCircunstancias = convertView.findViewById(R.id.tvRellenaCircunstancias);
         TextView textViewConsecuencias = convertView.findViewById(R.id.tvRellenaConsecuencias);
@@ -54,9 +55,9 @@ public class CaidasAdapter extends ArrayAdapter<Caidas> {
         textViewFecha.setText(caidas.getFechaHora());
         textViewPaciente.setText(caidas.getNombreApellidosPaciente());
         textViewLugar.setText(caidas.getLugarCaida());
+        textViewFactoresRiesgo.setText(caidas.getFactoresRiesgo());
         textViewCausas.setText(caidas.getCausas());
         textViewCircunstancias.setText(caidas.getCircunstancias());
-        textViewCausas.setText(caidas.getCausas());
         textViewConsecuencias.setText(caidas.getConsecuencias());
         textViewUnidad.setText(caidas.getUnidad());
         textViewCaidaPresenciada.setText(caidas.getCaidaPresenciada());
