@@ -75,21 +75,20 @@ public class SharedPacientesViewModel extends ViewModel {
                         @Override
                         public void onResponse(JSONObject response) {
                             try {
+                                ArrayList<Seguro> seguroArrayList = new ArrayList<>();
                                 JSONArray jsonArray = response.getJSONArray("seguro");
                                 for (int i = 0; i < jsonArray.length(); i++) {
                                     JSONObject jsonObject = jsonArray.getJSONObject(i);
                                     Seguro nuevoSeguro = new Seguro(jsonObject.optInt("id_seguro"), jsonObject.optInt("telefono"),
                                             jsonObject.optString("nombre"));
-                                    claseGlobal.getListaSeguros().add(nuevoSeguro);
+                                    seguroArrayList.add(nuevoSeguro);
                                 }
-                                claseGlobal.setListaSeguros(claseGlobal.getListaSeguros());
-                                ArrayList<Seguro> seguros = claseGlobal.getListaSeguros();
-                                if (!seguros.isEmpty()) {
-                                    mutableSeguroList.postValue(new ArrayList<>(seguros));
+                                if (!seguroArrayList.isEmpty()) {
+                                    mutableSeguroList.postValue(new ArrayList<>(seguroArrayList));
                                 }
 
                                 // Una vez que los seguros se hayan cargado, busca el seguro del paciente
-                                Seguro seguroDelPaciente = obtieneSeguroPacienteSeleccionado(paciente);
+                                Seguro seguroDelPaciente = obtieneSeguroPacienteSeleccionado(paciente, seguroArrayList);
                                 mutableSeguro.postValue(seguroDelPaciente);
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -109,8 +108,8 @@ public class SharedPacientesViewModel extends ViewModel {
         });
     }
 
-    private Seguro obtieneSeguroPacienteSeleccionado(Pacientes paciente) {
-        for (Seguro seguro : claseGlobal.getListaSeguros()) {
+    private Seguro obtieneSeguroPacienteSeleccionado(Pacientes paciente, ArrayList<Seguro> seguroArrayList) {
+        for (Seguro seguro :seguroArrayList) {
             if (seguro.getIdSeguro() == paciente.getFkIdSeguro()) {
                 Seguro seguroDelPaciente = seguro;
                 return seguroDelPaciente;
