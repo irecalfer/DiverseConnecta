@@ -37,7 +37,6 @@ public class ConsultasYRutinasDiariasFragment extends Fragment implements IOnBac
     private RecyclerView rvConsultas;
     private RutinasAdapter rutinasAdapter;
     private TabLayout tabLayout;
-    private Fechas fechas;
     private Unidades unidades;
     private ClaseGlobal claseGlobal;
     private ArrayList<Pacientes> listaPacientes;
@@ -46,6 +45,7 @@ public class ConsultasYRutinasDiariasFragment extends Fragment implements IOnBac
     private String tipoRutinaActual;
     private PeticionesJson peticionesJson;
     private ViewModelArgs viewModelArgs;
+    private String fecha;
 
 
     @Override
@@ -55,16 +55,15 @@ public class ConsultasYRutinasDiariasFragment extends Fragment implements IOnBac
         View vista = inflater.inflate(R.layout.fragment_consultas_y_rutinas_diarias, container, false);
 
         inicializaVariables(vista);
-        setearFecha();
+        //setearFecha();
         inicializaViewModel();
-
+        obtieneFechaYFormatea();
 
         return vista;
     }
 
     public void inicializaVariables(View view) {
         claseGlobal = ClaseGlobal.getInstance();
-        fechas = claseGlobal.getFechas();
         unidades = claseGlobal.getUnidades();
         listaPacientes = claseGlobal.getListaPacientes();
 
@@ -74,13 +73,22 @@ public class ConsultasYRutinasDiariasFragment extends Fragment implements IOnBac
     }
 
 
-    private void setearFecha() {
+    public void obtieneFechaYFormatea(){
+        Bundle bundle = getArguments();
+        if(bundle!= null){
+            fecha = bundle.getString("fecha");
+            if(fecha != null && !fecha.isEmpty()){
+               setearFecha(fecha);
+            }
+        }
+    }
+    private void setearFecha(String fecha) {
         //Seteamos la fecha en el EditText
         DateTimeFormatter formatoEntrada = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         // Formato de salida (día-mes-año abreviado)
         DateTimeFormatter formatoSalida = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         // Parsea la fecha de entrada
-        LocalDate fechaEntrada = LocalDate.parse(fechas.getFechaActual(), formatoEntrada);
+        LocalDate fechaEntrada = LocalDate.parse(fecha, formatoEntrada);
 
         // Formatea la fecha en el formato de salida
         String fechaFormateada = fechaEntrada.format(formatoSalida);
@@ -147,7 +155,7 @@ public class ConsultasYRutinasDiariasFragment extends Fragment implements IOnBac
 
     private void obtenerDatosRutinas() {
         // Realiza la solicitud HTTP utilizando el ViewModel y pasa la fecha, unidad y tipo de rutina
-        consultasYRutinasDiariasViewModel.obtieneDatosRutinasDiaPacientes(fechas.getFechaActual(),
+        consultasYRutinasDiariasViewModel.obtieneDatosRutinasDiaPacientes(fecha,
                 unidades.getNombreUnidad(), tipoRutinaActual).observe(getViewLifecycleOwner(), new Observer<ArrayList<PacientesAgrupadosRutinas>>() {
             @Override
             public void onChanged(ArrayList<PacientesAgrupadosRutinas> pacientesAgrupadosRutinas) {

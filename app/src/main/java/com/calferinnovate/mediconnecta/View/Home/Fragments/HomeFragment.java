@@ -82,7 +82,7 @@ public class HomeFragment extends Fragment {
 
         setearFechaSeleccionada();
         //abrirFragmentoAvisos();
-        listenerButtonRutinas();
+        //listenerButtonRutinas();
 
 
     }
@@ -100,7 +100,7 @@ public class HomeFragment extends Fragment {
                 calendar.set(year, month, dayOfMonth);
                 fechaActual = new SimpleDateFormat("yyyy-MM-dd").format(calendar.getTime());
                 abrirFragmentoAvisos(fechaActual);
-
+                listenerButtonRutinas(fechaActual);
             }
         });
     }
@@ -131,12 +131,23 @@ public class HomeFragment extends Fragment {
         });
     }
 
-    public void listenerButtonRutinas(){
+    public void listenerButtonRutinas(String fechaActual){
         //Cuando clcikememos en el botón mostraremos el fragment que contiene las rutinas
         rutinasBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getParentFragmentManager().beginTransaction().replace(R.id.fragment_container, new ConsultasYRutinasDiariasFragment()).commit();
+                ConsultasYRutinasDiariasFragment consultasYRutinasDiariasFragment = new ConsultasYRutinasDiariasFragment();
+
+                Bundle bundleFechaRutina = new Bundle();
+                bundleFechaRutina.putString("fecha", fechaActual);
+                consultasYRutinasDiariasFragment.setArguments(bundleFechaRutina);
+
+                FragmentTransaction transaction = ((FragmentActivity) getContext()).getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragment_container, consultasYRutinasDiariasFragment);
+                transaction.setReorderingAllowed(true);
+                transaction.addToBackStack(null); // Opcional: Agregar a la pila de retroceso para poder volver al fragmento anterior
+                transaction.commit();
+                //getParentFragmentManager().beginTransaction().replace(R.id.fragment_container, new ConsultasYRutinasDiariasFragment()).commit();
             }
         });
     }
