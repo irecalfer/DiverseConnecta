@@ -26,16 +26,13 @@ public class ParteGeneralViewModel extends ViewModel {
     private final MutableLiveData<ArrayList<Caidas>> arrayListCaidasMutableLiveData = new MutableLiveData<>();
 
     private PeticionesJson peticionesJson;
-    private ClaseGlobal claseGlobal;
-    private Context context;
 
     public ParteGeneralViewModel(){
 
     }
 
-    public ParteGeneralViewModel(ViewModelArgs viewModelArgs) {
-        this.peticionesJson = viewModelArgs.getPeticionesJson();
-        this.claseGlobal = viewModelArgs.getClaseGlobal();
+    public ParteGeneralViewModel(ViewModelArgsJson viewModelArgsJson) {
+        this.peticionesJson = viewModelArgsJson.getPeticionesJson();
     }
 
     public LiveData<ArrayList<Parte>> getListaPartes(String fechaInicio, String fechaFin){

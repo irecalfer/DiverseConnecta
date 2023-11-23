@@ -38,6 +38,8 @@
         app:headerLayout="@layout/nav_header"
         app:menu="@menu/nav_menu"
         app:itemIconTint="@color/md_theme_light_surfaceTint"
-        app:itemTextColor="@color/md_theme_light_surfaceTint"/>
+        app:itemTextColor="@color/md_theme_light_surfaceTint"
+        app:itemTextAppearance="@style/DrawerTextStyle"
+        app:subheaderTextAppearance="@style/subHeader"/>
 
 </androidx.drawerlayout.widget.DrawerLayout>

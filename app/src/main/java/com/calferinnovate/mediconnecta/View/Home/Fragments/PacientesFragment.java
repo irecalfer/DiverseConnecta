@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.calferinnovate.mediconnecta.Adaptadores.PacientesAdapter;
-import com.calferinnovate.mediconnecta.View.Home.Fragments.Residentes.DetallePacientesFragment;
+import com.calferinnovate.mediconnecta.View.Home.Fragments.Pacientes.DetallePacientesFragment;
 import com.calferinnovate.mediconnecta.View.IOnBackPressed;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
 import com.calferinnovate.mediconnecta.Model.Pacientes;
@@ -25,6 +25,7 @@ import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.ViewModel.SharedPacientesViewModel;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelArgs;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelFactory;
+import com.google.android.material.search.SearchBar;
 
 import java.util.ArrayList;
 
@@ -49,7 +50,13 @@ public class PacientesFragment extends Fragment implements PacientesAdapter.Item
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_pacientes, container, false);
+        getActivity().setTitle("Pacientes");
+
+
+
         inicializaVariables(view);
+
+
         poblaRecyclerPacientes();
         inicializaViewModel();
         actualizaListaPacientes();
@@ -116,6 +123,8 @@ public class PacientesFragment extends Fragment implements PacientesAdapter.Item
     }
 
     public void listenerSearchView(){
+
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {

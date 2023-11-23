@@ -26,7 +26,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.05" />
+        app:layout_constraintGuide_percent="0.07" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelineCenterHorBotImage"
@@ -68,18 +68,18 @@
     <ImageView
         android:id="@+id/fotoEmpleado"
         android:layout_width="0dp"
-        android:layout_height="205dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="2dp"
-        android:adjustViewBounds="true"
         android:contentDescription="@string/content_description_foto_empleado"
-        android:minWidth="100dp"
-        android:minHeight="100dp"
-        android:scaleType="fitCenter"
-        app:layout_constraintBottom_toTopOf="@+id/labelCodigoEmpleado"
+        android:maxWidth="400dp"
+        android:maxHeight="400dp"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
         app:layout_constraintEnd_toEndOf="@+id/guidelineCenter"
-        app:layout_constraintStart_toEndOf="@+id/guidelineCenterHorTopImage"
-        app:layout_constraintTop_toTopOf="@+id/labelCodigoEmpleado"
+        app:layout_constraintStart_toEndOf="@id/guiaVertIzq"
+        app:layout_constraintTop_toBottomOf="@+id/guidelineCenterHorTopImage"
         tools:src="@tools:sample/avatars" />
 
     <com.google.android.material.textfield.TextInputLayout
@@ -89,12 +89,10 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="8dp"
-        android:autoSizeMaxTextSize="100sp"
-        android:autoSizeMinTextSize="12sp"
         android:hint="@string/nombreYApellidosLabel"
-        android:textColorHint="@color/md_theme_black"
-        app:autoSizeTextType="uniform"
-        app:hintTextColor="@color/md_theme_black"
+        android:maxLines="1"
+        android:textColorHint="@color/md_theme_light_surfaceTint"
+        app:hintTextAppearance="@style/TextLabel"
         app:layout_constraintEnd_toStartOf="@+id/guiaVertDer"
         app:layout_constraintStart_toEndOf="@+id/guidelineCenter"
         app:layout_constraintTop_toBottomOf="@+id/guidelineCenterHorTopImage">
@@ -105,8 +103,11 @@
             android:layout_height="wrap_content"
             android:enabled="false"
             android:imeOptions="actionNext"
+            android:maxLines="1"
             android:textColor="@color/md_theme_black"
-            android:textColorHint="@color/md_theme_black" />
+            android:textColorHint="@color/md_theme_black"
+            android:textSize="24sp"
+            app:autoSizeTextType="uniform" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -117,9 +118,8 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:hint="@string/codigo_empleado_label"
-        android:textColorHint="@color/md_theme_black"
-        app:autoSizeTextType="uniform"
-        app:hintTextColor="@color/md_theme_black"
+        android:textColorHint="@color/md_theme_light_surfaceTint"
+        app:hintTextAppearance="@style/TextLabel"
         app:layout_constraintEnd_toStartOf="@+id/guiaVertDer"
         app:layout_constraintStart_toEndOf="@+id/guidelineCenter"
         app:layout_constraintTop_toBottomOf="@+id/labelNombreApellidos">
@@ -130,6 +130,8 @@
             android:layout_height="wrap_content"
             android:enabled="false"
             android:imeOptions="actionNext"
+            android:textSize="24sp"
+            android:maxLines="1"
             android:textColor="@color/md_theme_black"
             app:autoSizeTextType="uniform" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -142,9 +144,8 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:hint="@string/cargo_label"
-        android:textColorHint="@color/md_theme_black"
-        app:autoSizeTextType="uniform"
-        app:hintTextColor="@color/md_theme_black"
+        android:textColorHint="@color/md_theme_light_surfaceTint"
+        app:hintTextAppearance="@style/TextLabel"
         app:layout_constraintEnd_toStartOf="@+id/guiaVertDer"
         app:layout_constraintStart_toEndOf="@+id/guidelineCenter"
         app:layout_constraintTop_toBottomOf="@+id/labelCodigoEmpleado">
@@ -154,6 +155,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:enabled="false"
+            android:textSize="24sp"
+            android:maxLines="1"
             android:imeOptions="actionNext"
             android:textColor="@color/md_theme_black"
             app:autoSizeTextType="uniform" />
@@ -164,7 +167,7 @@
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="70dp"
         android:layout_marginEnd="24dp"
         android:autoSizeMaxTextSize="100sp"
         android:autoSizeMinTextSize="12sp"
@@ -181,13 +184,15 @@
         android:id="@+id/labelSeleccionUnidadGeriatria"
         android:layout_width="0dp"
         android:layout_height="50dp"
-        android:layout_marginTop="24dp"
-        android:autoSizeMaxTextSize="24sp"
+        android:layout_marginTop="32dp"
+        android:autoSizeMaxTextSize="32sp"
         android:autoSizeMinTextSize="12sp"
         android:autoSizeStepGranularity="2sp"
         android:autoSizeTextType="uniform"
+        android:background="@color/md_theme_light_surfaceTint"
         android:gravity="center"
         android:text="@string/seleccionar_area"
+        android:textColor="@color/md_theme_white"
         app:layout_constraintEnd_toStartOf="@+id/guiaVertDer"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guiaVertIzq"
@@ -209,12 +214,14 @@
         android:id="@+id/textView9"
         android:layout_width="0dp"
         android:layout_height="50dp"
-        android:autoSizeMaxTextSize="24sp"
+        android:autoSizeMaxTextSize="32sp"
         android:autoSizeMinTextSize="12sp"
         android:autoSizeStepGranularity="2sp"
         android:autoSizeTextType="uniform"
         android:gravity="center"
         android:text="@string/seleccionar_unidad_label"
+        android:background="@color/md_theme_light_surfaceTint"
+        android:textColor="@color/md_theme_white"
         app:layout_constraintBottom_toTopOf="@+id/spinnerUnidad"
         app:layout_constraintEnd_toStartOf="@+id/guiaVertDer"
         app:layout_constraintStart_toStartOf="@+id/guiaVertIzq"
@@ -234,8 +241,8 @@
 
     <Button
         android:id="@+id/AccesoAlHome"
-        android:layout_width="300dp"
-        android:layout_height="60dp"
+        android:layout_width="400dp"
+        android:layout_height="70dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"

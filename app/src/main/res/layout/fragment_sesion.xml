@@ -9,19 +9,22 @@
 
     <ImageView
         android:id="@+id/imagenLogo"
-        android:layout_width="match_parent"
-        android:layout_height="415dp"
+        android:layout_width="0dp"
+        android:layout_height="250dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="150dp"
         android:layout_marginEnd="8dp"
         android:contentDescription="@string/desc_imag_logo_login"
+        app:layout_constraintBottom_toTopOf="@+id/userLabel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/logo_verde_oscuro" />
+        app:srcCompat="@drawable/logo_mediconnecta" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/userLabel"
+        app:hintTextAppearance="@style/TextLabel"
+        app:hintEnabled="false"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_marginStart="50dp"
@@ -62,6 +65,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/passLabel"
+        app:hintTextAppearance="@style/TextLabel"
         android:layout_width="0dp"
         android:layout_height="80dp"
         android:layout_marginStart="50dp"
@@ -76,7 +80,7 @@
         app:endIconMode="password_toggle"
         app:endIconTint="@color/md_theme_light_background"
         app:hintAnimationEnabled="true"
-        app:hintEnabled="true"
+        app:hintEnabled="false"
         app:hintTextColor="#FFFFFF"
         app:layout_constraintBottom_toTopOf="@+id/btnAcceso"
         app:layout_constraintEnd_toEndOf="parent"

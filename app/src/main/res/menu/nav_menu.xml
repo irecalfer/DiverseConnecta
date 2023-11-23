@@ -15,19 +15,14 @@
                     android:title="@string/home_item" />
 
                 <item
-                    android:id="@+id/residentes_item_id"
+                    android:id="@+id/pacientes_item_id"
                     android:icon="@drawable/residentes_icon"
-                    android:title="@string/residentes_item" />
+                    android:title="@string/pacientes_item" />
 
                 <item
                     android:id="@+id/parte_general_item_id"
                     android:icon="@drawable/parte_icon"
                     android:title="@string/parte_general_item" />
-
-                <item
-                    android:id="@+id/mensajes_item_id"
-                    android:icon="@drawable/mensajes_icon"
-                    android:title="@string/mensajes_item" />
             </menu>
         </item>
     </group>

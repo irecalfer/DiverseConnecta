@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".View.Home.Fragments.Residentes.ContactoFamiliaresPacienteFragment">
+    tools:context=".View.Home.Fragments.Pacientes.ContactoFamiliaresPacienteFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewFamiliares"

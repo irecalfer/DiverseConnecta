@@ -31,7 +31,6 @@ import java.util.ArrayList;
 
 public class NormasEmpresaFragment extends Fragment implements IOnBackPressed {
 
-    private ClaseGlobal claseGlobal;
     private ViewModelArgsJson viewModelArgs;
     private PeticionesJson peticionesJson;
     private NormasAdapter normasAdapter;
@@ -54,7 +53,6 @@ public class NormasEmpresaFragment extends Fragment implements IOnBackPressed {
     }
 
     public void inicializaVariables(View view){
-        claseGlobal = ClaseGlobal.getInstance();
         recyclerNormas = view.findViewById(R.id.recyclerViewNormas);
     }
 

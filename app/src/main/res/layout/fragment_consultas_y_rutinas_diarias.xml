@@ -5,7 +5,7 @@
     android:id="@+id/layoutConsultasyRutinas"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".View.Home.Fragments.HomeFragments.Rutinas.ConsultasYRutinasDiariasFragment">
+    tools:context=".View.Home.Fragments.HomeFragments.RutinasAvisos.ConsultasYRutinasDiariasFragment">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/vertIzq"
@@ -39,21 +39,26 @@
     <EditText
         android:id="@+id/fechaActual"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="70dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:ems="10"
+        android:gravity="center"
         android:inputType="date"
+        android:enabled="false"
+        android:textColor="@color/md_theme_black"
+        android:autoSizeTextType="uniform"
         app:layout_constraintEnd_toStartOf="@+id/vertDer"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toEndOf="@+id/vertIzq"
         app:layout_constraintTop_toTopOf="@+id/guiaHorTop" />
 
     <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabLAyoutRutinas"
+        android:id="@+id/tabLayoutRutinas"
+        app:tabTextAppearance="@style/MineCustomTabText"
+        app:tabMode="scrollable"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:layout_marginTop="16dp"
         android:background="@color/md_theme_light_surfaceTint"
         app:layout_constraintEnd_toStartOf="@+id/vertDer"
@@ -64,7 +69,7 @@
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/tabVisitas"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/tabVisitas" />
 
@@ -93,25 +98,25 @@
             android:text="@string/tabConsultasMedicas" />
     </com.google.android.material.tabs.TabLayout>
 
-    <LinearLayout
-        android:id="@+id/linerLsyoutConsultas"
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollViewVertAvisos"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="8dp"
-        android:orientation="vertical"
+        android:fillViewport="true"
+        android:scrollbarStyle="outsideInset"
+        android:scrollbars="vertical"
         app:layout_constraintBottom_toTopOf="@+id/horBot"
         app:layout_constraintEnd_toStartOf="@+id/vertDer"
         app:layout_constraintStart_toStartOf="@+id/vertIzq"
-        app:layout_constraintTop_toBottomOf="@+id/tabLAyoutRutinas">
+        app:layout_constraintTop_toBottomOf="@+id/tabLayoutRutinas">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvRutinas"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintEnd_toStartOf="@+id/vertDer"
-            app:layout_constraintStart_toStartOf="@+id/vertIzq" />
-    </LinearLayout>
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+    </androidx.core.widget.NestedScrollView>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

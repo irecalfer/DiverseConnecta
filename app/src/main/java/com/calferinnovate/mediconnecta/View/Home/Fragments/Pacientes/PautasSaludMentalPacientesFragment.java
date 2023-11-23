@@ -1,4 +1,4 @@
-package com.calferinnovate.mediconnecta.View.Home.Fragments.Residentes;
+package com.calferinnovate.mediconnecta.View.Home.Fragments.Pacientes;
 
 import android.os.Bundle;
 
@@ -15,13 +15,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.calferinnovate.mediconnecta.Adaptadores.FamiliaresAdapter;
+import com.calferinnovate.mediconnecta.Adaptadores.PautasAdapter;
 import com.calferinnovate.mediconnecta.View.Home.Fragments.PacientesFragment;
 import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
-import com.calferinnovate.mediconnecta.Model.ContactoFamiliares;
 import com.calferinnovate.mediconnecta.View.IOnBackPressed;
 import com.calferinnovate.mediconnecta.Model.Pacientes;
+import com.calferinnovate.mediconnecta.Model.Pautas;
 import com.calferinnovate.mediconnecta.Model.PeticionesJson;
 import com.calferinnovate.mediconnecta.ViewModel.SharedPacientesViewModel;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelArgs;
@@ -29,32 +29,35 @@ import com.calferinnovate.mediconnecta.ViewModel.ViewModelFactory;
 
 import java.util.ArrayList;
 
-public class ContactoFamiliaresPacienteFragment extends Fragment implements IOnBackPressed {
-    private ClaseGlobal claseGlobal;
-    private SharedPacientesViewModel sharedPacientesViewModel;
+public class PautasSaludMentalPacientesFragment extends Fragment implements IOnBackPressed {
     private RecyclerView recyclerView;
     private ViewModelArgs viewModelArgs;
+    private SharedPacientesViewModel sharedPacientesViewModel;
     private PeticionesJson peticionesJson;
-    private ArrayList<ContactoFamiliares> listaContactoFamiliares;
-
+    private PautasAdapter pautasAdapter;
+    private ClaseGlobal claseGlobal;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_contacto_familiares_paciente, container, false);
-        asignarValoresAVariables(view);
-        recyclerView.setHasFixedSize(true);
+        View view =  inflater.inflate(R.layout.fragment_pautas_salud_mental_pacientes, container, false);
+
+        claseGlobal = ClaseGlobal.getInstance();
+
+
+        obtieneRecyclerView(view);
         inicializaViewModel();
+
 
         return view;
     }
 
-    public void asignarValoresAVariables(View view){
-        claseGlobal = ClaseGlobal.getInstance();
-        recyclerView = view.findViewById(R.id.recyclerViewFamiliares);
+    public void obtieneRecyclerView(View view){
+        // Obtener el Recycler
+        recyclerView = view.findViewById(R.id.recyclerViewPautasSaludMental);
+        recyclerView.setHasFixedSize(true);
     }
-
     public void inicializaViewModel(){
         //Creas un objeto ViewModelFactory y obtienes una instancia de ConsultasYRutinasDiariasViewModel utilizando este factory.
         //Luego, observas el LiveData del ViewModel para mantener actualizada la lista de programación en el RecyclerView.
@@ -78,40 +81,37 @@ public class ContactoFamiliaresPacienteFragment extends Fragment implements IOnB
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        observaPacienteYObtieneContactos();
 
-    }
-
-    public void observaPacienteYObtieneContactos(){
-        // Observación de LiveData: Has configurado la observación de un LiveData en el ViewModel utilizando el método observe(). Cuando los datos cambian en el LiveData,
-        // el adaptador se actualiza automáticamente para reflejar los cambios en el RecyclerView.
         sharedPacientesViewModel.getPaciente().observe(getViewLifecycleOwner(), new Observer<Pacientes>() {
             @Override
             public void onChanged(Pacientes pacientes) {
-                Pacientes nuevoPaciente = pacientes;
-                obtieneListaFamiliares(nuevoPaciente);
+                obtienePautasPaciente(pacientes);
             }
         });
     }
 
-    public void obtieneListaFamiliares(Pacientes paciente){
-        sharedPacientesViewModel.getListaMutableFamiliares(paciente).observe(getViewLifecycleOwner(), new Observer<ArrayList<ContactoFamiliares>>() {
+    public void obtienePautasPaciente(Pacientes pacientes){
+        sharedPacientesViewModel.getListaMutablePautas(pacientes).observe(getViewLifecycleOwner(), new Observer<ArrayList<Pautas>>() {
             @Override
-            public void onChanged(ArrayList<ContactoFamiliares> contactoFamiliares) {
-                // added data from arraylist to adapter class.
-                FamiliaresAdapter adapter = new FamiliaresAdapter(contactoFamiliares, getContext());
+            public void onChanged(ArrayList<Pautas> pautas) {
+                boolean mostrarEditTextNoPautas = determinaSiHayPautas(pautas);
+                pautasAdapter = new PautasAdapter(pautas, getContext(), mostrarEditTextNoPautas);
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
                 // at last set adapter to recycler view.
                 recyclerView.setLayoutManager(linearLayoutManager);
-                recyclerView.setAdapter(adapter);
+                recyclerView.setAdapter(pautasAdapter);
                 recyclerView.addItemDecoration(new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL));
+                pautasAdapter.notifyDataSetChanged();
             }
         });
-
-
     }
-
-
+    private boolean determinaSiHayPautas(ArrayList<Pautas> pautas){
+        if(pautas.isEmpty()){
+            return true;
+        }else{
+            return false;
+        }
+    }
     @Override
     public boolean onBackPressed() {
         requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PacientesFragment()).commit();

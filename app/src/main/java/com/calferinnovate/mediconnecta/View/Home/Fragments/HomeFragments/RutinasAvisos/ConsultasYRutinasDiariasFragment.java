@@ -1,4 +1,4 @@
-package com.calferinnovate.mediconnecta.View.Home.Fragments.HomeFragments.Rutinas;
+package com.calferinnovate.mediconnecta.View.Home.Fragments.HomeFragments.RutinasAvisos;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,7 +17,6 @@ import com.calferinnovate.mediconnecta.Adaptadores.RutinasAdapter;
 import com.calferinnovate.mediconnecta.View.Home.Fragments.HomeFragment;
 import com.calferinnovate.mediconnecta.View.IOnBackPressed;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
-import com.calferinnovate.mediconnecta.Model.Fechas;
 import com.calferinnovate.mediconnecta.Model.Pacientes;
 import com.calferinnovate.mediconnecta.Model.PacientesAgrupadosRutinas;
 import com.calferinnovate.mediconnecta.Model.Unidades;
@@ -55,7 +54,7 @@ public class ConsultasYRutinasDiariasFragment extends Fragment implements IOnBac
         View vista = inflater.inflate(R.layout.fragment_consultas_y_rutinas_diarias, container, false);
 
         inicializaVariables(vista);
-        //setearFecha();
+        getActivity().setTitle("Consultas y rutinas");
         inicializaViewModel();
         obtieneFechaYFormatea();
 
@@ -68,7 +67,7 @@ public class ConsultasYRutinasDiariasFragment extends Fragment implements IOnBac
         listaPacientes = claseGlobal.getListaPacientes();
 
         rvConsultas = view.findViewById(R.id.rvRutinas);
-        tabLayout = view.findViewById(R.id.tabLAyoutRutinas);
+        tabLayout = view.findViewById(R.id.tabLayoutRutinas);
         fechaRutina = view.findViewById(R.id.fechaActual);
     }
 

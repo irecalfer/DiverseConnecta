@@ -40,6 +40,9 @@
         android:id="@+id/calendarView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:dateTextAppearance="@style/dateText"
+        android:weekDayTextAppearance="@style/weekText"
+        android:theme="@style/monthText"
         app:layout_constraintEnd_toStartOf="@+id/guiaVertDer"
         app:layout_constraintStart_toStartOf="@+id/guiaVertIzq"
         app:layout_constraintTop_toTopOf="@+id/guiaHorTop" />
@@ -47,8 +50,9 @@
     <Button
         android:id="@+id/abrirAvisos"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="55dp"
         android:layout_marginTop="32dp"
+        android:autoSizeTextType="uniform"
         android:text="@string/avisos"
         app:layout_constraintEnd_toStartOf="@+id/guiaVertDer"
         app:layout_constraintStart_toStartOf="@+id/guiaVertIzq"
@@ -58,8 +62,9 @@
     <Button
         android:id="@+id/abrirRutinas"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="55dp"
         android:layout_marginTop="2dp"
+        android:autoSizeTextType="uniform"
         android:text="@string/rutinas"
         app:layout_constraintEnd_toStartOf="@+id/guiaVertDer"
         app:layout_constraintStart_toStartOf="@+id/guiaVertIzq"
@@ -67,7 +72,7 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentContainerViewLIstView"
-        android:name="com.calferinnovate.mediconnecta.View.Home.Fragments.HomeFragments.Rutinas.AvisosListViewFragment"
+        android:name="com.calferinnovate.mediconnecta.View.Home.Fragments.HomeFragments.RutinasAvisos.AvisosListViewFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@id/guiaHorBot"

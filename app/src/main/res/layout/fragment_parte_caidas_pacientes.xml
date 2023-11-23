@@ -5,7 +5,7 @@
     android:id="@+id/frameLayout10"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".View.Home.Fragments.Residentes.ParteCaidasPacientesFragment">
+    tools:context=".View.Home.Fragments.Pacientes.ParteCaidasPacientesFragment">
 
 
     <androidx.constraintlayout.widget.Guideline

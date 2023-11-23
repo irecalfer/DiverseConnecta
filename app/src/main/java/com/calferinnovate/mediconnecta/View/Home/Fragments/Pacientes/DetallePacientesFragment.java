@@ -1,4 +1,4 @@
-package com.calferinnovate.mediconnecta.View.Home.Fragments.Residentes;
+package com.calferinnovate.mediconnecta.View.Home.Fragments.Pacientes;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -36,7 +36,7 @@ public class DetallePacientesFragment extends Fragment implements IOnBackPressed
         asignarValoresAVariables(view);
         sharedPacientesViewModel = new ViewModelProvider(requireActivity()).get(SharedPacientesViewModel.class);
         listenerTabLayoutDetalle();
-
+        getActivity().setTitle("Detalles Paciente");
 
         return view;
     }

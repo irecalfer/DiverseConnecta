@@ -100,7 +100,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.home_item_id){
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
-        }else if(item.getItemId() == R.id.residentes_item_id){
+        }else if(item.getItemId() == R.id.pacientes_item_id){
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PacientesFragment()).addToBackStack(null).commit();
         }else if(item.getItemId() == R.id.parte_general_item_id){
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ParteGeneralFragment()).addToBackStack(null).commit();

@@ -25,6 +25,7 @@ import com.calferinnovate.mediconnecta.Model.PeticionesJson;
 import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.ViewModel.ParteGeneralViewModel;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelArgs;
+import com.calferinnovate.mediconnecta.ViewModel.ViewModelArgsJson;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelFactory;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
@@ -36,8 +37,7 @@ import java.util.Date;
 public class ParteGeneralFragment extends Fragment implements IOnBackPressed {
     private EditText fechasSeleccionadas;
     private Button btnFechas;
-    private ClaseGlobal claseGlobal;
-    private ViewModelArgs viewModelArgs;
+    private ViewModelArgsJson viewModelArgs;
     private ParteGeneralViewModel parteGeneralViewModel;
     private PeticionesJson peticionesJson;
     private String fechaInicio, fechaFin;
@@ -52,7 +52,6 @@ public class ParteGeneralFragment extends Fragment implements IOnBackPressed {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_parte_general, container, false);
-        claseGlobal = ClaseGlobal.getInstance();
         inicializaVariables(view);
         inicializaViewModel();
 
@@ -70,17 +69,7 @@ public class ParteGeneralFragment extends Fragment implements IOnBackPressed {
     public void inicializaViewModel(){
         //Creas un objeto ViewModelFactory y obtienes una instancia de ConsultasYRutinasDiariasViewModel utilizando este factory.
         //Luego, observas el LiveData del ViewModel para mantener actualizada la lista de programación en el RecyclerView.
-        viewModelArgs = new ViewModelArgs() {
-            @Override
-            public PeticionesJson getPeticionesJson() {
-                return peticionesJson = new PeticionesJson(requireContext());
-            }
-
-            @Override
-            public ClaseGlobal getClaseGlobal() {
-                return claseGlobal;
-            }
-        };
+        viewModelArgs = () -> peticionesJson = new PeticionesJson(requireContext());
 
         ViewModelFactory<ParteGeneralViewModel> factory = new ViewModelFactory<>(viewModelArgs);
         parteGeneralViewModel = new ViewModelProvider(requireActivity(), factory).get(ParteGeneralViewModel.class);

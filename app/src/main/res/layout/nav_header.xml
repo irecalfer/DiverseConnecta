@@ -2,7 +2,7 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="290dp"
+    android:layout_height="320dp"
     android:background="@color/md_theme_light_surfaceTint"
     android:gravity="bottom"
     android:orientation="vertical"
@@ -18,20 +18,24 @@
 
     <TextView
         android:id="@+id/nombreEmpleadoND"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:paddingTop="8dp"
+        android:autoSizeMaxTextSize="24sp"
+        android:autoSizeTextType="uniform"
         android:text="Android Knowledge"
         android:textColor="@color/md_theme_white"
         android:textStyle="bold" />
 
     <TextView
         android:id="@+id/unidadND"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
         android:layout_marginBottom="16dp"
+        android:autoSizeMaxTextSize="24sp"
+        android:autoSizeTextType="uniform"
         android:text="contact@androidknowledge.com"
-        android:textColor="@color/md_theme_white"
-        android:textSize="14sp" />
+        android:textColor="@color/md_theme_white" />
 
 
 </LinearLayout>

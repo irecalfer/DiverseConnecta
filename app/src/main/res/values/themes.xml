@@ -37,4 +37,50 @@
     <style name="Theme.MediConnecta.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.MediConnecta.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="TextLabel" parent="TextAppearance.Design.Hint">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextLabelPacientes" parent="TextAppearance.Design.Hint">
+        <item name="android:autoSizeTextType">uniform</item>
+        <item name="android:autoSizeMaxTextSize">24sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextLabelInicio" parent="TextAppearance.Design.Hint">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="DrawerTextStyle" >
+        <item name="android:textColor">@color/md_theme_light_surfaceTint</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="subHeader" >
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="dateText" >
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/md_theme_black</item>
+    </style>
+
+    <style name="weekText" >
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/md_theme_black</item>
+    </style>
+
+    <style name="monthText" parent="Theme.AppCompat" >
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColorPrimary">@color/md_theme_black</item>
+    </style>
+
+    <style name="MineCustomTabText" parent="TextAppearance.Design.Tab">
+        <item name="android:autoSizeTextType">uniform</item>
+    </style>
+
+
 </resources>

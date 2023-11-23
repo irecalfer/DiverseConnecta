@@ -70,7 +70,7 @@
         android:fillViewport="true"
         android:scrollbarStyle="outsideInset"
         android:scrollbars="vertical"
-        app:layout_constraintBottom_toTopOf="@id/scrollViewVertCaidas"
+        app:layout_constraintBottom_toTopOf="@id/scrollViewVertAvisos"
         app:layout_constraintEnd_toStartOf="@id/guidelineVertDer"
         app:layout_constraintStart_toEndOf="@id/guidelineVertIzq"
         app:layout_constraintTop_toBottomOf="@id/buttonFechas"
@@ -95,10 +95,8 @@
     </androidx.core.widget.NestedScrollView>
 
 
-
-
     <androidx.core.widget.NestedScrollView
-        android:id="@+id/scrollViewVertCaidas"
+        android:id="@+id/scrollViewVertAvisos"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_weight="1"

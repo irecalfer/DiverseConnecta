@@ -1,4 +1,4 @@
-package com.calferinnovate.mediconnecta.View.Home.Fragments.Residentes;
+package com.calferinnovate.mediconnecta.View.Home.Fragments.Pacientes;
 
 import android.os.Bundle;
 
