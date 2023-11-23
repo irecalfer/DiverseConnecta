@@ -43,12 +43,6 @@
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="TextLabelPacientes" parent="TextAppearance.Design.Hint">
-        <item name="android:autoSizeTextType">uniform</item>
-        <item name="android:autoSizeMaxTextSize">24sp</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
     <style name="TextLabelInicio" parent="TextAppearance.Design.Hint">
         <item name="android:textSize">20sp</item>
         <item name="android:textStyle">bold</item>

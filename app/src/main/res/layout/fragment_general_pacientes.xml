@@ -1,49 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/frameLayout5"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".View.Home.Fragments.Pacientes.GeneralPacientesFragment">
-<androidx.constraintlayout.widget.Guideline
-android:id="@+id/guidelineVertIzq"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:orientation="vertical"
-app:layout_constraintGuide_begin="32dp" />
 
-<androidx.constraintlayout.widget.Guideline
-android:id="@+id/guidelineVertDer"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:orientation="vertical"
-app:layout_constraintGuide_end="32dp" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineVertIzq"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="32dp" />
 
-<androidx.constraintlayout.widget.Guideline
-android:id="@+id/guidelineHorTop"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:orientation="horizontal"
-app:layout_constraintGuide_begin="32dp" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineVertDer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="32dp" />
 
-<androidx.constraintlayout.widget.Guideline
-android:id="@+id/guidelineHorBot"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:orientation="horizontal"
-app:layout_constraintGuide_end="32dp" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineHorTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="32dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineHorBot"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_end="32dp" />
 
     <ImageView
         android:id="@+id/fotoPacienteDetalle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="8dp"
         android:adjustViewBounds="true"
         android:contentDescription="@string/content_description_foto_paciente_detalle"
-        android:maxWidth="300dp"
-        android:maxHeight="300dp"
+        android:maxWidth="400dp"
+        android:maxHeight="400dp"
         android:scaleType="fitCenter"
         app:layout_constraintEnd_toStartOf="@+id/guidelineVertDer"
         app:layout_constraintStart_toEndOf="@+id/guidelineVertIzq"
@@ -62,8 +62,7 @@ app:layout_constraintGuide_end="32dp" />
         app:layout_constraintBottom_toTopOf="@id/guidelineHorBot"
         app:layout_constraintEnd_toStartOf="@id/guidelineVertDer"
         app:layout_constraintStart_toEndOf="@id/guidelineVertIzq"
-        app:layout_constraintTop_toBottomOf="@id/fotoPacienteDetalle"
-        >
+        app:layout_constraintTop_toBottomOf="@id/fotoPacienteDetalle">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -74,18 +73,18 @@ app:layout_constraintGuide_end="32dp" />
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.50"/>
+                app:layout_constraintGuide_percent="0.50" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/labelNombrePaciente"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
                 android:autoSizeMaxTextSize="100sp"
                 android:autoSizeMinTextSize="12sp"
                 android:hint="@string/nombrePacienteLabel"
                 android:textColorHint="@color/md_theme_light_surfaceTint"
-                app:autoSizeTextType="uniform"
                 app:hintTextAppearance="@style/TextLabel"
                 app:layout_constraintEnd_toStartOf="@id/guiaCentro"
                 app:layout_constraintStart_toStartOf="parent"
@@ -98,19 +97,18 @@ app:layout_constraintGuide_end="32dp" />
                     android:enabled="false"
                     android:imeOptions="actionNext"
                     android:textColor="@color/md_theme_black"
-                    android:textColorHint="@color/md_theme_black"
-                    android:textSize="20sp"
-                    app:autoSizeTextType="uniform" />
+                    android:textSize="24sp" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/labelApellidosPaciente"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:hint="@string/apellidoPacienteLabel"
                 android:textColorHint="@color/md_theme_light_surfaceTint"
-                app:hintTextAppearance="@style/TextLabelPacientes"
+                app:hintTextAppearance="@style/TextLabel"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/guiaCentro"
                 app:layout_constraintTop_toTopOf="parent">
@@ -122,8 +120,7 @@ app:layout_constraintGuide_end="32dp" />
                     android:enabled="false"
                     android:imeOptions="actionNext"
                     android:textColor="@color/md_theme_black"
-                    android:textColorHint="@color/md_theme_black"
-                    android:textSize="20sp"
+                    android:textSize="24sp"
                     app:autoSizeTextType="uniform" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -132,8 +129,7 @@ app:layout_constraintGuide_end="32dp" />
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:autoSizeMaxTextSize="100sp"
-                android:autoSizeMinTextSize="12sp"
+                android:layout_marginEnd="8dp"
                 android:hint="@string/sexoPacienteLabel"
                 android:textColorHint="@color/md_theme_light_surfaceTint"
                 app:autoSizeTextType="uniform"
@@ -149,16 +145,16 @@ app:layout_constraintGuide_end="32dp" />
                     android:enabled="false"
                     android:imeOptions="actionNext"
                     android:textColor="@color/md_theme_black"
-                    android:textColorHint="@color/md_theme_black" />
+                    android:textSize="24sp"
+                    app:autoSizeTextType="uniform" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/labelDNIPaciente"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:autoSizeMaxTextSize="100sp"
-                android:autoSizeMinTextSize="12sp"
                 android:hint="@string/dniPacienteLabel"
                 android:textColorHint="@color/md_theme_light_surfaceTint"
                 app:autoSizeTextType="uniform"
@@ -174,7 +170,8 @@ app:layout_constraintGuide_end="32dp" />
                     android:enabled="false"
                     android:imeOptions="actionNext"
                     android:textColor="@color/md_theme_black"
-                    android:textColorHint="@color/md_theme_black" />
+                    android:textSize="24sp"
+                    app:autoSizeTextType="uniform" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -182,8 +179,7 @@ app:layout_constraintGuide_end="32dp" />
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:autoSizeMaxTextSize="100sp"
-                android:autoSizeMinTextSize="12sp"
+                android:layout_marginEnd="8dp"
                 android:hint="@string/lugarNacimientoPacienteLabel"
                 android:textColorHint="@color/md_theme_light_surfaceTint"
                 app:autoSizeTextType="uniform"
@@ -199,16 +195,16 @@ app:layout_constraintGuide_end="32dp" />
                     android:enabled="false"
                     android:imeOptions="actionNext"
                     android:textColor="@color/md_theme_black"
-                    android:textColorHint="@color/md_theme_black" />
+                    android:textSize="24sp"
+                    app:autoSizeTextType="uniform" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/labelSeguroPaciente"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:autoSizeMaxTextSize="100sp"
-                android:autoSizeMinTextSize="12sp"
                 android:hint="@string/seguroPacienteLabel"
                 android:textColorHint="@color/md_theme_light_surfaceTint"
                 app:autoSizeTextType="uniform"
@@ -224,7 +220,8 @@ app:layout_constraintGuide_end="32dp" />
                     android:enabled="false"
                     android:imeOptions="actionNext"
                     android:textColor="@color/md_theme_black"
-                    android:textColorHint="@color/md_theme_black" />
+                    android:textSize="24sp"
+                    app:autoSizeTextType="uniform" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -232,8 +229,7 @@ app:layout_constraintGuide_end="32dp" />
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:autoSizeMaxTextSize="100sp"
-                android:autoSizeMinTextSize="12sp"
+                android:layout_marginEnd="8dp"
                 android:hint="@string/edadPacienteLabel"
                 android:textColorHint="@color/md_theme_light_surfaceTint"
                 app:autoSizeTextType="uniform"
@@ -249,16 +245,16 @@ app:layout_constraintGuide_end="32dp" />
                     android:enabled="false"
                     android:imeOptions="actionNext"
                     android:textColor="@color/md_theme_black"
-                    android:textColorHint="@color/md_theme_black" />
+                    android:textSize="24sp"
+                    app:autoSizeTextType="uniform" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/labelFechaNacimientoPaciente"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:autoSizeMaxTextSize="100sp"
-                android:autoSizeMinTextSize="12sp"
                 android:hint="@string/FechaNacimientoPacienteLabel"
                 android:textColorHint="@color/md_theme_light_surfaceTint"
                 app:autoSizeTextType="uniform"
@@ -274,7 +270,8 @@ app:layout_constraintGuide_end="32dp" />
                     android:enabled="false"
                     android:imeOptions="actionNext"
                     android:textColor="@color/md_theme_black"
-                    android:textColorHint="@color/md_theme_black" />
+                    android:textSize="24sp"
+                    app:autoSizeTextType="uniform" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -282,8 +279,7 @@ app:layout_constraintGuide_end="32dp" />
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:autoSizeMaxTextSize="100sp"
-                android:autoSizeMinTextSize="12sp"
+                android:layout_marginEnd="8dp"
                 android:hint="@string/estadoCivilPacienteLabel"
                 android:textColorHint="@color/md_theme_light_surfaceTint"
                 app:autoSizeTextType="uniform"
@@ -299,16 +295,16 @@ app:layout_constraintGuide_end="32dp" />
                     android:enabled="false"
                     android:imeOptions="actionNext"
                     android:textColor="@color/md_theme_black"
-                    android:textColorHint="@color/md_theme_black" />
+                    android:textSize="24sp"
+                    app:autoSizeTextType="uniform" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/labelFechaIngresoPaciente"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:autoSizeMaxTextSize="100sp"
-                android:autoSizeMinTextSize="12sp"
                 android:hint="@string/FechaIngresoPacienteLabel"
                 android:textColorHint="@color/md_theme_light_surfaceTint"
                 app:autoSizeTextType="uniform"
@@ -324,7 +320,8 @@ app:layout_constraintGuide_end="32dp" />
                     android:enabled="false"
                     android:imeOptions="actionNext"
                     android:textColor="@color/md_theme_black"
-                    android:textColorHint="@color/md_theme_black" />
+                    android:textSize="24sp"
+                    app:autoSizeTextType="uniform" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -332,8 +329,7 @@ app:layout_constraintGuide_end="32dp" />
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:autoSizeMaxTextSize="100sp"
-                android:autoSizeMinTextSize="12sp"
+                android:layout_marginEnd="8dp"
                 android:hint="@string/unidadPacienteLabel"
                 android:textColorHint="@color/md_theme_light_surfaceTint"
                 app:autoSizeTextType="uniform"
@@ -349,16 +345,16 @@ app:layout_constraintGuide_end="32dp" />
                     android:enabled="false"
                     android:imeOptions="actionNext"
                     android:textColor="@color/md_theme_black"
-                    android:textColorHint="@color/md_theme_black" />
+                    android:textSize="24sp"
+                    app:autoSizeTextType="uniform" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/labelHabitacionPaciente"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:autoSizeMaxTextSize="100sp"
-                android:autoSizeMinTextSize="12sp"
                 android:hint="@string/habitacionPacienteLabel"
                 android:textColorHint="@color/md_theme_light_surfaceTint"
                 app:autoSizeTextType="uniform"
@@ -374,7 +370,8 @@ app:layout_constraintGuide_end="32dp" />
                     android:enabled="false"
                     android:imeOptions="actionNext"
                     android:textColor="@color/md_theme_black"
-                    android:textColorHint="@color/md_theme_black" />
+                    android:textSize="24sp"
+                    app:autoSizeTextType="uniform" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -382,8 +379,7 @@ app:layout_constraintGuide_end="32dp" />
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:autoSizeMaxTextSize="100sp"
-                android:autoSizeMinTextSize="12sp"
+                android:layout_marginEnd="8dp"
                 android:hint="@string/cipSnsPacienteLabel"
                 android:textColorHint="@color/md_theme_light_surfaceTint"
                 app:autoSizeTextType="uniform"
@@ -399,23 +395,23 @@ app:layout_constraintGuide_end="32dp" />
                     android:enabled="false"
                     android:imeOptions="actionNext"
                     android:textColor="@color/md_theme_black"
-                    android:textColorHint="@color/md_theme_black" />
+                    android:textSize="24sp"
+                    app:autoSizeTextType="uniform" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/labelNumSeguridadSocialPaciente"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:autoSizeMaxTextSize="100sp"
-                android:autoSizeMinTextSize="12sp"
                 android:hint="@string/numSeguridadSocialPacienteLabel"
                 android:textColorHint="@color/md_theme_light_surfaceTint"
                 app:autoSizeTextType="uniform"
                 app:hintTextAppearance="@style/TextLabel"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/guiaCentro"
-                app:layout_constraintTop_toBottomOf="@id/labelHabitacionPaciente">
+                app:layout_constraintTop_toBottomOf="@id/labelUnidadPaciente">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/numSeguridadSocialPaciente"
@@ -424,20 +420,11 @@ app:layout_constraintGuide_end="32dp" />
                     android:enabled="false"
                     android:imeOptions="actionNext"
                     android:textColor="@color/md_theme_black"
-                    android:textColorHint="@color/md_theme_black" />
+                    android:textSize="24sp"
+                    app:autoSizeTextType="uniform" />
             </com.google.android.material.textfield.TextInputLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
-
-    <!-- Separacion -->
-
-    <!-- Separacion -->
-
-    <!-- Separacion -->
-
-    <!-- Separacion -->
-
-    <!-- Separacion -->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
