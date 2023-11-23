@@ -43,6 +43,7 @@ public class ContactoFamiliaresPacienteFragment extends Fragment implements IOnB
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_contacto_familiares_paciente, container, false);
+        getActivity().setTitle("Contacto Familiares");
         asignarValoresAVariables(view);
         recyclerView.setHasFixedSize(true);
         inicializaViewModel();

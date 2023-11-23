@@ -28,12 +28,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:autoSizeMaxTextSize="100sp"
-        android:autoSizeMinTextSize="12sp"
         android:hint="@string/labelNombreFamiliar"
-        android:textColorHint="@color/md_theme_black"
+        android:textColorHint="@color/md_theme_light_surfaceTint"
         app:autoSizeTextType="uniform"
-        app:hintTextColor="@color/md_theme_black"
+        app:hintTextAppearance="@style/TextLabel"
         app:layout_constraintEnd_toStartOf="@id/labelApellidosFamiliar"
         app:layout_constraintStart_toEndOf="@+id/vertIzq"
         app:layout_constraintTop_toTopOf="parent">
@@ -45,7 +43,8 @@
             android:enabled="false"
             android:imeOptions="actionNext"
             android:textColor="@color/md_theme_black"
-            android:textColorHint="@color/md_theme_black" />
+            android:textSize="24sp"
+            app:autoSizeTextType="uniform" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -54,12 +53,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:autoSizeMaxTextSize="100sp"
-        android:autoSizeMinTextSize="12sp"
+
         android:hint="@string/labelApellidosFamiliar"
-        android:textColorHint="@color/md_theme_black"
+        android:textColorHint="@color/md_theme_light_surfaceTint"
         app:autoSizeTextType="uniform"
-        app:hintTextColor="@color/md_theme_black"
+        app:hintTextAppearance="@style/TextLabel"
         app:layout_constraintEnd_toStartOf="@id/vertDer"
         app:layout_constraintStart_toEndOf="@+id/labelnombreFamiliar"
         app:layout_constraintTop_toTopOf="parent">
@@ -71,7 +69,8 @@
             android:enabled="false"
             android:imeOptions="actionNext"
             android:textColor="@color/md_theme_black"
-            android:textColorHint="@color/md_theme_black" />
+            android:textSize="24sp"
+            app:autoSizeTextType="uniform"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <!-- Separacion -->
@@ -82,12 +81,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:autoSizeMaxTextSize="100sp"
-        android:autoSizeMinTextSize="12sp"
         android:hint="@string/labelTelefono1"
-        android:textColorHint="@color/md_theme_black"
+        android:textColorHint="@color/md_theme_light_surfaceTint"
         app:autoSizeTextType="uniform"
-        app:hintTextColor="@color/md_theme_black"
+        app:hintTextAppearance="@style/TextLabel"
         app:layout_constraintTop_toBottomOf="@id/labelnombreFamiliar"
         app:layout_constraintEnd_toStartOf="@id/labelTelefono2"
         app:layout_constraintStart_toEndOf="@+id/vertIzq">
@@ -99,7 +96,8 @@
             android:enabled="false"
             android:imeOptions="actionNext"
             android:textColor="@color/md_theme_black"
-            android:textColorHint="@color/md_theme_black" />
+            android:textSize="24sp"
+            app:autoSizeTextType="uniform"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -108,12 +106,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:autoSizeMaxTextSize="100sp"
-        android:autoSizeMinTextSize="12sp"
         android:hint="@string/labelTelefono2"
-        android:textColorHint="@color/md_theme_black"
+        android:textColorHint="@color/md_theme_light_surfaceTint"
         app:autoSizeTextType="uniform"
-        app:hintTextColor="@color/md_theme_black"
+        app:hintTextAppearance="@style/TextLabel"
         app:layout_constraintTop_toBottomOf="@id/labelApellidosFamiliar"
         app:layout_constraintEnd_toStartOf="@id/vertDer"
         app:layout_constraintStart_toEndOf="@+id/labelTelefono1">
@@ -125,7 +121,8 @@
             android:enabled="false"
             android:imeOptions="actionNext"
             android:textColor="@color/md_theme_black"
-            android:textColorHint="@color/md_theme_black" />
+            android:textSize="24sp"
+            app:autoSizeTextType="uniform"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <!-- Separacion -->
@@ -136,12 +133,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:autoSizeMaxTextSize="100sp"
-        android:autoSizeMinTextSize="12sp"
         android:hint="@string/labelDniFamiliar"
-        android:textColorHint="@color/md_theme_black"
+        android:textColorHint="@color/md_theme_light_surfaceTint"
         app:autoSizeTextType="uniform"
-        app:hintTextColor="@color/md_theme_black"
+        app:hintTextAppearance="@style/TextLabel"
         app:layout_constraintTop_toBottomOf="@id/labelTelefono1"
         app:layout_constraintEnd_toStartOf="@id/vertDer"
         app:layout_constraintStart_toEndOf="@+id/vertIzq">
@@ -153,7 +148,8 @@
             android:enabled="false"
             android:imeOptions="actionNext"
             android:textColor="@color/md_theme_black"
-            android:textColorHint="@color/md_theme_black" />
+            android:textSize="24sp"
+            app:autoSizeTextType="uniform" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <View
