@@ -54,7 +54,7 @@ public class ParteGeneralFragment extends Fragment implements IOnBackPressed {
         View view = inflater.inflate(R.layout.fragment_parte_general, container, false);
         inicializaVariables(view);
         inicializaViewModel();
-
+        getActivity().setTitle("Parte general");
         return view;
     }
 
