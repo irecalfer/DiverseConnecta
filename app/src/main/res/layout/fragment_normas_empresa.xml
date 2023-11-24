@@ -1,15 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".View.Home.Fragments.NormasEmpresaFragment">
 
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewNormas"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#fafafa" />
+        android:layout_marginTop="8dp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewNormas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#fafafa" />
+    </ScrollView>
 
 </FrameLayout>

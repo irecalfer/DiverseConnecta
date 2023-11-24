@@ -43,7 +43,7 @@ public class NormasEmpresaFragment extends Fragment implements IOnBackPressed {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_normas_empresa, container, false);
         inicializaVariables(view);
-
+        getActivity().setTitle("Normas de la empresa");
         inicializaViewModel();
 
         //Hacemos la petición para obtener las normas

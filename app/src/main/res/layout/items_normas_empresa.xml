@@ -19,11 +19,12 @@
     <TextView
         android:id="@+id/nombreNorma"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
+        android:background="@color/seed"
+        android:gravity="center"
         android:textColor="#000"
         android:textSize="22sp"
         android:textStyle="bold"
-        android:gravity="center"
         tools:text="@string/nombreNorma" />
 
     <LinearLayout
@@ -36,7 +37,9 @@
         <TextView
             android:id="@+id/contenidoNorma"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
+            android:autoSizeTextType="uniform"
+            android:textColor="@color/md_theme_black"
             android:textSize="18sp"
             tools:text="@string/descripcionNorma" />
 
