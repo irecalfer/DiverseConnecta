@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="280dp"
+    android:layout_height="320dp"
     android:layout_gravity="center"
     android:layout_margin="5dp"
     app:cardCornerRadius="5dp"
@@ -27,18 +27,38 @@
             android:id="@+id/idNombreCompleto"
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:text="@string/app_name"
             android:layout_marginTop="8dp"
-            android:textAlignment="center"
-            android:autoSizeTextType="uniform"/>
+            android:layout_weight="1"
+            android:autoSizeTextType="uniform"
+            android:text="@string/app_name"
+            android:textAlignment="center" />
+
+        <TextView
+            android:id="@+id/idApellidosCompletos"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:autoSizeTextType="uniform"
+            android:text="@string/app_name"
+            android:textAlignment="center" />
+
+
+        <View
+            android:id="@+id/divider3"
+            android:layout_marginTop="3dp"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="?android:attr/listDivider" />
 
         <TextView
             android:id="@+id/idHabitacion"
             android:layout_width="match_parent"
             android:layout_height="30dp"
+            android:layout_marginTop="8dp"
+            android:layout_weight="1"
+            android:autoSizeTextType="uniform"
             android:text="@string/app_name"
-            android:textAlignment="center"
-            android:autoSizeTextType="uniform"/>
+            android:textAlignment="center" />
 
 
     </LinearLayout>

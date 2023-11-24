@@ -57,7 +57,8 @@ public class PacientesAdapter extends RecyclerView.Adapter<PacientesAdapter.Paci
         //Seteando nombre
         //holder.fotoPacienteImageView.setImage
         Glide.with(mContext).load(pacientes.getFoto()).circleCrop().into(holder.fotoPacienteImageView);
-        holder.nombreCompletoTextView.setText(pacientes.getNombre()+" "+pacientes.getApellidos());
+        holder.nombreCompletoTextView.setText(pacientes.getNombre());
+        holder.apellidos.setText(pacientes.getApellidos());
         holder.habitacionTextView.setText("Habitación:"+" "+pacientes.getFkNumHabitacion());
 
     }
@@ -87,6 +88,7 @@ public class PacientesAdapter extends RecyclerView.Adapter<PacientesAdapter.Paci
         private final ImageView fotoPacienteImageView;
         private final TextView nombreCompletoTextView;
         private final TextView habitacionTextView;
+        private final TextView apellidos;
 
 
         public PacientesViewHolder(@NonNull View itemView) {
@@ -94,6 +96,7 @@ public class PacientesAdapter extends RecyclerView.Adapter<PacientesAdapter.Paci
             fotoPacienteImageView = itemView.findViewById(R.id.idResidenteFoto);
             nombreCompletoTextView = itemView.findViewById(R.id.idNombreCompleto);
             habitacionTextView = itemView.findViewById(R.id.idHabitacion);
+            apellidos = itemView.findViewById(R.id.idApellidosCompletos);
 
             //Esto propaga el evento hacia afuera, así podemos capturarlo en el punto que queramos de
             //nuestra aplicación
