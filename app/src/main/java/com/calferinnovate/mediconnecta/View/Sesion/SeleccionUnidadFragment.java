@@ -202,8 +202,9 @@ public void listenerButtonAcceso(){
                 public void onChanged(Boolean obtenidos) {
                     if(obtenidos){
                         Intent intent = new Intent(getActivity(), HomeActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK) ;
                         startActivity(intent);
+
                     }else{
                         Toast.makeText(getActivity(), "Error al obtener datos", Toast.LENGTH_SHORT).show();
                     }

@@ -1,5 +1,7 @@
 package com.calferinnovate.mediconnecta.View.Home;
 
+
+
 import androidx.activity.OnBackPressedCallback;
 import androidx.activity.OnBackPressedDispatcherOwner;
 import androidx.annotation.NonNull;
@@ -13,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,6 +32,7 @@ import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
 import com.calferinnovate.mediconnecta.Model.Empleado;
 import com.calferinnovate.mediconnecta.View.IOnBackPressed;
 import com.calferinnovate.mediconnecta.Model.Unidades;
+import com.calferinnovate.mediconnecta.View.Sesion.MainActivity;
 import com.google.android.material.navigation.NavigationView;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, OnBackPressedDispatcherOwner {
@@ -179,10 +183,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 //Cerramos el dialog y salimos
                 dialog.dismiss();
                 //finishAndRemoveTask();
-                //finishAffinity();
+                Intent intent = new Intent(HomeActivity.this, MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                finish();
                 //finishAndRemoveTask();
-                int pid = android.os.Process.myPid();
-                android.os.Process.killProcess(pid);
             }
         });
 
@@ -219,8 +224,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             public void onClick(View v) {
                 //Cerramos el dialog y salimos
                 dialog.dismiss();
-                finishAffinity();
-                //finish();
+                finish();
+                // Navegamos a MainActivity
+                //Intent intent = new Intent(HomeActivity.this, HomeActivity.class);
+                //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                //startActivity(intent);
             }
         });
 
