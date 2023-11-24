@@ -50,7 +50,7 @@ public class ClinicaPacientesFragment extends Fragment implements IOnBackPressed
         View view = inflater.inflate(R.layout.fragment_clinica_pacientes, container, false);
         asignarValoresAVariables(view);
         inicializaViewModel();
-
+        getActivity().setTitle("Datos Clínicos");
         return view;
     }
 

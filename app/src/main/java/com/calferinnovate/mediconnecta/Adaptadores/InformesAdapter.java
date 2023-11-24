@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -53,13 +54,13 @@ public class InformesAdapter extends ArrayAdapter<Informes> {
             TextView textViewResponsable = convertView.findViewById(R.id.tvRellenaResponsable);
             TextView textViewServicioUnidad = convertView.findViewById(R.id.tvRellenaServicioUnidad);
             TextView textViewServicioSalud = convertView.findViewById(R.id.tvRellenaServicioSalud);
-            Button buttonPDF = convertView.findViewById(R.id.buttonPDF);
+            ImageButton buttonPDF = convertView.findViewById(R.id.buttonPDF);
 
             // Configura los valores de las vistas de texto con los datos del informe
             textViewTipoInforme.setText(String.valueOf(informe.getTipoInforme()));
             textViewFecha.setText(informe.getFecha());
             textViewCentro.setText(informe.getCentro());
-            textViewResponsable.setText(informe.getCentro());
+            textViewResponsable.setText(informe.getResponsable());
             textViewServicioUnidad.setText(informe.getServicioUnidadDispositivo());
             textViewServicioSalud.setText(informe.getServicioDeSalud());
             // Configura un botón para ver el PDF y maneja su acción aquí

@@ -134,4 +134,5 @@
     <string name="cerrarSesion">¿Quiere cerrar sesión?</string>
     <string name="pacientes_item">Pacientes</string>
     <string name="busqueda">Introduzca su búsqueda</string>
+    <string name="informesPdf">Botón que permite la visualización de los informes en pdf</string>
 </resources>

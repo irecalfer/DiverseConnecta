@@ -37,12 +37,16 @@
 
     <TextView
         android:id="@+id/labelHistoriaClínica"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:background="@color/md_theme_light_surfaceTint"
+        android:textColor="@color/md_theme_white"
         android:text="@string/labelHistoriaClinica"
-        app:layout_constraintTop_toBottomOf="@id/guidelineHorTop"
+        android:autoSizeTextType="uniform"
+        android:gravity="center"
+        app:layout_constraintEnd_toStartOf="@id/guidelineVertDer"
         app:layout_constraintStart_toEndOf="@id/guidelineVertIzq"
-        app:layout_constraintEnd_toStartOf="@id/guidelineVertDer"/>
+        app:layout_constraintTop_toBottomOf="@id/guidelineHorTop" />
 
 
     <ScrollView
@@ -60,12 +64,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
-            android:autoSizeMaxTextSize="100sp"
-            android:autoSizeMinTextSize="12sp"
             android:hint="@string/datosSaludLabel"
-            android:textColorHint="@color/md_theme_black"
+            android:textColorHint="@color/md_theme_light_surfaceTint"
             app:autoSizeTextType="uniform"
-            app:hintTextColor="@color/md_theme_black">
+            app:hintTextAppearance="@style/TextLabel">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/datosSalud"
@@ -76,7 +78,8 @@
                 android:inputType="textMultiLine"
                 android:text="DATOS SALUD"
                 android:textColor="@color/md_theme_black"
-                android:textColorHint="@color/md_theme_black" />
+                android:textSize="20sp"
+                app:autoSizeTextType="uniform" />
         </com.google.android.material.textfield.TextInputLayout>
     </ScrollView>
 
@@ -98,9 +101,9 @@
             android:autoSizeMaxTextSize="100sp"
             android:autoSizeMinTextSize="12sp"
             android:hint="@string/labelTratamiento"
-            android:textColorHint="@color/md_theme_black"
+            android:textColorHint="@color/md_theme_light_surfaceTint"
             app:autoSizeTextType="uniform"
-            app:hintTextColor="@color/md_theme_black">
+            app:hintTextAppearance="@style/TextLabel">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/tratamiento"
@@ -111,18 +114,23 @@
                 android:inputType="textMultiLine"
                 android:text="TRATAMIENTO"
                 android:textColor="@color/md_theme_black"
-                android:textColorHint="@color/md_theme_black" />
+                android:textSize="20sp"
+                app:autoSizeTextType="uniform" />
         </com.google.android.material.textfield.TextInputLayout>
     </ScrollView>
 
     <TextView
         android:id="@+id/labelInformes"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="24dp"
+        android:autoSizeTextType="uniform"
+        android:background="@color/md_theme_light_surfaceTint"
+        android:gravity="center"
         android:text="@string/labelInformes"
-        app:layout_constraintStart_toEndOf="@+id/guidelineVertIzq"
+        android:textColor="@color/md_theme_white"
         app:layout_constraintEnd_toStartOf="@id/guidelineVertDer"
+        app:layout_constraintStart_toEndOf="@+id/guidelineVertIzq"
         app:layout_constraintTop_toBottomOf="@+id/svDatos" />
 
     <View
@@ -133,25 +141,38 @@
         android:background="?android:attr/listDivider"
         app:layout_constraintTop_toBottomOf="@+id/labelInformes" />
 
-    <HorizontalScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true"
+        android:scrollbarStyle="outsideInset"
+        android:scrollbars="vertical"
         app:layout_constraintBottom_toTopOf="@+id/guidelineHorBot"
         app:layout_constraintEnd_toStartOf="@+id/guidelineVertDer"
         app:layout_constraintStart_toEndOf="@+id/guidelineVertIzq"
-        app:layout_constraintTop_toBottomOf="@+id/divideHIstoriaClinicaInformes">
+        app:layout_constraintTop_toBottomOf="@+id/divideHIstoriaClinicaInformes">>
+        <HorizontalScrollView
+            android:id="@+id/horizontalViewInformes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="horizontal">
 
-        <TableLayout
-            android:id="@+id/tableInformes"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:stretchColumns="*"
-            app:layout_constraintBottom_toTopOf="@+id/guidelineHorBot"
-            app:layout_constraintEnd_toStartOf="@+id/guidelineVertDer"
-            app:layout_constraintStart_toEndOf="@+id/guidelineVertIzq"
-            app:layout_constraintTop_toBottomOf="@+id/divideHIstoriaClinicaInformes">
+            <TableLayout
+                android:id="@+id/tableInformes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:stretchColumns="0,1,2,3,4,5,6"
+                android:showDividers="middle"
+                android:divider="?android:listDivider"
+                app:layout_constraintBottom_toTopOf="@+id/guidelineHorBot"
+                app:layout_constraintEnd_toStartOf="@+id/guidelineVertDer"
+                app:layout_constraintStart_toEndOf="@+id/guidelineVertIzq"
+                app:layout_constraintTop_toBottomOf="@+id/divideHIstoriaClinicaInformes">
 
 
-        </TableLayout>
-    </HorizontalScrollView>
+            </TableLayout>
+        </HorizontalScrollView>
+    </androidx.core.widget.NestedScrollView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

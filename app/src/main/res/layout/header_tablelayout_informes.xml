@@ -1,109 +1,113 @@
 <!-- R.layout.table_row_header.xml -->
 <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/seed"
+    android:maxHeight="70dp">
 
     <TextView
-        android:layout_width="0dp"
+        android:layout_width="170dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:textSize="20sp"
+        android:gravity="center"
         android:paddingStart="8dp"
-        android:paddingEnd="8dp"
         android:paddingTop="4dp"
+        android:paddingEnd="8dp"
         android:paddingBottom="4dp"
-        android:gravity="start"
         android:text="@string/tipoInforme"
-        android:textColor="#000000"
-        android:textSize="16sp"
-        android:textStyle="bold" />
+        android:textColor="@color/md_theme_black"
+        android:textStyle="bold"
+        android:inputType="textMultiLine"/>
 
 
     <TextView
-        android:layout_width="0dp"
+        android:layout_width="130dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:textSize="20sp"
+        android:gravity="center"
         android:paddingStart="8dp"
-        android:paddingEnd="8dp"
         android:paddingTop="4dp"
+        android:paddingEnd="8dp"
         android:paddingBottom="4dp"
-        android:gravity="start"
         android:text="@string/fechaInforme"
-        android:textColor="#000000"
-        android:textSize="16sp"
+        android:textColor="@color/md_theme_black"
         android:textStyle="bold" />
 
 
     <TextView
-        android:layout_width="0dp"
+        android:layout_width="170dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:textSize="20sp"
+        android:gravity="center"
         android:paddingStart="8dp"
-        android:paddingEnd="8dp"
         android:paddingTop="4dp"
+        android:paddingEnd="8dp"
         android:paddingBottom="4dp"
-        android:gravity="start"
         android:text="@string/centro"
-        android:textColor="#000000"
-        android:textSize="16sp"
+        android:textColor="@color/md_theme_black"
         android:textStyle="bold" />
 
     <!-- Columna 3: Encabezado para "Fecha" -->
     <TextView
-        android:layout_width="0dp"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:textSize="20sp"
+        android:gravity="center"
         android:paddingStart="8dp"
-        android:paddingEnd="8dp"
         android:paddingTop="4dp"
+        android:paddingEnd="8dp"
         android:paddingBottom="4dp"
-        android:gravity="start"
         android:text="@string/responsable"
-        android:textColor="#000000"
-        android:textSize="16sp"
+        android:textColor="@color/md_theme_black"
         android:textStyle="bold" />
 
     <!-- Columna 3: Encabezado para "Fecha" -->
     <TextView
-        android:layout_width="0dp"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:textSize="20sp"
+        android:gravity="center"
         android:paddingStart="8dp"
-        android:paddingEnd="8dp"
         android:paddingTop="4dp"
+        android:paddingEnd="8dp"
         android:paddingBottom="4dp"
-        android:gravity="start"
         android:text="@string/servicioUnidadDispositivo"
-        android:textColor="#000000"
-        android:textSize="16sp"
+        android:textColor="@color/md_theme_black"
         android:textStyle="bold" />
 
     <!-- Columna 3: Encabezado para "Fecha" -->
     <TextView
-        android:layout_width="0dp"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:textSize="20sp"
+        android:gravity="center"
         android:paddingStart="8dp"
-        android:paddingEnd="8dp"
         android:paddingTop="4dp"
+        android:paddingEnd="8dp"
         android:paddingBottom="4dp"
-        android:gravity="start"
         android:text="@string/servicioSalud"
-        android:textColor="#000000"
-        android:textSize="16sp"
+        android:textColor="@color/md_theme_black"
         android:textStyle="bold" />
 
     <TextView
-        android:layout_width="0dp"
+        android:layout_width="70dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:textSize="20sp"
+        android:gravity="center"
         android:paddingStart="8dp"
-        android:paddingEnd="8dp"
         android:paddingTop="4dp"
+        android:paddingEnd="8dp"
         android:paddingBottom="4dp"
-        android:gravity="start"
         android:text="@string/pdf"
-        android:textColor="#000000"
-        android:textSize="16sp" />
+        android:textColor="@color/md_theme_black"
+        android:textStyle="bold"/>
 
     <!-- Agrega más encabezados de columna según sea necesario -->
 </TableRow>
