@@ -38,17 +38,23 @@
 
     <TextView
         android:id="@+id/parteCaidasLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="8dp"
+        android:autoSizeTextType="uniform"
+        android:background="@color/md_theme_light_surfaceTint"
+        android:gravity="center"
         android:text="@string/parteCaidas"
+        android:textColor="@color/md_theme_white"
         app:layout_constraintEnd_toStartOf="@id/guidelineVertDer"
-        app:layout_constraintTop_toBottomOf="@id/guidelineHorTop"
-        app:layout_constraintStart_toEndOf="@id/guidelineVertIzq"/>
+        app:layout_constraintStart_toEndOf="@id/guidelineVertIzq"
+        app:layout_constraintTop_toBottomOf="@id/guidelineHorTop" />
 
     <LinearLayout
         android:id="@+id/LinearLayoutHor"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toStartOf="@id/guidelineVertDer"
         app:layout_constraintStart_toEndOf="@id/guidelineVertIzq"
@@ -59,20 +65,19 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:autoSizeMaxTextSize="100sp"
-            android:autoSizeMinTextSize="12sp"
-            android:textColorHint="@color/md_theme_black"
+            android:textColorHint="@color/md_theme_light_surfaceTint"
             app:autoSizeTextType="uniform"
-            app:hintTextColor="@color/md_theme_black">
+            app:hintTextAppearance="@style/TextLabel">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/fechaHoraCaida"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/fechaHoraParte"
                 android:enabled="false"
+                android:hint="@string/fechaHoraParte"
                 android:textColor="@color/md_theme_black"
-                android:textColorHint="@color/md_theme_black"/>
+                android:textSize="24sp"
+                app:autoSizeTextType="uniform" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -80,20 +85,19 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:autoSizeMaxTextSize="100sp"
-            android:autoSizeMinTextSize="12sp"
-            android:textColorHint="@color/md_theme_black"
+            android:textColorHint="@color/md_theme_light_surfaceTint"
             app:autoSizeTextType="uniform"
-            app:hintTextColor="@color/md_theme_black">
+            app:hintTextAppearance="@style/TextLabel">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/pacienteCaida"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/paciente"
                 android:enabled="false"
+                android:hint="@string/paciente"
                 android:textColor="@color/md_theme_black"
-                android:textColorHint="@color/md_theme_black"/>
+                android:textSize="24sp"
+                app:autoSizeTextType="uniform"/>
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 
@@ -123,11 +127,9 @@
                 android:id="@+id/factoresRiesgoLabel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:autoSizeMaxTextSize="100sp"
-                android:autoSizeMinTextSize="12sp"
-                android:textColorHint="@color/md_theme_black"
+                android:textColorHint="@color/md_theme_light_surfaceTint"
                 app:autoSizeTextType="uniform"
-                app:hintTextColor="@color/md_theme_black">
+                app:hintTextAppearance="@style/TextLabel">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/factoresRiesgo"
@@ -135,18 +137,17 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/factoresRiesgo"
                     android:textColor="@color/md_theme_black"
-                    android:textColorHint="@color/md_theme_black" />
+                    android:textSize="24sp"
+                    app:autoSizeTextType="uniform" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/causasLAbel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:autoSizeMaxTextSize="100sp"
-                android:autoSizeMinTextSize="12sp"
-                android:textColorHint="@color/md_theme_black"
+                android:textColorHint="@color/md_theme_light_surfaceTint"
                 app:autoSizeTextType="uniform"
-                app:hintTextColor="@color/md_theme_black">
+                app:hintTextAppearance="@style/TextLabel">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/causas"
@@ -154,18 +155,17 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/causas"
                     android:textColor="@color/md_theme_black"
-                    android:textColorHint="@color/md_theme_black" />
+                    android:textSize="24sp"
+                    app:autoSizeTextType="uniform" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/circunstanciasLabel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:autoSizeMaxTextSize="100sp"
-                android:autoSizeMinTextSize="12sp"
-                android:textColorHint="@color/md_theme_black"
+                android:textColorHint="@color/md_theme_light_surfaceTint"
                 app:autoSizeTextType="uniform"
-                app:hintTextColor="@color/md_theme_black">
+                app:hintTextAppearance="@style/TextLabel">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/circunstancias"
@@ -173,18 +173,17 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/circunstancias"
                     android:textColor="@color/md_theme_black"
-                    android:textColorHint="@color/md_theme_black" />
+                    android:textSize="24sp"
+                    app:autoSizeTextType="uniform" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/consecuenciasLabel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:autoSizeMaxTextSize="100sp"
-                android:autoSizeMinTextSize="12sp"
-                android:textColorHint="@color/md_theme_black"
+                android:textColorHint="@color/md_theme_light_surfaceTint"
                 app:autoSizeTextType="uniform"
-                app:hintTextColor="@color/md_theme_black">
+                app:hintTextAppearance="@style/TextLabel">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/consecuencias"
@@ -192,18 +191,17 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/consecuencias"
                     android:textColor="@color/md_theme_black"
-                    android:textColorHint="@color/md_theme_black" />
+                    android:textSize="24sp"
+                    app:autoSizeTextType="uniform"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/unidadCaidaLabel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:autoSizeMaxTextSize="100sp"
-                android:autoSizeMinTextSize="12sp"
-                android:textColorHint="@color/md_theme_black"
+                android:textColorHint="@color/md_theme_light_surfaceTint"
                 app:autoSizeTextType="uniform"
-                app:hintTextColor="@color/md_theme_black">
+                app:hintTextAppearance="@style/TextLabel">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/unidadCaida"
@@ -212,18 +210,17 @@
                     android:hint="@string/unidadPacienteLabel"
                     android:enabled="false"
                     android:textColor="@color/md_theme_black"
-                    android:textColorHint="@color/md_theme_black" />
+                    android:textSize="24sp"
+                    app:autoSizeTextType="uniform" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/empleadoCaidaLabel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:autoSizeMaxTextSize="100sp"
-                android:autoSizeMinTextSize="12sp"
-                android:textColorHint="@color/md_theme_black"
+                android:textColorHint="@color/md_theme_light_surfaceTint"
                 app:autoSizeTextType="uniform"
-                app:hintTextColor="@color/md_theme_black">
+                app:hintTextAppearance="@style/TextLabel">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/empleado"
@@ -232,42 +229,55 @@
                     android:enabled="false"
                     android:hint="@string/empleado"
                     android:textColor="@color/md_theme_black"
-                    android:textColorHint="@color/md_theme_black" />
+                    android:textSize="24sp"
+                    app:autoSizeTextType="uniform"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
-                android:id="@+id/textView3"
+                android:id="@+id/textViewCaidaPresenciada"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="35dp"
+                android:autoSizeTextType="uniform"
+                android:background="@color/seed"
+                android:gravity="center"
                 android:text="@string/caidaPresenciada"
-                android:gravity="center"/>
+                android:textColor="@color/md_theme_black"/>
 
             <RadioGroup
                 android:id="@+id/caidaPresenciadaRadioGroup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_gravity="center">
+                android:layout_gravity="center"
+                android:orientation="horizontal">
 
                 <RadioButton
                     android:id="@+id/siCaida"
-                    android:layout_width="match_parent"
+                    android:layout_width="50dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:scaleX="1.3"
+                    android:scaleY="1.3"
                     android:text="@string/si" />
 
                 <RadioButton
                     android:id="@+id/noCaida"
-                    android:layout_width="match_parent"
+                    android:layout_width="60dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:scaleX="1.3"
+                    android:scaleY="1.3"
                     android:text="@string/no" />
             </RadioGroup>
 
             <TextView
                 android:id="@+id/textView4"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="35dp"
+                android:autoSizeTextType="uniform"
+                android:background="@color/seed"
                 android:text="@string/avisadoFamiliares"
-                android:gravity="center"/>
+                android:gravity="center"
+                android:textColor="@color/md_theme_black"/>
 
             <RadioGroup
                 android:id="@+id/avisadoFamiliaresRadioGroup"
@@ -278,14 +288,20 @@
 
                 <RadioButton
                     android:id="@+id/siAvisado"
-                    android:layout_width="match_parent"
+                    android:layout_width="50dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:scaleX="1.3"
+                    android:scaleY="1.3"
                     android:text="@string/si" />
 
                 <RadioButton
                     android:id="@+id/noAvisado"
-                    android:layout_width="match_parent"
+                    android:layout_width="60dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:scaleX="1.3"
+                    android:scaleY="1.3"
                     android:text="@string/no" />
             </RadioGroup>
 
@@ -293,11 +309,9 @@
                 android:id="@+id/observacionesCaidaLabel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:autoSizeMaxTextSize="100sp"
-                android:autoSizeMinTextSize="12sp"
-                android:textColorHint="@color/md_theme_black"
+                android:textColorHint="@color/md_theme_light_surfaceTint"
                 app:autoSizeTextType="uniform"
-                app:hintTextColor="@color/md_theme_black">
+                app:hintTextAppearance="@style/TextLabel">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/observacionesCaida"
@@ -306,15 +320,18 @@
                     android:hint="@string/observacionesPauta"
                     android:inputType="textMultiLine"
                     android:textColor="@color/md_theme_black"
-                    android:textColorHint="@color/md_theme_black" />
+                    android:textSize="24sp"
+                    app:autoSizeTextType="uniform"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
                 android:id="@+id/registrarCaidaBtn"
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                android:text="@string/registrar"
-                android:layout_gravity="center"/>
+                android:layout_width="400dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center"
+                android:autoSizeTextType="uniform"
+                android:layout_marginTop="16dp"
+                android:text="@string/registrar" />
         </LinearLayout>
     </ScrollView>
 

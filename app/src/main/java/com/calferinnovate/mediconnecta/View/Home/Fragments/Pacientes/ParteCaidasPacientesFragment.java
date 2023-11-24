@@ -73,7 +73,7 @@ public class ParteCaidasPacientesFragment extends Fragment implements IOnBackPre
         View view = inflater.inflate(R.layout.fragment_parte_caidas_pacientes, container, false);
         claseGlobal = ClaseGlobal.getInstance();
         inicializaVariables(view);
-
+        getActivity().setTitle("Parte de Caídas");
         implementaViewModel();
         //Creas un objeto ViewModelFactory y obtienes una instancia de ConsultasYRutinasDiariasViewModel utilizando este factory.
         //Luego, observas el LiveData del ViewModel para mantener actualizada la lista de programación en el RecyclerView.
@@ -312,6 +312,13 @@ public class ParteCaidasPacientesFragment extends Fragment implements IOnBackPre
         if(TextUtils.isEmpty(avisadoAFamiliares)){
             Toast.makeText(getContext(), "Tiene que indicar si se ha avisado a los familiares", Toast.LENGTH_SHORT).show();
         }
+        if(TextUtils.isEmpty(factoresDeRiesgo) || TextUtils.isEmpty(causasCaida) ||
+                TextUtils.isEmpty(circunstanciasCaida) || TextUtils.isEmpty(consecuenciasCaida) ||
+                TextUtils.isEmpty(observacionesCaida) || TextUtils.isEmpty(caidaPresenciada) ||
+                TextUtils.isEmpty(avisadoAFamiliares)){
+            return;
+        }
+
     }
 
     public String fechaDateTimeSql() {
