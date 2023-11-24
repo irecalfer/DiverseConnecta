@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,7 +20,7 @@ public class AnatomicosAdapter extends RecyclerView.Adapter<AnatomicosAdapter.An
     private final ArrayList<Pautas> listaPautas;
     private final Context context;
     private final boolean muestraNoAnatomicos;
-    private static final int VIEW_TYPE_EDIT_TEXT = 1;
+    private static final int VIEW_TYPE_TEXT_VIEW = 1;
 
     public AnatomicosAdapter(ArrayList<Pautas> listaPautas, Context context, boolean muestraNoAnatomicos) {
         this.listaPautas = listaPautas;
@@ -30,7 +31,7 @@ public class AnatomicosAdapter extends RecyclerView.Adapter<AnatomicosAdapter.An
     @NonNull
     @Override
     public AnatomicosViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if (viewType == VIEW_TYPE_EDIT_TEXT && muestraNoAnatomicos) {
+        if (viewType == VIEW_TYPE_TEXT_VIEW && muestraNoAnatomicos) {
             View view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.item_no_anatomicos, parent, false);
             return new AnatomicosViewHolder(view);
@@ -45,7 +46,7 @@ public class AnatomicosAdapter extends RecyclerView.Adapter<AnatomicosAdapter.An
     @Override
     public int getItemViewType(int position) {
         if (muestraNoAnatomicos && position == getItemCount() - 1) {
-            return VIEW_TYPE_EDIT_TEXT;
+            return VIEW_TYPE_TEXT_VIEW;
         } else {
             return super.getItemViewType(position);
         }
@@ -53,8 +54,8 @@ public class AnatomicosAdapter extends RecyclerView.Adapter<AnatomicosAdapter.An
 
     @Override
     public void onBindViewHolder(@NonNull AnatomicosViewHolder holder, int position) {
-        if (holder.getItemViewType() == VIEW_TYPE_EDIT_TEXT) {
-            holder.editTextNoAnatomicos.setText("No tiene rutina de anatómicos");
+        if (holder.getItemViewType() == VIEW_TYPE_TEXT_VIEW) {
+            holder.textViewNoAnatomicos.setText("No tiene rutina de anatómicos");
         } else {
             Pautas pautas = listaPautas.get(position);
             String mañanaPauta = pautas.getMañana();
@@ -89,14 +90,14 @@ public class AnatomicosAdapter extends RecyclerView.Adapter<AnatomicosAdapter.An
         private final TextInputEditText mañana;
         private final TextInputEditText tarde;
         private final TextInputEditText noche;
-        private final TextInputEditText editTextNoAnatomicos;
+        private final TextView textViewNoAnatomicos;
 
         public AnatomicosViewHolder(View itemView) {
             super(itemView);
             mañana = itemView.findViewById(R.id.mañanaET);
             tarde = itemView.findViewById(R.id.tardeET);
             noche = itemView.findViewById(R.id.nocheET);
-            editTextNoAnatomicos = itemView.findViewById(R.id.edit_text_no_anatomicos);
+            textViewNoAnatomicos = itemView.findViewById(R.id.text_view_no_anatomicos);
         }
     }
 }

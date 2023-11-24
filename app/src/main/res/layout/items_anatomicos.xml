@@ -23,11 +23,9 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:autoSizeMaxTextSize="100sp"
-        android:autoSizeMinTextSize="12sp"
-        android:textColorHint="@color/md_theme_black"
+        android:textColorHint="@color/md_theme_light_surfaceTint"
         app:autoSizeTextType="uniform"
-        app:hintTextColor="@color/md_theme_black"
+        app:hintTextAppearance="@style/TextLabel"
         app:layout_constraintEnd_toStartOf="@id/guidelineDer"
         app:layout_constraintStart_toEndOf="@id/guidelineIzq"
         app:layout_constraintTop_toTopOf="parent">
@@ -40,18 +38,17 @@
             android:hint="@string/mañanaAnatomicos"
             android:inputType="textMultiLine"
             android:textColor="@color/md_theme_black"
-            android:textColorHint="@color/md_theme_black" />
+            android:textSize="24sp"
+            app:autoSizeTextType="uniform"  />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tardeLabel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:autoSizeMaxTextSize="100sp"
-        android:autoSizeMinTextSize="12sp"
-        android:textColorHint="@color/md_theme_black"
+        android:textColorHint="@color/md_theme_light_surfaceTint"
         app:autoSizeTextType="uniform"
-        app:hintTextColor="@color/md_theme_black"
+        app:hintTextAppearance="@style/TextLabel"
         app:layout_constraintEnd_toStartOf="@id/guidelineDer"
         app:layout_constraintStart_toEndOf="@id/guidelineIzq"
         app:layout_constraintTop_toBottomOf="@id/mañanaLabel">
@@ -64,18 +61,17 @@
             android:hint="@string/tardeAnatomicos"
             android:inputType="textMultiLine"
             android:textColor="@color/md_theme_black"
-            android:textColorHint="@color/md_theme_black" />
+            android:textSize="24sp"
+            app:autoSizeTextType="uniform" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/nocheLabel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:autoSizeMaxTextSize="100sp"
-        android:autoSizeMinTextSize="12sp"
-        android:textColorHint="@color/md_theme_black"
+        android:textColorHint="@color/md_theme_light_surfaceTint"
         app:autoSizeTextType="uniform"
-        app:hintTextColor="@color/md_theme_black"
+        app:hintTextAppearance="@style/TextLabel"
         app:layout_constraintEnd_toStartOf="@id/guidelineDer"
         app:layout_constraintStart_toEndOf="@id/guidelineIzq"
         app:layout_constraintTop_toBottomOf="@id/tardeLabel">
@@ -88,7 +84,8 @@
             android:hint="@string/nocheAnatomicos"
             android:inputType="textMultiLine"
             android:textColor="@color/md_theme_black"
-            android:textColorHint="@color/md_theme_black" />
+            android:textSize="24sp"
+            app:autoSizeTextType="uniform"  />
     </com.google.android.material.textfield.TextInputLayout>
 
 

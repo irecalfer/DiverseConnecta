@@ -9,14 +9,17 @@
 
     <TextView
         android:id="@+id/pautasLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
         android:layout_marginTop="32dp"
         android:gravity="center"
         android:text="@string/pautas"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/md_theme_light_surfaceTint"
+        android:textColor="@color/md_theme_white"
+        android:autoSizeTextType="uniform"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewPautas"
@@ -28,14 +31,17 @@
 
     <TextView
         android:id="@+id/anatomicosLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
         android:layout_marginTop="32dp"
         android:gravity="center"
         android:text="@string/anatomicos"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/recyclerViewPautas" />
+        app:layout_constraintTop_toBottomOf="@id/recyclerViewPautas"
+        android:background="@color/md_theme_light_surfaceTint"
+        android:textColor="@color/md_theme_white"
+        android:autoSizeTextType="uniform"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewAnatomicos"

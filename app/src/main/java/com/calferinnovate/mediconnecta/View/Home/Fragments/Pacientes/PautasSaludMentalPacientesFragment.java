@@ -44,7 +44,7 @@ public class PautasSaludMentalPacientesFragment extends Fragment implements IOnB
         View view =  inflater.inflate(R.layout.fragment_pautas_salud_mental_pacientes, container, false);
 
         claseGlobal = ClaseGlobal.getInstance();
-
+        getActivity().setTitle("Pautas Salud Mental");
 
         obtieneRecyclerView(view);
         inicializaViewModel();
@@ -85,7 +85,8 @@ public class PautasSaludMentalPacientesFragment extends Fragment implements IOnB
         sharedPacientesViewModel.getPaciente().observe(getViewLifecycleOwner(), new Observer<Pacientes>() {
             @Override
             public void onChanged(Pacientes pacientes) {
-                obtienePautasPaciente(pacientes);
+                Pacientes pacienteSeleccionado = pacientes;
+                obtienePautasPaciente(pacienteSeleccionado);
             }
         });
     }
@@ -94,16 +95,21 @@ public class PautasSaludMentalPacientesFragment extends Fragment implements IOnB
         sharedPacientesViewModel.getListaMutablePautas(pacientes).observe(getViewLifecycleOwner(), new Observer<ArrayList<Pautas>>() {
             @Override
             public void onChanged(ArrayList<Pautas> pautas) {
-                boolean mostrarEditTextNoPautas = determinaSiHayPautas(pautas);
-                pautasAdapter = new PautasAdapter(pautas, getContext(), mostrarEditTextNoPautas);
-                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-                // at last set adapter to recycler view.
-                recyclerView.setLayoutManager(linearLayoutManager);
-                recyclerView.setAdapter(pautasAdapter);
-                recyclerView.addItemDecoration(new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL));
-                pautasAdapter.notifyDataSetChanged();
+                ArrayList<Pautas> pautasDelPaciente = pautas;
+                rellenaUI(pautasDelPaciente);
             }
         });
+
+    }
+
+    public void rellenaUI(ArrayList<Pautas> pautasDelPaciente){
+        boolean mostrarTextViewNoPautas = determinaSiHayPautas(pautasDelPaciente);
+        pautasAdapter = new PautasAdapter(pautasDelPaciente, getContext(), mostrarTextViewNoPautas);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setAdapter(pautasAdapter);
+        recyclerView.addItemDecoration(new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL));
+        pautasAdapter.notifyDataSetChanged();
     }
     private boolean determinaSiHayPautas(ArrayList<Pautas> pautas){
         if(pautas.isEmpty()){
@@ -112,6 +118,7 @@ public class PautasSaludMentalPacientesFragment extends Fragment implements IOnB
             return false;
         }
     }
+
     @Override
     public boolean onBackPressed() {
         requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PacientesFragment()).commit();

@@ -24,8 +24,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 public class SharedPacientesViewModel extends ViewModel {
 
@@ -66,50 +64,42 @@ public class SharedPacientesViewModel extends ViewModel {
 
     public void obtieneSeguroPacientes(Pacientes paciente) {
         String url = Constantes.url_part + "seguro.php";
-        Executor executor = Executors.newSingleThreadExecutor();
-        executor.execute(new Runnable() {
+
+        peticionesJson.getJsonObjectRequest(url, new PeticionesJson.MyJsonObjectResponseListener() {
             @Override
-            public void run() {
+            public void onResponse(JSONObject response) {
                 try {
-                    peticionesJson.getJsonObjectRequest(url, new PeticionesJson.MyJsonObjectResponseListener() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            try {
-                                ArrayList<Seguro> seguroArrayList = new ArrayList<>();
-                                JSONArray jsonArray = response.getJSONArray("seguro");
-                                for (int i = 0; i < jsonArray.length(); i++) {
-                                    JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                    Seguro nuevoSeguro = new Seguro(jsonObject.optInt("id_seguro"), jsonObject.optInt("telefono"),
-                                            jsonObject.optString("nombre"));
-                                    seguroArrayList.add(nuevoSeguro);
-                                }
-                                if (!seguroArrayList.isEmpty()) {
-                                    mutableSeguroList.postValue(new ArrayList<>(seguroArrayList));
-                                }
+                    ArrayList<Seguro> seguroArrayList = new ArrayList<>();
+                    JSONArray jsonArray = response.getJSONArray("seguro");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        Seguro nuevoSeguro = new Seguro(jsonObject.optInt("id_seguro"), jsonObject.optInt("telefono"),
+                                jsonObject.optString("nombre"));
+                        seguroArrayList.add(nuevoSeguro);
+                    }
+                    if (!seguroArrayList.isEmpty()) {
+                        mutableSeguroList.postValue(new ArrayList<>(seguroArrayList));
+                    }
 
-                                // Una vez que los seguros se hayan cargado, busca el seguro del paciente
-                                Seguro seguroDelPaciente = obtieneSeguroPacienteSeleccionado(paciente, seguroArrayList);
-                                mutableSeguro.postValue(seguroDelPaciente);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-
-                        }
-                    });
-
-                } catch (Exception e) {
+                    // Una vez que los seguros se hayan cargado, busca el seguro del paciente
+                    Seguro seguroDelPaciente = obtieneSeguroPacienteSeleccionado(paciente, seguroArrayList);
+                    mutableSeguro.postValue(seguroDelPaciente);
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
         });
+
     }
 
+
     private Seguro obtieneSeguroPacienteSeleccionado(Pacientes paciente, ArrayList<Seguro> seguroArrayList) {
-        for (Seguro seguro :seguroArrayList) {
+        for (Seguro seguro : seguroArrayList) {
             if (seguro.getIdSeguro() == paciente.getFkIdSeguro()) {
                 Seguro seguroDelPaciente = seguro;
                 return seguroDelPaciente;
@@ -124,40 +114,37 @@ public class SharedPacientesViewModel extends ViewModel {
 
     public LiveData<ArrayList<ContactoFamiliares>> obtieneContactoFamiliares(Pacientes paciente) {
         String url = Constantes.url_part + "familiares.php?cip_sns=" + paciente.getCipSns();
-        Executor executor = Executors.newSingleThreadExecutor();
-        executor.execute(new Runnable() {
+        //Reiniciamos el mutable
+        mutableFamiliaresList.setValue(new ArrayList<>());
+        peticionesJson.getJsonObjectRequest(url, new PeticionesJson.MyJsonObjectResponseListener() {
             @Override
-            public void run() {
-                peticionesJson.getJsonObjectRequest(url, new PeticionesJson.MyJsonObjectResponseListener() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            ArrayList<ContactoFamiliares> contactoFamiliaresArrayList = new ArrayList<>();
-                            //Si la lista de contactos está llena para otro familiar la vaciamos para
-                            //llenarla con los datos de los familiares del nuevo paciente.
-                            JSONArray jsonArray = response.getJSONArray("familiares_contacto");
-                            for (int i = 0; i < jsonArray.length(); i++) {
-                                JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                ContactoFamiliares nuevoFamiliar = new ContactoFamiliares(jsonObject.optString("dni_familiar"),
-                                        jsonObject.optString("nombre"), jsonObject.optString("apellidos"),
-                                        jsonObject.optInt("telefono_contacto"), jsonObject.optInt("telefono_contacto_2"));
-                                contactoFamiliaresArrayList.add(nuevoFamiliar);
-                            }
-                            if (!contactoFamiliaresArrayList.isEmpty()) {
-                                mutableFamiliaresList.postValue(new ArrayList<>(contactoFamiliaresArrayList));
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+            public void onResponse(JSONObject response) {
+                try {
+                    ArrayList<ContactoFamiliares> contactoFamiliaresArrayList = new ArrayList<>();
+                    //Si la lista de contactos está llena para otro familiar la vaciamos para
+                    //llenarla con los datos de los familiares del nuevo paciente.
+                    JSONArray jsonArray = response.getJSONArray("familiares_contacto");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        ContactoFamiliares nuevoFamiliar = new ContactoFamiliares(jsonObject.optString("dni_familiar"),
+                                jsonObject.optString("nombre"), jsonObject.optString("apellidos"),
+                                jsonObject.optInt("telefono_contacto"), jsonObject.optInt("telefono_contacto_2"));
+                        contactoFamiliaresArrayList.add(nuevoFamiliar);
                     }
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
+                    if (!contactoFamiliaresArrayList.isEmpty()) {
+                        mutableFamiliaresList.postValue(new ArrayList<>(contactoFamiliaresArrayList));
                     }
-                });
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
             }
         });
+
         return mutableFamiliaresList;
     }
 
@@ -171,48 +158,45 @@ public class SharedPacientesViewModel extends ViewModel {
 
     public LiveData<ArrayList<Informes>> obtieneInformesPaciente(Pacientes paciente) {
         String url = Constantes.url_part + "informes.php?fk_num_historia_clinica=" + paciente.getFkNumHistoriaClinica();
-        Executor executor = Executors.newSingleThreadExecutor();
-        executor.execute(new Runnable() {
+        //Reiniciamos el mutable
+        mutableInformesList.setValue(new ArrayList<>());
+        peticionesJson.getJsonObjectRequest(url, new PeticionesJson.MyJsonObjectResponseListener() {
             @Override
-            public void run() {
-                peticionesJson.getJsonObjectRequest(url, new PeticionesJson.MyJsonObjectResponseListener() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            //Si la lista de informes está llena para otro paciente la vaciamos para
-                            //llenarla con los informes del nuevo paciente.
-                            ArrayList<Informes> informesArrayList = new ArrayList<>();
-                            // Verificar que claseGlobal y la lista de informes no sean nulos
+            public void onResponse(JSONObject response) {
+                try {
+                    //Si la lista de informes está llena para otro paciente la vaciamos para
+                    //llenarla con los informes del nuevo paciente.
+                    ArrayList<Informes> informesArrayList = new ArrayList<>();
+                    // Verificar que claseGlobal y la lista de informes no sean nulos
 
-                            JSONArray jsonArray = response.getJSONArray("informes");
-                            for (int i = 0; i < jsonArray.length(); i++) {
-                                JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                String base64String = jsonObject.optString("PDF");
-                                byte[] pdfBytes = Base64.decode(base64String, Base64.DEFAULT);
-                                Informes nuevoInforme = new Informes(jsonObject.optInt("fk_num_historia_clinica"),
-                                        jsonObject.optString("tipo_informe"), jsonObject.optString("fecha"),
-                                        jsonObject.optString("centro"), jsonObject.optString("responsable"),
-                                        jsonObject.optString("servicio_unidad_dispositivo"), jsonObject.optString("servicio_de_salud"),
-                                        pdfBytes);
-                                informesArrayList.add(nuevoInforme);
-                            }
-                            // Actualizar el LiveData directamente
-                            if (!informesArrayList.isEmpty()) {
-                                mutableInformesList.postValue(new ArrayList<>(informesArrayList));
-                            }
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                    JSONArray jsonArray = response.getJSONArray("informes");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        String base64String = jsonObject.optString("PDF");
+                        byte[] pdfBytes = Base64.decode(base64String, Base64.DEFAULT);
+                        Informes nuevoInforme = new Informes(jsonObject.optInt("fk_num_historia_clinica"),
+                                jsonObject.optString("tipo_informe"), jsonObject.optString("fecha"),
+                                jsonObject.optString("centro"), jsonObject.optString("responsable"),
+                                jsonObject.optString("servicio_unidad_dispositivo"), jsonObject.optString("servicio_de_salud"),
+                                pdfBytes);
+                        informesArrayList.add(nuevoInforme);
+                    }
+                    // Actualizar el LiveData directamente
+                    if (!informesArrayList.isEmpty()) {
+                        mutableInformesList.postValue(new ArrayList<>(informesArrayList));
                     }
 
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
 
-                    }
-                });
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
             }
         });
+
         return mutableInformesList;
     }
 
@@ -223,28 +207,24 @@ public class SharedPacientesViewModel extends ViewModel {
 
     public LiveData<HistoriaClinica> obtieneHistoriaClinica(Pacientes paciente) {
         String url = Constantes.url_part + "historia_clinica.php?cip_sns=" + paciente.getCipSns();
-        Executor executor = Executors.newSingleThreadExecutor();
-        executor.execute(new Runnable() {
+        //Reiniciamos el mutable
+        mutableHistoriaClinica.setValue(new HistoriaClinica());
+        peticionesJson.getJsonObjectRequest(url, new PeticionesJson.MyJsonObjectResponseListener() {
             @Override
-            public void run() {
-                peticionesJson.getJsonObjectRequest(url, new PeticionesJson.MyJsonObjectResponseListener() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            JSONObject jsonObject = response.getJSONObject("historia_clinica");
-                            HistoriaClinica historiaClinica = new HistoriaClinica(jsonObject.optString("datos_salud"),
-                                    jsonObject.optString("tratamiento"));
-                            mutableHistoriaClinica.postValue(historiaClinica);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
+            public void onResponse(JSONObject response) {
+                try {
+                    JSONObject jsonObject = response.getJSONObject("historia_clinica");
+                    HistoriaClinica historiaClinica = new HistoriaClinica(jsonObject.optString("datos_salud"),
+                            jsonObject.optString("tratamiento"));
+                    mutableHistoriaClinica.postValue(historiaClinica);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
 
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
+            @Override
+            public void onErrorResponse(VolleyError error) {
 
-                    }
-                });
             }
         });
         return mutableHistoriaClinica;
@@ -252,39 +232,36 @@ public class SharedPacientesViewModel extends ViewModel {
 
     public LiveData<ArrayList<Pautas>> obtienePautasPaciente(Pacientes paciente) {
         String url = Constantes.url_part + "pautas.php?cip_sns=" + paciente.getCipSns();
-        Executor executor = Executors.newSingleThreadExecutor();
-        executor.execute(new Runnable() {
+        //Reiniciamos el mutable
+        mutablePautasList.setValue(new ArrayList<>());
+        peticionesJson.getJsonObjectRequest(url, new PeticionesJson.MyJsonObjectResponseListener() {
             @Override
-            public void run() {
-                peticionesJson.getJsonObjectRequest(url, new PeticionesJson.MyJsonObjectResponseListener() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            ArrayList<Pautas> pautasArrayList = new ArrayList<>();
-                            JSONArray jsonArray = response.getJSONArray("pautas");
-                            for (int i = 0; i < jsonArray.length(); i++) {
-                                JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                Pautas nuevaPauta = new Pautas(jsonObject.optString("pauta"),
-                                        jsonObject.optString("observaciones"), jsonObject.optString("mañana"),
-                                        jsonObject.optString("tarde"), jsonObject.optString("noche"));
-                                pautasArrayList.add(nuevaPauta);
-                            }
-                            // Actualizar el LiveData directamente
-                            if (!pautasArrayList.isEmpty()) {
-                                mutablePautasList.postValue(new ArrayList<>(pautasArrayList));
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+            public void onResponse(JSONObject response) {
+                try {
+                    ArrayList<Pautas> pautasArrayList = new ArrayList<>();
+                    JSONArray jsonArray = response.getJSONArray("pautas");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        Pautas nuevaPauta = new Pautas(jsonObject.optString("pauta"),
+                                jsonObject.optString("observaciones"), jsonObject.optString("mañana"),
+                                jsonObject.optString("tarde"), jsonObject.optString("noche"));
+                        pautasArrayList.add(nuevaPauta);
                     }
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
+                    // Actualizar el LiveData directamente
+                    if (!pautasArrayList.isEmpty()) {
+                        mutablePautasList.postValue(new ArrayList<>(pautasArrayList));
                     }
-                });
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
             }
         });
+
         return mutablePautasList;
     }
 
@@ -298,42 +275,37 @@ public class SharedPacientesViewModel extends ViewModel {
 
     public LiveData<ArrayList<String>> obtieneLosLugaresDeCaidas() {
         String url = Constantes.url_part + "caidas_enum.php";
-        Executor executor = Executors.newSingleThreadExecutor();
-        executor.execute(new Runnable() {
+        peticionesJson.getJsonObjectRequest(url, new PeticionesJson.MyJsonObjectResponseListener() {
             @Override
-            public void run() {
-                peticionesJson.getJsonObjectRequest(url, new PeticionesJson.MyJsonObjectResponseListener() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            ArrayList<String> lugaresCaidaArrayList = new ArrayList<>();
-                            JSONArray lugarCaida = response.getJSONArray("lugar_caida");
-                            Log.d("Lugares", "Ha entrado en on response");
-                            // Itera sobre los valores ENUM
-                            for (int i = 0; i < lugarCaida.length(); i++) {
-                                String enumLugar = lugarCaida.getString(i);
-                                //Añadimos el valor a nuestro arrayList
-                                lugaresCaidaArrayList.add(enumLugar);
-                            }
-                            // Actualiza el LiveData con la nueva lista
-                            if (!lugaresCaidaArrayList.isEmpty()) {
-                                listaLugaresLiveData.postValue(new ArrayList<>(lugaresCaidaArrayList));
-                            }
-                        } catch (JSONException e) {
-                            Log.d("Lugares", "Ha entrado en el catch de on response");
-                            Log.d("LugaresCatch", e.toString());
-                            e.printStackTrace();
-                        }
+            public void onResponse(JSONObject response) {
+                try {
+                    ArrayList<String> lugaresCaidaArrayList = new ArrayList<>();
+                    JSONArray lugarCaida = response.getJSONArray("lugar_caida");
+                    Log.d("Lugares", "Ha entrado en on response");
+                    // Itera sobre los valores ENUM
+                    for (int i = 0; i < lugarCaida.length(); i++) {
+                        String enumLugar = lugarCaida.getString(i);
+                        //Añadimos el valor a nuestro arrayList
+                        lugaresCaidaArrayList.add(enumLugar);
                     }
+                    // Actualiza el LiveData con la nueva lista
+                    if (!lugaresCaidaArrayList.isEmpty()) {
+                        listaLugaresLiveData.postValue(new ArrayList<>(lugaresCaidaArrayList));
+                    }
+                } catch (JSONException e) {
+                    Log.d("Lugares", "Ha entrado en el catch de on response");
+                    Log.d("LugaresCatch", e.toString());
+                    e.printStackTrace();
+                }
+            }
 
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.d("Lugares", "Ha entrado en on error response");
-                        error.printStackTrace();
-                    }
-                });
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("Lugares", "Ha entrado en on error response");
+                error.printStackTrace();
             }
         });
+
         return listaLugaresLiveData;
     }
 

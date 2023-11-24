@@ -55,6 +55,7 @@ public class PartePacientesFragment extends Fragment implements IOnBackPressed {
         View view = inflater.inflate(R.layout.fragment_parte_pacientes, container, false);
         claseGlobal = ClaseGlobal.getInstance();
         inicializaVariables(view);
+        getActivity().setTitle("Parte");
         sharedPacientesViewModel = new ViewModelProvider(requireActivity()).get(SharedPacientesViewModel.class);
         return view;
     }

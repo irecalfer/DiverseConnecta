@@ -47,6 +47,7 @@ public class PautasPacientesGeriatriaFragment extends Fragment implements IOnBac
         View view = inflater.inflate(R.layout.fragment_pautas_pacientes_geriatria, container, false);
 
         inicializaVariables();
+        getActivity().setTitle("Pautas Geriátricas");
 
         // Obtener el Recycler
         recyclerView = view.findViewById(R.id.recyclerViewPautas);
@@ -111,8 +112,8 @@ public class PautasPacientesGeriatriaFragment extends Fragment implements IOnBac
     }
 
     public void rellenaPautasGenerales(ArrayList<Pautas> pautas){
-        boolean mostrarEditTextNoPautas = determinaSiHayPautas(pautas);
-            pautasAdapter = new PautasAdapter(pautas, getContext(), mostrarEditTextNoPautas);
+        boolean mostrarTextViewNoPautas = determinaSiHayPautas(pautas);
+            pautasAdapter = new PautasAdapter(pautas, getContext(), mostrarTextViewNoPautas);
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
             // at last set adapter to recycler view.
             recyclerView.setLayoutManager(linearLayoutManager);

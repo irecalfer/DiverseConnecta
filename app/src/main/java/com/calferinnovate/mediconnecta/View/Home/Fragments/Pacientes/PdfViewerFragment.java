@@ -23,6 +23,7 @@ public class PdfViewerFragment extends Fragment implements IOnBackPressed {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_pdf_viewer, container, false);
         PDFView pdfView = view.findViewById(R.id.pdfView);
+        getActivity().setTitle("Informe Clínico");
         obtieneBytesPDF(pdfView);
 
 
