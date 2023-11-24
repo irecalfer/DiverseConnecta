@@ -101,4 +101,6 @@
     <string name="pacientes_item">Pacientes</string>
     <string name="busqueda">Introduzca su búsqueda</string>
     <string name="informesPdf">Botón que permite la visualización de los informes en pdf</string>
+    <string name="partes">Partes generales</string>
+    <string name="partesCaidas">Partes de caída generales</string>
 </resources>

@@ -180,7 +180,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 dialog.dismiss();
                 //finishAndRemoveTask();
                 //finishAffinity();
-                finishAndRemoveTask();
+                //finishAndRemoveTask();
+                int pid = android.os.Process.myPid();
+                android.os.Process.killProcess(pid);
             }
         });
 

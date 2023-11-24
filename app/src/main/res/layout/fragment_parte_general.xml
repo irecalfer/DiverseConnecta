@@ -64,20 +64,31 @@
         app:layout_constraintStart_toEndOf="@+id/guidelineVertIzq"
         app:layout_constraintTop_toBottomOf="@id/fechaSeleccionadaEditText" />
 
+    <TextView
+        android:id="@+id/textViewPartes"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:autoSizeTextType="uniform"
+        android:background="@color/md_theme_light_outline"
+        android:gravity="center"
+        android:text="@string/partes"
+        android:textColor="@color/md_theme_white"
+        app:layout_constraintEnd_toStartOf="@id/guidelineVertDer"
+        app:layout_constraintStart_toEndOf="@id/guidelineVertIzq"
+        app:layout_constraintTop_toBottomOf="@id/buttonFechas" />
+
     <androidx.core.widget.NestedScrollView
         android:id="@+id/scrollViewVertParte"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="8dp"
         android:layout_weight="1"
         android:fillViewport="true"
         android:scrollbarStyle="outsideInset"
         android:scrollbars="vertical"
-        app:layout_constraintBottom_toTopOf="@id/scrollViewVertAvisos"
+        app:layout_constraintBottom_toTopOf="@id/guideCenter"
         app:layout_constraintEnd_toStartOf="@id/guidelineVertDer"
         app:layout_constraintStart_toEndOf="@id/guidelineVertIzq"
-        app:layout_constraintTop_toBottomOf="@id/buttonFechas"
-        >
+        app:layout_constraintTop_toBottomOf="@id/textViewPartes">
 
         <HorizontalScrollView
             android:id="@+id/horizontalViewParte"
@@ -98,8 +109,29 @@
     </androidx.core.widget.NestedScrollView>
 
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideCenter"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.55" />
+
+    <TextView
+        android:id="@+id/textViewCaidas"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:autoSizeTextType="uniform"
+        android:background="@color/md_theme_light_outline"
+        android:gravity="center"
+        android:text="@string/partesCaidas"
+        android:textColor="@color/md_theme_white"
+        app:layout_constraintBottom_toTopOf="@id/scrollViewVertCaidas"
+        app:layout_constraintEnd_toStartOf="@id/guidelineVertDer"
+        app:layout_constraintStart_toEndOf="@id/guidelineVertIzq"
+        app:layout_constraintTop_toBottomOf="@id/guideCenter"/>
+
     <androidx.core.widget.NestedScrollView
-        android:id="@+id/scrollViewVertAvisos"
+        android:id="@id/scrollViewVertCaidas"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -109,7 +141,7 @@
         app:layout_constraintBottom_toTopOf="@id/guidelineHorBot"
         app:layout_constraintEnd_toStartOf="@id/guidelineVertDer"
         app:layout_constraintStart_toEndOf="@id/guidelineVertIzq"
-        app:layout_constraintTop_toBottomOf="@id/scrollViewVertParte">
+        app:layout_constraintTop_toBottomOf="@id/textViewCaidas">
 
         <HorizontalScrollView
             android:id="@+id/horizontalViewCaidas"
@@ -122,8 +154,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
-                android:stretchColumns="0,1,2,3,4,5,6,7,8,9,10,11">
-            </TableLayout>
+                android:stretchColumns="0,1,2,3,4,5,6,7,8,9,10,11"></TableLayout>
         </HorizontalScrollView>
 
     </androidx.core.widget.NestedScrollView>
