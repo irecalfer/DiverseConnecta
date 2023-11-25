@@ -37,7 +37,7 @@ public class ConsultasYRutinasDiariasViewModel extends ViewModel {
     // utilizando el método obtieneDatosRutinasDiaPacientes(). Luego, devuelve el LiveData de la lista de programación.
     public LiveData<ArrayList<PacientesAgrupadosRutinas>> obtieneDatosRutinasDiaPacientes(String fechaRutina, String nombreUnidad, String tipoRutina) {
         String url = Constantes.url_part + "programacionRutinas.php?fecha_rutina=" + fechaRutina + "&nombre=" + nombreUnidad + "&diario=" + tipoRutina;
-
+        listaProgramacionLiveData.postValue(new ArrayList<>());
         peticionesJson.getJsonObjectRequest(url, new PeticionesJson.MyJsonObjectResponseListener() {
             @Override
             public void onResponse(JSONObject response) {

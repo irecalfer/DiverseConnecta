@@ -76,5 +76,9 @@
         <item name="android:autoSizeTextType">uniform</item>
     </style>
 
+    <style name="custom_error">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 
 </resources>

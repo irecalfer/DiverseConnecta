@@ -10,4 +10,7 @@
     <dimen name="header_height">192dp</dimen>
 
     <dimen name="perfil_image_size">64dp</dimen>
+
+    <dimen name="custom_min_width">88dp</dimen>
+    <dimen name="custom_max_width">488dp</dimen>
 </resources>

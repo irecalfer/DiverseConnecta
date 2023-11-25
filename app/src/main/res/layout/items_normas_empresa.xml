@@ -37,10 +37,11 @@
         <TextView
             android:id="@+id/contenidoNorma"
             android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_height="wrap_content"
             android:autoSizeTextType="uniform"
             android:textColor="@color/md_theme_black"
             android:textSize="18sp"
+            android:inputType="textMultiLine"
             tools:text="@string/descripcionNorma" />
 
     </LinearLayout>

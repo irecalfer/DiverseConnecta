@@ -23,13 +23,13 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/userLabel"
-        app:hintTextAppearance="@style/TextLabel"
-        app:hintEnabled="false"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="100dp"
         android:layout_marginStart="50dp"
         android:layout_marginEnd="50dp"
         android:layout_marginBottom="17dp"
+        android:maxWidth="@dimen/custom_max_width"
+        android:minWidth="@dimen/custom_min_width"
         android:textColorHint="@color/md_theme_light_onPrimary"
         app:autoSizeTextType="uniform"
         app:boxBackgroundColor="@color/md_theme_light_surfaceTint"
@@ -40,19 +40,23 @@
         app:endIconDrawable="@drawable/icono_usuario"
         app:endIconMode="custom"
         app:endIconTint="@color/md_theme_light_background"
+        app:errorEnabled="true"
+        app:errorIconTint="@color/blanco_de_cinc"
+        app:errorTextAppearance="@style/custom_error"
         app:helperTextTextColor="#FFFFFF"
+        app:hintEnabled="false"
+        app:hintTextAppearance="@style/TextLabel"
         app:hintTextColor="#FFFFFF"
         app:layout_constraintBottom_toTopOf="@+id/passLabel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imagenLogo"
-        app:passwordToggleTint="@color/md_theme_light_onPrimary">
+        app:layout_constraintTop_toBottomOf="@+id/imagenLogo">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/user"
             android:layout_width="match_parent"
-            android:layout_height="70dp"
+            android:layout_height="wrap_content"
             android:hint="@string/userLogin"
             android:inputType="text"
             android:textColor="#FFFFFF"
@@ -65,13 +69,14 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/passLabel"
-        app:hintTextAppearance="@style/TextLabel"
         android:layout_width="0dp"
-        android:layout_height="80dp"
+        android:layout_height="100dp"
         android:layout_marginStart="50dp"
         android:layout_marginTop="-10dp"
         android:layout_marginEnd="50dp"
         android:layout_marginBottom="11dp"
+        android:maxWidth="@dimen/custom_max_width"
+        android:minWidth="@dimen/custom_min_width"
         android:textColorHint="#FFFFFF"
         app:autoSizeTextType="uniform"
         app:boxBackgroundColor="@color/md_theme_light_surfaceTint"
@@ -79,8 +84,10 @@
         app:boxStrokeColor="#FFFFFF"
         app:endIconMode="password_toggle"
         app:endIconTint="@color/md_theme_light_background"
+        app:errorIconTint="@color/blanco_de_cinc"
         app:hintAnimationEnabled="true"
         app:hintEnabled="false"
+        app:hintTextAppearance="@style/TextLabel"
         app:hintTextColor="#FFFFFF"
         app:layout_constraintBottom_toTopOf="@+id/btnAcceso"
         app:layout_constraintEnd_toEndOf="parent"
@@ -88,7 +95,8 @@
         app:layout_constraintTop_toBottomOf="@+id/userLabel"
         app:passwordToggleTint="#FFFFFF"
         app:placeholderTextColor="#FFFFFF"
-        app:prefixTextColor="#FFFFFF">
+        app:prefixTextColor="#FFFFFF"
+        app:errorTextAppearance="@style/custom_error">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/pass"

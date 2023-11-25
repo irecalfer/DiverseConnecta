@@ -2,6 +2,7 @@ package com.calferinnovate.mediconnecta.View.Sesion;
 
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,15 +24,16 @@ import com.calferinnovate.mediconnecta.ViewModel.SesionViewModel;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelArgs;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelFactory;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 /**
  * Fragmento donde se realiza el autenticación del inicio de sesión del empleado.
  * @author Irene Caldelas Fernánde
  */
-
 public class SesionFragment extends Fragment{
 
     private TextInputEditText username;
+
     private TextInputEditText password;
     private Button btnAcceso;
     private NavController navController;
@@ -39,14 +41,15 @@ public class SesionFragment extends Fragment{
     private ViewModelArgs viewModelArgs;
     private SesionViewModel sesionViewModel;
     private PeticionesJson peticionesJson;
+    private TextInputLayout userLayout;
+    private TextInputLayout passLayout;
 
 
     /**
      * Método llamado cuando se crea la vista del fragmento.
      * Infla el diseño de la UI desde el archivo XML fragment_sesion.xml.
      * Llama a inicializaVariables() para obtener la instancia de ClaseGlobal.
-     * Configura el ViewModel SesionViewModel mediante la creación de un ViewModelFactory que proporciona
-     * instancias de Peticiones Json y ClaseGloabl al ViewModel.
+     * Llama a inicializacionViewModel() para configurar el SesionViewModel.
      *
      * @param inflater inflador utilizado para inflar el diseño de la UI.
      * @param container Contenedor que contiene la vista del fragmento
@@ -74,6 +77,10 @@ public class SesionFragment extends Fragment{
         claseGlobal = ClaseGlobal.getInstance();
     }
 
+    /**
+     * Método que configura el ViewModel SesionViewModel mediante la creación de un ViewModelFactory que proporciona
+     * instancias de Peticiones Json y ClaseGloabl al ViewModel.
+     */
     public void inicializacionViewModel(){
         viewModelArgs = new ViewModelArgs() {
             @Override
@@ -104,7 +111,6 @@ public class SesionFragment extends Fragment{
      * @param savedInstanceState Si no es nulo, este fragmento será reconstruido a partir de un
      *                           estado anterior guardado.
      */
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -134,7 +140,8 @@ public class SesionFragment extends Fragment{
         username = view.findViewById(R.id.user);
         password = view.findViewById(R.id.pass);
         btnAcceso = view.findViewById(R.id.btnAcceso);
-
+        userLayout = view.findViewById(R.id.userLabel);
+        passLayout = view.findViewById(R.id.passLabel);
     }
 
 
@@ -166,7 +173,28 @@ public class SesionFragment extends Fragment{
      * del usuario
      */
     private void iniciarSesion() {
+        validacionesDatos(username.getText().toString(), password.getText().toString());
         sesionViewModel.inicioSesion( username.getText().toString(), password.getText().toString());
+    }
+
+    /**
+     * Validaciones datos.
+     *
+     * @param user the user
+     * @param pass the pass
+     */
+    private void validacionesDatos(String user, String pass){
+        if(TextUtils.isEmpty(user)){
+            userLayout.setError("El usuario no puede estar vacío");
+            //username.setError("El campo de usuario no puede estar vacío");
+        }
+        if(TextUtils.isEmpty(pass)){
+            passLayout.setError("La contraseña no puede estar vacío");
+        }
+
+        if(TextUtils.isEmpty(user) || TextUtils.isEmpty(pass)){
+            return;
+        }
     }
 
 }

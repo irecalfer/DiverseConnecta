@@ -130,10 +130,12 @@ public class ParteCaidasPacientesFragment extends Fragment implements IOnBackPre
         sharedPacientesViewModel.getListaLugaresLiveData().observe(getViewLifecycleOwner(), new Observer<ArrayList<String>>() {
             @Override
             public void onChanged(ArrayList<String> strings) {
+                ArrayList<String> arrayListLugares = strings;
                 //Llenamos el spinner con el arraylist de Strings obtenido
                 //Llamamos a getActivity() para recibir el contexto, utilizamos el layout por defecto para los spinners, y le pasamos el array.
-                lugarSpinner.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item,
-                        strings));
+                ArrayAdapter<String> lugaresAdapter = new ArrayAdapter<>(getActivity(), R.layout.my_spinner,arrayListLugares);
+                lugaresAdapter.setDropDownViewResource(R.layout.my_spinner);
+                lugarSpinner.setAdapter(lugaresAdapter);
             }
         });
     }

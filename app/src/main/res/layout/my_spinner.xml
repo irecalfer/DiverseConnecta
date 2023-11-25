@@ -8,6 +8,7 @@
     android:autoSizeStepGranularity="2sp"
     android:autoSizeTextType="uniform"
     android:maxLines="1"
+    android:textColor="@color/md_theme_black"
     android:text="@string/placeholder">
 
 </TextView>
