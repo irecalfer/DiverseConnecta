@@ -35,31 +35,39 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;
 
+/**
+ * Fragmento donde se realiza la selección de unidad
+ */
 public class SeleccionUnidadFragment extends Fragment {
-
-    Button botonFinalizar;
-    NavController navController;
-    TextInputEditText nombre, cod_empleado, cargo;
-    Spinner areaSP, unidadesSP;
-    Empleado empleado;
-    ImageView foto;
+    private Button botonFinalizar;
+    private NavController navController;
+    private TextInputEditText nombre, cod_empleado, cargo;
+    private Spinner areaSP, unidadesSP;
+    private Empleado empleado;
+    private ImageView foto;
     private ArrayList<Unidades> unidadesArrayList = new ArrayList<>();
     private ClaseGlobal claseGlobal;
     private Unidades unidades;
-    ArrayList<String> listaAreas = new ArrayList<>();
-    ArrayList<String> listaUnidades = new ArrayList<>();
-    ArrayAdapter<String> areasAdapter;
-    ArrayAdapter<String> unidadesAdapter;
-
-
-
+    private ArrayList<String> listaAreas = new ArrayList<>();
+    private ArrayList<String> listaUnidades = new ArrayList<>();
+    private ArrayAdapter<String> areasAdapter;
+    private ArrayAdapter<String> unidadesAdapter;
     private SeleccionUnidadViewModel seleccionUnidadViewModel;
     private ViewModelArgs viewModelArgs;
     private PeticionesJson peticionesJson;
     private String areaSeleccionada;
 
 
-
+    /**
+     * Método llamado cuando se crea la vista del fragmento.
+     * Infla el diseño de la UI desde el archivo XML fragment_seleccion_unidad.xml
+     * Llama a inicializaVariables(vista)
+     *
+     * @param inflater           the inflater
+     * @param container          the container
+     * @param savedInstanceState the saved instance state
+     * @return the view
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -73,6 +81,13 @@ public class SeleccionUnidadFragment extends Fragment {
         return vista;
     }
 
+    /**
+     * Método que Inicializa variables.
+     * Obtiene instancia de clase global y sus objetos.
+     * Enlaza los recursos de la UI con las variables de nuestro código.
+     *
+     * @param view La vista del fragmento.
+     */
     public void inicializaVariables(View view) {
         claseGlobal = ClaseGlobal.getInstance();
         unidadesArrayList = claseGlobal.getListaUnidades();
@@ -88,6 +103,10 @@ public class SeleccionUnidadFragment extends Fragment {
         foto = view.findViewById(R.id.fotoEmpleado);
     }
 
+    /**
+     * Método que configura el ViewModel SeleccionUnidadViewModel mediante la creación de un ViewModelFactory
+     * que proporciona instancias de Peticiones Json y ClaseGloabl al ViewModel.
+     */
     public void inicializaViewModel(){
         viewModelArgs = new ViewModelArgs() {
             @Override
@@ -105,6 +124,15 @@ public class SeleccionUnidadFragment extends Fragment {
         // Inicializa el ViewModel
         seleccionUnidadViewModel = new ViewModelProvider(requireActivity(), factory).get(SeleccionUnidadViewModel.class);
     }
+
+    /**
+     * Método llamado cuando la vista ya ha sido creada.
+     * Se asigna a la variable navController el controlador de navegación correspondiente al fragmento actual.
+     *
+     * @param view               Vista retornada por el inflador.
+     * @param savedInstanceState Si no es nulo, este fragmento será reconstruido a partir de un
+     *                              estado anterior guardado.
+     */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -118,6 +146,11 @@ public class SeleccionUnidadFragment extends Fragment {
 
     }
 
+    /**
+     * Método que setea los datos empleado en la UI.
+     *
+     * @param e Empleado que ha iniciado sesión.
+     */
     public void completaDatosEmpleado(Empleado e) {
         nombre.setText(e.getNombre() + " " + e.getApellidos());
         cargo.setText(String.valueOf(e.getNombreCargo()));
@@ -127,8 +160,14 @@ public class SeleccionUnidadFragment extends Fragment {
     }
 
 
-
-
+    /**
+     * Método que se llama en el onViewCreate para obtener los nombres de las areas y poblar el Spinner.
+     * Llama al método obtenerDatosArea() del SeleccionUnidadViewModel y obtiene un ArrayList con
+     * los nombres de las áreas.
+     * Crea un adaptador con la lista de nombres de áreas obtenidas y el layout my_spinner y pobla
+     * el Spinner.
+     * Llama a seleccionaArea()
+     */
     private void obtieneAreasyPoblaSpinner() {
         seleccionUnidadViewModel.obtenerDatosAreas().observe(getViewLifecycleOwner(), new Observer<ArrayList<String>>() {
             @Override
@@ -137,13 +176,17 @@ public class SeleccionUnidadFragment extends Fragment {
                 areasAdapter = new ArrayAdapter<>(getContext(), R.layout.my_spinner, listaAreas);
                 areasAdapter.setDropDownViewResource(R.layout.my_spinner);
                 areaSP.setAdapter(areasAdapter);
-                poblaSpinner();
+                seleccionaArea();
             }
         });
 
     }
 
-    public void poblaSpinner() {
+    /**
+     * Método que obtiene que área ha sido seleccionada, limpia el ArrayList de Unidades y llama a
+     * obtieneUnidadesYPoblaSpinner() según el área seleccionada.
+     */
+    public void seleccionaArea() {
         areaSP.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -162,6 +205,12 @@ public class SeleccionUnidadFragment extends Fragment {
         });
     }
 
+    /**
+     * Método encargado de obtener la lista de Unidades y poblar el Spinner.
+     * Llama al método obtenerDatosUnidades de SeleccionUnidadViewModel y le pasa el área seleccionada.
+     * Obtiene la lista de unidades y pobla el spinner.
+     * Escucha que Unidad ha sido seleccionada y la setea en clase global.
+     */
     private void obtieneUnidadesYPoblaSpinner() {
         seleccionUnidadViewModel.obtenerDatosUnidades(areaSeleccionada).observe(getViewLifecycleOwner(), new Observer<ArrayList<String>>() {
             @Override
@@ -192,7 +241,14 @@ public class SeleccionUnidadFragment extends Fragment {
 
     }
 
-public void listenerButtonAcceso(){
+    /**
+     * Método que contiene el Listener del Botón de Acceso al Home.
+     * Escucha al botón botónFinalizar.
+     * Llama al método obtieneDatsoPacientes de SeleccionUnidadViewModel y le pasa la unidad seleccionada.
+     * Obtiene los pacientes pertenecientes a la unidad e inicia la actividad HomeActivity. Si no ha
+     * podido obtener los pacientes muestra un Toast de Error al obtener Datos.
+     */
+    public void listenerButtonAcceso(){
     botonFinalizar.setOnClickListener(new View.OnClickListener() {
 
         @Override
