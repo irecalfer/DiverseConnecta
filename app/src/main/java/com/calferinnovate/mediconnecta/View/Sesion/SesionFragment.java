@@ -168,8 +168,8 @@ public class SesionFragment extends Fragment{
     /**
      * Validaciones datos.
      *
-     * @param user the user
-     * @param pass the pass
+     * @param user Nombre de usuario
+     * @param pass Contraseña del empleado
      */
     private void validacionesDatos(String user, String pass){
         if(TextUtils.isEmpty(user)){
