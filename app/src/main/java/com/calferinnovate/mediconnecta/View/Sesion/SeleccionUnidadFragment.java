@@ -15,10 +15,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
+
 
 
 import com.bumptech.glide.Glide;
@@ -40,7 +38,6 @@ import java.util.ArrayList;
  */
 public class SeleccionUnidadFragment extends Fragment {
     private Button botonFinalizar;
-    private NavController navController;
     private TextInputEditText nombre, cod_empleado, cargo;
     private Spinner areaSP, unidadesSP;
     private Empleado empleado;
@@ -53,7 +50,6 @@ public class SeleccionUnidadFragment extends Fragment {
     private ArrayAdapter<String> areasAdapter;
     private ArrayAdapter<String> unidadesAdapter;
     private SeleccionUnidadViewModel seleccionUnidadViewModel;
-    private ViewModelArgs viewModelArgs;
     private PeticionesJson peticionesJson;
     private String areaSeleccionada;
 
@@ -108,7 +104,7 @@ public class SeleccionUnidadFragment extends Fragment {
      * que proporciona instancias de Peticiones Json y ClaseGloabl al ViewModel.
      */
     public void inicializaViewModel(){
-        viewModelArgs = new ViewModelArgs() {
+        ViewModelArgs viewModelArgs = new ViewModelArgs() {
             @Override
             public PeticionesJson getPeticionesJson() {
                 return peticionesJson = new PeticionesJson(requireContext());
@@ -139,7 +135,6 @@ public class SeleccionUnidadFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        navController = Navigation.findNavController(view);
 
 
         completaDatosEmpleado(empleado);
@@ -154,11 +149,11 @@ public class SeleccionUnidadFragment extends Fragment {
      * @param e Empleado que ha iniciado sesión.
      */
     public void completaDatosEmpleado(Empleado e) {
-        nombre.setText(e.getNombre() + " " + e.getApellidos());
+        nombre.setText(String.format("%s %s", e.getNombre(), e.getApellidos()));
         cargo.setText(String.valueOf(e.getNombreCargo()));
         cod_empleado.setText(String.valueOf(e.getCod_empleado()));
         //Cargamos la foto del empleado con Glide
-        Glide.with(getContext()).load(empleado.getFoto()).circleCrop().into(foto);
+        Glide.with(requireContext()).load(empleado.getFoto()).circleCrop().into(foto);
     }
 
 
@@ -171,15 +166,12 @@ public class SeleccionUnidadFragment extends Fragment {
      * Llama a seleccionaArea()
      */
     private void obtieneAreasyPoblaSpinner() {
-        seleccionUnidadViewModel.obtenerDatosAreas().observe(getViewLifecycleOwner(), new Observer<ArrayList<String>>() {
-            @Override
-            public void onChanged(ArrayList<String> strings) {
-                listaAreas = strings;
-                areasAdapter = new ArrayAdapter<>(getContext(), R.layout.my_spinner, listaAreas);
-                areasAdapter.setDropDownViewResource(R.layout.my_spinner);
-                areaSP.setAdapter(areasAdapter);
-                seleccionaArea();
-            }
+        seleccionUnidadViewModel.obtenerDatosAreas().observe(getViewLifecycleOwner(), strings -> {
+            listaAreas = strings;
+            areasAdapter = new ArrayAdapter<>(requireContext(), R.layout.my_spinner, listaAreas);
+            areasAdapter.setDropDownViewResource(R.layout.my_spinner);
+            areaSP.setAdapter(areasAdapter);
+            seleccionaArea();
         });
 
     }
@@ -214,31 +206,28 @@ public class SeleccionUnidadFragment extends Fragment {
      * Escucha que Unidad ha sido seleccionada y la setea en clase global.
      */
     private void obtieneUnidadesYPoblaSpinner() {
-        seleccionUnidadViewModel.obtenerDatosUnidades(areaSeleccionada).observe(getViewLifecycleOwner(), new Observer<ArrayList<String>>() {
-            @Override
-            public void onChanged(ArrayList<String> string) {
-                listaUnidades = string;
-                unidadesAdapter = new ArrayAdapter<>(requireContext(), R.layout.my_spinner, listaUnidades);
-                unidadesAdapter.setDropDownViewResource(R.layout.my_spinner);
-                unidadesSP.setAdapter(unidadesAdapter);
-                unidadesSP.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        if (parent.getId() == R.id.spinnerUnidad) {
-                            // Obtiene la unidad seleccionada del spinner
-                            Unidades unidad = unidadesArrayList.get(position);
-                            unidades = unidad;
-                            // Establece la unidad seleccionada en ClaseGlobal
-                            claseGlobal.setUnidades(unidad);
-                        }
+        seleccionUnidadViewModel.obtenerDatosUnidades(areaSeleccionada).observe(getViewLifecycleOwner(), string -> {
+            listaUnidades = string;
+            unidadesAdapter = new ArrayAdapter<>(requireContext(), R.layout.my_spinner, listaUnidades);
+            unidadesAdapter.setDropDownViewResource(R.layout.my_spinner);
+            unidadesSP.setAdapter(unidadesAdapter);
+            unidadesSP.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    if (parent.getId() == R.id.spinnerUnidad) {
+                        // Obtiene la unidad seleccionada del spinner
+                        Unidades unidad = unidadesArrayList.get(position);
+                        unidades = unidad;
+                        // Establece la unidad seleccionada en ClaseGlobal
+                        claseGlobal.setUnidades(unidad);
                     }
+                }
 
-                    @Override
-                    public void onNothingSelected(AdapterView<?> parent) {
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
 
-                    }
-                });
-            }
+                }
+            });
         });
 
     }
@@ -251,25 +240,16 @@ public class SeleccionUnidadFragment extends Fragment {
      * podido obtener los pacientes muestra un Toast de Error al obtener Datos.
      */
     public void listenerButtonAcceso(){
-    botonFinalizar.setOnClickListener(new View.OnClickListener() {
+    botonFinalizar.setOnClickListener(v -> seleccionUnidadViewModel.obtieneDatosPacientes(unidades.getNombreUnidad()).observe(getViewLifecycleOwner(), obtenidos -> {
+        if(obtenidos){
+            Intent intent = new Intent(getActivity(), HomeActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK) ;
+            startActivity(intent);
 
-        @Override
-        public void onClick(View v) {
-            seleccionUnidadViewModel.obtieneDatosPacientes(unidades.getNombreUnidad()).observe(getViewLifecycleOwner(), new Observer<Boolean>() {
-                @Override
-                public void onChanged(Boolean obtenidos) {
-                    if(obtenidos){
-                        Intent intent = new Intent(getActivity(), HomeActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK) ;
-                        startActivity(intent);
-
-                    }else{
-                        Toast.makeText(getActivity(), "Error al obtener datos", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
+        }else{
+            Toast.makeText(getActivity(), "Error al obtener datos", Toast.LENGTH_SHORT).show();
         }
-    });
+    }));
 
 }
 
