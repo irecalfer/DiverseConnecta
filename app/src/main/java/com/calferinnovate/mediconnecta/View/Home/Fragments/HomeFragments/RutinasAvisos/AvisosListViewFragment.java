@@ -3,10 +3,8 @@ package com.calferinnovate.mediconnecta.View.Home.Fragments.HomeFragments.Rutina
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +28,6 @@ public class AvisosListViewFragment extends Fragment {
     private ListView avisosLV;
     private String fecha;
     private AvisosViewModel avisosViewModel;
-    private ViewModelArgsJson viewModelArgs;
     private PeticionesJson peticionesJson;
     private ArrayList<String> listaContenidoAvisos = new ArrayList<>();
     private ArrayAdapter<String> avisosAdapter;
@@ -71,7 +68,7 @@ public class AvisosListViewFragment extends Fragment {
      * que proporciona una instancia de Peticiones Json al ViewModel.
      */
     private void inicializaViewModel(){
-        viewModelArgs = () -> peticionesJson = new PeticionesJson(requireContext());
+        ViewModelArgsJson viewModelArgs = () -> peticionesJson = new PeticionesJson(requireContext());
 
         ViewModelFactory<AvisosViewModel> factory = new ViewModelFactory<>(viewModelArgs);
         // Inicializa el ViewModel
@@ -98,13 +95,10 @@ public class AvisosListViewFragment extends Fragment {
      * Obtiene una lista con el contenido de los avisos y actualiza el ListView con un ArrayAdapter.
      */
     public void rellenaListView(){
-        avisosViewModel.obtieneAvisosFecha(fecha).observe(getViewLifecycleOwner(), new Observer<ArrayList<String>>() {
-            @Override
-            public void onChanged(ArrayList<String> strings) {
-                listaContenidoAvisos = strings;
-                avisosAdapter = new ArrayAdapter<>(getActivity(), R.layout.items_avisos_listview, R.id.itemAvisoListView, listaContenidoAvisos);
-                avisosLV.setAdapter(avisosAdapter);
-            }
+        avisosViewModel.obtieneAvisosFecha(fecha).observe(getViewLifecycleOwner(), strings -> {
+            listaContenidoAvisos = strings;
+            avisosAdapter = new ArrayAdapter<>(requireActivity(), R.layout.items_avisos_listview, R.id.itemAvisoListView, listaContenidoAvisos);
+            avisosLV.setAdapter(avisosAdapter);
         });
     }
 
