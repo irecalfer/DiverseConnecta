@@ -106,7 +106,6 @@ public class ConsultasYRutinasDiariasFragment extends Fragment implements IOnBac
         };
 
         ViewModelFactory<ConsultasYRutinasDiariasViewModel> factory = new ViewModelFactory<>(viewModelArgs);
-        // Inicializa el ViewModel
         consultasYRutinasDiariasViewModel = new ViewModelProvider(this, factory).get(ConsultasYRutinasDiariasViewModel.class);
     }
 

@@ -13,7 +13,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.calferinnovate.mediconnecta.Model.Avisos;
 import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.View.Home.Fragments.HomeFragments.RutinasAvisos.AvisosListViewFragment;
 import com.calferinnovate.mediconnecta.View.Home.Fragments.HomeFragments.RutinasAvisos.ConsultasYRutinasDiariasFragment;
@@ -21,59 +20,76 @@ import com.calferinnovate.mediconnecta.View.Home.Fragments.HomeFragments.Rutinas
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+/**
+ * HomeFragment es el fragmento por defecto cuando se inicia HomeActivity.
+ * Proporciona un CalendarView donde los empleados seleccionarán una fecha y botones que les redirigirán
+ * a los avisos o rutinas de los pacientes del día seleccionado.
+ */
 public class HomeFragment extends Fragment {
 
     private CalendarView calendario;
-    private Button abrirFragmentoListaAvisos;
+    private Button avisosBtn;
     private Button rutinasBtn;
-
     private Calendar calendar;
-
-    private Avisos avisos;
     private String fechaActual;
 
 
+    /**
+     * Método llamado cuando se crea la vista del fragmento.
+     * Infla el diseño de la UI desde el archivo XML fragment_home.xml.
+     *
+     * @param inflater inflador utilizado para inflar el diseño de la UI.
+     * @param container Contenedor que contiene la vista del fragmento
+     * @param savedInstanceState Estado de guardado de la instancia del fragmento
+     *
+     * @return vista Es la vista inflada del fragmento.
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        //Declaramos las variables globales y referenciamos nuestras variables con sus correspondientes
-        //componentes xml
         View vista = inflater.inflate(R.layout.fragment_home, container, false);
         getActivity().setTitle("Home");
-        //Obtenemos la referencia al ListView desde onCreateView
-        inicializaVariables(vista);
+
+        enlazaRecursos(vista);
 
         return vista;
 
     }
 
-    public void inicializaVariables(View view) {
+    /**
+     * Método que enlaza los recursos de la UI con las variables miembros del fragmento.
+     * @param view La vista inflada.
+     */
+    public void enlazaRecursos(View view) {
         calendario = view.findViewById(R.id.calendarView);
-        abrirFragmentoListaAvisos = view.findViewById(R.id.abrirAvisos);
+        avisosBtn = view.findViewById(R.id.abrirAvisos);
         rutinasBtn = view.findViewById(R.id.abrirRutinas);
     }
 
+    /**
+     * Método llamado cuando la vista ya ha sido creada.
+     * Obtiene una instancia del Calendario.
+     *
+     * @param view               Vista retornada por el inflador.
+     * @param savedInstanceState Si no es nulo, este fragmento será reconstruido a partir de un
+     *                           estado anterior guardado.
+     */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        //Obtenemos una instancia de calendario ya que CalendarView no contiene estos datos.
         calendar = Calendar.getInstance();
-
-
         setearFechaSeleccionada();
-        //abrirFragmentoAvisos();
-        //listenerButtonRutinas();
-
-
     }
 
 
+    /**
+     * Método que establece un listener al CalendarView para manejar la fecha seleccionada.
+     * La fecha la formatearemos a yyyy-MM-dd para poder pasarla en las consultas a la base de datos.
+     * Una vez seleccionada la fecha se llama a abrirFragmentoAvisos o listenerButtonRutinas y les pasa
+     * la fecha seleccionada.
+     */
     public void setearFechaSeleccionada() {
-        //Si clickamos en algún día del CalendarView, setearemos en el calendario de java el día clickeado
-        //y llamando a fechaSeleccionada guardaremos esa fecha en formato de año/mes/dia para poder pasarla
-        //la base de datos
         calendario.setOnDateChangeListener((view, year, month, dayOfMonth) -> {
             calendar.set(year, month, dayOfMonth);
             fechaActual = new SimpleDateFormat("yyyy-MM-dd").format(calendar.getTime());
@@ -82,47 +98,49 @@ public class HomeFragment extends Fragment {
         });
     }
 
+    /**
+     * Método con escucha del botón avisosBtn. Cuando sea clickado le pasará al fragmento
+     * la fecha y reemplazará el fragment container fragmentContainerViewLIstView con el fragmento
+     * avisosListViewFragment.
+     * @param fechaActual Fecha seleccionada.
+     */
     public void abrirFragmentoAvisos(String fechaActual) {
-        //CUando clcikememos en el botón mostraremos en el fragmentContainer el fragment que contiene el
-        //ListView
-        abrirFragmentoListaAvisos.setOnClickListener(v -> {
-            // Crear un nuevo fragmento PdfViewerFragment
+        avisosBtn.setOnClickListener(v -> {
             AvisosListViewFragment avisosListViewFragment = new AvisosListViewFragment();
 
             Bundle bundleFecha = new Bundle();
             bundleFecha.putString("fecha", fechaActual);
             avisosListViewFragment.setArguments(bundleFecha);
 
-            // Reemplazar el fragmento actual con AvisosListViewFragment
             FragmentTransaction transaction = ((FragmentActivity) getContext()).getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.fragmentContainerViewLIstView, avisosListViewFragment);
             transaction.setReorderingAllowed(true);
-            transaction.addToBackStack(null); // Opcional: Agregar a la pila de retroceso para poder volver al fragmento anterior
+            transaction.addToBackStack(null);
             transaction.commit();
 
-            //getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerViewLIstView, new AvisosListViewFragment()).commit();
-            //Log.d("avisos", "Se ha implementado el nuevo fragmento");
         });
     }
 
+    /**
+     * Método con escucha del botón rutinasBtn. Cuando sea clickado le pasará al fragmento
+     * la fecha y reemplazará el fragment container fragment_container con el fragmento
+     * consultasYRutinasDiariasFragment.
+     * @param fechaActual Fecha seleccionada.
+     */
     public void listenerButtonRutinas(String fechaActual) {
         //Cuando clcikememos en el botón mostraremos el fragment que contiene las rutinas
-        rutinasBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ConsultasYRutinasDiariasFragment consultasYRutinasDiariasFragment = new ConsultasYRutinasDiariasFragment();
+        rutinasBtn.setOnClickListener(v -> {
+            ConsultasYRutinasDiariasFragment consultasYRutinasDiariasFragment = new ConsultasYRutinasDiariasFragment();
 
-                Bundle bundleFechaRutina = new Bundle();
-                bundleFechaRutina.putString("fecha", fechaActual);
-                consultasYRutinasDiariasFragment.setArguments(bundleFechaRutina);
+            Bundle bundleFechaRutina = new Bundle();
+            bundleFechaRutina.putString("fecha", fechaActual);
+            consultasYRutinasDiariasFragment.setArguments(bundleFechaRutina);
 
-                FragmentTransaction transaction = ((FragmentActivity) getContext()).getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.fragment_container, consultasYRutinasDiariasFragment);
-                transaction.setReorderingAllowed(true);
-                transaction.addToBackStack(null); // Opcional: Agregar a la pila de retroceso para poder volver al fragmento anterior
-                transaction.commit();
-                //getParentFragmentManager().beginTransaction().replace(R.id.fragment_container, new ConsultasYRutinasDiariasFragment()).commit();
-            }
+            FragmentTransaction transaction = ((FragmentActivity) getContext()).getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragment_container, consultasYRutinasDiariasFragment);
+            transaction.setReorderingAllowed(true);
+            transaction.addToBackStack(null);
+            transaction.commit();
         });
     }
 
