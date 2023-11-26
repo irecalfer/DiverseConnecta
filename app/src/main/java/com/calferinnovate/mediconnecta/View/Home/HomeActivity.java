@@ -42,15 +42,9 @@ import com.google.android.material.navigation.NavigationView;
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, OnBackPressedDispatcherOwner {
 
     private DrawerLayout drawerLayout;
-    private ImageView fotoEmpleadoND;
-    private TextView nombreEmpleadoND;
-    private TextView unidadND;
-    private ClaseGlobal claseGlobal;
     private Empleado empleado;
     private Unidades unidad;
-    private View headerView;
     private Toolbar toolbar;
-    private ActionBar actionBar;
     private NavigationView navigationView;
 
     /**
@@ -82,7 +76,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
      * Inicializa las variables necesarias para la Activity.
      */
     public void inicializaVariables() {
-        claseGlobal = ClaseGlobal.getInstance();
+        ClaseGlobal claseGlobal = ClaseGlobal.getInstance();
         empleado = claseGlobal.getEmpleado();
         unidad = claseGlobal.getUnidades();
     }
@@ -103,7 +97,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private void estableceBarraDeHerramientas() {
         setSupportActionBar(toolbar);
 
-        actionBar = getSupportActionBar();
+        ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
@@ -115,14 +109,14 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
      * @param navigationView Vista del Navigation Drawer.
      */
     public void rellenaDatosPersonalesNavigationDrawer(NavigationView navigationView) {
-        headerView = navigationView.getHeaderView(0);
-        fotoEmpleadoND = headerView.findViewById(R.id.fotoEmpleadoND);
-        nombreEmpleadoND = headerView.findViewById(R.id.nombreEmpleadoND);
-        unidadND = headerView.findViewById(R.id.unidadND);
+        View headerView = navigationView.getHeaderView(0);
+        ImageView fotoEmpleadoND = headerView.findViewById(R.id.fotoEmpleadoND);
+        TextView nombreEmpleadoND = headerView.findViewById(R.id.nombreEmpleadoND);
+        TextView unidadND = headerView.findViewById(R.id.unidadND);
 
         Glide.with(getApplicationContext()).load(empleado.getFoto()).circleCrop().into(fotoEmpleadoND);
 
-        nombreEmpleadoND.setText(empleado.getNombre() + " " + empleado.getApellidos());
+        nombreEmpleadoND.setText(String.format("%s %s", empleado.getNombre(), empleado.getApellidos()));
         unidadND.setText(unidad.getNombreUnidad());
     }
 
@@ -231,23 +225,15 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         TextView siSalir = dialog.findViewById(R.id.textViewSi);
         TextView noSalir = dialog.findViewById(R.id.textViewNo);
 
-        noSalir.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
+        noSalir.setOnClickListener(v -> dialog.dismiss());
 
-        siSalir.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
+        siSalir.setOnClickListener(v -> {
+            dialog.dismiss();
 
-                Intent intent = new Intent(HomeActivity.this, MainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-                finish();
-            }
+            Intent intent = new Intent(HomeActivity.this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
         });
 
         dialog.show();
@@ -269,20 +255,14 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         TextView noSalir = dialog.findViewById(R.id.textViewNo);
 
 
-        noSalir.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Cerramos el dialogo
-                dialog.dismiss();
-            }
+        noSalir.setOnClickListener(v -> {
+            //Cerramos el dialogo
+            dialog.dismiss();
         });
 
-        siSalir.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-                finish();
-            }
+        siSalir.setOnClickListener(v -> {
+            dialog.dismiss();
+            finish();
         });
 
         //mostramos el dialogo de salida
