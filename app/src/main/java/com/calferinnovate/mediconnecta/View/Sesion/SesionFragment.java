@@ -12,7 +12,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -38,7 +37,6 @@ public class SesionFragment extends Fragment{
     private Button btnAcceso;
     private NavController navController;
     private ClaseGlobal claseGlobal;
-    private ViewModelArgs viewModelArgs;
     private SesionViewModel sesionViewModel;
     private PeticionesJson peticionesJson;
     private TextInputLayout userLayout;
@@ -53,8 +51,7 @@ public class SesionFragment extends Fragment{
      *
      * @param inflater inflador utilizado para inflar el diseño de la UI.
      * @param container Contenedor que contiene la vista del fragmento
-     * @param savedInstanceState Estado de guardado de la instancia del fragmento
-     *
+     * @param savedInstanceState Estado de guardado de la instancia del fragmento*
      *
      * @return vista Es la vista inflada del fragmento.
      */
@@ -82,7 +79,7 @@ public class SesionFragment extends Fragment{
      * instancias de Peticiones Json y ClaseGloabl al ViewModel.
      */
     public void inicializacionViewModel(){
-        viewModelArgs = new ViewModelArgs() {
+        ViewModelArgs viewModelArgs = new ViewModelArgs() {
             @Override
             public PeticionesJson getPeticionesJson() {
                 return peticionesJson = new PeticionesJson(requireContext());
@@ -100,8 +97,7 @@ public class SesionFragment extends Fragment{
     }
 
     /**
-     * Método llamado cuando la vista ya ha sido creada.
-     *
+     * Método llamado cuando la vista ya ha sido creada.*
      * Se asigna a la variable navController el controlador de navegación correspondiente al fragmento actual.
      * Llama a asociacionVariablesComponentes(View) para asociar las variables declaradas a los elementos
      * de la UI.
@@ -122,12 +118,7 @@ public class SesionFragment extends Fragment{
         verificaEstadoInicioSesion();
 
         //Relaccionamos el botón de Acceso con el Listener para que actúe cuando sea presionado
-        btnAcceso.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                iniciarSesion();
-            }
-        });
+        btnAcceso.setOnClickListener(v -> iniciarSesion());
     }
 
     /**
@@ -154,15 +145,12 @@ public class SesionFragment extends Fragment{
      * En caso de que los datos hayan sido incorrectos muestra un mensaje de error.
      */
     public void verificaEstadoInicioSesion(){
-        sesionViewModel.getEmpleadoIniciaSesion().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean sesion) {
-                if(sesion){
-                    Toast.makeText(getContext(), "Permitiendo el acceso al usuario " + username.getText().toString(), Toast.LENGTH_SHORT).show();
-                    navController.navigate(R.id.action_sesionFragment_to_seleccionUnidadFragment);
-                }else{
-                    Toast.makeText(getContext(), "Usuario o contraseña incorrecta", Toast.LENGTH_SHORT).show();
-                }
+        sesionViewModel.getEmpleadoIniciaSesion().observe(getViewLifecycleOwner(), sesion -> {
+            if(sesion){
+                Toast.makeText(getContext(), "Permitiendo el acceso al usuario " + username.getText().toString(), Toast.LENGTH_SHORT).show();
+                navController.navigate(R.id.action_sesionFragment_to_seleccionUnidadFragment);
+            }else{
+                Toast.makeText(getContext(), "Usuario o contraseña incorrecta", Toast.LENGTH_SHORT).show();
             }
         });
     }
