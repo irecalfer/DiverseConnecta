@@ -97,7 +97,7 @@ public class SesionFragment extends Fragment{
     }
 
     /**
-     * Método llamado cuando la vista ya ha sido creada.*
+     * Método llamado cuando la vista ya ha sido creada.
      * Se asigna a la variable navController el controlador de navegación correspondiente al fragmento actual.
      * Llama a asociacionVariablesComponentes(View) para asociar las variables declaradas a los elementos
      * de la UI.
