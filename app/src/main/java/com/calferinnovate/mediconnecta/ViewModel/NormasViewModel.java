@@ -21,7 +21,7 @@ public class NormasViewModel extends ViewModel {
     private ClaseGlobal claseGlobal;
     private PeticionesJson peticionesJson;
 
-    private MutableLiveData<ArrayList<Normas>> arrayListLiveData = new MutableLiveData<>();
+    private MutableLiveData<ArrayList<Normas>> arrayListLiveDataNormas = new MutableLiveData<>();
 
     public NormasViewModel(){
 
@@ -31,12 +31,10 @@ public class NormasViewModel extends ViewModel {
         this.peticionesJson = viewModelArgsJson.getPeticionesJson();
     }
 
-    public LiveData<ArrayList<Normas>> getArrayListLiveData(){
-        return arrayListLiveData;
-    }
 
-    public void obtieneNormasEmpresa(){
+    public LiveData<ArrayList<Normas>> obtieneNormasEmpresa(){
         String url = Constantes.url_part+"normas.php";
+        arrayListLiveDataNormas.postValue(new ArrayList<>());
         peticionesJson.getJsonObjectRequest(url, new PeticionesJson.MyJsonObjectResponseListener() {
             @Override
             public void onResponse(JSONObject response) {
@@ -50,7 +48,7 @@ public class NormasViewModel extends ViewModel {
                         normasArrayList.add(norma);
                     }
                     if(!normasArrayList.isEmpty()){
-                        arrayListLiveData.postValue(new ArrayList<>(normasArrayList));
+                        arrayListLiveDataNormas.postValue(new ArrayList<>(normasArrayList));
                     }
                 }catch(JSONException e){
                     e.printStackTrace();
@@ -62,5 +60,6 @@ public class NormasViewModel extends ViewModel {
                     error.printStackTrace();
             }
         });
+        return arrayListLiveDataNormas;
     }
 }

@@ -38,10 +38,9 @@ public class HomeFragment extends Fragment {
      * Método llamado cuando se crea la vista del fragmento.
      * Infla el diseño de la UI desde el archivo XML fragment_home.xml.
      *
-     * @param inflater inflador utilizado para inflar el diseño de la UI.
-     * @param container Contenedor que contiene la vista del fragmento
+     * @param inflater           inflador utilizado para inflar el diseño de la UI.
+     * @param container          Contenedor que contiene la vista del fragmento
      * @param savedInstanceState Estado de guardado de la instancia del fragmento
-     *
      * @return vista Es la vista inflada del fragmento.
      */
     @Override
@@ -58,6 +57,7 @@ public class HomeFragment extends Fragment {
 
     /**
      * Método que enlaza los recursos de la UI con las variables miembros del fragmento.
+     *
      * @param view La vista inflada.
      */
     public void enlazaRecursos(View view) {
@@ -102,6 +102,7 @@ public class HomeFragment extends Fragment {
      * Método con escucha del botón avisosBtn. Cuando sea clickado le pasará al fragmento
      * la fecha y reemplazará el fragment container fragmentContainerViewLIstView con el fragmento
      * avisosListViewFragment.
+     *
      * @param fechaActual Fecha seleccionada.
      */
     public void abrirFragmentoAvisos(String fechaActual) {
@@ -125,10 +126,10 @@ public class HomeFragment extends Fragment {
      * Método con escucha del botón rutinasBtn. Cuando sea clickado le pasará al fragmento
      * la fecha y reemplazará el fragment container fragment_container con el fragmento
      * consultasYRutinasDiariasFragment.
+     *
      * @param fechaActual Fecha seleccionada.
      */
     public void listenerButtonRutinas(String fechaActual) {
-        //Cuando clcikememos en el botón mostraremos el fragment que contiene las rutinas
         rutinasBtn.setOnClickListener(v -> {
             ConsultasYRutinasDiariasFragment consultasYRutinasDiariasFragment = new ConsultasYRutinasDiariasFragment();
 
