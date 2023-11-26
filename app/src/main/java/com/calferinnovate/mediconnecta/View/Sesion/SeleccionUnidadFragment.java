@@ -128,6 +128,8 @@ public class SeleccionUnidadFragment extends Fragment {
     /**
      * Método llamado cuando la vista ya ha sido creada.
      * Se asigna a la variable navController el controlador de navegación correspondiente al fragmento actual.
+     * Completa los datos de empleado, obtiene las áreas y pobla es spinner y establece la escucha para el botón
+     * de Acceso al Home.
      *
      * @param view               Vista retornada por el inflador.
      * @param savedInstanceState Si no es nulo, este fragmento será reconstruido a partir de un

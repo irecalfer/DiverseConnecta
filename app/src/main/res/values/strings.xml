@@ -137,4 +137,6 @@
     <string name="informesPdf">Botón que permite la visualización de los informes en pdf</string>
     <string name="partes">Partes generales</string>
     <string name="partesCaidas">Partes de caída generales</string>
+    <string name="cambioUnidad">¿Quiere cambiar de unidad?</string>
+    <string name="cierreSesion">¿Quiere cerrar sesión?</string>
 </resources>

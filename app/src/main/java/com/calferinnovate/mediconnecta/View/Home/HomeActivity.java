@@ -1,6 +1,13 @@
 package com.calferinnovate.mediconnecta.View.Home;
 
 
+import android.app.Dialog;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.activity.OnBackPressedDispatcherOwner;
@@ -14,27 +21,24 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import android.app.Dialog;
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
-
 import com.bumptech.glide.Glide;
+import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
+import com.calferinnovate.mediconnecta.Model.Empleado;
+import com.calferinnovate.mediconnecta.Model.Unidades;
+import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.View.Home.Fragments.HomeFragment;
 import com.calferinnovate.mediconnecta.View.Home.Fragments.NormasEmpresaFragment;
 import com.calferinnovate.mediconnecta.View.Home.Fragments.PacientesFragment;
 import com.calferinnovate.mediconnecta.View.Home.Fragments.ParteGeneralFragment;
-import com.calferinnovate.mediconnecta.R;
-import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
-import com.calferinnovate.mediconnecta.Model.Empleado;
 import com.calferinnovate.mediconnecta.View.IOnBackPressed;
-import com.calferinnovate.mediconnecta.Model.Unidades;
 import com.calferinnovate.mediconnecta.View.Sesion.MainActivity;
 import com.google.android.material.navigation.NavigationView;
 
+/**
+ * HomeActivity proporciona la funcionalidad de Navegación entre los fragmentos del Home a través del
+ * Navigation Drawer y diálogos para el cambio de unidad y cierre de sesión.
+ * Implementa un retroceso personalizado.
+ */
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, OnBackPressedDispatcherOwner {
 
     private DrawerLayout drawerLayout;
@@ -45,75 +49,129 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private Empleado empleado;
     private Unidades unidad;
     private View headerView;
+    private Toolbar toolbar;
+    private ActionBar actionBar;
+    private NavigationView navigationView;
 
+    /**
+     * Se llama cuando se crea la actividad. Configura la interfaz de usuario, inicializa
+     * variables y establece escuchadores.
+     *
+     * @param savedInstanceState Si no es nulo, este fragmento será reconstruido a partir de un
+     *                           estado anterior guardado.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        Toolbar toolbar = findViewById(R.id.toolbar); //Ignore red line errors
-        setSupportActionBar(toolbar);
-
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
-
-        drawerLayout = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        headerView = navigationView.getHeaderView(0);
         inicializaVariables();
-        rellenaDatosPersonalesNavigationDrawer(headerView);
+        enlazaRecursos();
 
+        estableceBarraDeHerramientas();
+        rellenaDatosPersonalesNavigationDrawer(navigationView);
         navigationView.setNavigationItemSelectedListener(this);
-
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open_nav,
-                R.string.close_nav);
-        drawerLayout.addDrawerListener(toggle);
-        toggle.syncState();
-
+        sincronizaNavigationDrawerConToolbar();
 
         creaRetroceso();
 
-
-
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
-            navigationView.setCheckedItem(R.id.home_item_id);
-        }
-
+        compruebaEstadoInstancia(savedInstanceState);
     }
 
-    public void inicializaVariables(){
+    /**
+     * Inicializa las variables necesarias para la Activity.
+     */
+    public void inicializaVariables() {
         claseGlobal = ClaseGlobal.getInstance();
         empleado = claseGlobal.getEmpleado();
         unidad = claseGlobal.getUnidades();
     }
-    public void rellenaDatosPersonalesNavigationDrawer(View headerView){
+
+    /**
+     * Enlaza los recursos con las variables.
+     */
+    public void enlazaRecursos() {
+        toolbar = findViewById(R.id.toolbar);
+        drawerLayout = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.nav_view);
+    }
+
+    /**
+     * Establece la barra de herramientas como la barra de acción de la Activity y habilita el botón
+     * atrás en la barra de acción.
+     */
+    private void estableceBarraDeHerramientas() {
+        setSupportActionBar(toolbar);
+
+        actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+    }
+
+    /**
+     * Rellena los datos personales del empleado en la cabecera del Navigation Drawer.
+     *
+     * @param navigationView Vista del Navigation Drawer.
+     */
+    public void rellenaDatosPersonalesNavigationDrawer(NavigationView navigationView) {
+        headerView = navigationView.getHeaderView(0);
         fotoEmpleadoND = headerView.findViewById(R.id.fotoEmpleadoND);
         nombreEmpleadoND = headerView.findViewById(R.id.nombreEmpleadoND);
         unidadND = headerView.findViewById(R.id.unidadND);
 
         Glide.with(getApplicationContext()).load(empleado.getFoto()).circleCrop().into(fotoEmpleadoND);
 
-        nombreEmpleadoND.setText(empleado.getNombre()+" "+empleado.getApellidos());
+        nombreEmpleadoND.setText(empleado.getNombre() + " " + empleado.getApellidos());
         unidadND.setText(unidad.getNombreUnidad());
     }
 
+    /**
+     * Sincroniza el Navigation Drawer con la barra de herramientas para mostrar el icono de las 3 líneas.
+     */
+    public void sincronizaNavigationDrawerConToolbar() {
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open_nav,
+                R.string.close_nav);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+    }
+
+    /**
+     * Comprueba si la instancia de la actividad es nula y de ser así realiza la transición a HomeFragment
+     * conteniendolo en su fragment container.
+     *
+     * @param savedInstanceState Información sobre el estado anterior de la actividad.
+     */
+    public void compruebaEstadoInstancia(Bundle savedInstanceState) {
+
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
+            navigationView.setCheckedItem(R.id.home_item_id);
+        }
+    }
+
+    /**
+     * Escucha que ítem del Navigation Drawer ha sido seleccionado y en función de ello reemplaza el
+     * fragment container con el fragmento correspondiente.
+     * En caso de que el ítem sea de Cambio de unidad o Cierre Sesión llama a los métodos que contienen
+     * el dialog personalizado.
+     * @param item El ítem seleccionado.
+     * @return true si el evento se ha manejado correctamente y false en caso contrario.
+     */
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.home_item_id){
+        if (item.getItemId() == R.id.home_item_id) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
-        }else if(item.getItemId() == R.id.pacientes_item_id){
+        } else if (item.getItemId() == R.id.pacientes_item_id) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PacientesFragment()).addToBackStack(null).commit();
-        }else if(item.getItemId() == R.id.parte_general_item_id){
+        } else if (item.getItemId() == R.id.parte_general_item_id) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ParteGeneralFragment()).addToBackStack(null).commit();
-        }else if(item.getItemId() == R.id.normas_empresa_item_id){
+        } else if (item.getItemId() == R.id.normas_empresa_item_id) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new NormasEmpresaFragment()).addToBackStack(null).commit();
-        }else if(item.getItemId() == R.id.cierre_sesion_item_id){
-            //Si dan a cerrar sesión mostramos el diálogo de salida
+        } else if (item.getItemId() == R.id.cierre_sesion_item_id) {
             dialogCerrarSesion();
-        }else if(item.getItemId() == R.id.cambio_unidad_item_id){
+        } else if (item.getItemId() == R.id.cambio_unidad_item_id) {
             dialogCambioUnidad();
         }
 
@@ -121,7 +179,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-    public void creaRetroceso(){
+    /**
+     * Crea el retroceso personalizado para para gestionar la navegación y el retroceso en la actividad y sus
+     * correspondientes fragmentos.
+     */
+    public void creaRetroceso() {
 
         // Crea un OnBackPressedCallback para manejar el retroceso en la actividad
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {
@@ -154,62 +216,59 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         getOnBackPressedDispatcher().addCallback(this, callback);
     }
 
-    public void dialogCerrarSesion(){
-        //Creamos un Dialog
+    /**
+     * Muestra un diálogo para confirmar el cierre de sesión.
+     * Si se confirma vuelve a MainActivity al fragmento de inicio de sesión, en caso contrario el
+     * dialogo se cierra y se mantiene en el fragmento desde el que se le llamó.
+     */
+    public void dialogCerrarSesion() {
         final Dialog dialog = new Dialog(this);
 
-        //Asignamos al dialog el layout que hemos creado para cerrar sesión
         dialog.setContentView(R.layout.dialog_cerrar_sesion_y_cambio_unidad);
 
-        //Obtenemos las referencias a los TextView
         TextView texto = dialog.findViewById(R.id.textViewCierreCambio);
-        texto.setText("¿Quiere cerrar sesión?");
+        texto.setText(R.string.cierreSesion);
         TextView siSalir = dialog.findViewById(R.id.textViewSi);
         TextView noSalir = dialog.findViewById(R.id.textViewNo);
 
-        //Click listener para el no
         noSalir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Cerramos el dialogo
                 dialog.dismiss();
             }
         });
 
-        //CLick listener para si
         siSalir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Cerramos el dialog y salimos
                 dialog.dismiss();
-                //finishAndRemoveTask();
+
                 Intent intent = new Intent(HomeActivity.this, MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 finish();
-                //finishAndRemoveTask();
             }
         });
 
-        //mostramos el dialogo de salida
         dialog.show();
     }
 
-    public void dialogCambioUnidad(){
-        //Creamos un Dialog
+    /**
+     * Muestra un diálogo para confirmar el cambio de unidad-
+     * Si se confirma vuelve al fragmento SeleccionUnidadFragment, en caso contrario el
+     * dialogo se cierra y se mantiene en el fragmento desde el que se le llamó.
+     */
+    public void dialogCambioUnidad() {
         final Dialog dialog = new Dialog(this);
 
-        //Asignamos al dialog el layout que hemos creado para cerrar sesión
         dialog.setContentView(R.layout.dialog_cerrar_sesion_y_cambio_unidad);
 
-        //Obtenemos las referencias a los TextView
         TextView texto = dialog.findViewById(R.id.textViewCierreCambio);
-        texto.setText("¿Quiere cambiar de unidad?");
+        texto.setText(R.string.cambioUnidad);
         TextView siSalir = dialog.findViewById(R.id.textViewSi);
         TextView noSalir = dialog.findViewById(R.id.textViewNo);
 
 
-        //Click listener para el no
         noSalir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -218,17 +277,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
-        //CLick listener para si
         siSalir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Cerramos el dialog y salimos
                 dialog.dismiss();
                 finish();
-                // Navegamos a MainActivity
-                //Intent intent = new Intent(HomeActivity.this, HomeActivity.class);
-                //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                //startActivity(intent);
             }
         });
 
