@@ -1,6 +1,5 @@
 package com.calferinnovate.mediconnecta.ViewModel;
 
-import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -8,7 +7,6 @@ import androidx.lifecycle.ViewModel;
 
 import com.android.volley.VolleyError;
 import com.calferinnovate.mediconnecta.Model.Avisos;
-import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
 import com.calferinnovate.mediconnecta.Model.Constantes;
 import com.calferinnovate.mediconnecta.Model.PeticionesJson;
 
@@ -18,21 +16,40 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+/**
+ * ViewModel encargado de gestionar los datos relativos a los Avisos diarios.
+ * Usa variables MutableLiveData para modificar el valor contenido en la variable después de la creación
+ * y utiliza LiveData para transmitir los datos hacia la UI, posteriormente proporciona actualizaciones
+ * a los observadores del fragmento.
+ */
 public class AvisosViewModel extends ViewModel {
 
-    private MutableLiveData<ArrayList<String>> arrayListAvisosMutableLiveData = new MutableLiveData<>();
-    private ClaseGlobal claseGlobal;
+    private final MutableLiveData<ArrayList<String>> arrayListAvisosMutableLiveData = new MutableLiveData<>();
     private PeticionesJson peticionesJson;
-    private ArrayList<String> contenidoAvisosArrayList = new ArrayList<>();
 
+    /**
+     * Constructor por defecto.
+     */
     public AvisosViewModel(){
 
     }
 
+    /**
+     * Constructor que recibe una instancia de ViewModelArgsJson para proporcionar PeticionesJson.
+     *
+     * @param viewModelArgsJson Instancia de ViewModelArgsJson que proporciona PeticionesJson.
+     */
     public AvisosViewModel(ViewModelArgsJson viewModelArgsJson){
         peticionesJson = viewModelArgsJson.getPeticionesJson();
     }
 
+    /**
+     * Método que realiza una solicitud al servudor a través de PeticionesJson para obtener la lista
+     * de avisos de una fecha dada, encapsula el contenido del arraylist en arrayListAvisosMutableLiveData
+     * y devuelve el LiveData.
+     * @param fecha Fecha seleccionada en el Calendar View.
+     * @return LiveData con el contenido de los avisos de dicha fecha.
+     */
     public LiveData<ArrayList<String>> obtieneAvisosFecha(String fecha){
         String url = Constantes.url_part+"avisos.php?fecha_aviso="+fecha;
         peticionesJson.getJsonObjectRequest(url, new PeticionesJson.MyJsonObjectResponseListener() {
@@ -56,8 +73,7 @@ public class AvisosViewModel extends ViewModel {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                error.toString();
-                Log.d("error", error.toString());
+                error.printStackTrace();
             }
         });
         return arrayListAvisosMutableLiveData;
