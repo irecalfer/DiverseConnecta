@@ -11,39 +11,64 @@ import com.google.android.material.textfield.TextInputEditText;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Adaptador que actualiza la UI del Parte con los datos del empleado y del paciente.
+ */
+
 public class PartePacienteAdapter {
-    private Pacientes paciente;
-    private ClaseGlobal claseGlobal;
-    private Context context;
+    private final Pacientes paciente;
+    private final ClaseGlobal claseGlobal;
+    private final Context context;
     private TextInputEditText fechaHora;
     private TextInputEditText pacienteNombreApellido;
     private TextInputEditText empleadoNombre;
 
-    public PartePacienteAdapter(Pacientes paciente, ClaseGlobal claseGlobal, Context context){
+    /**
+     * Constructor del adaptador.
+     */
+    public PartePacienteAdapter(Pacientes paciente, ClaseGlobal claseGlobal, Context context) {
         this.paciente = paciente;
         this.claseGlobal = claseGlobal;
         this.context = context;
     }
 
-    public void rellenaUI(View view){
-        enlazarVariablesConWidgets(view);
+    /**
+     * Método utilizado para actualizar la UI.
+     *
+     * @param view La vista inflada.
+     */
+    public void rellenaUI(View view) {
+        enlazaRecursos(view);
         seteaDatos();
     }
 
-    private void enlazarVariablesConWidgets(View view){
+    /**
+     * Método que enlaza los recusos de la UI con las variables.
+     *
+     * @param view La vista inflada.
+     */
+    private void enlazaRecursos(View view) {
         fechaHora = view.findViewById(R.id.fechaHoraParte);
         pacienteNombreApellido = view.findViewById(R.id.pacienteParte);
         empleadoNombre = view.findViewById(R.id.empleadoParte);
     }
 
-    private void seteaDatos(){
+    /**
+     * Método que actualiza la UI con los datos del paciente seleccionado y del empleado que rellena
+     * el parte.
+     */
+    private void seteaDatos() {
         fechaHora.setText(obtieneFechaYHoraFormateada());
-        pacienteNombreApellido.setText(paciente.getNombre()+" "+paciente.getApellidos());
-        empleadoNombre.setText(claseGlobal.getEmpleado().getNombre()+" "+claseGlobal.getEmpleado().getApellidos());
+        pacienteNombreApellido.setText(paciente.getNombre() + " " + paciente.getApellidos());
+        empleadoNombre.setText(claseGlobal.getEmpleado().getNombre() + " " + claseGlobal.getEmpleado().getApellidos());
     }
 
-    private String obtieneFechaYHoraFormateada(){
-
+    /**
+     * Método que formatea la fecha del parte a dd-MM-yyyy HH:mm
+     *
+     * @return fecha formateada
+     */
+    private String obtieneFechaYHoraFormateada() {
         // Formato de salida (día-mes-año abreviado)
         DateTimeFormatter fechaHora = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
 

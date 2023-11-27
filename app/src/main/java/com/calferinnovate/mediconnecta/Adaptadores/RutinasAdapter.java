@@ -11,25 +11,43 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.Model.Pacientes;
 import com.calferinnovate.mediconnecta.Model.PacientesAgrupadosRutinas;
+import com.calferinnovate.mediconnecta.R;
 
 import java.util.ArrayList;
 
+/**
+ * Adaptador usado para poblar el RecyclerView de lass Rutinas y consultas diarias de los pacientes.
+ */
 public class RutinasAdapter extends RecyclerView.Adapter<RutinasAdapter.ViewHolder> {
 
-    private ArrayList<PacientesAgrupadosRutinas> dataSet;
-    private ArrayList<Pacientes> pacientes;
-    private Context context;
+    private final ArrayList<PacientesAgrupadosRutinas> dataSet;
+    private final ArrayList<Pacientes> pacientes;
+    private final Context context;
 
 
+    /**
+     * Constructor del adaptador
+     *
+     * @param data      lista de pacientes pertenecientes a una rutina.
+     * @param context   contexto
+     * @param pacientes lista de pacientes.
+     */
+    public RutinasAdapter(ArrayList<PacientesAgrupadosRutinas> data, ArrayList<Pacientes> pacientes, Context context) {
+        dataSet = data;
+        this.pacientes = pacientes;
+        this.context = context;
+    }
 
+    /**
+     * Proporciona una referencia al tipo de vistas que se están utilizando.
+     */
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView nombreApellidos;
-        private TextView hora;
-        private TextView habitacion;
-        private ImageView foto;
+        private final TextView nombreApellidos;
+        private final TextView hora;
+        private final TextView habitacion;
+        private final ImageView foto;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -39,11 +57,11 @@ public class RutinasAdapter extends RecyclerView.Adapter<RutinasAdapter.ViewHold
             foto = itemView.findViewById(R.id.fotoPacienteRutina);
         }
 
-        public TextView getTextViewDatosPersonales(){
+        public TextView getTextViewDatosPersonales() {
             return nombreApellidos;
         }
 
-        public TextView getTextViewhora(){
+        public TextView getTextViewhora() {
             return hora;
         }
 
@@ -55,30 +73,39 @@ public class RutinasAdapter extends RecyclerView.Adapter<RutinasAdapter.ViewHold
             return foto;
         }
     }
-    public RutinasAdapter(ArrayList<PacientesAgrupadosRutinas> data, ArrayList<Pacientes> pacientes, Context context){
-        dataSet = data;
-        this.pacientes = pacientes;
-        this.context = context;
-    }
 
+
+    /**
+     * Método utilizado para crear un ViewHolder nuevo, es invocado por el layout manager.
+     * Crea una nueva vista, que define la UI del elemento de la lista.
+     *
+     * @param viewGroup El ViewGroup al que se añadirá la nueva View después de que se vincule a una posición de adaptador.
+     * @param viewType  El tipo de vista de la nueva Vista.
+     * @return la vista creada.
+     */
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType){
-        // Create a new view, which defines the UI of the list item
+    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View view = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.items_recyclerview_rutinas, viewGroup, false);
         return new ViewHolder(view);
     }
 
-    // Replace the contents of a view (invoked by the layout manager)
+    /**
+     * Método que reemplaza el contenido de la vista, es invocado por el layout manager.
+     * Obtiene el elemento de dataSet en cierta posición, mira cual es su CIP SNS y lo compara con la
+     * lista de pacientes. Si encuentra el paciente actualiza la UI con nombre, apellidos, foto del paciente
+     * y hora a la que tiene esa rutina.
+     *
+     * @param holder   El ViewHolder que debe actualizarse para representar el contenido del en la posición
+     *                 dada en la lista.
+     * @param position La posición del elemento dentro de lista del adaptador.
+     */
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        // Get element from your dataset at this position and replace the
-        // contents of the view with that element
-        //Seteando nombre y apellidos
-        for(Pacientes paciente: pacientes){
-            if(dataSet.get(position).getFkCipSns().equals(paciente.getCipSns())){
-                holder.getTextViewDatosPersonales().setText(paciente.getNombre()+" "+paciente.getApellidos());
-                holder.getTextViewHabitacion().setText("Habitacion:"+" "+String.valueOf(paciente.getFkNumHabitacion()));
+        for (Pacientes paciente : pacientes) {
+            if (dataSet.get(position).getFkCipSns().equals(paciente.getCipSns())) {
+                holder.getTextViewDatosPersonales().setText(paciente.getNombre() + " " + paciente.getApellidos());
+                holder.getTextViewHabitacion().setText("Habitacion:" + " " + paciente.getFkNumHabitacion());
                 Glide.with(context).load(paciente.getFoto()).circleCrop().into(holder.getImageViewFoto());
                 break;
             }
@@ -87,32 +114,15 @@ public class RutinasAdapter extends RecyclerView.Adapter<RutinasAdapter.ViewHold
         holder.getTextViewhora().setText(dataSet.get(position).getHoraRutina());
     }
 
+    /**
+     * Método que obtiene el tamaño de la lista.
+     *
+     * @return Tamaño de la lista.
+     */
     @Override
     public int getItemCount() {
-        // Return the size of your dataset (invoked by the layout manager)
         return dataSet.size();
     }
 
-    //
-    public void actualizarDatos(ArrayList<PacientesAgrupadosRutinas> nuevosDatos) {
-        // Itera a través de los datos existentes
-        for (PacientesAgrupadosRutinas nuevoDato : nuevosDatos) {
-            // Busca si el dato ya existe en la lista
-            boolean encontrado = false;
-            for (PacientesAgrupadosRutinas datoExistente : dataSet) {
-                if (nuevoDato.getFkCipSns().equals(datoExistente.getFkCipSns())) {
-                    // Actualiza los valores del dato existente
-                    datoExistente.setHoraRutina(nuevoDato.getHoraRutina());
-                    encontrado = true;
-                    break;
-                }
-            }
-            if (!encontrado) {
-                // Si el dato no existe en la lista, agrégalo
-                dataSet.add(nuevoDato);
-            }
-        }
-        notifyDataSetChanged();
-    }
 
 }

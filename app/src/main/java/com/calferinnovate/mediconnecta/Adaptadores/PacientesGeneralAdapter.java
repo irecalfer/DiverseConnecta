@@ -15,25 +15,41 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Adaptador que pobla el Fragmento GeneralPacientes con los datos de este.
+ */
 public class PacientesGeneralAdapter {
 
     private ImageView fotoPaciente;
     private TextInputEditText nombre, apellidos, sexo, dni, lugarNacimiento, edad, fechaNacimiento,
             estadoCivil, fechaIngreso, unidad, habitacion, cipSns, numSeguridadSocial;
-    private Pacientes paciente;
-    private Context context;
+    private final Pacientes paciente;
+    private final Context context;
 
-    public PacientesGeneralAdapter(Pacientes paciente, Context context){
+    /**
+     * Constrctor del adaptador
+     */
+    public PacientesGeneralAdapter(Pacientes paciente, Context context) {
         this.paciente = paciente;
         this.context = context;
     }
 
-    public void rellenaUI(View view){
-        enlazarVariablesConWidgets(view);
+    /**
+     * Método que enlaza los recursos de la UI con las variables y setea los datos del paciente.
+     *
+     * @param view La vista inflada.
+     */
+    public void rellenaUI(View view) {
+        enlazaRecursos(view);
         seteaDatos();
     }
 
-    public void enlazarVariablesConWidgets(View view){
+    /**
+     * Método que enlaza los recusos de la UI con las variables-
+     *
+     * @param view La vista inflada.
+     */
+    public void enlazaRecursos(View view) {
         fotoPaciente = view.findViewById(R.id.fotoPacienteDetalle);
         nombre = view.findViewById(R.id.nombrePaciente);
         apellidos = view.findViewById(R.id.apellidoPaciente);
@@ -50,7 +66,10 @@ public class PacientesGeneralAdapter {
         numSeguridadSocial = view.findViewById(R.id.numSeguridadSocialPaciente);
     }
 
-    public void seteaDatos(){
+    /**
+     * Método que actualiza la UI con los datos del paciente seleccionado.
+     */
+    public void seteaDatos() {
         Glide.with(context).load(paciente.getFoto()).circleCrop().into(fotoPaciente);
         nombre.setText(paciente.getNombre());
         apellidos.setText(paciente.getApellidos());
@@ -58,16 +77,22 @@ public class PacientesGeneralAdapter {
         dni.setText(paciente.getDni());
         lugarNacimiento.setText(paciente.getLugarNacimiento());
         edad.setText(String.valueOf(calculaEdad(paciente)));
-        fechaNacimiento.setText(formateaFecha(paciente));
+        fechaNacimiento.setText(formateaFecha(paciente.getFechaNacimiento()));
         estadoCivil.setText(paciente.getEstadoCivil());
-        fechaIngreso.setText(paciente.getFechaIngreso());
+        fechaIngreso.setText(formateaFecha(paciente.getFechaIngreso()));
         unidad.setText(nombreUnidad(paciente));
         habitacion.setText(String.valueOf(paciente.getFkNumHabitacion()));
         cipSns.setText(paciente.getCipSns());
         numSeguridadSocial.setText(String.valueOf(paciente.getNumSeguridadSocial()));
     }
 
-    private int calculaEdad(Pacientes pacientes){
+    /**
+     * Método usado para calcular la edad del paciente a partir de su fecha de nacimiento.
+     *
+     * @param pacientes Paciente seleccionado
+     * @return La edad del paciente.
+     */
+    private int calculaEdad(Pacientes pacientes) {
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate fechaNac = LocalDate.parse(pacientes.getFechaNacimiento(), fmt);
         LocalDate ahora = LocalDate.now();
@@ -76,7 +101,13 @@ public class PacientesGeneralAdapter {
         return period.getYears();
     }
 
-    private String formateaFecha(Pacientes pacientes){
+    /**
+     * Método que formatea la fecha de nacimiento y de ingreso de yyyy-MM-dd a dd-MM-yyyy
+     *
+     * @param fecha Fecha a formatear
+     * @return fecha formateada
+     */
+    private String formateaFecha(String fecha) {
         // Formato de entrada (año-mes-día)
         DateTimeFormatter formatoEntrada = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
@@ -84,17 +115,24 @@ public class PacientesGeneralAdapter {
         DateTimeFormatter formatoSalida = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
         // Parsea la fecha de entrada
-        LocalDate fechaEntrada = LocalDate.parse(pacientes.getFechaNacimiento(), formatoEntrada);
+        LocalDate fechaEntrada = LocalDate.parse(fecha, formatoEntrada);
 
         // Formatea la fecha en el formato de salida
         String fechaFormateada = fechaEntrada.format(formatoSalida);
         return fechaFormateada;
     }
 
-    private String nombreUnidad(Pacientes paciente){
-        String nombreUnidad = new String();
-        for(Unidades unidades: ClaseGlobal.getInstance().getListaUnidades()){
-            if(paciente.getFkIdUnidad() == unidades.getId_unidad()){
+
+    /**
+     * Método que busca la unidad a la que pertenece el paciente y actualiza la UI.
+     *
+     * @param paciente Paciente seleccionado
+     * @return nombre de la unidad.
+     */
+    private String nombreUnidad(Pacientes paciente) {
+        String nombreUnidad = "";
+        for (Unidades unidades : ClaseGlobal.getInstance().getListaUnidades()) {
+            if (paciente.getFkIdUnidad() == unidades.getId_unidad()) {
                 nombreUnidad = unidades.getNombreUnidad();
             }
         }
