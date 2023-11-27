@@ -108,7 +108,7 @@ public class NormasEmpresaFragment extends Fragment implements IOnBackPressed {
     /**
      * Método que agrega la lógica específica del fragmento para manejar el restroceso.
      * Al presionar back volvería al HomeFragment.
-     * @return true si el fragmento manejar el retroceso, false en caso contrario.
+     * @return true si el fragmento maneja el retroceso, false en caso contrario.
      */
     @Override
     public boolean onBackPressed() {
