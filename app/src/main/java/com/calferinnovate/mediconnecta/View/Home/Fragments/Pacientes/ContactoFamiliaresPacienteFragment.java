@@ -70,7 +70,7 @@ public class ContactoFamiliaresPacienteFragment extends Fragment implements IOnB
     }
 
     /**
-     * Método que configura el ViewModel SeleccionUnidadViewModel mediante la creación de un ViewModelFactory
+     * Método que configura el ViewModel SharedPacientesViewModel mediante la creación de un ViewModelFactory
      * que proporciona instancias de Peticiones Json y ClaseGloabl al ViewModel.
      */
     public void inicializaViewModel(){
