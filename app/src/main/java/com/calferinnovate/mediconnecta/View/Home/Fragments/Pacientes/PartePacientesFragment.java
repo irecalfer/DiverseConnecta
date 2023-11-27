@@ -11,23 +11,19 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.calferinnovate.mediconnecta.Adaptadores.PartePacienteAdapter;
-import com.calferinnovate.mediconnecta.View.Home.Fragments.PacientesFragment;
-import com.calferinnovate.mediconnecta.View.IOnBackPressed;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
 import com.calferinnovate.mediconnecta.Model.Constantes;
 import com.calferinnovate.mediconnecta.Model.Pacientes;
 import com.calferinnovate.mediconnecta.R;
+import com.calferinnovate.mediconnecta.View.Home.Fragments.PacientesFragment;
+import com.calferinnovate.mediconnecta.View.IOnBackPressed;
 import com.calferinnovate.mediconnecta.ViewModel.SharedPacientesViewModel;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -39,108 +35,139 @@ import java.time.format.DateTimeFormatter;
 import java.util.Hashtable;
 import java.util.Map;
 
+/**
+ * Fragmento encargado de crear los partes de cada paciente y subirlo a la base de datos.
+ */
 public class PartePacientesFragment extends Fragment implements IOnBackPressed {
 
 
     private TextInputEditText descripcion;
-    private Button registrar;
+    private Button registrarParteBtn;
     private ClaseGlobal claseGlobal;
     private SharedPacientesViewModel sharedPacientesViewModel;
-    private PartePacienteAdapter partePacienteAdapter;
 
+    /**
+     * Método llamado cuando se crea la vista del fragmento.
+     * Infla el diseño de la UI desde el archivo XML fragment_parte_pacientes.xml.
+     * Obtiene instancia de ClaseGlobal.
+     * Establece el título del fragmento.
+     * Inicializa el View Model.
+     *
+     * @param inflater           inflador utilizado para inflar el diseño de la UI.
+     * @param container          Contenedor que contiene la vista del fragmento
+     * @param savedInstanceState Estado de guardado de la instancia del fragmento
+     * @return vista Es la vista inflada del fragmento.
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_parte_pacientes, container, false);
         claseGlobal = ClaseGlobal.getInstance();
-        inicializaVariables(view);
+        enlazaRecursos(view);
         getActivity().setTitle("Parte");
         sharedPacientesViewModel = new ViewModelProvider(requireActivity()).get(SharedPacientesViewModel.class);
         return view;
     }
 
-    public void inicializaVariables(View view) {
+    /**
+     * Método encargado de enlazar los recursos de la UI con las variables miembro.
+     *
+     * @param view La vista inflada.
+     */
+    public void enlazaRecursos(View view) {
         descripcion = view.findViewById(R.id.descripcionParte);
-        registrar = view.findViewById(R.id.registraParte);
+        registrarParteBtn = view.findViewById(R.id.registraParte);
     }
 
 
+    /**
+     * Método llamado cuando la vista ya ha sido creada.
+     * Obtiene el paciente seleccionado, rellena la UI con los datos existentes y establece la
+     * escucha del botón.
+     *
+     * @param view               Vista retornada por el inflador.
+     * @param savedInstanceState Si no es nulo, este fragmento será reconstruido a partir de un
+     *                           estado anterior guardado.
+     */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        sharedPacientesViewModel.getPaciente().observe(getViewLifecycleOwner(), new Observer<Pacientes>() {
-            @Override
-            public void onChanged(Pacientes pacientes) {
-                Pacientes pacienteActual = pacientes;
-                rellenaUI(pacienteActual, view);
-                clickListenerButtonRegistrar(pacienteActual);
-            }
+        sharedPacientesViewModel.getPaciente().observe(getViewLifecycleOwner(), paciente -> {
+            rellenaUI(paciente, view);
+            clickListenerButtonRegistrar(paciente);
         });
 
 
     }
 
+    /**
+     * Método encargado de configurar el Adaptador PartePacienteAdapter y actualizar la UI con los datos del paciente.
+     *
+     * @param pacienteActual Paciente seleccionado.
+     * @param view           Vista inflada.
+     */
     public void rellenaUI(Pacientes pacienteActual, View view) {
-        partePacienteAdapter = new PartePacienteAdapter(pacienteActual, claseGlobal, requireContext());
+        PartePacienteAdapter partePacienteAdapter = new PartePacienteAdapter(pacienteActual, claseGlobal, requireContext());
         partePacienteAdapter.rellenaUI(view);
     }
 
+    /**
+     * Método que establece la escucha del botón registrarParteBtn, si se ha pulsado llama a registraElParte().
+     *
+     * @param pacienteActual Paciente seleccionado.
+     */
     public void clickListenerButtonRegistrar(Pacientes pacienteActual) {
-        registrar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                registraElParte(pacienteActual);
-                descripcion.setText("");
-            }
+        registrarParteBtn.setOnClickListener(v -> {
+            registraElParte(pacienteActual);
+            descripcion.setText("");
         });
     }
 
 
+    /**
+     * Método encargado de subir el parte a la base de datos.
+     * Asigna a variable el contenido del EditText de descripción.
+     * Valida si se ha introducido la descripción.
+     * Construye la url para la solcitud POST al servidor, crea la solicitud Volley incluyendo los parámetros
+     * de la solicitud en getParams() y procesa y maneja la respuesta JSON del servidor.
+     *
+     * @param paciente Paciente Seleccionado.
+     */
     public void registraElParte(Pacientes paciente) {
         final String fecha = fechaDateTimeSql();
         final String cipSns = paciente.getCipSns();
         final String descripcionParte = descripcion.getText().toString();
         final int codEmpleado = claseGlobal.getEmpleado().getCod_empleado();
 
-        //Realizamos validaciones
-        if(TextUtils.isEmpty(descripcionParte)){
+        if (TextUtils.isEmpty(descripcionParte)) {
             descripcion.setError("La descripción no puede estar vacía");
             return;
         }
 
         String url = Constantes.url_part + "crea_parte.php";
-        // creating a new variable for our request queue
         StringRequest stringRequest;
-        stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                try {
-                    JSONObject jsonResponse = new JSONObject(response);
-                    String message = jsonResponse.getString("message");
+        stringRequest = new StringRequest(Request.Method.POST, url, response -> {
+            try {
+                JSONObject jsonResponse = new JSONObject(response);
+                String message = jsonResponse.getString("message");
 
-                    if ("Registro exitoso".equals(message)) {
-                        Toast.makeText(getContext(), "Parte registrado correctamente", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(getContext(), "Error al registrar el parte", Toast.LENGTH_SHORT).show();
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    Toast.makeText(getContext(), "Error en el formato de respuesta", Toast.LENGTH_SHORT).show();
+                if ("Registro exitoso".equals(message)) {
+                    Toast.makeText(getContext(), "Parte registrado correctamente", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getContext(), "Error al registrar el parte", Toast.LENGTH_SHORT).show();
                 }
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Toast.makeText(getContext(), "Error en el formato de respuesta", Toast.LENGTH_SHORT).show();
             }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getContext(), "Ha habido un error al intentar registrar el parte", Toast.LENGTH_SHORT).show();
-                error.printStackTrace();
-            }
+        }, error -> {
+            Toast.makeText(getContext(), "Ha habido un error al intentar registrar el parte", Toast.LENGTH_SHORT).show();
+            error.printStackTrace();
         }) {
-            @Nullable
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> parametros = new Hashtable<String, String>();
+            protected Map<String, String> getParams() {
+                Map<String, String> parametros = new Hashtable<>();
                 parametros.put("fk_cip_sns", cipSns.trim());
                 parametros.put("descripcion", descripcionParte.trim());
                 parametros.put("fk_cod_empleado", String.valueOf(codEmpleado));
@@ -152,13 +179,23 @@ public class PartePacientesFragment extends Fragment implements IOnBackPressed {
         requestQueue.add(stringRequest);
     }
 
+    /**
+     * Método encargado de formatear la fecha y hora del parte a yyyy-MM-dd HH:mm:ss para
+     * subirlo a la base de datos
+     *
+     * @return fecha y hora formateada.
+     */
     public String fechaDateTimeSql() {
         DateTimeFormatter fechaHora = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        // Formatea la fecha en el formato de salida
-        String fechaFormateada = fechaHora.format(LocalDateTime.now());
-        return fechaFormateada;
+        return fechaHora.format(LocalDateTime.now());
     }
 
+    /**
+     * Método que agrega la lógica específica del fragmento para manejar el restroceso.
+     * Al presionar back volvería al PacientesFragment.
+     *
+     * @return true si el fragmento manejar el retroceso, false en caso contrario.
+     */
     @Override
     public boolean onBackPressed() {
         requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PacientesFragment()).commit();
