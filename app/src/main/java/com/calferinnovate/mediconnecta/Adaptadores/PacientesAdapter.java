@@ -11,27 +11,38 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.Model.Pacientes;
+import com.calferinnovate.mediconnecta.R;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class PacientesAdapter extends RecyclerView.Adapter<PacientesAdapter.PacientesViewHolder>{
+/**
+ * Adaptador utilizado para poblar el RecyclerView de la lista de pacientes pertenecientes a una unidad.
+ */
+public class PacientesAdapter extends RecyclerView.Adapter<PacientesAdapter.PacientesViewHolder> {
 
-
-
-    //Interface para que el fragment implemente el listener y poder capturar el evento fuera del adaptador
-    public interface ItemClickListener{
-        public void onClick(int position);
+    /**
+     * Interfaz para que el fragmento implemente el listener y poder capturar el evento fuera del adaptador
+     */
+    public interface ItemClickListener {
+        void onClick(int position);
     }
-    private ArrayList<Pacientes> listaPacientes;
+
+    private final ArrayList<Pacientes> listaPacientes;
     ArrayList<Pacientes> listaOriginal;
-    private Context mContext;
+    private final Context mContext;
     private ItemClickListener clickListener;
 
-    public PacientesAdapter(ArrayList<Pacientes> listaPacientes, Context context, ItemClickListener clickListener){
+    /**
+     * Constructor del adaptador
+     *
+     * @param listaPacientes Lista de pacientes pertenecientes a una unidad
+     * @param context        Contexto
+     * @param clickListener  Escucha del click.
+     */
+    public PacientesAdapter(ArrayList<Pacientes> listaPacientes, Context context, ItemClickListener clickListener) {
         this.listaPacientes = listaPacientes;
         mContext = context;
         this.clickListener = clickListener;
@@ -39,36 +50,56 @@ public class PacientesAdapter extends RecyclerView.Adapter<PacientesAdapter.Paci
         listaOriginal.addAll(listaPacientes);
     }
 
+    /**
+     * Método utilizado para crear un ViewHolder nuevo, es invocado por el layout manager.
+     * Crea una nueva vista, que define la UI del elemento de la lista.
+     *
+     * @param parent   El ViewGroup al que se añadirá la nueva View después de que se vincule a una posición de adaptador.
+     * @param viewType El tipo de vista de la nueva Vista.
+     * @return la vista creada.
+     */
     @NonNull
     @Override
     public PacientesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        // Create a new view, which defines the UI of the list item
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.card_layout_residentes, parent, false);
         return new PacientesViewHolder(view);
     }
 
-    // Replace the contents of a view (invoked by the layout manager)
+    /**
+     * Método que reemplaza el contenido de la vista, es invocado por el layout manager.
+     * Obtiene el elemento de listaPacientes en cierta posición y reemplaza el contenido de la vista con ese elemento.
+     *
+     * @param holder   El ViewHolder que debe actualizarse para representar el contenido del en la posición
+     *                 dada en la lista.
+     * @param position La posición del elemento dentro de lista del adaptador.
+     */
     @Override
     public void onBindViewHolder(@NonNull PacientesViewHolder holder, int position) {
-        // Get element from your dataset at this position and replace the
-        // contents of the view with that element
         Pacientes pacientes = listaPacientes.get(position);
-        //Seteando nombre
-        //holder.fotoPacienteImageView.setImage
+
         Glide.with(mContext).load(pacientes.getFoto()).circleCrop().into(holder.fotoPacienteImageView);
         holder.nombreCompletoTextView.setText(pacientes.getNombre());
         holder.apellidos.setText(pacientes.getApellidos());
-        holder.habitacionTextView.setText("Habitación:"+" "+pacientes.getFkNumHabitacion());
+        holder.habitacionTextView.setText("Habitación:" + " " + pacientes.getFkNumHabitacion());
 
     }
 
-    public void filtrado(String busqueda){
+    /**
+     * Método utilizado para filtrar la lista de pacientes cuando se hace una búsqueda con el SearchView.
+     * Si el usuario no ha buscado nada se muestra la lista completa de pacientes.
+     * En caso de que el usuario haya efectuado una búsqueda asignaremos a una nueva lista la lista de pacientes,
+     * buscaremos por nombre de paciente y lo transformaremos a minúsculas para que no haya sensibilidad.
+     * Se limpia la lista original de pacientes y se añaden los pacientes pertenecientes a la búsqueda.
+     *
+     * @param busqueda String de búsqueda proporcionado por el usuario.
+     */
+    public void filtrado(String busqueda) {
         int longitud = busqueda.length();
-        if(longitud == 0){
+        if (longitud == 0) {
             listaPacientes.clear();
             listaPacientes.addAll(listaOriginal);
-        }else{
+        } else {
             List<Pacientes> collection = listaPacientes.stream()
                     .filter(i -> i.getNombre().toLowerCase().contains(busqueda.toLowerCase()))
                     .collect(Collectors.toList());
@@ -77,14 +108,24 @@ public class PacientesAdapter extends RecyclerView.Adapter<PacientesAdapter.Paci
         }
         notifyDataSetChanged();
     }
+
+    /**
+     * Tamaño de la lista de pacientes
+     *
+     * @return Tamaño de la lista.
+     */
     @Override
     public int getItemCount() {
         return listaPacientes.size();
     }
 
 
-    public class PacientesViewHolder extends RecyclerView.ViewHolder{
-        // Campos respectivos de un item
+    /**
+     * Proporciona una referencia al tipo de vistas que se están utilizando.
+     * Configura el botón para seleccionar un paciente. Esto propaga el evento hacia afuera, así podemos capturarlo
+     * en el punto que queramos de nuestra aplicación
+     */
+    public class PacientesViewHolder extends RecyclerView.ViewHolder {
         private final ImageView fotoPacienteImageView;
         private final TextView nombreCompletoTextView;
         private final TextView habitacionTextView;
@@ -98,8 +139,6 @@ public class PacientesAdapter extends RecyclerView.Adapter<PacientesAdapter.Paci
             habitacionTextView = itemView.findViewById(R.id.idHabitacion);
             apellidos = itemView.findViewById(R.id.idApellidosCompletos);
 
-            //Esto propaga el evento hacia afuera, así podemos capturarlo en el punto que queramos de
-            //nuestra aplicación
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -109,24 +148,13 @@ public class PacientesAdapter extends RecyclerView.Adapter<PacientesAdapter.Paci
 
         }
 
-        public ImageView getFotoPacienteImageView() {
-            return fotoPacienteImageView;
-        }
-
-        public TextView getNombreCompletoTextView() {
-            return nombreCompletoTextView;
-        }
-
-        public TextView getHabitacionTextView() {
-            return habitacionTextView;
-        }
-
-
 
     }
 
-    //Este metodo se utiliza desde el fragmento que captura el evento de clic de los items
-    public void setOnClickListener(ItemClickListener clickListener){
+    /**
+     * Este metodo se utiliza desde el fragmento que captura el evento de clic de los items
+     */
+    public void setOnClickListener(ItemClickListener clickListener) {
         this.clickListener = clickListener;
     }
 
