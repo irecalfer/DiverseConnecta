@@ -10,25 +10,42 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.Model.Caidas;
+import com.calferinnovate.mediconnecta.R;
 
 import java.util.ArrayList;
 
+/**
+ * Adaptador usado para poblar el TableLayout de caídas en el parte general.
+ */
+
 public class CaidasAdapter extends ArrayAdapter<Caidas> {
-    private Context context;
-    private ArrayList<Caidas> caidasArrayList;
 
-
+    /**
+     * Constructor del adaptador
+     *
+     * @param context         Contexto
+     * @param caidasArrayList Lista de partes de caídas.
+     */
     public CaidasAdapter(Context context, ArrayList<Caidas> caidasArrayList) {
         super(context, 0, caidasArrayList);
     }
 
-    public View inflaElHeader(@NonNull ViewGroup parent){
+    /**
+     * Método que infla el header el TableLayout usando el layout header_tablelayout_caidas.
+     *
+     * @param parent El ViewGroup al que se añadirá la nueva View después de que se vincule a una posición de adaptador.
+     * @return La vista.
+     */
+    public View inflaElHeader(@NonNull ViewGroup parent) {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.header_tablelayout_caidas, parent, false);
         return view;
     }
 
+    /**
+     * Método usado para poblar dinámicamente las filas del TableLayout.
+     * Se enlazan los recursos de la UI con las variables y se setean los datos.
+     */
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -48,7 +65,6 @@ public class CaidasAdapter extends ArrayAdapter<Caidas> {
         TextView textViewAvisadoFamiliares = convertView.findViewById(R.id.tvRellenaAvisoFamiliares);
         TextView textViewObservaciones = convertView.findViewById(R.id.tvRellenaObservacionesCaida);
         TextView textViewEmpleado = convertView.findViewById(R.id.tvRellenaEmpleadoVeCaida);
-
 
 
         // Configura los valores de las vistas de texto con los datos de la caida
