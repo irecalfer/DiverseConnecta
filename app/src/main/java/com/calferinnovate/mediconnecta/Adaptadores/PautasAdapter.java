@@ -75,7 +75,7 @@ public class PautasAdapter extends RecyclerView.Adapter<PautasAdapter.PautasView
     public void onBindViewHolder(@NonNull PautasViewHolder holder, int position) {
 
         if (listaPautas.isEmpty()) {
-            holder.textViewNoPautas.setText("No tiene pautas");
+            holder.textViewNoPautas.setText(R.string.noPautas);
         } else {
             Pautas pautas = listaPautas.get(position);
             holder.tipoPauta.setText(pautas.getTipoPauta());
@@ -84,7 +84,7 @@ public class PautasAdapter extends RecyclerView.Adapter<PautasAdapter.PautasView
             if (observaciones != null && !observaciones.isEmpty()) {
                 holder.observacionesPauta.setText(observaciones);
             } else {
-                holder.observacionesPauta.setText("No tiene observaciones.");
+                holder.observacionesPauta.setText(R.string.noObservaciones);
             }
         }
     }

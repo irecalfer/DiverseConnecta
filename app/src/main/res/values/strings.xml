@@ -139,4 +139,8 @@
     <string name="cambioUnidad">¿Quiere cambiar de unidad?</string>
     <string name="cierreSesion">¿Quiere cerrar sesión?</string>
     <string name="sinSeguro">Sin seguro</string>
+    <string name="noAnatomicos">Sin anatómico</string>
+    <string name="noRutinaAnatomicos">No tiene rutina de anatómicos</string>
+    <string name="noPautas">No tiene pautas</string>
+    <string name="noObservaciones">No tiene observaciones</string>
 </resources>

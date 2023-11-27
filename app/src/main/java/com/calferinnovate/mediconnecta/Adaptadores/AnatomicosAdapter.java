@@ -22,7 +22,7 @@ public class AnatomicosAdapter extends RecyclerView.Adapter<AnatomicosAdapter.An
 
     private final ArrayList<Pautas> listaPautas;
     private final boolean muestraNoAnatomicos;
-    private Context context;
+    private final Context context;
 
     /**
      * Constructor del adaptador
@@ -73,28 +73,28 @@ public class AnatomicosAdapter extends RecyclerView.Adapter<AnatomicosAdapter.An
     @Override
     public void onBindViewHolder(@NonNull AnatomicosViewHolder holder, int position) {
         if (listaPautas.isEmpty()) {
-            holder.textViewNoAnatomicos.setText("No tiene rutina de anatómicos");
+            holder.textViewNoAnatomicos.setText(R.string.noRutinaAnatomicos);
         } else {
             Pautas pautas = listaPautas.get(position);
             String mañanaPauta = pautas.getMañana();
             if (mañanaPauta != null && !mañanaPauta.isEmpty()) {
                 holder.mañana.setText(pautas.getMañana());
             } else {
-                holder.mañana.setText("Sin anatómico");
+                holder.mañana.setText(R.string.noAnatomicos);
             }
 
             String tardePauta = pautas.getTarde();
             if (tardePauta != null && !tardePauta.isEmpty()) {
                 holder.tarde.setText(pautas.getTarde());
             } else {
-                holder.tarde.setText("Sin anatómico");
+                holder.tarde.setText(R.string.noAnatomicos);
             }
 
             String nochePauta = pautas.getNoche();
             if (nochePauta != null && !nochePauta.isEmpty()) {
                 holder.noche.setText(pautas.getNoche());
             } else {
-                holder.noche.setText("Sin anatómico");
+                holder.noche.setText(R.string.noAnatomicos);
             }
         }
     }
@@ -102,6 +102,7 @@ public class AnatomicosAdapter extends RecyclerView.Adapter<AnatomicosAdapter.An
     /**
      * En caso de que no haya rutina de pañal se suma 1 al tamaño de la lista para que no arroje error,
      * en caso contrario se devuelve el tamaño de la lista.
+     *
      * @return Tamaño de la lista.
      */
     @Override
