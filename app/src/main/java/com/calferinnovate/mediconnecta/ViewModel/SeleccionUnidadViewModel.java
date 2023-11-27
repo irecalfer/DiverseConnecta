@@ -1,7 +1,5 @@
 package com.calferinnovate.mediconnecta.ViewModel;
 
-import android.util.Log;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -11,8 +9,8 @@ import com.calferinnovate.mediconnecta.Model.Area;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
 import com.calferinnovate.mediconnecta.Model.Constantes;
 import com.calferinnovate.mediconnecta.Model.Pacientes;
-import com.calferinnovate.mediconnecta.Model.Unidades;
 import com.calferinnovate.mediconnecta.Model.PeticionesJson;
+import com.calferinnovate.mediconnecta.Model.Unidades;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -20,71 +18,88 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+/**
+ * ViewModel encargado de gestionar la selección de área y unidad de trabajo.
+ * Usa variables MutableLiveData para modificar el valor contenido en la variable después de la creación
+ * y utiliza LiveData para transmitir los datos hacia la UI, posteriormente proporciona actualizaciones
+ * a los observadores del fragmento.
+ */
+
 public class SeleccionUnidadViewModel extends ViewModel {
     private PeticionesJson peticionesJson;
     private ClaseGlobal claseGlobal;
-    private ArrayList<Area> listaAreas = new ArrayList<>();
-    private ArrayList<String> listaUnidadesNombre = new ArrayList<>();
-    private ArrayList<Unidades> listaUnidades = new ArrayList<>();
-    private MutableLiveData<ArrayList<String>> arrayListMutableLiveData = new MutableLiveData<>();
-    private MutableLiveData<ArrayList<String>> arrayListMutableLiveDataUnidades = new MutableLiveData<>();
-    private MutableLiveData<Boolean> pacientesObtenidos = new MutableLiveData<>();
+    private final ArrayList<Area> listaAreas = new ArrayList<>();
+    private final MutableLiveData<ArrayList<String>> arrayListMutableLiveData = new MutableLiveData<>();
+    private final MutableLiveData<ArrayList<String>> arrayListMutableLiveDataUnidades = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> pacientesObtenidos = new MutableLiveData<>();
 
-    public SeleccionUnidadViewModel(){
+    /**
+     * Constructor por defecto.
+     */
+    public SeleccionUnidadViewModel() {
 
     }
 
-    public SeleccionUnidadViewModel(ViewModelArgs viewModelArgs){
+    /**
+     * Constructor que recibe instancia de ViewModelArgs para proporcionar PeticionesJson y de
+     * ClaseGlobal.
+     *
+     * @param viewModelArgs Instancia de ViewModelArgs que proporciona PeticionesJson y ClaseGlobal.
+     */
+    public SeleccionUnidadViewModel(ViewModelArgs viewModelArgs) {
         this.peticionesJson = viewModelArgs.getPeticionesJson();
         this.claseGlobal = viewModelArgs.getClaseGlobal();
     }
 
-    // Declarar LiveData para los datos necesarios en la interfaz de usuario (por ejemplo, áreas y unidades)
-    // También, declarar cualquier otro LiveData necesario para la interfaz de usuario.
-
-    // Método para obtener datos de áreas
+    /**
+     * Método que realiza una solicitud al servidor a través de PeticionesJson para obtener la lista
+     * de areas, encapsula el contenido del arraylist en arrayListMutableLiveData, setea la lista en claseGlobal
+     * y devuelve el LiveData.
+     *
+     * @return LiveData con el lista de nombres de las áreas.
+     */
     public LiveData<ArrayList<String>> obtenerDatosAreas() {
-        // Lógica para obtener datos de áreas desde el repositorio o la fuente de datos
-        // Devolver un LiveData que la interfaz de usuario puede observar.
         String urlArea = Constantes.url_part + "areas.php";
         peticionesJson.getJsonObjectRequest(urlArea, new PeticionesJson.MyJsonObjectResponseListener() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                   ArrayList<String> areaArrayList = new ArrayList<>();
-                    Log.d("ErrorSeleccion", "Entra en try");
+                    ArrayList<String> areaArrayList = new ArrayList<>();
                     JSONArray jsonArray = response.getJSONArray("datos_area");
+
                     for (int i = 0; i < jsonArray.length(); i++) {
-                        Log.d("ErrorSeleccion", "Entra en el for");
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                         Area nuevaArea = new Area(jsonObject.optInt("id_area"), jsonObject.optString("nombre_area"));
                         listaAreas.add(nuevaArea);
                         areaArrayList.add(nuevaArea.getNombre());
                     }
-                    Log.d("ErrorSeleccion", "finaliza for");
-                    if(!areaArrayList.isEmpty()){
-                        Log.d("ErrorSeleccion", "Entra en el empty");
+
+                    if (!areaArrayList.isEmpty()) {
                         arrayListMutableLiveData.postValue(new ArrayList<>(areaArrayList));
                         claseGlobal.setListaAreas(listaAreas);
                     }
                 } catch (JSONException e) {
-                    Log.d("ErrorSeleccion", e.toString());
-                    throw new RuntimeException(e);
+                    e.printStackTrace();
                 }
             }
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("ErrorSeleccion", error.toString());
+                error.printStackTrace();
             }
         });
         return arrayListMutableLiveData;
     }
 
-    // Método para obtener datos de unidades basados en el área seleccionada
+    /**
+     * Método que realiza una solicitud al servidor a través de PeticionesJson para obtener la lista
+     * de unidades pertenecientes a un área, encapsula el contenido del arraylist en arrayListMutableLiveDataUnidades,
+     * setea la lista en claseGlobal y devuelve el LiveData.
+     *
+     * @param areaSeleccionada Area seleccionada en el Spinner.
+     * @return LiveData con el lista de nombres de las unidades.
+     */
     public LiveData<ArrayList<String>> obtenerDatosUnidades(String areaSeleccionada) {
-        // Lógica para obtener datos de unidades basados en el área seleccionada desde el repositorio o la fuente de datos
-        // Devolver un LiveData que la interfaz de usuario puede observar.
         String urlUnidades = Constantes.url_part + "unidades.php?nombre_area=" + areaSeleccionada;
         peticionesJson.getJsonObjectRequest(urlUnidades, new PeticionesJson.MyJsonObjectResponseListener() {
             @Override
@@ -99,45 +114,47 @@ public class SeleccionUnidadViewModel extends ViewModel {
                         claseGlobal.getListaUnidades().add(nuevaUnidad);
                         unidadesArrayList.add(nuevaUnidad.getNombreUnidad());
                     }
-                    if(!unidadesArrayList.isEmpty()){
+                    if (!unidadesArrayList.isEmpty()) {
                         arrayListMutableLiveDataUnidades.postValue(new ArrayList<>(unidadesArrayList));
                     }
                 } catch (JSONException e) {
-                    throw new RuntimeException(e);
+                    e.printStackTrace();
                 }
             }
 
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                error.printStackTrace();
             }
         });
         return arrayListMutableLiveDataUnidades;
     }
 
-    // Método para completar los datos del empleado
+    /**
+     * Método que realiza una solicitud al servidor a través de PeticionesJson para obtener la lista
+     * de pacientes pertenecientes a una unidad, setea la lista de pacientes en claseGlobal.
+     * Si se han obtenido correctamente los datos se pone el MutableLiveData pacientesObtenidos a true y devuelve el LiveData.
+     *
+     * @param nombreUnidad Nombre de la unidad seleccionada.
+     * @return LiveData booleano con la verificación de si se han obtenido los pacientes.
+     */
     public LiveData<Boolean> obtieneDatosPacientes(String nombreUnidad) {
-        //Volvemos a asignar unidad, ya que hemos cambiado el valor que unidades en la clase global
-        //De tal manera que podamos utilizar la instancia creada para poder acceder a su nombre y
-        //de igual manera poder acceder a los pacientes de dicha unidad.
-        //Unidades unidadActual = claseGlobal.getUnidades();
         String url = Constantes.url_part + "pacientes.php?nombre=" + nombreUnidad;
-        //String url = Constantes.url_part + "pacientes.php?nombre=" + claseGlobal.getUnidades().getNombreUnidad();
+
         peticionesJson.getJsonObjectRequest(url, new PeticionesJson.MyJsonObjectResponseListener() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    if(!claseGlobal.getListaPacientes().isEmpty()){
+                    if (!claseGlobal.getListaPacientes().isEmpty()) {
                         claseGlobal.getListaPacientes().clear();
                     }
                     JSONArray jsonArray = response.getJSONArray("pacientes");
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                         Pacientes nuevoPacientes = obtieneNuevoPaciente(jsonObject);
-                        // Agrega un nuevo paciente a la lista en tu fragmento
                         claseGlobal.getListaPacientes().add(nuevoPacientes);
                     }
-                    // Actualiza la lista de pacientes en ClaseGlobal
+
                     claseGlobal.setListaPacientes(claseGlobal.getListaPacientes());
                     pacientesObtenidos.postValue(true);
                 } catch (JSONException e) {
@@ -165,6 +182,5 @@ public class SeleccionUnidadViewModel extends ViewModel {
                 jsonObject.optInt("fk_num_historia_clinica"), jsonObject.optString("fecha_ingreso"),
                 jsonObject.optString("estado_civil"));
     }
-    // Otros métodos ViewModel relacionados con la lógica de negocio y presentación.
 
 }
