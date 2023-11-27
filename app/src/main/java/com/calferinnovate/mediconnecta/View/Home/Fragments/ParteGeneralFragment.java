@@ -156,11 +156,11 @@ public class ParteGeneralFragment extends Fragment implements IOnBackPressed {
     }
 
     /**
-     * Método que llama al método getListaPartes del ParteGeneralViewModel pasando fecha inicio y fin,
+     * Método que llama al método obtieneListaPartesFecha del ParteGeneralViewModel pasando fecha inicio y fin,
      * configura el adaptador ParteAdapter y llama a creaTablaPartes para actualizar el TableLayout.
      */
     public void rellenaPartes() {
-        parteGeneralViewModel.getListaPartes(fechaInicio, fechaFin).observe(getViewLifecycleOwner(), partes -> {
+        parteGeneralViewModel.obtieneListaPartesFecha(fechaInicio, fechaFin).observe(getViewLifecycleOwner(), partes -> {
             listaPartes = partes;
             parteAdapter = new ParteAdapter(requireContext(), listaPartes);
             tableLayoutPartes.removeAllViews();
@@ -188,11 +188,11 @@ public class ParteGeneralFragment extends Fragment implements IOnBackPressed {
     }
 
     /**
-     * Método que llama al método getListaCaidas del ParteGeneralViewModel pasando fecha inicio y fin,
+     * Método que llama al método obtieneCaidasPeriodo del ParteGeneralViewModel pasando fecha inicio y fin,
      * configura el adaptador CaidasAdapter y llama a creaTablaCaidas para actualizar el TableLayout.
      */
     public void rellenaCaidas() {
-        parteGeneralViewModel.getListaCaidas(fechaInicio, fechaFin).observe(getViewLifecycleOwner(), caidas -> {
+        parteGeneralViewModel.obtieneCaidasPeriodo(fechaInicio, fechaFin).observe(getViewLifecycleOwner(), caidas -> {
             listaCaidas = caidas;
             caidasAdapter = new CaidasAdapter(requireContext(), listaCaidas);
             tableLayoutCaidas.removeAllViews();
