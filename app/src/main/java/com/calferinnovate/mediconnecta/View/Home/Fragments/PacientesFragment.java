@@ -9,42 +9,46 @@ import android.widget.SearchView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.calferinnovate.mediconnecta.Adaptadores.PacientesAdapter;
-import com.calferinnovate.mediconnecta.View.Home.Fragments.Pacientes.DetallePacientesFragment;
-import com.calferinnovate.mediconnecta.View.IOnBackPressed;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
 import com.calferinnovate.mediconnecta.Model.Pacientes;
 import com.calferinnovate.mediconnecta.Model.PeticionesJson;
 import com.calferinnovate.mediconnecta.R;
+import com.calferinnovate.mediconnecta.View.Home.Fragments.Pacientes.DetallePacientesFragment;
+import com.calferinnovate.mediconnecta.View.IOnBackPressed;
 import com.calferinnovate.mediconnecta.ViewModel.SharedPacientesViewModel;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelArgs;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelFactory;
-import com.google.android.material.search.SearchBar;
 
 import java.util.ArrayList;
 
-
+/**
+ * PacientesFragment es un fragmento que muestra la lista de pacientes pertenecientes a una unidad.
+ */
 public class PacientesFragment extends Fragment implements PacientesAdapter.ItemClickListener, IOnBackPressed {
-
-    /*
-    Declarar instancias globales
-    */
     private RecyclerView recycler;
     private SearchView searchView;
     private ClaseGlobal claseGlobal;
     private ArrayList<Pacientes> listaPacientes;
     private SharedPacientesViewModel sharedPacientesViewModel;
-    private ViewModelArgs viewModelArgs;
     private PeticionesJson peticionesJson;
     private PacientesAdapter adapter;
 
-
+    /**
+     * Método llamado cuando se crea la vista del fragmento.
+     * Infla el diseño de la UI desde el archivo XML fragment_pacientes.xml.
+     * Implemente la escucha del a
+     *
+     * @param inflater           inflador utilizado para inflar el diseño de la UI.
+     * @param container          Contenedor que contiene la vista del fragmento
+     * @param savedInstanceState Estado de guardado de la instancia del fragmento
+     * @return vista Es la vista inflada del fragmento.
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -52,13 +56,9 @@ public class PacientesFragment extends Fragment implements PacientesAdapter.Item
         View view = inflater.inflate(R.layout.fragment_pacientes, container, false);
         getActivity().setTitle("Pacientes");
 
-
-
         inicializaVariables(view);
-
-
-        poblaRecyclerPacientes();
         inicializaViewModel();
+        poblaRecyclerPacientes();
         actualizaListaPacientes();
 
 
@@ -68,6 +68,11 @@ public class PacientesFragment extends Fragment implements PacientesAdapter.Item
         return view;
     }
 
+    /**
+     * Método que inicializa las variables miembro y enlaza los componentes de la UI con las variables.
+     *
+     * @param view La vista inflada.
+     */
     public void inicializaVariables(View view) {
         claseGlobal = ClaseGlobal.getInstance();
         listaPacientes = claseGlobal.getListaPacientes();
@@ -75,10 +80,12 @@ public class PacientesFragment extends Fragment implements PacientesAdapter.Item
         searchView = view.findViewById(R.id.searchPacientes);
     }
 
-    public void inicializaViewModel(){
-        //Creas un objeto ViewModelFactory y obtienes una instancia de ConsultasYRutinasDiariasViewModel utilizando este factory.
-        //Luego, observas el LiveData del ViewModel para mantener actualizada la lista de programación en el RecyclerView.
-        viewModelArgs = new ViewModelArgs() {
+    /**
+     * Método que configura el ViewModel SharesPacientesViewModel mediante la creación de un ViewModelFactory
+     * que proporciona instancias de Peticiones Json y ClaseGloabl al ViewModel.
+     */
+    public void inicializaViewModel() {
+        ViewModelArgs viewModelArgs = new ViewModelArgs() {
             @Override
             public PeticionesJson getPeticionesJson() {
                 return peticionesJson = new PeticionesJson(requireContext());
@@ -91,10 +98,13 @@ public class PacientesFragment extends Fragment implements PacientesAdapter.Item
         };
 
         ViewModelFactory<SharedPacientesViewModel> factory = new ViewModelFactory<>(viewModelArgs);
-        // Inicializa el ViewModel
         sharedPacientesViewModel = new ViewModelProvider(requireActivity(), factory).get(SharedPacientesViewModel.class);
     }
 
+    /**
+     * Método que configura el Recycler View, pasa la lista de pacientes al adaptador, lo configura y
+     * implementa un gridlayout con dos columnas.
+     */
     public void poblaRecyclerPacientes() {
         // Obtener el Recycler
         recycler.setHasFixedSize(true);
@@ -112,19 +122,35 @@ public class PacientesFragment extends Fragment implements PacientesAdapter.Item
         recycler.addItemDecoration(new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL));
     }
 
-    public void actualizaListaPacientes(){
-        sharedPacientesViewModel.getPacientesList().observe(getViewLifecycleOwner(), new Observer<ArrayList<Pacientes>>() {
-            @Override
-            public void onChanged(ArrayList<Pacientes> pacientes) {
-                // Actualizar la lista de pacientes en el adaptador
-                adapter.notifyDataSetChanged();
-            }
+    /**
+     * Método que llama al método getPacientesList del ViewModel y actualiza el adaptador del RecyclerView.
+     */
+    public void actualizaListaPacientes() {
+        sharedPacientesViewModel.getPacientesList().observe(getViewLifecycleOwner(), pacientes -> {
+            adapter.notifyDataSetChanged();
         });
     }
 
-    public void listenerSearchView(){
+
+    /**
+     * Método llamado cuando la vista ya ha sido creada.
+     * Llama a listenerSearchView() que establece la escucha del SearchView.
+     *
+     * @param view               Vista retornada por el inflador.
+     * @param savedInstanceState Si no es nulo, este fragmento será reconstruido a partir de un
+     *                           estado anterior guardado.
+     */
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        listenerSearchView();
+    }
 
 
+    /**
+     * Implementa la lógica para filtrar la lista de pacientes.
+     */
+    public void listenerSearchView() {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -139,6 +165,12 @@ public class PacientesFragment extends Fragment implements PacientesAdapter.Item
         });
     }
 
+    /**
+     * Maneja el click de un elemento de la lista de pacientes, setea el paciente seleccionado y navega
+     * al detalle del paciente.
+     *
+     * @param position
+     */
     @Override
     public void onClick(int position) {
         sharedPacientesViewModel.setPaciente(position);
@@ -147,17 +179,14 @@ public class PacientesFragment extends Fragment implements PacientesAdapter.Item
 
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        listenerSearchView();
-    }
-
+    /**
+     * Método que agrega la lógica específica del fragmento para manejar el restroceso.
+     * Al presionar back volvería al HomeFragment.
+     *
+     * @return true si el fragmento manejar el retroceso, false en caso contrario.
+     */
     @Override
     public boolean onBackPressed() {
-        // Agrega la lógica específica del fragmento para manejar el retroceso.
-        // Devuelve true si el fragmento maneja el retroceso, de lo contrario, devuelve false.
-        // Por ejemplo, si deseas que al presionar Atrás en este fragmento vuelva a la pantalla principal:
         requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
         return true;
     }
