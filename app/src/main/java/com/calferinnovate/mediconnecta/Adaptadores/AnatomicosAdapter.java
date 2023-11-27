@@ -15,46 +15,64 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;
 
+/**
+ * Adaptador usado para poblar el RecyclerView de Pautas rutina pañal.
+ */
 public class AnatomicosAdapter extends RecyclerView.Adapter<AnatomicosAdapter.AnatomicosViewHolder> {
 
     private final ArrayList<Pautas> listaPautas;
-    private final Context context;
     private final boolean muestraNoAnatomicos;
-    private static final int VIEW_TYPE_TEXT_VIEW = 1;
+    private Context context;
 
+    /**
+     * Constructor del adaptador
+     *
+     * @param listaPautas         lista de pautas del paciente
+     * @param context             contexto
+     * @param muestraNoAnatomicos boolean que indica si el paciente tiene rutina de pañal o no
+     */
     public AnatomicosAdapter(ArrayList<Pautas> listaPautas, Context context, boolean muestraNoAnatomicos) {
         this.listaPautas = listaPautas;
-        this.context = context;
         this.muestraNoAnatomicos = muestraNoAnatomicos;
+        this.context = context;
     }
 
+    /**
+     * Método utilizado para crear un ViewHolder nuevo, es invocado por el layout manager.
+     * Crea una nueva vista, que define la UI del elemento de la lista.
+     *
+     * @param parent   El ViewGroup al que se añadirá la nueva View después de que se vincule a una posición de adaptador.
+     * @param viewType El tipo de vista de la nueva Vista.
+     * @return la vista creada.
+     */
     @NonNull
     @Override
     public AnatomicosViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if (viewType == VIEW_TYPE_TEXT_VIEW && muestraNoAnatomicos) {
-            View view = LayoutInflater.from(parent.getContext())
+        View view;
+        if (muestraNoAnatomicos) {
+            view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.item_no_anatomicos, parent, false);
-            return new AnatomicosViewHolder(view);
         } else {
-            View view = LayoutInflater.from(parent.getContext())
+            view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.items_anatomicos, parent, false);
-            return new AnatomicosViewHolder(view);
         }
+        return new AnatomicosViewHolder(view);
     }
 
-    // Métodos para determinar el tipo de vista en una posición específica
-    @Override
-    public int getItemViewType(int position) {
-        if (muestraNoAnatomicos && position == getItemCount() - 1) {
-            return VIEW_TYPE_TEXT_VIEW;
-        } else {
-            return super.getItemViewType(position);
-        }
-    }
 
+    /**
+     * Método que reemplaza el contenido de la vista, es invocado por el layout manager.
+     * Obtiene el elemento de listaPautas en cierta posición y reemplaza el contenido de la vista con ese elemento.
+     * Si la lista de pautas está vacía, indica que no tiene rutina de anatómicos, en caso contrario si tiene
+     * rutina de pañal indica que tipo. Si tiene pautas pero no rutina de pañal, indica que no tiene anatómico.
+     *
+     * @param holder   El ViewHolder que debe actualizarse para representar el contenido del en la posición
+     *                 dada en la lista.
+     * @param position La posición del elemento dentro de lista del adaptador.
+     */
     @Override
     public void onBindViewHolder(@NonNull AnatomicosViewHolder holder, int position) {
-        if (holder.getItemViewType() == VIEW_TYPE_TEXT_VIEW) {
+        if (listaPautas.isEmpty()) {
             holder.textViewNoAnatomicos.setText("No tiene rutina de anatómicos");
         } else {
             Pautas pautas = listaPautas.get(position);
@@ -81,12 +99,20 @@ public class AnatomicosAdapter extends RecyclerView.Adapter<AnatomicosAdapter.An
         }
     }
 
+    /**
+     * En caso de que no haya rutina de pañal se suma 1 al tamaño de la lista para que no arroje error,
+     * en caso contrario se devuelve el tamaño de la lista.
+     * @return Tamaño de la lista.
+     */
     @Override
     public int getItemCount() {
         return listaPautas.size() + (muestraNoAnatomicos ? 1 : 0);
     }
 
-    public class AnatomicosViewHolder extends RecyclerView.ViewHolder {
+    /**
+     * Proporciona una referencia al tipo de vistas que se están utilizando.
+     */
+    public static class AnatomicosViewHolder extends RecyclerView.ViewHolder {
         private final TextInputEditText mañana;
         private final TextInputEditText tarde;
         private final TextInputEditText noche;
