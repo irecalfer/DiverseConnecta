@@ -145,12 +145,12 @@ public class ParteCaidasPacientesFragment extends Fragment implements IOnBackPre
     }
 
     /**
-     * Llama al método getListaLugaresLiveData del ViewModel, obtiene la lista de lugares donde se ha
+     * Llama al método obtieneLosLugaresDeCaidas del ViewModel, obtiene la lista de lugares donde se ha
      * podido producir la caída, configura el adaptador lugaresAdapter que es un ArrayAdapter y pobla
      * el Spinner.
      */
     public void obtenerListaLugaresYPoblarSpinner() {
-        sharedPacientesViewModel.getListaLugaresLiveData().observe(getViewLifecycleOwner(), listaLugares -> {
+        sharedPacientesViewModel.obtieneLosLugaresDeCaidas().observe(getViewLifecycleOwner(), listaLugares -> {
             ArrayAdapter<String> lugaresAdapter = new ArrayAdapter<>(requireActivity(), R.layout.my_spinner, listaLugares);
             lugaresAdapter.setDropDownViewResource(R.layout.my_spinner);
             lugarSpinner.setAdapter(lugaresAdapter);

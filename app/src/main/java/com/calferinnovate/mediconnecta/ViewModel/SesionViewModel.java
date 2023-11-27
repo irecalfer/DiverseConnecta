@@ -24,7 +24,7 @@ public class SesionViewModel extends ViewModel {
 
     private ClaseGlobal claseGlobal;
     private PeticionesJson peticionesJson;
-    private MutableLiveData<Boolean> empleadoIniciaSesionMutableLiveData = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> empleadoIniciaSesionMutableLiveData = new MutableLiveData<>();
 
     /**
      * Constructor vacío del ViewModel
@@ -65,7 +65,7 @@ public class SesionViewModel extends ViewModel {
             public void onResponse(JSONObject response) {
                 try {
                     JSONArray jsonArray = response.getJSONArray("empleados");
-                    // Recorrer los datos del usuario
+
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject object = jsonArray.getJSONObject(i);
                         Empleado empleadoLogueado = new Empleado(object.optString("user"), object.optString("pwd"),

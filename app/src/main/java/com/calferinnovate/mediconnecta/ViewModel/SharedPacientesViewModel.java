@@ -1,8 +1,6 @@
 package com.calferinnovate.mediconnecta.ViewModel;
 
-import android.content.Context;
 import android.util.Base64;
-import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -25,9 +23,14 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+/**
+ * ViewModel compartido encargado de gestionar los datos relativos a los pacientes.
+ * Usa variables MutableLiveData para modificar el valor contenido en la variable después de la creación
+ * y utiliza LiveData para transmitir los datos hacia la UI, posteriormente proporciona actualizaciones
+ * a los observadores del fragmento.
+ */
 public class SharedPacientesViewModel extends ViewModel {
 
-    public static final String TAG = "SharedPacientesViewModel";
     private final MutableLiveData<ArrayList<Pacientes>> mutablePacientesList = new MutableLiveData<>();
     private final MutableLiveData<Pacientes> mutablePaciente = new MutableLiveData<>();
     private final MutableLiveData<Seguro> mutableSeguro = new MutableLiveData<>();
@@ -38,18 +41,32 @@ public class SharedPacientesViewModel extends ViewModel {
     private final MutableLiveData<ArrayList<Pautas>> mutablePautasList = new MutableLiveData<>();
     private final MutableLiveData<ArrayList<String>> listaLugaresLiveData = new MutableLiveData<>();
     private PeticionesJson peticionesJson;
-    private ClaseGlobal claseGlobal;
-    private Context context;
 
+
+    /**
+     * Constructor por defecto.
+     */
     public SharedPacientesViewModel() {
 
     }
 
+    /**
+     * Constructor que recibe instancia de ViewModelArgs para proporcionar PeticionesJson y de
+     * ClaseGlobal.
+     *
+     * @param viewModelArgs Instancia de ViewModelArgs que proporciona PeticionesJson y ClaseGlobal.
+     */
     public SharedPacientesViewModel(ViewModelArgs viewModelArgs) {
         this.peticionesJson = viewModelArgs.getPeticionesJson();
-        this.claseGlobal = viewModelArgs.getClaseGlobal();
+        ClaseGlobal claseGlobal = viewModelArgs.getClaseGlobal();
     }
 
+    /**
+     * Si mutablePacientesList es nulo, encapsula el contenido de listaPacientes de la clase global
+     * en mutablePacientesList y devuelve el LiveData.
+     *
+     * @return LiveData con la lista de pacientes.
+     */
     public LiveData<ArrayList<Pacientes>> getPacientesList() {
 
         if (mutablePacientesList.getValue() == null) {
@@ -58,11 +75,34 @@ public class SharedPacientesViewModel extends ViewModel {
         return mutablePacientesList;
     }
 
+    /**
+     * Devuelve el paciente seleccionado
+     *
+     * @return LiveData paciente seleccionado
+     */
     public LiveData<Pacientes> getPaciente() {
         return mutablePaciente;
     }
 
-    public void obtieneSeguroPacientes(Pacientes paciente) {
+    /**
+     * Asigna a mutablePaciente el paciente seleccionado.
+     *
+     * @param position posición del paciente seleccionado.
+     */
+    public void setPaciente(int position) {
+        Pacientes pacienteSeleccionado = mutablePacientesList.getValue().get(position);
+        mutablePaciente.postValue(pacienteSeleccionado);
+    }
+
+    /**
+     * Método que realiza una solicitud al servudor a través de PeticionesJson para obtener la lista
+     * de seguros, encapsula el contenido del arraylist en mutableSeguroList, llama a obtieneSeguroPacienteSeleccionado
+     * y obtiene el seguro perteneciente a ese paciente, encapsula el seguro en mutableSeguro y devuelve el LiveData.
+     *
+     * @param paciente Paciente seleccionado.
+     * @return LiveData del seguro del paciente.
+     */
+    public LiveData<Seguro> obtieneSeguroPacientes(Pacientes paciente) {
         String url = Constantes.url_part + "seguro.php";
 
         peticionesJson.getJsonObjectRequest(url, new PeticionesJson.MyJsonObjectResponseListener() {
@@ -81,7 +121,6 @@ public class SharedPacientesViewModel extends ViewModel {
                         mutableSeguroList.postValue(new ArrayList<>(seguroArrayList));
                     }
 
-                    // Una vez que los seguros se hayan cargado, busca el seguro del paciente
                     Seguro seguroDelPaciente = obtieneSeguroPacienteSeleccionado(paciente, seguroArrayList);
                     mutableSeguro.postValue(seguroDelPaciente);
                 } catch (JSONException e) {
@@ -91,38 +130,47 @@ public class SharedPacientesViewModel extends ViewModel {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                error.printStackTrace();
             }
         });
-
-    }
-
-
-    private Seguro obtieneSeguroPacienteSeleccionado(Pacientes paciente, ArrayList<Seguro> seguroArrayList) {
-        for (Seguro seguro : seguroArrayList) {
-            if (seguro.getIdSeguro() == paciente.getFkIdSeguro()) {
-                Seguro seguroDelPaciente = seguro;
-                return seguroDelPaciente;
-            }
-        }
-        return null; //MANEJAR CASO EN CASO DE QUE NO LO ENCUENTRE
-    }
-
-    public LiveData<Seguro> getSeguro() {
         return mutableSeguro;
     }
 
+
+    /**
+     * Método que busca si el paciente tiene un seguro perteneciente a la lista de seguros.
+     *
+     * @param paciente        Paciente seleccionado.
+     * @param seguroArrayList Lista de seguros.
+     * @return seguro si el paciente lo tiene, o null en caso de que no tenga seguro.
+     */
+    private Seguro obtieneSeguroPacienteSeleccionado(Pacientes paciente, ArrayList<Seguro> seguroArrayList) {
+        for (Seguro seguro : seguroArrayList) {
+            if (seguro.getIdSeguro() == paciente.getFkIdSeguro()) {
+                return seguro;
+            }
+        }
+        return null;
+    }
+
+
+    /**
+     * Método que realiza una solicitud al servidor a través de PeticionesJson para obtener la lista
+     * de contactos de un paciente, encapsula el contenido del arraylist en mutableFamiliaresList
+     * y devuelve el LiveData.
+     *
+     * @param paciente Paciente seleccionado.
+     * @return LiveData lista de contactos del paciente.
+     */
     public LiveData<ArrayList<ContactoFamiliares>> obtieneContactoFamiliares(Pacientes paciente) {
         String url = Constantes.url_part + "familiares.php?cip_sns=" + paciente.getCipSns();
-        //Reiniciamos el mutable
         mutableFamiliaresList.setValue(new ArrayList<>());
+
         peticionesJson.getJsonObjectRequest(url, new PeticionesJson.MyJsonObjectResponseListener() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
                     ArrayList<ContactoFamiliares> contactoFamiliaresArrayList = new ArrayList<>();
-                    //Si la lista de contactos está llena para otro familiar la vaciamos para
-                    //llenarla con los datos de los familiares del nuevo paciente.
                     JSONArray jsonArray = response.getJSONArray("familiares_contacto");
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
@@ -141,31 +189,33 @@ public class SharedPacientesViewModel extends ViewModel {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                error.printStackTrace();
             }
         });
 
         return mutableFamiliaresList;
     }
 
-    public LiveData<ArrayList<Informes>> getListaMutableInformes(Pacientes paciente) {
-        return obtieneInformesPaciente(paciente);
-    }
 
+    /**
+     * Método que realiza una solicitud al servidor a través de PeticionesJson para obtener la lista
+     * de informes clínicos de un paciente, convierte el PDF de Base64 a un array de bytes, encapsula el
+     * contenido del arraylist en mutableInformesList y devuelve el LiveData.
+     *
+     * @param paciente Paciente seleccionado.
+     * @return LiveData que contienen la lista de informes clínicos del paciente.
+     */
     public LiveData<ArrayList<Informes>> obtieneInformesPaciente(Pacientes paciente) {
         String url = Constantes.url_part + "informes.php?fk_num_historia_clinica=" + paciente.getFkNumHistoriaClinica();
-        //Reiniciamos el mutable
         mutableInformesList.setValue(new ArrayList<>());
+
         peticionesJson.getJsonObjectRequest(url, new PeticionesJson.MyJsonObjectResponseListener() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    //Si la lista de informes está llena para otro paciente la vaciamos para
-                    //llenarla con los informes del nuevo paciente.
                     ArrayList<Informes> informesArrayList = new ArrayList<>();
-                    // Verificar que claseGlobal y la lista de informes no sean nulos
-
                     JSONArray jsonArray = response.getJSONArray("informes");
+
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                         String base64String = jsonObject.optString("PDF");
@@ -177,7 +227,7 @@ public class SharedPacientesViewModel extends ViewModel {
                                 pdfBytes);
                         informesArrayList.add(nuevoInforme);
                     }
-                    // Actualizar el LiveData directamente
+
                     if (!informesArrayList.isEmpty()) {
                         mutableInformesList.postValue(new ArrayList<>(informesArrayList));
                     }
@@ -189,18 +239,22 @@ public class SharedPacientesViewModel extends ViewModel {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                error.printStackTrace();
             }
         });
 
         return mutableInformesList;
     }
 
-    public void setPaciente(int position) {
-        Pacientes pacienteSeleccionado = mutablePacientesList.getValue().get(position);
-        mutablePaciente.postValue(pacienteSeleccionado);
-    }
 
+    /**
+     * Método que realiza una solicitud al servidor a través de PeticionesJson para obtener la
+     * historia clínica de un paciente, encapsula el contenido del arraylist en mutableHistoriaClinica
+     * y devuelve el LiveData.
+     *
+     * @param paciente Paciente seleccionado.
+     * @return LiveData con el contenido de la historia clínica del paciente.
+     */
     public LiveData<HistoriaClinica> obtieneHistoriaClinica(Pacientes paciente) {
         String url = Constantes.url_part + "historia_clinica.php?cip_sns=" + paciente.getCipSns();
         //Reiniciamos el mutable
@@ -220,22 +274,30 @@ public class SharedPacientesViewModel extends ViewModel {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                error.printStackTrace();
             }
         });
         return mutableHistoriaClinica;
     }
 
+    /**
+     * Método que realiza una solicitud al servidor a través de PeticionesJson para obtener la lista de
+     * pautas de un paciente, encapsula el contenido del arraylist en mutablePautasList y devuelve el LiveData.
+     *
+     * @param paciente Paciente seleccionado.
+     * @return LiveData con la lista de pautas pertenecientes al paciente.
+     */
     public LiveData<ArrayList<Pautas>> obtienePautasPaciente(Pacientes paciente) {
         String url = Constantes.url_part + "pautas.php?cip_sns=" + paciente.getCipSns();
-        //Reiniciamos el mutable
         mutablePautasList.setValue(new ArrayList<>());
+
         peticionesJson.getJsonObjectRequest(url, new PeticionesJson.MyJsonObjectResponseListener() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
                     ArrayList<Pautas> pautasArrayList = new ArrayList<>();
                     JSONArray jsonArray = response.getJSONArray("pautas");
+
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                         Pautas nuevaPauta = new Pautas(jsonObject.optString("pauta"),
@@ -243,7 +305,7 @@ public class SharedPacientesViewModel extends ViewModel {
                                 jsonObject.optString("tarde"), jsonObject.optString("noche"));
                         pautasArrayList.add(nuevaPauta);
                     }
-                    // Actualizar el LiveData directamente
+
                     if (!pautasArrayList.isEmpty()) {
                         mutablePautasList.postValue(new ArrayList<>(pautasArrayList));
                     }
@@ -254,21 +316,21 @@ public class SharedPacientesViewModel extends ViewModel {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                error.printStackTrace();
             }
         });
 
         return mutablePautasList;
     }
 
-    public LiveData<ArrayList<Pautas>> getListaMutablePautas(Pacientes paciente) {
-        return obtienePautasPaciente(paciente);
-    }
 
-    public LiveData<ArrayList<String>> getListaLugaresLiveData() {
-        return obtieneLosLugaresDeCaidas();
-    }
-
+    /**
+     * Método que realiza una solicitud al servidor a través de PeticionesJson para obtener la lista
+     * de lugares de caída contenidos en un enum, encapsula el contenido del arraylist en listaLugaresLiveData
+     * y devuelve el LiveData.
+     *
+     * @return LiveData con el contenido de los avisos de dicha fecha.
+     */
     public LiveData<ArrayList<String>> obtieneLosLugaresDeCaidas() {
         String url = Constantes.url_part + "caidas_enum.php";
         peticionesJson.getJsonObjectRequest(url, new PeticionesJson.MyJsonObjectResponseListener() {
@@ -277,27 +339,25 @@ public class SharedPacientesViewModel extends ViewModel {
                 try {
                     ArrayList<String> lugaresCaidaArrayList = new ArrayList<>();
                     JSONArray lugarCaida = response.getJSONArray("lugar_caida");
-                    Log.d("Lugares", "Ha entrado en on response");
+
                     // Itera sobre los valores ENUM
                     for (int i = 0; i < lugarCaida.length(); i++) {
                         String enumLugar = lugarCaida.getString(i);
                         //Añadimos el valor a nuestro arrayList
                         lugaresCaidaArrayList.add(enumLugar);
                     }
+
                     // Actualiza el LiveData con la nueva lista
                     if (!lugaresCaidaArrayList.isEmpty()) {
                         listaLugaresLiveData.postValue(new ArrayList<>(lugaresCaidaArrayList));
                     }
                 } catch (JSONException e) {
-                    Log.d("Lugares", "Ha entrado en el catch de on response");
-                    Log.d("LugaresCatch", e.toString());
                     e.printStackTrace();
                 }
             }
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("Lugares", "Ha entrado en on error response");
                 error.printStackTrace();
             }
         });

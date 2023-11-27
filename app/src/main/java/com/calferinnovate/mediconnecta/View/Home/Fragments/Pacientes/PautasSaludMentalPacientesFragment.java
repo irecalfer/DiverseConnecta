@@ -112,13 +112,13 @@ public class PautasSaludMentalPacientesFragment extends Fragment implements IOnB
     }
 
     /**
-     * Método que llama el método getListaMutablePautas del ViewModel para obtener la lista de pautas,
+     * Método que llama el método obtienePautasPaciente del ViewModel para obtener la lista de pautas,
      * llama a rellenaUI para actualizar la UI con las pautas.
      *
      * @param paciente Paciente seleccionado.
      */
     public void obtienePautasPaciente(Pacientes paciente) {
-        sharedPacientesViewModel.getListaMutablePautas(paciente).observe(getViewLifecycleOwner(), pauta -> {
+        sharedPacientesViewModel.obtienePautasPaciente(paciente).observe(getViewLifecycleOwner(), pauta -> {
             rellenaUI(pauta);
         });
 

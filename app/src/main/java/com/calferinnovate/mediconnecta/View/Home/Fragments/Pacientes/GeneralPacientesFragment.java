@@ -22,7 +22,6 @@ import com.calferinnovate.mediconnecta.ViewModel.SharedPacientesViewModel;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelArgs;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelFactory;
 
-import java.text.MessageFormat;
 
 /**
  * Fragmento encargado de mostrar los datos personales del paciente.
@@ -34,11 +33,6 @@ public class GeneralPacientesFragment extends Fragment implements IOnBackPressed
     private SharedPacientesViewModel sharedPacientesViewModel;
     private ClaseGlobal claseGlobal;
     private PeticionesJson peticionesJson;
-    // Otras variables miembro
-    //La variable pacienteActual se utiliza para almacenar el paciente actual que proviene del ViewModel
-    // y segurosCargados es una variable booleana que se establece en true cuando la lista
-    // de seguros se ha cargado correctamente. Estas variables ayudan a determinar cuándo se pueden actualizar
-    // los datos en la interfaz de usuario, en el método updateUI.
     private Pacientes pacienteActual;
 
 
@@ -96,7 +90,6 @@ public class GeneralPacientesFragment extends Fragment implements IOnBackPressed
     /**
      * Método llamado cuando la vista ya ha sido creada.
      * Llama a rellenaUIAdaptador() que se encarga de actualizar la vista.
-     * Llama a obtenerYSetearSeguro() para comprobar si el paciente tiene seguro privado.
      *
      * @param view               Vista retornada por el inflador.
      * @param savedInstanceState Si no es nulo, este fragmento será reconstruido a partir de un
@@ -106,12 +99,12 @@ public class GeneralPacientesFragment extends Fragment implements IOnBackPressed
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         rellenaUIAdaptador(view);
-        SetearSeguro();
     }
 
     /**
      * Método encargado de actualizar la UI con los datos del paciente. Llama a getPaciente en SharedPacientesViewModel
      * para obtener el paciente que fue seleccionado y actualiza la vista con sus datos.
+     *Llama a obtenerYSetearSeguro() para comprobar si el paciente tiene seguro privado.
      *
      * @param view La vista inflada.
      */
@@ -121,6 +114,7 @@ public class GeneralPacientesFragment extends Fragment implements IOnBackPressed
 
             PacientesGeneralAdapter pacienteAdapter = new PacientesGeneralAdapter(pacienteActual, requireContext());
             pacienteAdapter.rellenaUI(view);
+            SetearSeguro(pacienteActual);
 
         });
     }
@@ -128,11 +122,13 @@ public class GeneralPacientesFragment extends Fragment implements IOnBackPressed
     /**
      * Llama al método getSeguro() del ViewModel y actualiza la UI con el seguro del paciente si lo tiene,
      * en caso de que no tenga seguro indica que no lo tiene.
+     *
+     * @param paciente Paciente Seleccionado
      */
-    public void SetearSeguro() {
-        sharedPacientesViewModel.getSeguro().observe(getViewLifecycleOwner(), seguro -> {
+    public void SetearSeguro(Pacientes paciente) {
+        sharedPacientesViewModel.obtieneSeguroPacientes(paciente).observe(getViewLifecycleOwner(), seguro -> {
             if (seguro != null) {
-                seguroTextView.setText(MessageFormat.format("{0} {1}", seguro.getNombreSeguro(), seguro.getTelefono()));
+                seguroTextView.setText(String.format("%s %d", seguro.getNombreSeguro(), seguro.getTelefono()));
             } else {
                 seguroTextView.setText(R.string.sinSeguro);
             }

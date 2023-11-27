@@ -52,7 +52,6 @@ public class ClinicaPacientesFragment extends Fragment implements IOnBackPressed
      * @param container Contenedor que contiene la vista del fragmento
      * @param savedInstanceState Estado de guardado de la instancia del fragmento
      *
-     *
      * @return vista Es la vista inflada del fragmento.
      */
     @Override
@@ -124,10 +123,10 @@ public class ClinicaPacientesFragment extends Fragment implements IOnBackPressed
     /**
      * Método encargado de obtener la lista de informes del paciente, llama al método getListaMutablePacientes()
      * del ViewModel para obtener dicha lista y llama a creaLaTabla para actualizar el TableLayout.
-     * @param paciente
+     * @param paciente Paciente seleccionado
      */
     public void obtieneInformesDelPaciente(Pacientes paciente) {
-        sharedPacientesViewModel.getListaMutableInformes(paciente).observe(getViewLifecycleOwner(), informes -> {
+        sharedPacientesViewModel.obtieneInformesPaciente(paciente).observe(getViewLifecycleOwner(), informes -> {
             informesPaciente = informes;
             tlInformes.removeAllViews();
             creaLaTabla();
@@ -140,10 +139,8 @@ public class ClinicaPacientesFragment extends Fragment implements IOnBackPressed
      * Método que se encarga de poblar dinámicamente las filas del TableLayout tlInformes, configura el click
      * del adaptador InformesAdapter para llamar al fragmento pdfViewerFragment cuando se clickee en
      * algunos de los ImageButtons en cierta posición.
-     *
      * Crea un nuevo fragmento PDFViewerFragment, pasa los bytes del PDF como argumentos al fragmento y
      * reemplaza el fragmento actual con el fragmento PDFViewerFragment.
-     *
      * Verifica que infomesPaciente no sea nulo antes de iterar e infla el header el header del TableLayout,
      * a continuación va inflando las filas dinámicamente.
      */
@@ -179,7 +176,7 @@ public class ClinicaPacientesFragment extends Fragment implements IOnBackPressed
     /**
      * Método que llama al método obtieneHistoriaClinicaPaciente del SharedPacientesViewModel y actualiza la
      * UI con los datos de Salud y Tratamiento.
-     * @param paciente
+     * @param paciente Paciente seleccionado
      */
     public void obtieneHistoriaClinicaDelPaciente(Pacientes paciente){
         sharedPacientesViewModel.obtieneHistoriaClinica(paciente).observe(getViewLifecycleOwner(), historiaClinica -> {

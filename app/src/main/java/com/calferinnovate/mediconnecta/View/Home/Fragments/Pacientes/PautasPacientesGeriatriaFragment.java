@@ -115,14 +115,14 @@ public class PautasPacientesGeriatriaFragment extends Fragment implements IOnBac
 
 
     /**
-     * Método que llama el método getListaMutablePautas del ViewModel para obtener la lista de pautas generales,
+     * Método que llama el método obtienePautasPaciente del ViewModel para obtener la lista de pautas generales,
      * llama a rellenaPautasGenerales para actualizar la UI con las pautas y llama a rellenaPautasPañal
      * para actualiza la UI con la rutina de pañal que tiene el paciente.
      *
      * @param paciente Paciente seleccionado.
      */
     public void obtienePautasGeneralesDelPaciente(Pacientes paciente) {
-        sharedPacientesViewModel.getListaMutablePautas(paciente).observe(getViewLifecycleOwner(), pautas -> {
+        sharedPacientesViewModel.obtienePautasPaciente(paciente).observe(getViewLifecycleOwner(), pautas -> {
             rellenaPautasGenerales(pautas);
             rellenaPautasPañal(pautas);
         });
