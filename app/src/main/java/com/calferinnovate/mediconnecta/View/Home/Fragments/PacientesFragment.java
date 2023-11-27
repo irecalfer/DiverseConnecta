@@ -106,17 +106,12 @@ public class PacientesFragment extends Fragment implements PacientesAdapter.Item
      * implementa un gridlayout con dos columnas.
      */
     public void poblaRecyclerPacientes() {
-        // Obtener el Recycler
         recycler.setHasFixedSize(true);
 
-        // added data from arraylist to adapter class.
         adapter = new PacientesAdapter(listaPacientes, getContext(), this);
 
-        // setting grid layout manager to implement grid view.
-        // in this method '2' represents number of columns to be displayed in grid view.
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
 
-        // at last set adapter to recycler view.
         recycler.setLayoutManager(layoutManager);
         recycler.setAdapter(adapter);
         recycler.addItemDecoration(new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL));
