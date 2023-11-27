@@ -22,6 +22,7 @@ import com.calferinnovate.mediconnecta.View.Home.Fragments.HomeFragment;
 import com.calferinnovate.mediconnecta.View.IOnBackPressed;
 import com.calferinnovate.mediconnecta.ViewModel.ConsultasYRutinasDiariasViewModel;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelArgs;
+import com.calferinnovate.mediconnecta.ViewModel.ViewModelArgsJson;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelFactory;
 import com.google.android.material.tabs.TabLayout;
 
@@ -90,18 +91,13 @@ public class ConsultasYRutinasDiariasFragment extends Fragment implements IOnBac
 
     /**
      * Método que configura el ViewModel ConsultasYRutinasViewModel mediante la creación de un ViewModelFactory
-     * que proporciona instancias de Peticiones Json y ClaseGloabl al ViewModel.
+     * que proporciona una instancia de Peticiones Json al ViewModel.
      */
     public void inicializaViewModel() {
-        ViewModelArgs viewModelArgs = new ViewModelArgs() {
+        ViewModelArgsJson viewModelArgs = new ViewModelArgsJson() {
             @Override
             public PeticionesJson getPeticionesJson() {
                 return peticionesJson = new PeticionesJson(requireContext());
-            }
-
-            @Override
-            public ClaseGlobal getClaseGlobal() {
-                return claseGlobal;
             }
         };
 

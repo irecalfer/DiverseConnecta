@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.android.volley.VolleyError;
-import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
 import com.calferinnovate.mediconnecta.Model.Constantes;
 import com.calferinnovate.mediconnecta.Model.PacientesAgrupadosRutinas;
 import com.calferinnovate.mediconnecta.Model.PeticionesJson;
@@ -16,25 +15,39 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class ConsultasYRutinasDiariasViewModel extends ViewModel {
-    // instancia de MutableLiveData, que es un contenedor de datos observable que almacena una lista de objetos
-    private MutableLiveData<ArrayList<PacientesAgrupadosRutinas>> listaProgramacionLiveData = new MutableLiveData<>();
-    private PeticionesJson peticionesJson;
-    private ClaseGlobal claseGlobal;
+/**
+ * ViewModel encargado de gestionar las rutinas diarias de los pacientes.
+ * Usa variables MutableLiveData para modificar el valor contenido en la variable después de la creación
+ * y utiliza LiveData para transmitir los datos hacia la UI, posteriormente proporciona actualizaciones
+ * a los observadores del fragmento.
+ */
 
-    // Constructor
+public class ConsultasYRutinasDiariasViewModel extends ViewModel {
+    private final MutableLiveData<ArrayList<PacientesAgrupadosRutinas>> listaProgramacionLiveData = new MutableLiveData<>();
+    private PeticionesJson peticionesJson;
+
     public ConsultasYRutinasDiariasViewModel() {
     }
 
-    //Constructor utilizado para obtener instancias de peticionesJson y claseGlobal necesarias
-    // para realizar solicitudes HTTP y gestionar datos globales.
-    public ConsultasYRutinasDiariasViewModel(ViewModelArgs viewModelArgs) {
+    /**
+     * Constructor utilizado para obtener instancia de peticionesJson necesaria para realizar solicitudes HTTP
+     *
+     * @param viewModelArgs Instancia de ViewModelArgsJson que proporciona PeticionesJson.
+     */
+    public ConsultasYRutinasDiariasViewModel(ViewModelArgsJson viewModelArgs) {
         this.peticionesJson = viewModelArgs.getPeticionesJson();
-        this.claseGlobal = viewModelArgs.getClaseGlobal();
     }
 
-    //Este método se utiliza para obtener el LiveData de la lista de programación de rutinas. Comprueba si el LiveData ya tiene datos (diferentes de nulo), y si no, realiza una solicitud HTTP para obtener los datos de rutinas
-    // utilizando el método obtieneDatosRutinasDiaPacientes(). Luego, devuelve el LiveData de la lista de programación.
+    /**
+     * Método que realiza una solicitud al servudor a través de PeticionesJson para obtener la lista
+     * de rutinas de lode pacientes en una fecha dada, encapsula el contenido del arraylist en listaProgramacionLiveData
+     * y devuelve el LiveData.
+     *
+     * @param fechaRutina  Fecha seleccionada
+     * @param nombreUnidad Nombre de la unidad a la que pertenecen los pacientes
+     * @param tipoRutina   Tipo de Rutina de la que se desea obtener la lista de pacientes.
+     * @return LiveData que contiene la lista de pacientes asociados a un tipo de rutina en una fecha dada.
+     */
     public LiveData<ArrayList<PacientesAgrupadosRutinas>> obtieneDatosRutinasDiaPacientes(String fechaRutina, String nombreUnidad, String tipoRutina) {
         String url = Constantes.url_part + "programacionRutinas.php?fecha_rutina=" + fechaRutina + "&nombre=" + nombreUnidad + "&diario=" + tipoRutina;
         listaProgramacionLiveData.postValue(new ArrayList<>());
@@ -49,19 +62,19 @@ public class ConsultasYRutinasDiariasViewModel extends ViewModel {
                         PacientesAgrupadosRutinas pacientesAgrupadosRutinas = new PacientesAgrupadosRutinas(jsonObject.optString("fk_cip_sns"), jsonObject.optInt("fk_id_rutina"), jsonObject.optString("hora_rutina"));
                         pacientesAgrupadosRutinasArrayList.add(pacientesAgrupadosRutinas);
                     }
-                    if(!pacientesAgrupadosRutinasArrayList.isEmpty()){
+                    if (!pacientesAgrupadosRutinasArrayList.isEmpty()) {
                         // actualiza el LiveData con la nueva lista de programación, notificando a los observadores.
                         listaProgramacionLiveData.postValue(pacientesAgrupadosRutinasArrayList);
                     }
 
                 } catch (JSONException e) {
-                    // Maneja errores, si es necesario
+                    e.printStackTrace();
                 }
             }
 
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                error.printStackTrace();
             }
         });
         return listaProgramacionLiveData;
