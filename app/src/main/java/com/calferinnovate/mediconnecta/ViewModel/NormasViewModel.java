@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.android.volley.VolleyError;
-import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
 import com.calferinnovate.mediconnecta.Model.Constantes;
 import com.calferinnovate.mediconnecta.Model.Normas;
 import com.calferinnovate.mediconnecta.Model.PeticionesJson;
@@ -16,48 +15,69 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+/**
+ * ViewModel encargado de gestionar las normas de la empresa..
+ * Usa variables MutableLiveData para modificar el valor contenido en la variable después de la creación
+ * y utiliza LiveData para transmitir los datos hacia la UI, posteriormente proporciona actualizaciones
+ * a los observadores del fragmento.
+ */
+
 public class NormasViewModel extends ViewModel {
 
-    private ClaseGlobal claseGlobal;
     private PeticionesJson peticionesJson;
 
-    private MutableLiveData<ArrayList<Normas>> arrayListLiveDataNormas = new MutableLiveData<>();
+    private final MutableLiveData<ArrayList<Normas>> arrayListLiveDataNormas = new MutableLiveData<>();
 
-    public NormasViewModel(){
+    /**
+     * Constructor por defecto.
+     */
+    public NormasViewModel() {
 
     }
 
-    public NormasViewModel(ViewModelArgsJson viewModelArgsJson){
+    /**
+     * Constructor que recibe una instancia de ViewModelArgsJson para proporcionar PeticionesJson.
+     *
+     * @param viewModelArgsJson Instancia de ViewModelArgsJson que proporciona PeticionesJson.
+     */
+    public NormasViewModel(ViewModelArgsJson viewModelArgsJson) {
         this.peticionesJson = viewModelArgsJson.getPeticionesJson();
     }
 
 
-    public LiveData<ArrayList<Normas>> obtieneNormasEmpresa(){
-        String url = Constantes.url_part+"normas.php";
+    /**
+     * Método que realiza una solicitud al servudor a través de PeticionesJson para obtener la lista
+     * de normas de la empresa, encapsula el contenido del arraylist en arrayListLiveDataNormas
+     * y devuelve el LiveData.
+     *
+     * @return LiveData con la lista de normas.
+     */
+    public LiveData<ArrayList<Normas>> obtieneNormasEmpresa() {
+        String url = Constantes.url_part + "normas.php";
         arrayListLiveDataNormas.postValue(new ArrayList<>());
         peticionesJson.getJsonObjectRequest(url, new PeticionesJson.MyJsonObjectResponseListener() {
             @Override
             public void onResponse(JSONObject response) {
-                try{
+                try {
                     ArrayList<Normas> normasArrayList = new ArrayList<>();
                     JSONArray jsonArray = response.getJSONArray("normas");
-                    for(int i = 0; i<jsonArray.length(); i++){
+                    for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                         Normas norma = new Normas(jsonObject.optString("nombre_norma"),
                                 jsonObject.optString("contenido"));
                         normasArrayList.add(norma);
                     }
-                    if(!normasArrayList.isEmpty()){
+                    if (!normasArrayList.isEmpty()) {
                         arrayListLiveDataNormas.postValue(new ArrayList<>(normasArrayList));
                     }
-                }catch(JSONException e){
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                    error.printStackTrace();
+                error.printStackTrace();
             }
         });
         return arrayListLiveDataNormas;
