@@ -148,10 +148,6 @@ public class SharedPacientesViewModel extends ViewModel {
         return mutableFamiliaresList;
     }
 
-    public LiveData<ArrayList<ContactoFamiliares>> getListaMutableFamiliares(Pacientes paciente) {
-        return obtieneContactoFamiliares(paciente);
-    }
-
     public LiveData<ArrayList<Informes>> getListaMutableInformes(Pacientes paciente) {
         return obtieneInformesPaciente(paciente);
     }

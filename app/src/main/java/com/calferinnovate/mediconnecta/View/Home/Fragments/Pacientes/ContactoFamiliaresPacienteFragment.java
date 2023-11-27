@@ -5,7 +5,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -19,7 +18,6 @@ import com.calferinnovate.mediconnecta.Adaptadores.FamiliaresAdapter;
 import com.calferinnovate.mediconnecta.View.Home.Fragments.PacientesFragment;
 import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
-import com.calferinnovate.mediconnecta.Model.ContactoFamiliares;
 import com.calferinnovate.mediconnecta.View.IOnBackPressed;
 import com.calferinnovate.mediconnecta.Model.Pacientes;
 import com.calferinnovate.mediconnecta.Model.PeticionesJson;
@@ -27,17 +25,28 @@ import com.calferinnovate.mediconnecta.ViewModel.SharedPacientesViewModel;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelArgs;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelFactory;
 
-import java.util.ArrayList;
-
+/**
+ * Fragmento encargado de mostrar a lista de Datos de los contactos de los pacientes.
+ */
 public class ContactoFamiliaresPacienteFragment extends Fragment implements IOnBackPressed {
     private ClaseGlobal claseGlobal;
     private SharedPacientesViewModel sharedPacientesViewModel;
     private RecyclerView recyclerView;
-    private ViewModelArgs viewModelArgs;
     private PeticionesJson peticionesJson;
-    private ArrayList<ContactoFamiliares> listaContactoFamiliares;
 
 
+    /**
+     * Método llamado cuando se crea la vista del fragmento.
+     * Infla el diseño de la UI desde el archivo XML fragment_contacto_familiares_paciente.xml.
+     * Configura el RecyclerView.
+     *
+     * @param inflater inflador utilizado para inflar el diseño de la UI.
+     * @param container Contenedor que contiene la vista del fragmento
+     * @param savedInstanceState Estado de guardado de la instancia del fragmento
+     *
+     *
+     * @return vista Es la vista inflada del fragmento.
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -51,15 +60,21 @@ public class ContactoFamiliaresPacienteFragment extends Fragment implements IOnB
         return view;
     }
 
+    /**
+     * Método encargado de inicializar variables y enlazar recursos de la UI con variables miembro.
+     * @param view
+     */
     public void asignarValoresAVariables(View view){
         claseGlobal = ClaseGlobal.getInstance();
         recyclerView = view.findViewById(R.id.recyclerViewFamiliares);
     }
 
+    /**
+     * Método que configura el ViewModel SeleccionUnidadViewModel mediante la creación de un ViewModelFactory
+     * que proporciona instancias de Peticiones Json y ClaseGloabl al ViewModel.
+     */
     public void inicializaViewModel(){
-        //Creas un objeto ViewModelFactory y obtienes una instancia de ConsultasYRutinasDiariasViewModel utilizando este factory.
-        //Luego, observas el LiveData del ViewModel para mantener actualizada la lista de programación en el RecyclerView.
-        viewModelArgs = new ViewModelArgs() {
+        ViewModelArgs viewModelArgs = new ViewModelArgs() {
             @Override
             public PeticionesJson getPeticionesJson() {
                 return peticionesJson = new PeticionesJson(requireContext());
@@ -76,6 +91,14 @@ public class ContactoFamiliaresPacienteFragment extends Fragment implements IOnB
         sharedPacientesViewModel = new ViewModelProvider(requireActivity(), factory).get(SharedPacientesViewModel.class);
     }
 
+    /**
+     * Método llamado cuando la vista ya ha sido creada.
+     * Llama a observaPacienteYObtieneContactos() que establece la escucha de los tabs del TabLayout.
+     *
+     * @param view               Vista retornada por el inflador.
+     * @param savedInstanceState Si no es nulo, este fragmento será reconstruido a partir de un
+     *                           estado anterior guardado.
+     */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -83,30 +106,26 @@ public class ContactoFamiliaresPacienteFragment extends Fragment implements IOnB
 
     }
 
+    /**
+     * Método que obtiene el paciente seleccionado y llama a obtieneListaFamiliares para obtener la lista de contactos.
+     */
     public void observaPacienteYObtieneContactos(){
-        // Observación de LiveData: Has configurado la observación de un LiveData en el ViewModel utilizando el método observe(). Cuando los datos cambian en el LiveData,
-        // el adaptador se actualiza automáticamente para reflejar los cambios en el RecyclerView.
-        sharedPacientesViewModel.getPaciente().observe(getViewLifecycleOwner(), new Observer<Pacientes>() {
-            @Override
-            public void onChanged(Pacientes pacientes) {
-                Pacientes nuevoPaciente = pacientes;
-                obtieneListaFamiliares(nuevoPaciente);
-            }
-        });
+        sharedPacientesViewModel.getPaciente().observe(getViewLifecycleOwner(), pacientes -> obtieneListaFamiliares(pacientes));
     }
 
+    /**
+     * Método que llama al método obtieneContactoFamiliares del SharedViewModel, obtiene la lista de contactos,
+     * configura el adaptador FamiliaresAdapter y actualiza el RecyclerView con la lista obtenida.
+     * @param paciente Paciente seleccionado.
+     */
     public void obtieneListaFamiliares(Pacientes paciente){
-        sharedPacientesViewModel.getListaMutableFamiliares(paciente).observe(getViewLifecycleOwner(), new Observer<ArrayList<ContactoFamiliares>>() {
-            @Override
-            public void onChanged(ArrayList<ContactoFamiliares> contactoFamiliares) {
-                // added data from arraylist to adapter class.
-                FamiliaresAdapter adapter = new FamiliaresAdapter(contactoFamiliares, getContext());
-                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-                // at last set adapter to recycler view.
-                recyclerView.setLayoutManager(linearLayoutManager);
-                recyclerView.setAdapter(adapter);
-                recyclerView.addItemDecoration(new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL));
-            }
+        sharedPacientesViewModel.obtieneContactoFamiliares(paciente).observe(getViewLifecycleOwner(), contactoFamiliares -> {
+            FamiliaresAdapter adapter = new FamiliaresAdapter(contactoFamiliares, getContext());
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+
+            recyclerView.setLayoutManager(linearLayoutManager);
+            recyclerView.setAdapter(adapter);
+            recyclerView.addItemDecoration(new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL));
         });
 
 
