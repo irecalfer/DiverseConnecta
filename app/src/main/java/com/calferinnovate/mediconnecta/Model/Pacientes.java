@@ -1,8 +1,8 @@
 package com.calferinnovate.mediconnecta.Model;
 
 public class Pacientes {
-   private String nombre, apellidos, foto, fechaNacimiento, dni, lugarNacimiento, sexo, cipSns, fechaIngreso,
-           estadoCivil;
+   private String nombre, apellidos, foto, fechaNacimiento, dni, lugarNacimiento, sexo, cipSns, 
+                  fechaIngreso, estadoCivil;
    private int numSeguridadSocial, fkIdUnidad, fkIdSeguro, fkNumHabitacion, fkNumHistoriaClinica;
 
     public Pacientes() {
