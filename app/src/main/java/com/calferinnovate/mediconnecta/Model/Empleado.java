@@ -13,7 +13,8 @@ public class Empleado{
     public Empleado() {
     }
 
-    public Empleado(String user, String pass, String nombre, String apellidos, String nombreCargo, int cod_empleado, int fk_cargo, String foto) {
+    public Empleado(String user, String pass, String nombre, String apellidos, 
+                    String nombreCargo, int cod_empleado, int fk_cargo, String foto) {
         this.user = user;
         this.pass = pass;
         this.nombre = nombre;
