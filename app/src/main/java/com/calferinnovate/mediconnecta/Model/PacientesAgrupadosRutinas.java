@@ -5,8 +5,7 @@ import java.util.ArrayList;
 public class PacientesAgrupadosRutinas {
    private int fkIdRutina;
    private String horaRutina, fkCipSns;
-   private ArrayList<PacientesAgrupadosRutinas> listaProgramacion;
-
+   
     public PacientesAgrupadosRutinas() {
     }
 
@@ -40,11 +39,4 @@ public class PacientesAgrupadosRutinas {
         this.horaRutina = horaRutina;
     }
 
-    public ArrayList<PacientesAgrupadosRutinas> getListaProgramacion() {
-        return listaProgramacion;
-    }
-
-    public void setListaProgramacion(ArrayList<PacientesAgrupadosRutinas> listaProgramacion) {
-        this.listaProgramacion = listaProgramacion;
-    }
 }
