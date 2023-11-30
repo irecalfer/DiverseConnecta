@@ -8,8 +8,9 @@ public class Informes {
     public Informes() {
     }
 
-    public Informes(int numHistoriaClinica, String tipoInforme, String fecha, String centro, String responsable,
-                    String servicioUnidadDispositivo, String servicioDeSalud, byte[] pdfBytes) {
+    public Informes(int numHistoriaClinica, String tipoInforme, String fecha, String centro, 
+                    String responsable, String servicioUnidadDispositivo, String servicioDeSalud, 
+                    byte[] pdfBytes) {
         this.numHistoriaClinica = numHistoriaClinica;
         this.tipoInforme = tipoInforme;
         this.fecha = fecha;
