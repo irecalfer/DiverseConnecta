@@ -8,8 +8,9 @@ public class Pacientes {
     public Pacientes() {
     }
 
-    public Pacientes(String nombre, String apellidos, String foto, String fechaNacimiento, String dni, String lugarNacimiento,
-                     String sexo, String cipSns, int numSeguridadSocial, int fkIdUnidad, int fkIdSeguro, int fkNumHabitacion,
+    public Pacientes(String nombre, String apellidos, String foto, String fechaNacimiento, String dni, 
+                     String lugarNacimiento, String sexo, String cipSns, int numSeguridadSocial, 
+                     int fkIdUnidad, int fkIdSeguro, int fkNumHabitacion,
                      int fkNumHistoriaClinica, String fechaIngreso, String estadoCivil) {
         this.nombre = nombre;
         this.apellidos = apellidos;
