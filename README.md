@@ -1,4 +1,4 @@
-# MediConnecta
+<h1 align="center"> MediConnecta </h1>
 Proyecto del grado de Desarrollo de aplicaciones multiplataforma
 
 MediConnecta representa una innovadora aplicación móvil diseñada específicamente para profesionales sanitarios con el objetivo de proporcionar un sistema eficaz de control y seguimiento en el ámbito de la geriatría y la salud mental.
