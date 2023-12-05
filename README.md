@@ -1,5 +1,5 @@
 <h1 align="center"> MediConnecta </h1>
-<p><img src="https://img.shields.io/badge/phpMyAdmin-6C78AF.svg?style=for-the-badge&logo=phpMyAdmin&logoColor=white">  <img src="https://img.shields.io/badge/PHP-777BB4.svg?style=for-the-badge&logo=PHP&logoColor=white"></p>
+<p><img src="https://img.shields.io/badge/phpMyAdmin-6C78AF.svg?style=for-the-badge&logo=phpMyAdmin&logoColor=white">  <img src="https://img.shields.io/badge/PHP-777BB4.svg?style=for-the-badge&logo=PHP&logoColor=white"> <img src="https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white"></p>
 <p align="center">Proyecto del grado de Desarrollo de aplicaciones multiplataforma</p>
 
 <p align="center"> <img src="https://i.imgur.com/tYsIisN.png"></p>
