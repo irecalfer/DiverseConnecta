@@ -1,7 +1,11 @@
 <h1 align="center"> MediConnecta </h1>
+<p><img src="https://img.shields.io/badge/phpMyAdmin-6C78AF.svg?style=for-the-badge&logo=phpMyAdmin&logoColor=white">  <img src="https://img.shields.io/badge/PHP-777BB4.svg?style=for-the-badge&logo=PHP&logoColor=white"></p>
 <p align="center">Proyecto del grado de Desarrollo de aplicaciones multiplataforma</p>
+
 <p align="center"> <img src="https://i.imgur.com/tYsIisN.png"></p>
 
+
+ 
 MediConnecta representa una innovadora aplicación móvil diseñada específicamente para profesionales sanitarios con el objetivo de proporcionar un sistema eficaz de control y seguimiento en el ámbito de la geriatría y la salud mental.
 
 MediConnecta fue creada con la intencionalidad de proporcionar a los profesionales de la salud una aplicación accesible que les permite acceder instantáneamente a los historiales clínicos de pacientes y usuarios. Esto incluye la capacidad de revisar registros clínicos, documentar incidencias y acceder a alertas y funciones específicas según su unidad de trabajo diaria.
