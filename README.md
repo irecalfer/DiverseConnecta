@@ -1,7 +1,6 @@
 <h1 align="center"> MediConnecta </h1>
-![logo de la app](https://github.com/irecalfer/MediConnecta/assets/122487131/4bb98f28-a20e-4165-a1f7-eb4221c7961f)
-
-Proyecto del grado de Desarrollo de aplicaciones multiplataforma
+<p align="center">Proyecto del grado de Desarrollo de aplicaciones multiplataforma</p>
+<p align="center"> <img src="https://i.imgur.com/tYsIisN.png"></p>
 
 MediConnecta representa una innovadora aplicación móvil diseñada específicamente para profesionales sanitarios con el objetivo de proporcionar un sistema eficaz de control y seguimiento en el ámbito de la geriatría y la salud mental.
 
