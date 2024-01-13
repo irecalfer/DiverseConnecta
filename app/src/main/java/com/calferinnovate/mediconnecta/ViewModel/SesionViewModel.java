@@ -25,6 +25,12 @@ public class SesionViewModel extends ViewModel {
     private ClaseGlobal claseGlobal;
     private PeticionesJson peticionesJson;
     private final MutableLiveData<Boolean> empleadoIniciaSesionMutableLiveData = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> empleadoEnfermero = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> empleadoAdministrativo = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> empleadoMedico = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> empleadoTerapeutaOcupacional = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> empleadoFisioterapeuta = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> empleadoTrabajadorSocial = new MutableLiveData<>();
 
     /**
      * Constructor vacío del ViewModel
@@ -85,5 +91,12 @@ public class SesionViewModel extends ViewModel {
                 empleadoIniciaSesionMutableLiveData.setValue(false);
             }
         });
+    }
+
+    public void empleadoCargoFlag(Empleado empleadoLogueado){
+        switch(empleadoLogueado.getNombreCargo()){
+            case "Enfermero":
+
+        }
     }
 }
