@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/mediconnecta_principal_item_id"
+            android:title="@string/mediconnecta_principal_item">
+            <menu>
+                <item
+                    android:id="@+id/home_item_id"
+                    android:icon="@drawable/home_icon"
+                    android:title="@string/home_item" />
+
+                <item
+                    android:id="@+id/pacientes_item_id"
+                    android:icon="@drawable/residentes_icon"
+                    android:title="@string/pacientes_item" />
+
+                <item
+                    android:id="@+id/añadir_paciente_item_id"
+                    android:icon="@drawable/person_add_24px"
+                    android:title="@string/pacientes_item" />
+
+                <item
+                    android:id="@+id/parte_general_item_id"
+                    android:icon="@drawable/parte_icon"
+                    android:title="@string/parte_general_item" />
+            </menu>
+        </item>
+    </group>
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/politica_item_id"
+            android:title="@string/politica_item">
+            <menu>
+
+
+                <item
+                    android:id="@+id/normas_empresa_item_id"
+                    android:icon="@drawable/normas_empresa_icon"
+                    android:title="@string/normas_empresa_item" />
+            </menu>
+        </item>
+    </group>
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/configuracion_item_id"
+            android:title="@string/configuracion_item">
+            <menu>
+                <item
+                    android:id="@+id/cambio_unidad_item_id"
+                    android:icon="@drawable/cambio_unidad_icon"
+                    android:title="@string/cambio_unidad_item" />
+                <item
+                    android:id="@+id/cierre_sesion_item_id"
+                    android:icon="@drawable/cierre_sesion_icon"
+                    android:title="@string/cierre_sesion_item" />
+
+            </menu>
+        </item>
+        >
+    </group>
+
+</menu>

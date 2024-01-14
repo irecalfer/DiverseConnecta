@@ -21,6 +21,8 @@ import com.calferinnovate.mediconnecta.Model.PeticionesJson;
 import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
 import com.calferinnovate.mediconnecta.View.Home.HomeActivity;
+import com.calferinnovate.mediconnecta.View.Home.HomeActivityAdministrativos;
+import com.calferinnovate.mediconnecta.View.Home.HomeActivityEnfermeros;
 import com.calferinnovate.mediconnecta.ViewModel.SesionViewModel;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelArgs;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelFactory;
@@ -152,7 +154,11 @@ public class SesionFragment extends Fragment {
         sesionViewModel.getEmpleadoIniciaSesion().observe(getViewLifecycleOwner(), sesion -> {
             if (sesion) {
                 if(claseGlobal.getEmpleado().getNombreCargo().equals("Enfermero")){
-                    Intent intent = new Intent(getActivity(), HomeActivity.class);
+                    Intent intent = new Intent(getActivity(), HomeActivityEnfermeros.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK) ;
+                    startActivity(intent);
+                }else if(claseGlobal.getEmpleado().getNombreCargo().equals("Administrativo")){
+                    Intent intent = new Intent(getActivity(), HomeActivityAdministrativos.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK) ;
                     startActivity(intent);
                 }else{

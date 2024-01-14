@@ -95,34 +95,8 @@ public class SesionViewModel extends ViewModel {
     }
 
 
-    public void cargoEmpleado(Empleado empleadoLogueado){
-        switch(empleadoLogueado.getNombreCargo()){
-            case "Enfermero":
-                empleadoEnfermero.setValue(true);
-                cargoEmpleado.setValue(empleadoLogueado.getNombreCargo());
-                break;
-            case "Administrativo":
-                empleadoAdministrativo.setValue(true);
-                cargoEmpleado.setValue(empleadoLogueado.getNombreCargo());
-                break;
-            case "Medico":
-                empleadoMedico.setValue(true);
-                cargoEmpleado.setValue(empleadoLogueado.getNombreCargo());
-                break;
-            case "Terapeuta Ocupacional":
-                empleadoTerapeutaOcupacional.setValue(true);
-                cargoEmpleado.setValue(empleadoLogueado.getNombreCargo());
-                break;
-            case "Fisioterapeuta":
-                empleadoFisio.setValue(true);
-                cargoEmpleado.setValue(empleadoLogueado.getNombreCargo());
-                break;
-            case "Trabajador social":
-                empleadoTrabajadorSocial.setValue(true);
-                cargoEmpleado.setValue(empleadoLogueado.getNombreCargo());
-                break;
-        }
-    }
+
+
 
 
 }
