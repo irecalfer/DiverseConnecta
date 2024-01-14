@@ -10,6 +10,7 @@ import com.android.volley.VolleyError;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
 import com.calferinnovate.mediconnecta.Model.Constantes;
 import com.calferinnovate.mediconnecta.Model.ContactoFamiliares;
+import com.calferinnovate.mediconnecta.Model.Habitaciones;
 import com.calferinnovate.mediconnecta.Model.HistoriaClinica;
 import com.calferinnovate.mediconnecta.Model.Informes;
 import com.calferinnovate.mediconnecta.Model.Pacientes;
@@ -42,6 +43,7 @@ public class SharedPacientesViewModel extends ViewModel {
     private final MutableLiveData<ArrayList<Pautas>> mutablePautasList = new MutableLiveData<>();
     private final MutableLiveData<ArrayList<String>> listaLugaresLiveData = new MutableLiveData<>();
     private final MutableLiveData<ArrayList<Unidades>> listaUnidadesLiveData = new MutableLiveData<>();
+    private final MutableLiveData<ArrayList<Habitaciones>> listaHabitacionesLiveData = new MutableLiveData<>();
     private PeticionesJson peticionesJson;
 
 
@@ -427,6 +429,36 @@ public class SharedPacientesViewModel extends ViewModel {
             }
         });
         return listaUnidadesLiveData;
+    }
+
+    public LiveData<ArrayList<Habitaciones>> obtieneHabitacionesUnidades(String nombreUnidadSeleccionada){
+        String url = Constantes.url_part+"habitaciones.php?nombre_unidad="+nombreUnidadSeleccionada;
+
+        peticionesJson.getJsonObjectRequest(url, new PeticionesJson.MyJsonObjectResponseListener() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try{
+                    ArrayList<Habitaciones> listaHabitaciones = new ArrayList<>();
+                    JSONArray jsonArray = response.getJSONArray("habitaciones");
+                    for(int i = 0; i< jsonArray.length(); i++){
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        Habitaciones habitaciones = new Habitaciones(jsonObject.optInt("num_habitacion"), jsonObject.optInt("fk_id_unidad"));
+                        listaHabitaciones.add(habitaciones);
+                    }
+                    if(!listaHabitaciones.isEmpty()){
+                        listaHabitacionesLiveData.postValue(new ArrayList<>(listaHabitaciones));
+                    }
+                }catch (JSONException e){
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+        return listaHabitacionesLiveData;
     }
 
 }

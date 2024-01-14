@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -16,6 +17,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
+import com.calferinnovate.mediconnecta.Model.Habitaciones;
 import com.calferinnovate.mediconnecta.Model.PeticionesJson;
 import com.calferinnovate.mediconnecta.Model.Seguro;
 import com.calferinnovate.mediconnecta.Model.Unidades;
@@ -42,6 +44,8 @@ public class GeneralPacientesFragmentAnadidos extends Fragment implements IOnBac
     private TextInputEditText nombre, apellidos, nacimiento, dni, cipSns, numSeguridadSocial;
     private Spinner seguroSp, unidadSp, habitacionSp, sexoSp;
     private MaterialDatePicker fechaNacimiento, fechaIngreso;
+    private String unidadSeleccionada;
+    private int habitacionSeleccionada;
     private ClaseGlobal claseGlobal;
     private PeticionesJson peticionesJson;
     private SharedPacientesViewModel sharedPacientesViewModel;
@@ -153,6 +157,51 @@ public class GeneralPacientesFragmentAnadidos extends Fragment implements IOnBac
                 ArrayAdapter<String> unidadesAdapter= new ArrayAdapter<>(requireActivity(), R.layout.my_spinner, listaUnidades);
                 unidadesAdapter.setDropDownViewResource(R.layout.my_spinner);
                 unidadSp.setAdapter(unidadesAdapter);
+                seleccionarUnidad();
+            }
+        });
+    }
+
+    private void seleccionarUnidad(){
+        unidadSp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(parent.getId() == R.id.spinnerUnidadPacienteNuevo){
+                    unidadSeleccionada = parent.getSelectedItem().toString();
+                    obtieneHabitacionesYPoblarSpinner();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+    private void obtieneHabitacionesYPoblarSpinner(){
+        sharedPacientesViewModel.obtieneHabitacionesUnidades(unidadSeleccionada).observe(getViewLifecycleOwner(), new Observer<ArrayList<Habitaciones>>() {
+            @Override
+            public void onChanged(ArrayList<Habitaciones> habitaciones) {
+                ArrayList<Integer> numHabitacionesLista = new ArrayList<Integer>();
+                for (Habitaciones habitacion: habitaciones){
+                    numHabitacionesLista.add(habitacion.getNumHabitacion());
+                }
+                ArrayAdapter<Integer> habitacionesAdapter = new ArrayAdapter<>(requireActivity(), R.layout.my_spinner, numHabitacionesLista);
+                habitacionesAdapter.setDropDownViewResource(R.layout.my_spinner);
+                habitacionSp.setAdapter(habitacionesAdapter);
+                habitacionSp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        if(parent.getId() == R.id.spinnerHabitaciónPacienteNuevo){
+                            habitacionSeleccionada = numHabitacionesLista.get(position);
+                        }
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+
+                    }
+                });
             }
         });
     }
