@@ -1,6 +1,7 @@
 package com.calferinnovate.mediconnecta.View.Sesion;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -19,6 +20,7 @@ import androidx.navigation.Navigation;
 import com.calferinnovate.mediconnecta.Model.PeticionesJson;
 import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
+import com.calferinnovate.mediconnecta.View.Home.HomeActivity;
 import com.calferinnovate.mediconnecta.ViewModel.SesionViewModel;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelArgs;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelFactory;
@@ -27,9 +29,10 @@ import com.google.android.material.textfield.TextInputLayout;
 
 /**
  * Fragmento donde se realiza el autenticación del inicio de sesión del empleado.
+ *
  * @author Irene Caldelas Fernánde
  */
-public class SesionFragment extends Fragment{
+public class SesionFragment extends Fragment {
 
     private TextInputEditText username;
 
@@ -49,10 +52,9 @@ public class SesionFragment extends Fragment{
      * Llama a inicializaVariables() para obtener la instancia de ClaseGlobal.
      * Llama a inicializacionViewModel() para configurar el SesionViewModel.
      *
-     * @param inflater inflador utilizado para inflar el diseño de la UI.
-     * @param container Contenedor que contiene la vista del fragmento
+     * @param inflater           inflador utilizado para inflar el diseño de la UI.
+     * @param container          Contenedor que contiene la vista del fragmento
      * @param savedInstanceState Estado de guardado de la instancia del fragmento*
-     *
      * @return vista Es la vista inflada del fragmento.
      */
     @Override
@@ -78,7 +80,7 @@ public class SesionFragment extends Fragment{
      * Método que configura el ViewModel SesionViewModel mediante la creación de un ViewModelFactory que proporciona
      * instancias de Peticiones Json y ClaseGloabl al ViewModel.
      */
-    public void inicializacionViewModel(){
+    public void inicializacionViewModel() {
         ViewModelArgs viewModelArgs = new ViewModelArgs() {
             @Override
             public PeticionesJson getPeticionesJson() {
@@ -103,7 +105,8 @@ public class SesionFragment extends Fragment{
      * de la UI.
      * Llama a vertificaEstadoInicioSesion() para verificar el estado del inicio de sesión.
      * Si el botón de inicio de sesión es pulsado llama a inicioSesion()
-     * @param view Vista retornada por el inflador.
+     *
+     * @param view               Vista retornada por el inflador.
      * @param savedInstanceState Si no es nulo, este fragmento será reconstruido a partir de un
      *                           estado anterior guardado.
      */
@@ -124,6 +127,7 @@ public class SesionFragment extends Fragment{
     /**
      * Método que asocia las variables declaradas en el fragmento con los elementos de la UI de nuestro
      * layout.
+     *
      * @param view Es la vista inflada
      */
     public void asociacionVariableComponente(View view) {
@@ -144,12 +148,19 @@ public class SesionFragment extends Fragment{
      * y pasa al siguiente fragmento con el NavController.
      * En caso de que los datos hayan sido incorrectos muestra un mensaje de error.
      */
-    public void verificaEstadoInicioSesion(){
+    public void verificaEstadoInicioSesion() {
         sesionViewModel.getEmpleadoIniciaSesion().observe(getViewLifecycleOwner(), sesion -> {
-            if(sesion){
-                Toast.makeText(getContext(), "Permitiendo el acceso al usuario " + username.getText().toString(), Toast.LENGTH_SHORT).show();
-                navController.navigate(R.id.action_sesionFragment_to_seleccionUnidadFragment);
-            }else{
+            if (sesion) {
+                if(claseGlobal.getEmpleado().getNombreCargo().equals("Enfermero")){
+                    Intent intent = new Intent(getActivity(), HomeActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK) ;
+                    startActivity(intent);
+                }else{
+                    Toast.makeText(getContext(), "Permitiendo el acceso al usuario " + username.getText().toString(), Toast.LENGTH_SHORT).show();
+                    navController.navigate(R.id.action_sesionFragment_to_seleccionUnidadFragment);
+                }
+
+            } else {
                 Toast.makeText(getContext(), "Usuario o contraseña incorrecta", Toast.LENGTH_SHORT).show();
             }
         });
@@ -162,7 +173,7 @@ public class SesionFragment extends Fragment{
      */
     private void iniciarSesion() {
         validacionesDatos(username.getText().toString(), password.getText().toString());
-        sesionViewModel.inicioSesion( username.getText().toString(), password.getText().toString());
+        sesionViewModel.inicioSesion(username.getText().toString(), password.getText().toString());
     }
 
     /**
@@ -171,16 +182,16 @@ public class SesionFragment extends Fragment{
      * @param user Nombre de usuario
      * @param pass Contraseña del empleado
      */
-    private void validacionesDatos(String user, String pass){
-        if(TextUtils.isEmpty(user)){
+    private void validacionesDatos(String user, String pass) {
+        if (TextUtils.isEmpty(user)) {
             userLayout.setError("El usuario no puede estar vacío");
             //username.setError("El campo de usuario no puede estar vacío");
         }
-        if(TextUtils.isEmpty(pass)){
+        if (TextUtils.isEmpty(pass)) {
             passLayout.setError("La contraseña no puede estar vacío");
         }
 
-        if(TextUtils.isEmpty(user) || TextUtils.isEmpty(pass)){
+        if (TextUtils.isEmpty(user) || TextUtils.isEmpty(pass)) {
             return;
         }
     }

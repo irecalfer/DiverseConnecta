@@ -25,6 +25,13 @@ public class SesionViewModel extends ViewModel {
     private ClaseGlobal claseGlobal;
     private PeticionesJson peticionesJson;
     private final MutableLiveData<Boolean> empleadoIniciaSesionMutableLiveData = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> empleadoEnfermero = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> empleadoAdministrativo = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> empleadoMedico = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> empleadoTerapeutaOcupacional = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> empleadoFisio = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> empleadoTrabajadorSocial = new MutableLiveData<>();
+    private MutableLiveData<String> cargoEmpleado = new MutableLiveData<>();
 
     /**
      * Constructor vacío del ViewModel
@@ -86,4 +93,36 @@ public class SesionViewModel extends ViewModel {
             }
         });
     }
+
+
+    public void cargoEmpleado(Empleado empleadoLogueado){
+        switch(empleadoLogueado.getNombreCargo()){
+            case "Enfermero":
+                empleadoEnfermero.setValue(true);
+                cargoEmpleado.setValue(empleadoLogueado.getNombreCargo());
+                break;
+            case "Administrativo":
+                empleadoAdministrativo.setValue(true);
+                cargoEmpleado.setValue(empleadoLogueado.getNombreCargo());
+                break;
+            case "Medico":
+                empleadoMedico.setValue(true);
+                cargoEmpleado.setValue(empleadoLogueado.getNombreCargo());
+                break;
+            case "Terapeuta Ocupacional":
+                empleadoTerapeutaOcupacional.setValue(true);
+                cargoEmpleado.setValue(empleadoLogueado.getNombreCargo());
+                break;
+            case "Fisioterapeuta":
+                empleadoFisio.setValue(true);
+                cargoEmpleado.setValue(empleadoLogueado.getNombreCargo());
+                break;
+            case "Trabajador social":
+                empleadoTrabajadorSocial.setValue(true);
+                cargoEmpleado.setValue(empleadoLogueado.getNombreCargo());
+                break;
+        }
+    }
+
+
 }
