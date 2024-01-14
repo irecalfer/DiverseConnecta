@@ -128,7 +128,12 @@ public class GeneralPacientesFragmentAnadidos extends Fragment implements IOnBac
         sharedPacientesViewModel.obtieneListaSeguros().observe(getViewLifecycleOwner(), new Observer<ArrayList<Seguro>>() {
             @Override
             public void onChanged(ArrayList<Seguro> seguros) {
-                ArrayAdapter<Seguro> segurosAdapter = new ArrayAdapter<>(requireActivity(), R.layout.my_spinner, seguros);
+                ArrayList<String> listaSeguros = new ArrayList<String>();
+                for(Seguro seguro: seguros){
+                    String tmp = seguro.getNombreSeguro() + " " + seguro.getTelefono();
+                    listaSeguros.add(tmp);
+                }
+                ArrayAdapter<String> segurosAdapter = new ArrayAdapter<>(requireActivity(), R.layout.my_spinner, listaSeguros);
                 segurosAdapter.setDropDownViewResource(R.layout.my_spinner);
                 seguro.setAdapter(segurosAdapter);
             }

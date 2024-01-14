@@ -17,7 +17,7 @@
             android:id="@+id/imagenDelPacienteNuevo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@tools:sample/avatars"
+            android:src="@mipmap/ic_launcher"
             android:paddingTop="32dp"/>
 
         <Button

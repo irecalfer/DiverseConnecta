@@ -41,14 +41,15 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:adjustViewBounds="true"
-        android:contentDescription="@string/content_description_foto_paciente_detalle"
+        android:src="@mipmap/ic_launcher"
+        android:contentDescription="@string/content_description_foto_paciente_detalle_nuevo"
         android:maxWidth="400dp"
         android:maxHeight="400dp"
         android:scaleType="fitCenter"
         app:layout_constraintEnd_toStartOf="@+id/guidelineVertDer"
         app:layout_constraintStart_toEndOf="@+id/guidelineVertIzq"
         app:layout_constraintTop_toBottomOf="@id/guidelineHorTop"
-        tools:src="@drawable/ic_launcher_background" />
+         />
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/scrollViewVertPaciente"
@@ -378,14 +379,36 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
-                android:id="@+id/btnGuardar"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:id="@+id/btnReiniciar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="32dp"
                 android:layout_weight="1"
-                android:text="@string/guardar"
                 android:autoSizeTextType="uniform"
-                tools:layout_editor_absoluteX="274dp"
-                tools:layout_editor_absoluteY="585dp" />
+                android:gravity="center"
+                android:text="@string/reiniciar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/guiaCentro"
+                app:layout_constraintTop_toBottomOf="@+id/labelNumSeguridadSocialPacienteNuevo" />
+
+            <Button
+                android:id="@+id/btnGuardar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginBottom="1dp"
+                android:layout_weight="1"
+                android:autoSizeTextType="uniform"
+                android:text="@string/guardar"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/guiaCentro"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/labelCipSnsPacienteNuevo" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>

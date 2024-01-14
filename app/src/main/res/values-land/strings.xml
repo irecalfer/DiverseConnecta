@@ -115,4 +115,6 @@
     <string name="datosClinicos">Datos Clínicos</string>
     <string name="pautasNuevoPaciente">Pautas</string>
     <string name="guardar">Guardar</string>
+    <string name="content_description_foto_paciente_detalle_nuevo">Foto del nuevo paciente</string>
+    <string name="reiniciar">Reiniciar</string>
 </resources>

@@ -154,10 +154,12 @@ public class SesionFragment extends Fragment {
         sesionViewModel.getEmpleadoIniciaSesion().observe(getViewLifecycleOwner(), sesion -> {
             if (sesion) {
                 if(claseGlobal.getEmpleado().getNombreCargo().equals("Enfermero")){
+                    Toast.makeText(getContext(), "Permitiendo el acceso al usuario " + username.getText().toString(), Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(getActivity(), HomeActivityEnfermeros.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK) ;
                     startActivity(intent);
                 }else if(claseGlobal.getEmpleado().getNombreCargo().equals("Administrativo")){
+                    Toast.makeText(getContext(), "Permitiendo el acceso al usuario " + username.getText().toString(), Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(getActivity(), HomeActivityAdministrativos.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK) ;
                     startActivity(intent);

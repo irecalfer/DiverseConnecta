@@ -8,7 +8,7 @@
     android:id="@+id/drawer_layout"
     android:fitsSystemWindows="true"
     tools:openDrawer="start"
-    tools:context=".View.Home.HomeActivity">
+    tools:context=".View.Home.HomeActivityAdministrativos">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -36,7 +36,7 @@
         android:id="@+id/nav_view"
         android:layout_gravity="start"
         app:headerLayout="@layout/nav_header"
-        app:menu="@menu/nav_menu"
+        app:menu="@menu/nav_menu_administrativos"
         app:itemIconTint="@color/md_theme_light_surfaceTint"
         app:itemTextColor="@color/md_theme_light_surfaceTint"
         app:itemTextAppearance="@style/DrawerTextStyle"
