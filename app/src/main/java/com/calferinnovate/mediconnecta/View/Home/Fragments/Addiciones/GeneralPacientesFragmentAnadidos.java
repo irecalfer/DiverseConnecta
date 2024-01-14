@@ -38,6 +38,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
+import com.calferinnovate.mediconnecta.Model.Constantes;
 import com.calferinnovate.mediconnecta.Model.Habitaciones;
 import com.calferinnovate.mediconnecta.Model.PeticionesJson;
 import com.calferinnovate.mediconnecta.Model.Seguro;
@@ -423,9 +424,9 @@ public class GeneralPacientesFragmentAnadidos extends Fragment implements IOnBac
         final String foto = imageString;
         final String numHistoriaClinica = numeroHistoriaClinica.getText().toString();
 
-        validacionesDatos();
+        //validacionesDatos();
 
-        String serverUrl = "http://tu-domino.com/upload.php";  // Reemplaza con tu dominio o dirección IP
+        String serverUrl = Constantes.url_part+"subir_datos_paciente.php";  // Reemplaza con tu dominio o dirección IP
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, serverUrl,
                 new Response.Listener<String>() {
