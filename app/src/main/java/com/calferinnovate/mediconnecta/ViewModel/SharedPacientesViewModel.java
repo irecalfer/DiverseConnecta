@@ -16,6 +16,7 @@ import com.calferinnovate.mediconnecta.Model.Pacientes;
 import com.calferinnovate.mediconnecta.Model.Pautas;
 import com.calferinnovate.mediconnecta.Model.PeticionesJson;
 import com.calferinnovate.mediconnecta.Model.Seguro;
+import com.calferinnovate.mediconnecta.Model.Unidades;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,6 +41,7 @@ public class SharedPacientesViewModel extends ViewModel {
     private final MutableLiveData<ArrayList<Informes>> mutableInformesList = new MutableLiveData<>();
     private final MutableLiveData<ArrayList<Pautas>> mutablePautasList = new MutableLiveData<>();
     private final MutableLiveData<ArrayList<String>> listaLugaresLiveData = new MutableLiveData<>();
+    private final MutableLiveData<ArrayList<Unidades>> listaUnidadesLiveData = new MutableLiveData<>();
     private PeticionesJson peticionesJson;
 
 
@@ -394,6 +396,37 @@ public class SharedPacientesViewModel extends ViewModel {
             }
         });
         return mutableSeguroList;
+    }
+
+    public LiveData<ArrayList<Unidades>> obtieneListaDeUnidades(){
+        String url = Constantes.url_part+"unidades.php";
+
+        peticionesJson.getJsonObjectRequest(url, new PeticionesJson.MyJsonObjectResponseListener() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try{
+                    ArrayList<Unidades> listaUnidades = new ArrayList<>();
+                    JSONArray jsonArray = response.getJSONArray("datos_unidades");
+                    for(int i = 0; i< jsonArray.length(); i++){
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        Unidades unidad = new Unidades(jsonObject.optInt("id_unidad"), jsonObject.optInt("fk_id_area"),
+                                jsonObject.optString("nombre"));
+                        listaUnidades.add(unidad);
+                    }
+                    if(!listaUnidades.isEmpty()){
+                        listaUnidadesLiveData.postValue(new ArrayList<>(listaUnidades));
+                    }
+                }catch (JSONException e){
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+        return listaUnidadesLiveData;
     }
 
 }

@@ -18,6 +18,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
 import com.calferinnovate.mediconnecta.Model.PeticionesJson;
 import com.calferinnovate.mediconnecta.Model.Seguro;
+import com.calferinnovate.mediconnecta.Model.Unidades;
 import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.View.Home.Fragments.PacientesFragment;
 import com.calferinnovate.mediconnecta.View.IOnBackPressed;
@@ -39,7 +40,7 @@ public class GeneralPacientesFragmentAnadidos extends Fragment implements IOnBac
     private ImageView fotoPaciente;
     private Button btnGuardar;
     private TextInputEditText nombre, apellidos, nacimiento, dni, cipSns, numSeguridadSocial;
-    private Spinner seguro, unidad, habitacion, sexo;
+    private Spinner seguroSp, unidadSp, habitacionSp, sexoSp;
     private MaterialDatePicker fechaNacimiento, fechaIngreso;
     private ClaseGlobal claseGlobal;
     private PeticionesJson peticionesJson;
@@ -82,10 +83,10 @@ public class GeneralPacientesFragmentAnadidos extends Fragment implements IOnBac
         dni = view.findViewById(R.id.dniPacienteNuevo);
         cipSns = view.findViewById(R.id.cipSnsPacienteNuevo);
         numSeguridadSocial = view.findViewById(R.id.numSeguridadSocialPacienteNuevo);
-        seguro = view.findViewById(R.id.seguroPacienteNuevoSpinner);
-        unidad = view.findViewById(R.id.spinnerUnidadPacienteNuevo);
-        habitacion = view.findViewById(R.id.spinnerHabitaciónPacienteNuevo);
-        sexo = view.findViewById(R.id.spinnerSexoPacienteNuevo);
+        seguroSp = view.findViewById(R.id.seguroPacienteNuevoSpinner);
+        unidadSp = view.findViewById(R.id.spinnerUnidadPacienteNuevo);
+        habitacionSp = view.findViewById(R.id.spinnerHabitaciónPacienteNuevo);
+        sexoSp = view.findViewById(R.id.spinnerSexoPacienteNuevo);
         //fechaNacimiento = view.findViewById(R.id.)
     }
 
@@ -122,6 +123,7 @@ public class GeneralPacientesFragmentAnadidos extends Fragment implements IOnBac
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         obtenerListasYPoblarSpinners();
+        obtenerUnidadesYPoblarSpinners();
     }
 
     private void obtenerListasYPoblarSpinners() {
@@ -135,11 +137,25 @@ public class GeneralPacientesFragmentAnadidos extends Fragment implements IOnBac
                 }
                 ArrayAdapter<String> segurosAdapter = new ArrayAdapter<>(requireActivity(), R.layout.my_spinner, listaSeguros);
                 segurosAdapter.setDropDownViewResource(R.layout.my_spinner);
-                seguro.setAdapter(segurosAdapter);
+                seguroSp.setAdapter(segurosAdapter);
             }
         });
     }
 
+    private void obtenerUnidadesYPoblarSpinners(){
+        sharedPacientesViewModel.obtieneListaDeUnidades().observe(getViewLifecycleOwner(), new Observer<ArrayList<Unidades>>() {
+            @Override
+            public void onChanged(ArrayList<Unidades> unidades) {
+                ArrayList<String> listaUnidades = new ArrayList<>();
+                for(Unidades unidad: unidades){
+                    listaUnidades.add(unidad.getNombreUnidad());
+                }
+                ArrayAdapter<String> unidadesAdapter= new ArrayAdapter<>(requireActivity(), R.layout.my_spinner, listaUnidades);
+                unidadesAdapter.setDropDownViewResource(R.layout.my_spinner);
+                unidadSp.setAdapter(unidadesAdapter);
+            }
+        });
+    }
 
     /**
      * Método que agrega la lógica específica del fragmento para manejar el restroceso.
