@@ -3,12 +3,46 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".View.Home.Fragments.AnadirPacienteFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/imagenDelPacienteNuevo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@tools:sample/avatars"
+            android:paddingTop="32dp"/>
+
+        <Button
+            android:id="@+id/btnDatosGenerales"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/datosPersonales"/>
+
+        <Button
+            android:id="@+id/btnDatosContacto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/datosContacto" />
+
+        <Button
+            android:id="@+id/btnClinica"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/datosClinicos" />
+
+        <Button
+            android:id="@+id/btnPautas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/pautasNuevoPaciente" />
+    </LinearLayout>
 
 </FrameLayout>

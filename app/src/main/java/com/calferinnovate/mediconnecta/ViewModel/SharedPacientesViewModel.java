@@ -365,5 +365,35 @@ public class SharedPacientesViewModel extends ViewModel {
         return listaLugaresLiveData;
     }
 
+    public LiveData<ArrayList<Seguro>> obtieneListaSeguros() {
+        String url = Constantes.url_part + "seguro.php";
+
+        peticionesJson.getJsonObjectRequest(url, new PeticionesJson.MyJsonObjectResponseListener() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    ArrayList<Seguro> seguroArrayList = new ArrayList<>();
+                    JSONArray jsonArray = response.getJSONArray("seguro");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        Seguro nuevoSeguro = new Seguro(jsonObject.optInt("id_seguro"), jsonObject.optInt("telefono"),
+                                jsonObject.optString("nombre"));
+                        seguroArrayList.add(nuevoSeguro);
+                    }
+                    if (!seguroArrayList.isEmpty()) {
+                        mutableSeguroList.postValue(new ArrayList<>(seguroArrayList));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+        return mutableSeguroList;
+    }
 
 }

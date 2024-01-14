@@ -143,4 +143,9 @@
     <string name="noRutinaAnatomicos">No tiene rutina de anatómicos</string>
     <string name="noPautas">No tiene pautas</string>
     <string name="noObservaciones">No tiene observaciones</string>
+    <string name="datosPersonales">Datos Personales</string>
+    <string name="datosContacto">Datos de contacto</string>
+    <string name="datosClinicos">Datos Clínicos</string>
+    <string name="pautasNuevoPaciente">Pautas</string>
+    <string name="guardar">Guardar</string>
 </resources>
