@@ -41,11 +41,12 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:adjustViewBounds="true"
-        android:src="@mipmap/ic_launcher"
         android:contentDescription="@string/content_description_foto_paciente_detalle_nuevo"
         android:maxWidth="400dp"
         android:maxHeight="400dp"
         android:scaleType="fitCenter"
+        android:src="@drawable/ic_launcher_foreground"
+        android:clickable="true"
         app:layout_constraintEnd_toStartOf="@+id/guidelineVertDer"
         app:layout_constraintStart_toEndOf="@+id/guidelineVertIzq"
         app:layout_constraintTop_toBottomOf="@id/guidelineHorTop"
@@ -366,6 +367,30 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/labelHistoriaClinica"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="@string/labelHistoriaClinica"
+                android:textColorHint="@color/md_theme_light_surfaceTint"
+                app:autoSizeTextType="uniform"
+                app:hintTextAppearance="@style/TextLabel"
+                app:layout_constraintEnd_toEndOf="@id/labelNumSeguridadSocialPacienteNuevo"
+                app:layout_constraintStart_toStartOf="@id/labelCipSnsPacienteNuevo"
+                app:layout_constraintTop_toBottomOf="@id/labelNumSeguridadSocialPacienteNuevo">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/historiaClinica"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="true"
+                    android:imeOptions="actionNext"
+                    android:textColor="@color/md_theme_black"
+                    android:textSize="24sp"
+                    app:autoSizeTextType="uniform" />
+            </com.google.android.material.textfield.TextInputLayout>
+
             <Button
                 android:id="@+id/btnIngreso"
                 android:layout_width="0dp"
@@ -380,7 +405,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/btnNacimiento"
-                app:layout_constraintTop_toBottomOf="@+id/labelNumSeguridadSocialPacienteNuevo" />
+                app:layout_constraintTop_toBottomOf="@+id/labelHistoriaClinica" />
 
             <Button
                 android:id="@+id/btnNacimiento"
@@ -396,7 +421,7 @@
                 app:layout_constraintEnd_toStartOf="@id/btnIngreso"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/guiaCentro"
-                app:layout_constraintTop_toBottomOf="@+id/labelNumSeguridadSocialPacienteNuevo" />
+                app:layout_constraintTop_toBottomOf="@+id/labelHistoriaClinica" />
 
             <Button
                 android:id="@+id/btnGuardar"
@@ -412,7 +437,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/guiaCentro"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/labelCipSnsPacienteNuevo" />
+                app:layout_constraintTop_toBottomOf="@id/labelHistoriaClinica" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
