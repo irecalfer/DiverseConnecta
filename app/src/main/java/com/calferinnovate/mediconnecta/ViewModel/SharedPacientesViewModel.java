@@ -42,6 +42,8 @@ public class SharedPacientesViewModel extends ViewModel {
     private final MutableLiveData<ArrayList<Informes>> mutableInformesList = new MutableLiveData<>();
     private final MutableLiveData<ArrayList<Pautas>> mutablePautasList = new MutableLiveData<>();
     private final MutableLiveData<ArrayList<String>> listaLugaresLiveData = new MutableLiveData<>();
+    private final MutableLiveData<ArrayList<String>> listaSexoLiveData = new MutableLiveData<>();
+    private final MutableLiveData<ArrayList<String>> listaEstadoCivilLiveData = new MutableLiveData<>();
     private final MutableLiveData<ArrayList<Unidades>> listaUnidadesLiveData = new MutableLiveData<>();
     private final MutableLiveData<ArrayList<Habitaciones>> listaHabitacionesLiveData = new MutableLiveData<>();
     private PeticionesJson peticionesJson;
@@ -400,25 +402,25 @@ public class SharedPacientesViewModel extends ViewModel {
         return mutableSeguroList;
     }
 
-    public LiveData<ArrayList<Unidades>> obtieneListaDeUnidades(){
-        String url = Constantes.url_part+"unidades.php";
+    public LiveData<ArrayList<Unidades>> obtieneListaDeUnidades() {
+        String url = Constantes.url_part + "unidades.php";
 
         peticionesJson.getJsonObjectRequest(url, new PeticionesJson.MyJsonObjectResponseListener() {
             @Override
             public void onResponse(JSONObject response) {
-                try{
+                try {
                     ArrayList<Unidades> listaUnidades = new ArrayList<>();
                     JSONArray jsonArray = response.getJSONArray("datos_unidades");
-                    for(int i = 0; i< jsonArray.length(); i++){
+                    for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                         Unidades unidad = new Unidades(jsonObject.optInt("id_unidad"), jsonObject.optInt("fk_id_area"),
                                 jsonObject.optString("nombre"));
                         listaUnidades.add(unidad);
                     }
-                    if(!listaUnidades.isEmpty()){
+                    if (!listaUnidades.isEmpty()) {
                         listaUnidadesLiveData.postValue(new ArrayList<>(listaUnidades));
                     }
-                }catch (JSONException e){
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
@@ -431,24 +433,24 @@ public class SharedPacientesViewModel extends ViewModel {
         return listaUnidadesLiveData;
     }
 
-    public LiveData<ArrayList<Habitaciones>> obtieneHabitacionesUnidades(String nombreUnidadSeleccionada){
-        String url = Constantes.url_part+"habitaciones.php?nombre_unidad="+nombreUnidadSeleccionada;
+    public LiveData<ArrayList<Habitaciones>> obtieneHabitacionesUnidades(String nombreUnidadSeleccionada) {
+        String url = Constantes.url_part + "habitaciones.php?nombre_unidad=" + nombreUnidadSeleccionada;
 
         peticionesJson.getJsonObjectRequest(url, new PeticionesJson.MyJsonObjectResponseListener() {
             @Override
             public void onResponse(JSONObject response) {
-                try{
+                try {
                     ArrayList<Habitaciones> listaHabitaciones = new ArrayList<>();
                     JSONArray jsonArray = response.getJSONArray("habitaciones");
-                    for(int i = 0; i< jsonArray.length(); i++){
+                    for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                         Habitaciones habitaciones = new Habitaciones(jsonObject.optInt("num_habitacion"), jsonObject.optInt("fk_id_unidad"));
                         listaHabitaciones.add(habitaciones);
                     }
-                    if(!listaHabitaciones.isEmpty()){
+                    if (!listaHabitaciones.isEmpty()) {
                         listaHabitacionesLiveData.postValue(new ArrayList<>(listaHabitaciones));
                     }
-                }catch (JSONException e){
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
@@ -459,6 +461,75 @@ public class SharedPacientesViewModel extends ViewModel {
             }
         });
         return listaHabitacionesLiveData;
+    }
+
+
+    public LiveData<ArrayList<String>> obtieneSexoPacientesEnum() {
+        String url = Constantes.url_part + "sexo.php";
+        peticionesJson.getJsonObjectRequest(url, new PeticionesJson.MyJsonObjectResponseListener() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    ArrayList<String> sexoArrayList = new ArrayList<>();
+                    JSONArray sexoArray = response.getJSONArray("sexo");
+
+                    // Itera sobre los valores ENUM
+                    for (int i = 0; i < sexoArray.length(); i++) {
+                        String enumSexo = sexoArray.getString(i);
+                        //Añadimos el valor a nuestro arrayList
+                        sexoArrayList.add(enumSexo);
+                    }
+
+                    // Actualiza el LiveData con la nueva lista
+                    if (!sexoArrayList.isEmpty()) {
+                        listaSexoLiveData.postValue(new ArrayList<>(sexoArrayList));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+
+        return listaSexoLiveData;
+    }
+
+    public LiveData<ArrayList<String>> obtieneEstadoCivilPacientesEnum() {
+        String url = Constantes.url_part + "estado_civil_enum.php";
+        peticionesJson.getJsonObjectRequest(url, new PeticionesJson.MyJsonObjectResponseListener() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    ArrayList<String> estadoCivilArrayList = new ArrayList<>();
+                    JSONArray estadoCivilJsonArray = response.getJSONArray("estado_civil");
+
+                    // Itera sobre los valores ENUM
+                    for (int i = 0; i < estadoCivilJsonArray.length(); i++) {
+                        String enumEstadoCivil = estadoCivilJsonArray.getString(i);
+                        //Añadimos el valor a nuestro arrayList
+                        estadoCivilArrayList.add(enumEstadoCivil);
+                    }
+
+                    // Actualiza el LiveData con la nueva lista
+                    if (!estadoCivilArrayList.isEmpty()) {
+                        listaSexoLiveData.postValue(new ArrayList<>(estadoCivilArrayList));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+
+        return listaSexoLiveData;
     }
 
 }

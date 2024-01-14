@@ -191,10 +191,10 @@
                 android:id="@+id/seguroPacienteNuevoSpinner"
                 android:layout_width="0dp"
                 android:layout_height="80dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
                 android:textSize="24sp"
                 app:autoSizeTextType="uniform"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/guiaCentro"
                 app:layout_constraintTop_toBottomOf="@id/labelDNIPacienteNuevo" />
@@ -250,30 +250,18 @@
                     app:autoSizeTextType="uniform" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/labelEstadoCivilPacienteNuevo"
+            <Spinner
+                android:id="@+id/spinnerEstadoCivilPacienteNuevo"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="80dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:hint="@string/estadoCivilPacienteLabel"
-                android:textColorHint="@color/md_theme_light_surfaceTint"
                 app:autoSizeTextType="uniform"
-                app:hintTextAppearance="@style/TextLabel"
                 app:layout_constraintEnd_toStartOf="@id/guiaCentro"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/labelEdadPacienteNuevo">
+                app:layout_constraintTop_toBottomOf="@id/labelEdadPacienteNuevo" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/estadoCivilPacienteNuevo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:enabled="true"
-                    android:imeOptions="actionNext"
-                    android:textColor="@color/md_theme_black"
-                    android:textSize="24sp"
-                    app:autoSizeTextType="uniform" />
-            </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/labelFechaIngresoPacienteNuevo"
@@ -312,7 +300,7 @@
                 style=""
                 app:layout_constraintEnd_toStartOf="@id/guiaCentro"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/labelEstadoCivilPacienteNuevo" />
+                app:layout_constraintTop_toBottomOf="@id/spinnerEstadoCivilPacienteNuevo" />
 
 
             <Spinner

@@ -42,14 +42,13 @@ public class GeneralPacientesFragmentAnadidos extends Fragment implements IOnBac
     private ImageView fotoPaciente;
     private Button btnGuardar;
     private TextInputEditText nombre, apellidos, nacimiento, dni, cipSns, numSeguridadSocial;
-    private Spinner seguroSp, unidadSp, habitacionSp, sexoSp;
+    private Spinner seguroSp, unidadSp, habitacionSp, sexoSp, estadoCivilSp;
     private MaterialDatePicker fechaNacimiento, fechaIngreso;
-    private String unidadSeleccionada;
+    private String unidadSeleccionada, sexoSeleccionado, estadoCivilSeleccionado;
     private int habitacionSeleccionada;
     private ClaseGlobal claseGlobal;
     private PeticionesJson peticionesJson;
     private SharedPacientesViewModel sharedPacientesViewModel;
-
 
 
     /**
@@ -91,6 +90,7 @@ public class GeneralPacientesFragmentAnadidos extends Fragment implements IOnBac
         unidadSp = view.findViewById(R.id.spinnerUnidadPacienteNuevo);
         habitacionSp = view.findViewById(R.id.spinnerHabitaciónPacienteNuevo);
         sexoSp = view.findViewById(R.id.spinnerSexoPacienteNuevo);
+        estadoCivilSp = view.findViewById(R.id.spinnerEstadoCivilPacienteNuevo);
         //fechaNacimiento = view.findViewById(R.id.)
     }
 
@@ -128,6 +128,8 @@ public class GeneralPacientesFragmentAnadidos extends Fragment implements IOnBac
         super.onViewCreated(view, savedInstanceState);
         obtenerListasYPoblarSpinners();
         obtenerUnidadesYPoblarSpinners();
+        obtieneSexoPacientes();
+        obtieneEstadoCivilPaciente();
     }
 
     private void obtenerListasYPoblarSpinners() {
@@ -135,7 +137,7 @@ public class GeneralPacientesFragmentAnadidos extends Fragment implements IOnBac
             @Override
             public void onChanged(ArrayList<Seguro> seguros) {
                 ArrayList<String> listaSeguros = new ArrayList<String>();
-                for(Seguro seguro: seguros){
+                for (Seguro seguro : seguros) {
                     String tmp = seguro.getNombreSeguro() + " " + seguro.getTelefono();
                     listaSeguros.add(tmp);
                 }
@@ -146,15 +148,15 @@ public class GeneralPacientesFragmentAnadidos extends Fragment implements IOnBac
         });
     }
 
-    private void obtenerUnidadesYPoblarSpinners(){
+    private void obtenerUnidadesYPoblarSpinners() {
         sharedPacientesViewModel.obtieneListaDeUnidades().observe(getViewLifecycleOwner(), new Observer<ArrayList<Unidades>>() {
             @Override
             public void onChanged(ArrayList<Unidades> unidades) {
                 ArrayList<String> listaUnidades = new ArrayList<>();
-                for(Unidades unidad: unidades){
+                for (Unidades unidad : unidades) {
                     listaUnidades.add(unidad.getNombreUnidad());
                 }
-                ArrayAdapter<String> unidadesAdapter= new ArrayAdapter<>(requireActivity(), R.layout.my_spinner, listaUnidades);
+                ArrayAdapter<String> unidadesAdapter = new ArrayAdapter<>(requireActivity(), R.layout.my_spinner, listaUnidades);
                 unidadesAdapter.setDropDownViewResource(R.layout.my_spinner);
                 unidadSp.setAdapter(unidadesAdapter);
                 seleccionarUnidad();
@@ -162,11 +164,11 @@ public class GeneralPacientesFragmentAnadidos extends Fragment implements IOnBac
         });
     }
 
-    private void seleccionarUnidad(){
+    private void seleccionarUnidad() {
         unidadSp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(parent.getId() == R.id.spinnerUnidadPacienteNuevo){
+                if (parent.getId() == R.id.spinnerUnidadPacienteNuevo) {
                     unidadSeleccionada = parent.getSelectedItem().toString();
                     obtieneHabitacionesYPoblarSpinner();
                 }
@@ -178,12 +180,13 @@ public class GeneralPacientesFragmentAnadidos extends Fragment implements IOnBac
             }
         });
     }
-    private void obtieneHabitacionesYPoblarSpinner(){
+
+    private void obtieneHabitacionesYPoblarSpinner() {
         sharedPacientesViewModel.obtieneHabitacionesUnidades(unidadSeleccionada).observe(getViewLifecycleOwner(), new Observer<ArrayList<Habitaciones>>() {
             @Override
             public void onChanged(ArrayList<Habitaciones> habitaciones) {
                 ArrayList<Integer> numHabitacionesLista = new ArrayList<Integer>();
-                for (Habitaciones habitacion: habitaciones){
+                for (Habitaciones habitacion : habitaciones) {
                     numHabitacionesLista.add(habitacion.getNumHabitacion());
                 }
                 ArrayAdapter<Integer> habitacionesAdapter = new ArrayAdapter<>(requireActivity(), R.layout.my_spinner, numHabitacionesLista);
@@ -192,7 +195,7 @@ public class GeneralPacientesFragmentAnadidos extends Fragment implements IOnBac
                 habitacionSp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        if(parent.getId() == R.id.spinnerHabitaciónPacienteNuevo){
+                        if (parent.getId() == R.id.spinnerHabitaciónPacienteNuevo) {
                             habitacionSeleccionada = numHabitacionesLista.get(position);
                         }
                     }
@@ -206,6 +209,49 @@ public class GeneralPacientesFragmentAnadidos extends Fragment implements IOnBac
         });
     }
 
+    private void obtieneSexoPacientes() {
+        sharedPacientesViewModel.obtieneSexoPacientesEnum().observe(getViewLifecycleOwner(), new Observer<ArrayList<String>>() {
+            @Override
+            public void onChanged(ArrayList<String> listaSexo) {
+                ArrayAdapter<String> sexoAdapter = new ArrayAdapter<>(requireActivity(), R.layout.my_spinner, listaSexo);
+                sexoAdapter.setDropDownViewResource(R.layout.my_spinner);
+                sexoSp.setAdapter(sexoAdapter);
+                sexoSp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        sexoSeleccionado = parent.getItemAtPosition(position).toString();
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+
+                    }
+                });
+            }
+        });
+    }
+
+    private void obtieneEstadoCivilPaciente(){
+        sharedPacientesViewModel.obtieneEstadoCivilPacientesEnum().observe(getViewLifecycleOwner(), new Observer<ArrayList<String>>() {
+            @Override
+            public void onChanged(ArrayList<String> listaEstadoCivil) {
+                ArrayAdapter<String> estadoCivilAdapter = new ArrayAdapter<>(requireActivity(), R.layout.my_spinner, listaEstadoCivil);
+                estadoCivilAdapter.setDropDownViewResource(R.layout.my_spinner);
+                estadoCivilSp.setAdapter(estadoCivilAdapter);
+                estadoCivilSp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        estadoCivilSeleccionado = parent.getItemAtPosition(position).toString();
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+
+                    }
+                });
+            }
+        });
+    }
     /**
      * Método que agrega la lógica específica del fragmento para manejar el restroceso.
      * Al presionar back volvería al PacientesFragment.
