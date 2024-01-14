@@ -150,4 +150,6 @@
     <string name="guardar">Guardar</string>
     <string name="content_description_foto_paciente_detalle_nuevo">Foto del nuevo paciente</string>
     <string name="reiniciar">Reiniciar</string>
+    <string name="ingreso">Calendario fecha ingreso</string>
+    <string name="nacimientoFecha">Calendario fecha nacimiento</string>
 </resources>

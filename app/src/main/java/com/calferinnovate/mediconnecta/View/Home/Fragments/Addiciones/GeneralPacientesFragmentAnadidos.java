@@ -1,5 +1,6 @@
 package com.calferinnovate.mediconnecta.View.Home.Fragments.Addiciones;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,9 +29,12 @@ import com.calferinnovate.mediconnecta.ViewModel.SharedPacientesViewModel;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelArgs;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelFactory;
 import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 
 /**
@@ -40,15 +44,17 @@ public class GeneralPacientesFragmentAnadidos extends Fragment implements IOnBac
 
 
     private ImageView fotoPaciente;
-    private Button btnGuardar;
+    private Button guardarBtn, nacimientoBtn, ingresoBtn;
     private TextInputEditText nombre, apellidos, nacimiento, dni, cipSns, numSeguridadSocial;
     private Spinner seguroSp, unidadSp, habitacionSp, sexoSp, estadoCivilSp;
-    private MaterialDatePicker fechaNacimiento, fechaIngreso;
+    private TextInputEditText fechaNacimiento, fechaIngreso;
     private String unidadSeleccionada, sexoSeleccionado, estadoCivilSeleccionado;
     private int habitacionSeleccionada;
+    private DatePickerDialog datePickerDialogNacimiento, datePickerDialogIngreso;
     private ClaseGlobal claseGlobal;
     private PeticionesJson peticionesJson;
     private SharedPacientesViewModel sharedPacientesViewModel;
+
 
 
     /**
@@ -61,6 +67,8 @@ public class GeneralPacientesFragmentAnadidos extends Fragment implements IOnBac
      * @param savedInstanceState Estado de guardado de la instancia del fragmento
      * @return vista Es la vista inflada del fragmento.
      */
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -79,7 +87,7 @@ public class GeneralPacientesFragmentAnadidos extends Fragment implements IOnBac
     public void inicializaRecursos(View view) {
         claseGlobal = ClaseGlobal.getInstance();
         fotoPaciente = view.findViewById(R.id.fotoPacienteDetalleNuevo);
-        btnGuardar = view.findViewById(R.id.btnGuardar);
+        guardarBtn = view.findViewById(R.id.btnGuardar);
         nombre = view.findViewById(R.id.nombrePacienteNuevo);
         apellidos = view.findViewById(R.id.apellidoPacienteNuevo);
         nacimiento = view.findViewById(R.id.lugarNacimientoPacienteNuevo);
@@ -91,7 +99,11 @@ public class GeneralPacientesFragmentAnadidos extends Fragment implements IOnBac
         habitacionSp = view.findViewById(R.id.spinnerHabitaciónPacienteNuevo);
         sexoSp = view.findViewById(R.id.spinnerSexoPacienteNuevo);
         estadoCivilSp = view.findViewById(R.id.spinnerEstadoCivilPacienteNuevo);
-        //fechaNacimiento = view.findViewById(R.id.)
+        fechaNacimiento = view.findViewById(R.id.fechaNacimientoPacienteNuevo);
+        fechaIngreso = view.findViewById(R.id.fechaIngresoPaciente);
+        nacimientoBtn = view.findViewById(R.id.btnNacimiento);
+        ingresoBtn = view.findViewById(R.id.btnIngreso);
+
     }
 
     /**
@@ -130,6 +142,8 @@ public class GeneralPacientesFragmentAnadidos extends Fragment implements IOnBac
         obtenerUnidadesYPoblarSpinners();
         obtieneSexoPacientes();
         obtieneEstadoCivilPaciente();
+        seleccionaFechaNacimiento();
+        seleccionaFechaIngreso();
     }
 
     private void obtenerListasYPoblarSpinners() {
@@ -249,6 +263,56 @@ public class GeneralPacientesFragmentAnadidos extends Fragment implements IOnBac
 
                     }
                 });
+            }
+        });
+    }
+
+    private void seleccionaFechaNacimiento(){
+      MaterialDatePicker.Builder<Long> materialDateBuilder = MaterialDatePicker.Builder.datePicker();
+      materialDateBuilder.setTitleText("Selecciona la fecha de nacimiento");
+
+      final MaterialDatePicker<Long> materialDatePicker = materialDateBuilder.build();
+
+      nacimientoBtn.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+              if (getActivity() != null) {
+                  materialDatePicker.show(requireActivity().getSupportFragmentManager(), "MATERIAL_DATE_PICKER_NACIMIENTO");
+              }
+          }
+      });
+
+      materialDatePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Long>() {
+          @Override
+          public void onPositiveButtonClick(Long selection) {
+              SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+              String fechaFormateada = simpleDateFormat.format(new Date(selection));
+              fechaNacimiento.setText(fechaFormateada);
+          }
+      });
+    }
+
+    private void seleccionaFechaIngreso(){
+        MaterialDatePicker.Builder<Long> materialDateBuilder = MaterialDatePicker.Builder.datePicker();
+        materialDateBuilder.setTitleText("Selecciona la fecha de ingreso");
+
+        final MaterialDatePicker<Long> materialDatePicker = materialDateBuilder.build();
+
+        ingresoBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (getActivity() != null) {
+                    materialDatePicker.show(requireActivity().getSupportFragmentManager(), "MATERIAL_DATE_PICKER_NACIMIENTO");
+                }
+            }
+        });
+
+        materialDatePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Long>() {
+            @Override
+            public void onPositiveButtonClick(Long selection) {
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                String fechaFormateada = simpleDateFormat.format(new Date(selection));
+                fechaIngreso.setText(fechaFormateada);
             }
         });
     }
