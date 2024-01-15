@@ -57,6 +57,7 @@ public class ClaseGlobal extends Application {
         return instance;
     }
 
+
     //Getters y Setters de los diferentes objetos.
     public Empleado getEmpleado() {
         return empleado;

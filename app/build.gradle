@@ -2,6 +2,8 @@ plugins {
     id 'com.android.application'
 }
 
+apply plugin: 'com.android.application'
+
 android {
     namespace 'com.calferinnovate.mediconnecta'
     compileSdk 34
@@ -36,6 +38,7 @@ android {
     dataBinding {
         enabled = true
     }
+
 
 }
 
@@ -78,5 +81,14 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.7.0-alpha03'
 
     implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.firebase:firebase-storage:20.3.0'
+    // Verifica la versión más reciente en la documentación de Firebase
+
+
 
 }
+
+
+
+
+
