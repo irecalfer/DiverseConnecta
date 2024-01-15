@@ -516,7 +516,7 @@ public class SharedPacientesViewModel extends ViewModel {
 
                     // Actualiza el LiveData con la nueva lista
                     if (!estadoCivilArrayList.isEmpty()) {
-                        listaSexoLiveData.postValue(new ArrayList<>(estadoCivilArrayList));
+                        listaEstadoCivilLiveData.postValue(new ArrayList<>(estadoCivilArrayList));
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -529,7 +529,7 @@ public class SharedPacientesViewModel extends ViewModel {
             }
         });
 
-        return listaSexoLiveData;
+        return listaEstadoCivilLiveData;
     }
 
 }

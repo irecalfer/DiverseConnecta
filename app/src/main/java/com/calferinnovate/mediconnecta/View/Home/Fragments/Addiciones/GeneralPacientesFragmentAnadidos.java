@@ -6,12 +6,14 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.ImageDecoder;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +25,10 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -33,6 +39,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
@@ -57,11 +64,18 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 
 /**
@@ -70,8 +84,6 @@ import java.util.Map;
 public class GeneralPacientesFragmentAnadidos extends Fragment implements IOnBackPressed {
 
 
-    private static final int GALLERY_REQUEST_CODE = 123;
-    private static final int PERMISSION_REQUEST_CODE = 456;
     private ImageView fotoPaciente;
     private Button guardarBtn, nacimientoBtn, ingresoBtn;
     private TextInputEditText nombre, apellidos, nacimientoLugar, dni, cipSns, numSeguridadSocial, numeroHistoriaClinica;
@@ -82,6 +94,11 @@ public class GeneralPacientesFragmentAnadidos extends Fragment implements IOnBac
     private ClaseGlobal claseGlobal;
     private PeticionesJson peticionesJson;
     private SharedPacientesViewModel sharedPacientesViewModel;
+    private ActivityResultLauncher<Intent> pickImageLauncher;
+    private String imageBase64;
+    private int idUnidad, idSeguro;
+    private ArrayList<Unidades> unidadesArrayList = new ArrayList<>();
+    private ArrayList<Seguro> seguroArrayList = new ArrayList<>();
 
 
 
@@ -103,6 +120,7 @@ public class GeneralPacientesFragmentAnadidos extends Fragment implements IOnBac
         View view = inflater.inflate(R.layout.fragment_general_pacientes_anadidos, container, false);
         inicializaRecursos(view);
         inicializaViewModel();
+        inicializaLauncherSeleccionarImagenes();
         return view;
     }
 
@@ -128,7 +146,7 @@ public class GeneralPacientesFragmentAnadidos extends Fragment implements IOnBac
         sexoSp = view.findViewById(R.id.spinnerSexoPacienteNuevo);
         estadoCivilSp = view.findViewById(R.id.spinnerEstadoCivilPacienteNuevo);
         fechaNacimiento = view.findViewById(R.id.fechaNacimientoPacienteNuevo);
-        fechaIngreso = view.findViewById(R.id.fechaIngresoPaciente);
+        fechaIngreso = view.findViewById(R.id.fechaIngresoPacienteNuevo);
         nacimientoBtn = view.findViewById(R.id.btnNacimiento);
         ingresoBtn = view.findViewById(R.id.btnIngreso);
         numeroHistoriaClinica = view.findViewById(R.id.historiaClinica);
@@ -156,6 +174,21 @@ public class GeneralPacientesFragmentAnadidos extends Fragment implements IOnBac
         sharedPacientesViewModel = new ViewModelProvider(requireActivity(), factory).get(SharedPacientesViewModel.class);
     }
 
+    private void inicializaLauncherSeleccionarImagenes(){
+        pickImageLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+            @Override
+            public void onActivityResult(ActivityResult result) {
+                if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                    Intent data = result.getData();
+                    Uri selectedImageUri = data.getData();
+                    subeImagen(selectedImageUri);
+                } else {
+                    // Manejar el caso en el que la selección de la imagen fue cancelada
+                    Toast.makeText(requireContext(), "Selección de imagen cancelada", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
 
     /**
      * Método llamado cuando la vista ya ha sido creada.
@@ -174,7 +207,8 @@ public class GeneralPacientesFragmentAnadidos extends Fragment implements IOnBac
         obtieneEstadoCivilPaciente();
         seleccionaFechaNacimiento();
         seleccionaFechaIngreso();
-        seleccionaImagen(view);
+        listenerImageView();
+
     }
 
     private void obtenerListasYPoblarSpinners() {
@@ -185,6 +219,7 @@ public class GeneralPacientesFragmentAnadidos extends Fragment implements IOnBac
                 for (Seguro seguro : seguros) {
                     String tmp = seguro.getNombreSeguro() + " " + seguro.getTelefono();
                     listaSeguros.add(tmp);
+                    seguroArrayList.add(seguro);
                 }
                 ArrayAdapter<String> segurosAdapter = new ArrayAdapter<>(requireActivity(), R.layout.my_spinner, listaSeguros);
                 segurosAdapter.setDropDownViewResource(R.layout.my_spinner);
@@ -195,6 +230,11 @@ public class GeneralPacientesFragmentAnadidos extends Fragment implements IOnBac
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                         if (parent.getId() == R.id.seguroPacienteNuevoSpinner) {
                             seguroSeleccionado = parent.getSelectedItem().toString();
+                            for(Seguro seguro: seguroArrayList){
+                                if((seguro.getNombreSeguro() + " " + seguro.getTelefono()).equals(seguroSeleccionado)){
+                                    idSeguro = seguro.getIdSeguro();
+                                }
+                            }
                         }
                     }
 
@@ -214,6 +254,7 @@ public class GeneralPacientesFragmentAnadidos extends Fragment implements IOnBac
                 ArrayList<String> listaUnidades = new ArrayList<>();
                 for (Unidades unidad : unidades) {
                     listaUnidades.add(unidad.getNombreUnidad());
+                    unidadesArrayList.add(unidad);
                 }
                 ArrayAdapter<String> unidadesAdapter = new ArrayAdapter<>(requireActivity(), R.layout.my_spinner, listaUnidades);
                 unidadesAdapter.setDropDownViewResource(R.layout.my_spinner);
@@ -230,6 +271,11 @@ public class GeneralPacientesFragmentAnadidos extends Fragment implements IOnBac
                 if (parent.getId() == R.id.spinnerUnidadPacienteNuevo) {
                     unidadSeleccionada = parent.getSelectedItem().toString();
                     obtieneHabitacionesYPoblarSpinner();
+                    for(Unidades unidad: unidadesArrayList){
+                        if(Objects.equals(unidad.getNombreUnidad(), unidadSeleccionada)){
+                            idUnidad = unidad.getId_unidad();
+                        }
+                    }
                 }
             }
 
@@ -364,65 +410,77 @@ public class GeneralPacientesFragmentAnadidos extends Fragment implements IOnBac
         });
     }
 
-    private void seleccionaImagen(View view){
+    private void listenerImageView(){
         fotoPaciente.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                abrirGaleriaFotoPaciente(view);
+                abrirGaleriaFotoPaciente();
             }
         });
     }
-    private void abrirGaleriaFotoPaciente(View view){
+
+    private void abrirGaleriaFotoPaciente(){
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(intent, GALLERY_REQUEST_CODE);
+        pickImageLauncher.launch(intent);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.R)
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == GALLERY_REQUEST_CODE && resultCode == RESULT_OK && data != null) {
-            Uri selectedImageUri = data.getData();
-            try {
-                // Convierte la URI de la imagen seleccionada a un Bitmap
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(requireActivity().getContentResolver(), selectedImageUri);
+    private void subeImagen(Uri imageUri) {
+        try {
+            InputStream inputStream = requireActivity().getContentResolver().openInputStream(imageUri);
+            byte[] imageBytes = convertInputStreamToByteArray(inputStream);
 
-                // Muestra el Bitmap en el ImageView
-                fotoPaciente.setImageBitmap(bitmap);
-                String imageString = convertBitmapToString(bitmap);
-
-                // Envia la imagen al servidor
-                subirAlServidor(imageString);
-            } catch (Exception e) {
-                e.printStackTrace();
-                Toast.makeText(requireContext(), "Error al cargar la imagen", Toast.LENGTH_SHORT).show();
-            }
+            // Envía la imagen al servidor
+            sendImageToServer(imageBytes);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         }
     }
 
-    private String convertBitmapToString(Bitmap bitmap) {
+    private byte[] convertInputStreamToByteArray(InputStream inputStream) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
-        byte[] imageBytes = byteArrayOutputStream.toByteArray();
-        return Base64.encodeToString(imageBytes, Base64.DEFAULT);
+        byte[] buffer = new byte[1024];
+        int len;
+        try {
+            while ((len = inputStream.read(buffer)) != -1) {
+                byteArrayOutputStream.write(buffer, 0, len);
+            }
+            inputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return byteArrayOutputStream.toByteArray();
     }
 
-    private void subirAlServidor(String imageString) {
+    private void sendImageToServer(byte[] imageBytes) {
+        // Aquí deberías implementar la lógica para enviar la imagen al servidor
+        // y obtener la URL de la imagen almacenada
+        // Puedes usar Retrofit, HttpClient, u otra biblioteca para manejar las operaciones HTTP
+
+        guardarBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                subirAlServidor();
+            }
+        });
+    }
+
+    private void subirAlServidor() {
         final String nombreRellenado= nombre.getText().toString();
         final String apellidosRellenado = apellidos.getText().toString();
         final String sexo = sexoSeleccionado;
         final String dniRellenado = dni.getText().toString();
         final String lugarNacimientoRellenado = nacimientoLugar.getText().toString();
-        final String seguro = seguroSeleccionado;
-        final String nacimiento = fechaNacimientoSeleccionada;
+        final String seguro = String.valueOf(idSeguro);
+        final String nacimiento = fechaDateTimeSql(fechaNacimientoSeleccionada);
         final String estadoCivil = estadoCivilSeleccionado;
-        final String ingreso = fechaIngresoSeleccionada;
-        final String unidades = unidadSeleccionada;
+        final String ingreso = fechaDateTimeSql(fechaIngresoSeleccionada);
+        final String unidades = String.valueOf(idUnidad);
         final String habitacion = habitacionSeleccionada;
         final String cipSnsRellenado = cipSns.getText().toString();
         final String numSeguridadSocialRellenado = numSeguridadSocial.getText().toString();
-        final String foto = imageString;
-        final String numHistoriaClinica = numeroHistoriaClinica.getText().toString();
+        // Después de guardar la imagen, obtén la URL y llama a sendImageUrlToServer con la URL
+        String imageUrl = "http://192.168.1.136/MediConnecta/imagenes/"+nombreRellenado+apellidosRellenado+".jpg";// Reemplaza con la URL real
+        final String fotoPaciente = imageUrl;
 
         //validacionesDatos();
 
@@ -433,17 +491,22 @@ public class GeneralPacientesFragmentAnadidos extends Fragment implements IOnBac
                     @Override
                     public void onResponse(String response) {
                         try {
+                            Log.d("SubirAlServidor", "Respuesta recibida del servidor: " + response);
                             JSONObject jsonResponse = new JSONObject(response);
                             String status = jsonResponse.getString("status");
 
                             if (status.equals("success")) {
-                                String imageUrl = jsonResponse.getString("url");
+                                Log.d("SubirAlServidor", "Éxito al cargar datos. URL de la imagen: " + imageBase64);
+                                Toast.makeText(requireContext(), "Éxito", Toast.LENGTH_SHORT).show();
                                 // Operaciones adicionales con la URL de la imagen en el servidor
                             } else {
                                 // Manejar error de carga en el servidor
+                                Log.e("SubirAlServidor", "Error al cargar datos. Estado: " + status);
+                                Toast.makeText(requireContext(), "Error en el servidor", Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
-                            throw new RuntimeException(e);
+                            Log.e("SubirAlServidor", "Error al procesar respuesta del servidor", e);
+                            Toast.makeText(requireContext(), "Error al procesar respuesta del servidor", Toast.LENGTH_SHORT).show();
                         }
                     }
                 },
@@ -456,7 +519,7 @@ public class GeneralPacientesFragmentAnadidos extends Fragment implements IOnBac
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
-                params.put("foto", foto);
+                params.put("foto", fotoPaciente);
                 params.put("cip_sns", cipSnsRellenado);
                 params.put("nombre", nombreRellenado);
                 params.put("apellidos", apellidosRellenado);
@@ -470,18 +533,38 @@ public class GeneralPacientesFragmentAnadidos extends Fragment implements IOnBac
                 params.put("fk_id_unidad", unidades);
                 params.put("fk_id_seguro", seguro);
                 params.put("fk_num_habitacion", habitacion);
-                params.put("fk_num_historia_clinica",numHistoriaClinica);
                 return params;
             }
         };
 
         // Agrega la solicitud a la cola de Volley
-        Volley.newRequestQueue(requireContext()).add(stringRequest);
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        requestQueue.add(stringRequest);
     }
+
 
     private void validacionesDatos(){
 
     }
+
+    /**
+     * Método encargado de formatear la fecha y hora del parte de caídas a yyyy-MM-dd HH:mm:ss para
+     * subirlo a la base de datos
+     *
+     * @return fecha y hora formateada.
+     */
+    public String fechaDateTimeSql(String fecha) {
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            Date date = dateFormat.parse(fecha);
+            return new SimpleDateFormat("yyyy-MM-dd").format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            // Manejar la excepción según sea necesario
+            return null;
+        }
+    }
+
 
     /**
      * Método que agrega la lógica específica del fragmento para manejar el restroceso.
