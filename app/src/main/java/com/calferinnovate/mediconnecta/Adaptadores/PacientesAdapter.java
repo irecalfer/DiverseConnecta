@@ -1,6 +1,9 @@
 package com.calferinnovate.mediconnecta.Adaptadores;
 
+import android.app.Activity;
 import android.content.Context;
+import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,12 +81,55 @@ public class PacientesAdapter extends RecyclerView.Adapter<PacientesAdapter.Paci
     public void onBindViewHolder(@NonNull PacientesViewHolder holder, int position) {
         Pacientes pacientes = listaPacientes.get(position);
 
-        Glide.with(mContext).load(pacientes.getFoto()).circleCrop().into(holder.fotoPacienteImageView);
-        holder.nombreCompletoTextView.setText(pacientes.getNombre());
-        holder.apellidos.setText(pacientes.getApellidos());
-        holder.habitacionTextView.setText("Habitación:" + " " + pacientes.getFkNumHabitacion());
+        configuraFotoPacientes(holder, pacientes);
+        configuraDatosYTamaño(holder, pacientes);
+
 
     }
+
+    private void configuraFotoPacientes(PacientesViewHolder holder, Pacientes pacientes){
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        ((Activity) mContext).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+
+        int screenWidth = displayMetrics.widthPixels;
+        int screenHeight = displayMetrics.heightPixels;
+
+        int targetWidth = Math.min(screenWidth, 400); // Tamaño máximo
+        int targetHeight = Math.min(screenHeight, 400); // Tamaño máximo
+
+
+        Glide.with(mContext)
+                .load(pacientes.getFoto())
+                .circleCrop()
+                .override(targetWidth, targetHeight)  // Aquí se establece el tamaño deseado
+                .into(holder.fotoPacienteImageView);
+    }
+
+    private void configuraDatosYTamaño(PacientesViewHolder holder, Pacientes pacientes) {
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        ((Activity) mContext).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+
+        int screenHeight = displayMetrics.heightPixels;
+
+        // Porcentaje del alto de la pantalla para el tamaño de texto
+        float textPercentage = 0.02f; // Puedes ajustar este valor según tus necesidades
+
+        int desiredTextSize = (int) (screenHeight * textPercentage);
+
+        holder.nombreCompletoTextView.setText(pacientes.getNombre());
+        holder.nombreCompletoTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
+
+        holder.apellidos.setText(pacientes.getApellidos());
+        holder.apellidos.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
+
+        holder.habitacionTextView.setText("Habitación:" + " " + pacientes.getFkNumHabitacion());
+        holder.habitacionTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
+    }
+
+
+
+
+
 
     /**
      * Método utilizado para filtrar la lista de pacientes cuando se hace una búsqueda con el SearchView.
