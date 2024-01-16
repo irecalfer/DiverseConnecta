@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1033122126426",
+    "project_id": "mediconnecta-9510d",
+    "storage_bucket": "mediconnecta-9510d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1033122126426:android:a0e932c9ad5bd6eadc5663",
+        "android_client_info": {
+          "package_name": "com.calferinnovate.mediconnecta"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBVMs8yv_YGzDPuu2EmbP2LcIpiNkGs-Pc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

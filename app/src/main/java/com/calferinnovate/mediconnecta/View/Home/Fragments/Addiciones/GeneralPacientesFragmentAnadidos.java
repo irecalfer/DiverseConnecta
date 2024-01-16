@@ -2,17 +2,10 @@ package com.calferinnovate.mediconnecta.View.Home.Fragments.Addiciones;
 
 import static android.app.Activity.RESULT_OK;
 
-import android.app.DatePickerDialog;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.ImageDecoder;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.Gallery;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -31,9 +23,6 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -56,21 +45,21 @@ import com.calferinnovate.mediconnecta.View.IOnBackPressed;
 import com.calferinnovate.mediconnecta.ViewModel.SharedPacientesViewModel;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelArgs;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelFactory;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -99,6 +88,7 @@ public class GeneralPacientesFragmentAnadidos extends Fragment implements IOnBac
     private int idUnidad, idSeguro;
     private ArrayList<Unidades> unidadesArrayList = new ArrayList<>();
     private ArrayList<Seguro> seguroArrayList = new ArrayList<>();
+    private StorageReference storageReference;
 
 
 
@@ -131,6 +121,8 @@ public class GeneralPacientesFragmentAnadidos extends Fragment implements IOnBac
      * @param view La vista inflada.
      */
     public void inicializaRecursos(View view) {
+        storageReference = FirebaseStorage.getInstance().getReference();
+
         claseGlobal = ClaseGlobal.getInstance();
         fotoPaciente = view.findViewById(R.id.fotoPacienteDetalleNuevo);
         guardarBtn = view.findViewById(R.id.btnGuardar);
@@ -394,7 +386,7 @@ public class GeneralPacientesFragmentAnadidos extends Fragment implements IOnBac
             @Override
             public void onClick(View v) {
                 if (getActivity() != null) {
-                    materialDatePicker.show(requireActivity().getSupportFragmentManager(), "MATERIAL_DATE_PICKER_NACIMIENTO");
+                    materialDatePicker.show(requireActivity().getSupportFragmentManager(), "MATERIAL_DATE_PICKER_INGRESO");
                 }
             }
         });
@@ -424,47 +416,56 @@ public class GeneralPacientesFragmentAnadidos extends Fragment implements IOnBac
         pickImageLauncher.launch(intent);
     }
 
-    private void subeImagen(Uri imageUri) {
-        try {
-            InputStream inputStream = requireActivity().getContentResolver().openInputStream(imageUri);
-            byte[] imageBytes = convertInputStreamToByteArray(inputStream);
+    private void subeImagen(Uri file) {
 
-            // Envía la imagen al servidor
-            sendImageToServer(imageBytes);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReference();
 
-    private byte[] convertInputStreamToByteArray(InputStream inputStream) {
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        byte[] buffer = new byte[1024];
-        int len;
-        try {
-            while ((len = inputStream.read(buffer)) != -1) {
-                byteArrayOutputStream.write(buffer, 0, len);
-            }
-            inputStream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return byteArrayOutputStream.toByteArray();
-    }
+        StorageReference ref = storageRef.child("images/" + file.getLastPathSegment());
 
-    private void sendImageToServer(byte[] imageBytes) {
-        // Aquí deberías implementar la lógica para enviar la imagen al servidor
-        // y obtener la URL de la imagen almacenada
-        // Puedes usar Retrofit, HttpClient, u otra biblioteca para manejar las operaciones HTTP
+        UploadTask uploadTask = ref.putFile(file);
 
-        guardarBtn.setOnClickListener(new View.OnClickListener() {
+        uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
             @Override
-            public void onClick(View v) {
-                subirAlServidor();
+            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                if (!task.isSuccessful()) {
+                    throw task.getException();
+                }
+
+                // Continuamos con el task para obtener la URL de descarga
+                return ref.getDownloadUrl();
+            }
+        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+            @Override
+            public void onComplete(@NonNull Task<Uri> task) {
+                if (task.isSuccessful()) {
+                    Uri downloadUri = task.getResult();
+                    String urlFoto = downloadUri.toString();
+
+                    // Ahora puedes enviar la URL al servidor PHP
+                    sendImageUrlToServer(urlFoto);
+                } else {
+                    // Manejar fallos
+                    Log.e("FirebaseStorage", "Error al obtener la URL de descarga", task.getException());
+                }
             }
         });
     }
 
-    private void subirAlServidor() {
+    private void sendImageUrlToServer(String url) {
+        // Después de guardar la imagen, obtén la URL y llama a sendImageUrlToServer con la URL
+        // String imageUrl = "http://192.168.1.136/MediConnecta/imagenes/"+nombreRellenado+apellidosRellenado+".jpg";// Reemplaza con la URL real
+        final String imageUrl = url;
+
+        guardarBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                subirAlServidor(imageUrl);
+            }
+        });
+    }
+
+    private void subirAlServidor(String urlFoto) {
         final String nombreRellenado= nombre.getText().toString();
         final String apellidosRellenado = apellidos.getText().toString();
         final String sexo = sexoSeleccionado;
@@ -479,8 +480,8 @@ public class GeneralPacientesFragmentAnadidos extends Fragment implements IOnBac
         final String cipSnsRellenado = cipSns.getText().toString();
         final String numSeguridadSocialRellenado = numSeguridadSocial.getText().toString();
         // Después de guardar la imagen, obtén la URL y llama a sendImageUrlToServer con la URL
-        String imageUrl = "http://192.168.1.136/MediConnecta/imagenes/"+nombreRellenado+apellidosRellenado+".jpg";// Reemplaza con la URL real
-        final String fotoPaciente = imageUrl;
+        //String imageUrl = "http://192.168.1.136/MediConnecta/imagenes/"+nombreRellenado+apellidosRellenado+".jpg";// Reemplaza con la URL real
+        final String fotoPaciente = urlFoto;
 
         //validacionesDatos();
 

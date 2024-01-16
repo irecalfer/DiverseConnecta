@@ -34,6 +34,7 @@ import com.calferinnovate.mediconnecta.View.Home.Fragments.ParteGeneralFragment;
 import com.calferinnovate.mediconnecta.View.IOnBackPressed;
 import com.calferinnovate.mediconnecta.View.Sesion.MainActivity;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.FirebaseApp;
 
 /**
  * HomeActivity proporciona la funcionalidad de Navegación entre los fragmentos del Home a través del
@@ -59,7 +60,7 @@ public class HomeActivityAdministrativos extends AppCompatActivity implements Na
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_administrativos);
-
+        FirebaseApp.initializeApp(this);
         inicializaVariables();
         enlazaRecursos();
 
