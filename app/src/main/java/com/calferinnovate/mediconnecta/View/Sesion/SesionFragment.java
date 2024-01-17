@@ -4,10 +4,12 @@ package com.calferinnovate.mediconnecta.View.Sesion;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -17,6 +19,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import com.bumptech.glide.Glide;
 import com.calferinnovate.mediconnecta.Model.PeticionesJson;
 import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
@@ -39,6 +42,7 @@ public class SesionFragment extends Fragment {
     private TextInputEditText username;
 
     private TextInputEditText password;
+    private ImageView logo;
     private Button btnAcceso;
     private NavController navController;
     private ClaseGlobal claseGlobal;
@@ -119,7 +123,7 @@ public class SesionFragment extends Fragment {
         navController = Navigation.findNavController(view);
 
         asociacionVariableComponente(view);
-
+        configuraImagenLogo();
         verificaEstadoInicioSesion();
 
         //Relaccionamos el botón de Acceso con el Listener para que actúe cuando sea presionado
@@ -139,9 +143,27 @@ public class SesionFragment extends Fragment {
         btnAcceso = view.findViewById(R.id.btnAcceso);
         userLayout = view.findViewById(R.id.userLabel);
         passLayout = view.findViewById(R.id.passLabel);
+        logo = view.findViewById(R.id.imagenLogo);
     }
 
 
+    private void configuraImagenLogo(){
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        requireActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+
+        int screenWidth = displayMetrics.widthPixels;
+        int screenHeight = displayMetrics.heightPixels;
+
+        int targetWidth = Math.min(screenWidth, 500); // Tamaño máximo
+        int targetHeight = Math.min(screenHeight, 500); // Tamaño máximo
+
+        Glide.with(this).load(getImage("logo_mediconnecta")).override(targetWidth, targetHeight).into(logo);
+    }
+
+    private int getImage(String imageName){
+        int drawableResourceId = this.getResources().getIdentifier(imageName, "drawable", requireActivity().getPackageName());
+        return drawableResourceId;
+    }
     /**
      * Método que se llama en el onViewCreate para verificar el estado del inicio de sesión.
      * Llama al método getEmpleadoIniciaSesion del ViewModel SesionViewModel y comprueba si los datos

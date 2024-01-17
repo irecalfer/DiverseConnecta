@@ -1,37 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/frameLayout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
     tools:context=".View.Sesion.SesionFragment">
+
+    <!-- Añade un espacio en blanco en la parte superior con un peso mayor -->
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.1" />
 
     <ImageView
         android:id="@+id/imagenLogo"
-        android:layout_width="0dp"
-        android:layout_height="250dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:adjustViewBounds="true"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="150dp"
         android:layout_marginEnd="8dp"
-        android:contentDescription="@string/desc_imag_logo_login"
-        app:layout_constraintBottom_toTopOf="@+id/userLabel"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/logo_mediconnecta" />
+        android:maxWidth="500dp"
+        android:maxHeight="500dp"
+        android:minWidth="100dp"
+        android:minHeight="100dp"
+        android:contentDescription="@string/desc_imag_logo_login" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/userLabel"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_marginStart="50dp"
-        android:layout_marginEnd="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="32dp"
         android:layout_marginBottom="17dp"
-        android:maxWidth="@dimen/custom_max_width"
-        android:minWidth="@dimen/custom_min_width"
         android:textColorHint="@color/md_theme_light_onPrimary"
-        app:autoSizeTextType="uniform"
         app:boxBackgroundColor="@color/md_theme_light_surfaceTint"
         app:boxBackgroundMode="filled"
         app:boxStrokeColor="#FFFFFF"
@@ -46,12 +52,7 @@
         app:helperTextTextColor="#FFFFFF"
         app:hintEnabled="false"
         app:hintTextAppearance="@style/TextLabel"
-        app:hintTextColor="#FFFFFF"
-        app:layout_constraintBottom_toTopOf="@+id/passLabel"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imagenLogo">
+        app:hintTextColor="#FFFFFF">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/user"
@@ -63,45 +64,38 @@
             android:textColorHighlight="#FFFFFF"
             android:textColorHint="#FFFFFF"
             android:textColorLink="#FFFFFF"
-            android:textSize="24sp"
+            android:textSize="@dimen/defaultTextSize"
             app:autoSizeTextType="uniform" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/passLabel"
-        android:layout_width="0dp"
-        android:layout_height="100dp"
-        android:layout_marginStart="50dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="-10dp"
-        android:layout_marginEnd="50dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginBottom="11dp"
-        android:maxWidth="@dimen/custom_max_width"
-        android:minWidth="@dimen/custom_min_width"
         android:textColorHint="#FFFFFF"
-        app:autoSizeTextType="uniform"
         app:boxBackgroundColor="@color/md_theme_light_surfaceTint"
         app:boxBackgroundMode="filled"
         app:boxStrokeColor="#FFFFFF"
         app:endIconMode="password_toggle"
         app:endIconTint="@color/md_theme_light_background"
         app:errorIconTint="@color/blanco_de_cinc"
+        app:errorTextAppearance="@style/custom_error"
         app:hintAnimationEnabled="true"
         app:hintEnabled="false"
         app:hintTextAppearance="@style/TextLabel"
         app:hintTextColor="#FFFFFF"
-        app:layout_constraintBottom_toTopOf="@+id/btnAcceso"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/userLabel"
         app:passwordToggleTint="#FFFFFF"
         app:placeholderTextColor="#FFFFFF"
-        app:prefixTextColor="#FFFFFF"
-        app:errorTextAppearance="@style/custom_error">
+        app:prefixTextColor="#FFFFFF">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/pass"
             android:layout_width="match_parent"
-            android:layout_height="70dp"
+            android:layout_height="wrap_content"
             android:drawableTint="#FFFFFF"
             android:forceDarkAllowed="false"
             android:hint="@string/pass"
@@ -109,25 +103,24 @@
             android:textColor="#FFFFFF"
             android:textColorHint="#FFFFFF"
             android:textColorLink="#FFFFFF"
-            android:textSize="24sp"
-            app:autoSizeTextType="uniform"
-            tools:layout_editor_absoluteX="0dp"
-            tools:layout_editor_absoluteY="598dp" />
+            android:textSize="@dimen/defaultTextSize"
+            app:autoSizeTextType="uniform" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/btnAcceso"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:layout_marginStart="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="20dp"
-        android:layout_marginEnd="100dp"
-        android:layout_marginBottom="65dp"
+        android:layout_marginEnd="32dp"
+        android:textSize="@dimen/defaultTextSize"
         android:backgroundTint="@color/md_theme_light_surfaceTint"
-        android:text="@string/buttonAcceso"
-        app:autoSizeTextType="uniform"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passLabel" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:text="@string/buttonAcceso" />
+
+    <!-- Añade un espacio en blanco en la parte superior con un peso mayor -->
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.1" />
+</LinearLayout>
