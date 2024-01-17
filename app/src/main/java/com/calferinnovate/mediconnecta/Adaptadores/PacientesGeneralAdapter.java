@@ -1,6 +1,9 @@
 package com.calferinnovate.mediconnecta.Adaptadores;
 
+import android.app.Activity;
 import android.content.Context;
+import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -70,22 +73,71 @@ public class PacientesGeneralAdapter {
      * Método que actualiza la UI con los datos del paciente seleccionado.
      */
     public void seteaDatos() {
-        Glide.with(context).load(paciente.getFoto()).circleCrop().into(fotoPaciente);
+        configuraFotoPacientes();
+
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+
+        int screenHeight = displayMetrics.heightPixels;
+
+        // Porcentaje del alto de la pantalla para el tamaño de texto
+        float textPercentage = 0.02f; // Puedes ajustar este valor según tus necesidades
+
+        int desiredTextSize = (int) (screenHeight * textPercentage);
+
         nombre.setText(paciente.getNombre());
+        nombre.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
+
         apellidos.setText(paciente.getApellidos());
+        apellidos.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
+
         sexo.setText(paciente.getSexo());
+        sexo.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
+
         dni.setText(paciente.getDni());
+        dni.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
+
         lugarNacimiento.setText(paciente.getLugarNacimiento());
+        lugarNacimiento.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
+
         edad.setText(String.valueOf(calculaEdad(paciente)));
+        edad.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
+
         fechaNacimiento.setText(formateaFecha(paciente.getFechaNacimiento()));
+        fechaNacimiento.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
+
         estadoCivil.setText(paciente.getEstadoCivil());
+        estadoCivil.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
+
         fechaIngreso.setText(formateaFecha(paciente.getFechaIngreso()));
+        fechaIngreso.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
+
         unidad.setText(nombreUnidad(paciente));
+        unidad.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
+
         habitacion.setText(String.valueOf(paciente.getFkNumHabitacion()));
+        habitacion.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
+
         cipSns.setText(paciente.getCipSns());
+        cipSns.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
+
         numSeguridadSocial.setText(String.valueOf(paciente.getNumSeguridadSocial()));
+        numSeguridadSocial.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
     }
 
+    private void configuraFotoPacientes(){
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+
+        int screenWidth = displayMetrics.widthPixels;
+        int screenHeight = displayMetrics.heightPixels;
+
+        int targetWidth = Math.min(screenWidth, 300); // Tamaño máximo
+        int targetHeight = Math.min(screenHeight, 300); // Tamaño máximo
+
+
+        Glide.with(context).load(paciente.getFoto()).circleCrop().override(targetWidth, targetHeight).into(fotoPaciente);
+    }
     /**
      * Método usado para calcular la edad del paciente a partir de su fecha de nacimiento.
      *

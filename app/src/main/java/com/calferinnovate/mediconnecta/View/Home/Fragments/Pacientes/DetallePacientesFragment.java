@@ -5,6 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -28,6 +30,7 @@ public class DetallePacientesFragment extends Fragment implements IOnBackPressed
     private ClaseGlobal claseGlobal;
     private String nombreArea;
 
+
     /**
      * Método llamado cuando se crea la vista del fragmento.
      * Infla el diseño de la UI desde el archivo XML fragment_detalle_pacientes.xml.
@@ -45,11 +48,17 @@ public class DetallePacientesFragment extends Fragment implements IOnBackPressed
         View view = inflater.inflate(R.layout.fragment_detalle_pacientes, container, false);
         asignarValoresAVariables(view);
         sharedPacientesViewModel = new ViewModelProvider(requireActivity()).get(SharedPacientesViewModel.class);
-        listenerTabLayoutDetalle();
         getActivity().setTitle("Detalles Paciente");
-
         return view;
     }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        listenerTabLayoutDetalle();
+    }
+
+
 
 
     /**
@@ -59,7 +68,9 @@ public class DetallePacientesFragment extends Fragment implements IOnBackPressed
     public void asignarValoresAVariables(View view) {
         claseGlobal = ClaseGlobal.getInstance();
         tabLayoutPaciente = view.findViewById(R.id.tabLayoutDetallePacientes);
+
     }
+
 
 
     /**
@@ -75,6 +86,7 @@ public class DetallePacientesFragment extends Fragment implements IOnBackPressed
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 String tabSeleccionado = (String) tab.getText();
+
                 assert tabSeleccionado != null;
                 navegaAlFragmento(tabSeleccionado);
             }
@@ -154,4 +166,7 @@ public class DetallePacientesFragment extends Fragment implements IOnBackPressed
         requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PacientesFragment()).commit();
         return true;
     }
+
+
 }
+

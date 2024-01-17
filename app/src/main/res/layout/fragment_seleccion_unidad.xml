@@ -1,274 +1,228 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/frameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
     tools:context=".View.Sesion.SeleccionUnidadFragment">
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guidelineCenter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.40" />
+    <!-- Añade un espacio en blanco en la parte superior con un peso mayor -->
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.15" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guidelineCenterHor"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.35" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guidelineCenterHorTopImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.07" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guidelineCenterHorBotImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.28" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guiaVertIzq"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.02" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guiaVertDer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.98" />
-
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guiaHorTop"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.02" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guiaHorBot"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.98" />
-
+    <!-- Tu diseño actual -->
 
     <ImageView
         android:id="@+id/fotoEmpleado"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="2dp"
-        android:contentDescription="@string/content_description_foto_empleado"
-        android:maxWidth="400dp"
-        android:maxHeight="400dp"
+        android:layout_gravity="center"
         android:adjustViewBounds="true"
-        android:scaleType="fitXY"
-        app:layout_constraintEnd_toEndOf="@+id/guidelineCenter"
-        app:layout_constraintStart_toEndOf="@id/guiaVertIzq"
-        app:layout_constraintTop_toBottomOf="@+id/guidelineCenterHorTopImage"
-        tools:src="@tools:sample/avatars" />
+        android:contentDescription="@string/content_description_foto_empleado"
+        android:maxWidth="300dp"
+        android:maxHeight="300dp"
+        android:minWidth="100dp"
+        android:minHeight="100dp"
+        android:src="@mipmap/ic_launcher" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/labelNombreApellidos"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="8dp"
-        android:hint="@string/nombreYApellidosLabel"
-        android:maxLines="1"
-        android:textColorHint="@color/md_theme_light_surfaceTint"
-        app:hintTextAppearance="@style/TextLabel"
-        app:layout_constraintEnd_toStartOf="@+id/guiaVertDer"
-        app:layout_constraintStart_toEndOf="@+id/guidelineCenter"
-        app:layout_constraintTop_toBottomOf="@+id/guidelineCenterHorTopImage">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/nombreYApellidos"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:enabled="false"
-            android:imeOptions="actionNext"
-            android:maxLines="1"
-            android:textColor="@color/md_theme_black"
-            android:textColorHint="@color/md_theme_black"
-            android:textSize="24sp"
-            app:autoSizeTextType="uniform" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/labelCodigoEmpleado"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:hint="@string/codigo_empleado_label"
-        android:textColorHint="@color/md_theme_light_surfaceTint"
-        app:hintTextAppearance="@style/TextLabel"
-        app:layout_constraintEnd_toStartOf="@+id/guiaVertDer"
-        app:layout_constraintStart_toEndOf="@+id/guidelineCenter"
-        app:layout_constraintTop_toBottomOf="@+id/labelNombreApellidos">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/cod_empleado"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:enabled="false"
-            android:imeOptions="actionNext"
-            android:textSize="24sp"
-            android:maxLines="1"
-            android:textColor="@color/md_theme_black"
-            app:autoSizeTextType="uniform" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/labelCargo"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:hint="@string/cargo_label"
-        android:textColorHint="@color/md_theme_light_surfaceTint"
-        app:hintTextAppearance="@style/TextLabel"
-        app:layout_constraintEnd_toStartOf="@+id/guiaVertDer"
-        app:layout_constraintStart_toEndOf="@+id/guidelineCenter"
-        app:layout_constraintTop_toBottomOf="@+id/labelCodigoEmpleado">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/cargo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:enabled="false"
-            android:textSize="24sp"
-            android:maxLines="1"
-            android:imeOptions="actionNext"
-            android:textColor="@color/md_theme_black"
-            app:autoSizeTextType="uniform" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <TextView
-        android:id="@+id/labelTextoSeleccionUnidad"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="70dp"
-        android:layout_marginEnd="24dp"
-        android:autoSizeMaxTextSize="100sp"
-        android:autoSizeMinTextSize="12sp"
-        android:autoSizeStepGranularity="2sp"
-        android:autoSizeTextType="uniform"
-        android:gravity="center"
-        android:text="@string/seleccionar_area_unidad_label"
-        app:layout_constraintEnd_toStartOf="@+id/guiaVertDer"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/guiaVertIzq"
-        app:layout_constraintTop_toBottomOf="@+id/guidelineCenterHor" />
-
-    <TextView
-        android:id="@+id/labelSeleccionUnidadGeriatria"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="32dp"
-        android:autoSizeMaxTextSize="32sp"
-        android:autoSizeMinTextSize="12sp"
-        android:autoSizeStepGranularity="2sp"
-        android:autoSizeTextType="uniform"
-        android:background="@color/md_theme_light_surfaceTint"
-        android:gravity="center"
-        android:text="@string/seleccionar_area"
-        android:textColor="@color/md_theme_white"
-        app:layout_constraintEnd_toStartOf="@+id/guiaVertDer"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/guiaVertIzq"
-        app:layout_constraintTop_toBottomOf="@+id/divider" />
-
-    <Spinner
-        android:id="@+id/spinnerArea"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="32dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/labelSeleccionUnidadGeriatria" />
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true"
+        android:scrollbarStyle="outsideInset"
+        android:scrollbars="vertical">
 
-    <TextView
-        android:id="@+id/textView9"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:autoSizeMaxTextSize="32sp"
-        android:autoSizeMinTextSize="12sp"
-        android:autoSizeStepGranularity="2sp"
-        android:autoSizeTextType="uniform"
-        android:gravity="center"
-        android:text="@string/seleccionar_unidad_label"
-        android:background="@color/md_theme_light_surfaceTint"
-        android:textColor="@color/md_theme_white"
-        app:layout_constraintBottom_toTopOf="@+id/spinnerUnidad"
-        app:layout_constraintEnd_toStartOf="@+id/guiaVertDer"
-        app:layout_constraintStart_toStartOf="@+id/guiaVertIzq"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerArea" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <Spinner
-        android:id="@+id/spinnerUnidad"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/labelNombreApellidos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:hint="@string/nombreYApellidosLabel"
+                android:textColorHint="@color/md_theme_light_surfaceTint"
+                app:hintTextAppearance="@style/TextLabel">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/nombreYApellidos"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:imeOptions="actionNext"
+                    android:textColor="@color/md_theme_black"
+                    android:textColorHint="@color/md_theme_black"
+                    android:textSize="@dimen/defaultTextSize"
+                    app:autoSizeTextType="uniform" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/labelCodigoEmpleado"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:hint="@string/codigo_empleado_label"
+                android:textColorHint="@color/md_theme_light_surfaceTint"
+                app:hintTextAppearance="@style/TextLabel">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/cod_empleado"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:imeOptions="actionNext"
+                    android:maxLines="1"
+                    android:textColor="@color/md_theme_black"
+                    android:textSize="@dimen/defaultTextSize"
+                    app:autoSizeTextType="uniform" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/labelCargo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:hint="@string/cargo_label"
+                android:textColorHint="@color/md_theme_light_surfaceTint"
+                app:hintTextAppearance="@style/TextLabel">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/cargo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:imeOptions="actionNext"
+                    android:maxLines="1"
+                    android:textColor="@color/md_theme_black"
+                    android:textSize="@dimen/defaultTextSize"
+                    app:autoSizeTextType="uniform" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/labelTextoSeleccionUnidad"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="24dp"
+                android:autoSizeStepGranularity="2sp"
+                android:autoSizeTextType="uniform"
+                android:gravity="center"
+                android:text="@string/seleccionar_area_unidad_label"
+                android:textSize="@dimen/defaultTextSize" />
+
+            <View
+                android:id="@+id/divider"
+                android:layout_width="599dp"
+                android:layout_height="3dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="8dp"
+                android:background="@color/md_theme_light_surfaceTint" />
+
+            <TextView
+                android:id="@+id/labelSeleccionUnidadGeriatria"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:autoSizeStepGranularity="2sp"
+                android:autoSizeTextType="uniform"
+                android:background="@color/md_theme_light_surfaceTint"
+                android:gravity="center"
+                android:text="@string/seleccionar_area"
+                android:textColor="@color/md_theme_white"
+                android:textSize="@dimen/defaultTextSize" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/areaTextInputLayout"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:hint="@string/seleccionar_area">
+
+                <AutoCompleteTextView
+                    android:id="@+id/spinnerArea"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    android:textSize="@dimen/autoCompleteTextSize"
+                    app:simpleItems="@array/simple_items" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/labelSeleccionarUnidad"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:autoSizeStepGranularity="2sp"
+                android:autoSizeTextType="uniform"
+                android:background="@color/md_theme_light_surfaceTint"
+                android:gravity="center"
+                android:text="@string/seleccionar_unidad_label"
+                android:textColor="@color/md_theme_white"
+                android:textSize="@dimen/defaultTextSize" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/unidadesTextInputLayout"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:hint="@string/seleccionar_unidad_label">
+
+                <AutoCompleteTextView
+                    android:id="@+id/spinnerUnidad"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    android:textSize="@dimen/autoCompleteTextSize"
+                    app:simpleItems="@array/simple_items" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/AccesoAlHome"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginBottom="8dp"
+                android:onClick="sendMessage"
+                android:text="@string/acceso_al_home_btn_label"
+                android:textSize="@dimen/defaultTextSize" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+    <!-- Añade un espacio en blanco en la parte inferior con un peso menor -->
+    <Space
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="116dp"
-        android:layout_marginEnd="32dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerArea" />
+        android:layout_height="0dp"
+        android:layout_weight="0.1" />
 
-    <Button
-        android:id="@+id/AccesoAlHome"
-        android:layout_width="400dp"
-        android:layout_height="70dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="8dp"
-        android:onClick="sendMessage"
-        android:text="@string/acceso_al_home_btn_label"
-        app:autoSizeTextType="uniform"
-        app:layout_constraintBottom_toTopOf="@+id/guiaHorBot"
-        app:layout_constraintEnd_toStartOf="@+id/guiaVertDer"
-        app:layout_constraintStart_toStartOf="@+id/guiaVertIzq"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerUnidad"
-        app:layout_constraintVertical_bias="0.25" />
-
-
-    <View
-        android:id="@+id/divider"
-        android:layout_width="599dp"
-        android:layout_height="3dp"
-        android:layout_marginTop="16dp"
-        android:background="@color/md_theme_light_surfaceTint"
-        app:layout_constraintEnd_toStartOf="@+id/guiaVertDer"
-        app:layout_constraintStart_toStartOf="@+id/guiaVertIzq"
-        app:layout_constraintTop_toBottomOf="@+id/labelTextoSeleccionUnidad" />
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
 
 
 

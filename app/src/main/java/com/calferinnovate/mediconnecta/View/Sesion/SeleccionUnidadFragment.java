@@ -1,12 +1,15 @@
 package com.calferinnovate.mediconnecta.View.Sesion;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -29,6 +32,7 @@ import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.ViewModel.SeleccionUnidadViewModel;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelArgs;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelFactory;
+import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;
@@ -39,7 +43,7 @@ import java.util.ArrayList;
 public class SeleccionUnidadFragment extends Fragment {
     private Button botonFinalizar;
     private TextInputEditText nombre, cod_empleado, cargo;
-    private Spinner areaSP, unidadesSP;
+    private AutoCompleteTextView areaSP, unidadesSP;
     private Empleado empleado;
     private ImageView foto;
     private ArrayList<Unidades> unidadesArrayList = new ArrayList<>();
@@ -153,10 +157,23 @@ public class SeleccionUnidadFragment extends Fragment {
         cargo.setText(String.valueOf(e.getNombreCargo()));
         cod_empleado.setText(String.valueOf(e.getCod_empleado()));
         //Cargamos la foto del empleado con Glide
-        Glide.with(requireContext()).load(empleado.getFoto()).circleCrop().into(foto);
+        configuraFotoEmpleado(e);
+
     }
 
 
+    private void configuraFotoEmpleado(Empleado e){
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        requireActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+
+        int screenWidth = displayMetrics.widthPixels;
+        int screenHeight = displayMetrics.heightPixels;
+
+        int targetWidth = Math.min(screenWidth, 300); // Tamaño máximo
+        int targetHeight = Math.min(screenHeight, 300); // Tamaño máximo
+
+        Glide.with(requireContext()).load(empleado.getFoto()).circleCrop().override(targetWidth, targetHeight).into(foto);
+    }
     /**
      * Método que se llama en el onViewCreate para obtener los nombres de las areas y poblar el Spinner.
      * Llama al método obtenerDatosArea() del SeleccionUnidadViewModel y obtiene un ArrayList con
@@ -168,8 +185,7 @@ public class SeleccionUnidadFragment extends Fragment {
     private void obtieneAreasyPoblaSpinner() {
         seleccionUnidadViewModel.obtenerDatosAreas().observe(getViewLifecycleOwner(), strings -> {
             listaAreas = strings;
-            areasAdapter = new ArrayAdapter<>(requireContext(), R.layout.my_spinner, listaAreas);
-            areasAdapter.setDropDownViewResource(R.layout.my_spinner);
+            areasAdapter = new ArrayAdapter<>(requireContext(), R.layout.list_item, listaAreas);
             areaSP.setAdapter(areasAdapter);
             seleccionaArea();
         });
@@ -181,21 +197,11 @@ public class SeleccionUnidadFragment extends Fragment {
      * obtieneUnidadesYPoblaSpinner() según el área seleccionada.
      */
     public void seleccionaArea() {
-        areaSP.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (parent.getId() == R.id.spinnerArea) {
-                    listaUnidades.clear();
-                    unidadesArrayList.clear();
-                    areaSeleccionada = parent.getSelectedItem().toString();
-                    obtieneUnidadesYPoblaSpinner();
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
+        areaSP.setOnItemClickListener((parent, view, position, id) -> {
+            listaUnidades.clear();
+            unidadesArrayList.clear();
+            areaSeleccionada = parent.getItemAtPosition(position).toString();
+            obtieneUnidadesYPoblaSpinner();
         });
     }
 
@@ -208,25 +214,12 @@ public class SeleccionUnidadFragment extends Fragment {
     private void obtieneUnidadesYPoblaSpinner() {
         seleccionUnidadViewModel.obtenerDatosUnidades(areaSeleccionada).observe(getViewLifecycleOwner(), string -> {
             listaUnidades = string;
-            unidadesAdapter = new ArrayAdapter<>(requireContext(), R.layout.my_spinner, listaUnidades);
-            unidadesAdapter.setDropDownViewResource(R.layout.my_spinner);
-            unidadesSP.setAdapter(unidadesAdapter);
-            unidadesSP.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    if (parent.getId() == R.id.spinnerUnidad) {
-                        // Obtiene la unidad seleccionada del spinner
-                        Unidades unidad = unidadesArrayList.get(position);
-                        unidades = unidad;
-                        // Establece la unidad seleccionada en ClaseGlobal
-                        claseGlobal.setUnidades(unidad);
-                    }
-                }
 
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-
-                }
+            ArrayAdapter<String> autoCompleteAdapter = new ArrayAdapter<>(requireContext(), R.layout.list_item, listaUnidades);
+            unidadesSP.setAdapter(autoCompleteAdapter);
+            unidadesSP.setOnItemClickListener((parent, view, position, id) -> {
+                unidades = unidadesArrayList.get(position);
+                claseGlobal.setUnidades(unidades);
             });
         });
 

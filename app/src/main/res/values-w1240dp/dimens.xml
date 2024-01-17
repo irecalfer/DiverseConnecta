@@ -1,4 +1,15 @@
 <resources>
     <dimen name="fab_margin">200dp</dimen>
     <dimen name="activity_horizontal_margin">200dp</dimen>
+
+    <style name="MineCustomTabText" parent="TextAppearance.Design.Tab">
+        <item name="android:autoSizeTextType">uniform</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:autoSizeMinTextSize">12sp</item>
+        <item name="android:autoSizeMaxTextSize">32sp</item>
+    </style>
+
+    <dimen name="autoCompleteTextSize">32sp</dimen>
+
+    <dimen name="defaultTextSize">32sp</dimen>
 </resources>
