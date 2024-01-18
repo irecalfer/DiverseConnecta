@@ -24,7 +24,7 @@ import java.util.ArrayList;
  */
 public class AvisosViewModel extends ViewModel {
 
-    private final MutableLiveData<ArrayList<String>> arrayListAvisosMutableLiveData = new MutableLiveData<>();
+    private final MutableLiveData<ArrayList<Avisos>> arrayListAvisosMutableLiveData = new MutableLiveData<>();
     private PeticionesJson peticionesJson;
 
     /**
@@ -50,21 +50,22 @@ public class AvisosViewModel extends ViewModel {
      * @param fecha Fecha seleccionada en el Calendar View.
      * @return LiveData con el contenido de los avisos de dicha fecha.
      */
-    public LiveData<ArrayList<String>> obtieneAvisosFecha(String fecha){
+    public LiveData<ArrayList<Avisos>> obtieneAvisosFecha(String fecha){
         String url = Constantes.url_part+"avisos.php?fecha_aviso="+fecha;
         peticionesJson.getJsonObjectRequest(url, new PeticionesJson.MyJsonObjectResponseListener() {
             @Override
             public void onResponse(JSONObject response) {
                 try{
-                    ArrayList<String> contenidoArrayList = new ArrayList<>();
+                    ArrayList<Avisos> avisosArrayList = new ArrayList<>();
                     JSONArray jsonArray = response.getJSONArray("avisos");
                     for(int i = 0; i<jsonArray.length(); i++){
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        Avisos nuevoAvisos = new Avisos(jsonObject.optInt("num_aviso"), jsonObject.optString(("fecha_aviso")), jsonObject.optString("contenido"));
-                        contenidoArrayList.add(nuevoAvisos.getContenido());
+                        Avisos nuevoAvisos = new Avisos(jsonObject.optString("fecha_aviso"), jsonObject.optString("contenido"),
+                                jsonObject.optString("nombreEmpleado"), jsonObject.optString("foto"));
+                        avisosArrayList.add(nuevoAvisos);
                     }
-                    if(!contenidoArrayList.isEmpty()){
-                        arrayListAvisosMutableLiveData.postValue(new ArrayList<>(contenidoArrayList));
+                    if(!avisosArrayList.isEmpty()){
+                        arrayListAvisosMutableLiveData.postValue(new ArrayList<>(avisosArrayList));
                     }
                 }catch(JSONException jsonException){
                     throw new RuntimeException(jsonException);

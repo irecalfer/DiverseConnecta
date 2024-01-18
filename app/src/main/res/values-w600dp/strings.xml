@@ -119,4 +119,6 @@
     <string name="reiniciar">Reiniciar</string>
     <string name="ingreso">Calendario fecha ingreso</string>
     <string name="nacimientoFecha">Calendario fecha nacimiento</string>
+    <string name="foto_avisos">Foto de los empleados en los avisos</string>
+    <string name="nombreEmpleado">Nombre empleado</string>
 </resources>

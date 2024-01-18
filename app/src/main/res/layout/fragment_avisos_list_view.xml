@@ -20,8 +20,8 @@
         app:layout_constraintTop_toTopOf="parent">
 
 
-        <ListView
-            android:id="@+id/listViewAvisos"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/avisosRV"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:divider="@color/md_theme_light_surfaceTint"

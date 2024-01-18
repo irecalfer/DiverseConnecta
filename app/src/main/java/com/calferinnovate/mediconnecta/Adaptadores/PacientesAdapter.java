@@ -94,8 +94,8 @@ public class PacientesAdapter extends RecyclerView.Adapter<PacientesAdapter.Paci
         int screenWidth = displayMetrics.widthPixels;
         int screenHeight = displayMetrics.heightPixels;
 
-        int targetWidth = Math.min(screenWidth, 400); // Tamaño máximo
-        int targetHeight = Math.min(screenHeight, 400); // Tamaño máximo
+        int targetWidth = Math.min(screenWidth, 300); // Tamaño máximo
+        int targetHeight = Math.min(screenHeight, 300); // Tamaño máximo
 
 
         Glide.with(mContext)

@@ -15,6 +15,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -177,14 +178,10 @@ public class SesionFragment extends Fragment {
             if (sesion) {
                 if(claseGlobal.getEmpleado().getNombreCargo().equals("Enfermero")){
                     Toast.makeText(getContext(), "Permitiendo el acceso al usuario " + username.getText().toString(), Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(getActivity(), HomeActivityEnfermeros.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK) ;
-                    startActivity(intent);
+                    obtieneListaPacientes(HomeActivityEnfermeros.class);
                 }else if(claseGlobal.getEmpleado().getNombreCargo().equals("Administrativo")){
                     Toast.makeText(getContext(), "Permitiendo el acceso al usuario " + username.getText().toString(), Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(getActivity(), HomeActivityAdministrativos.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK) ;
-                    startActivity(intent);
+                    obtieneListaPacientes(HomeActivityAdministrativos.class);
                 }else{
                     Toast.makeText(getContext(), "Permitiendo el acceso al usuario " + username.getText().toString(), Toast.LENGTH_SHORT).show();
                     navController.navigate(R.id.action_sesionFragment_to_seleccionUnidadFragment);
@@ -226,4 +223,19 @@ public class SesionFragment extends Fragment {
         }
     }
 
+    public void obtieneListaPacientes(Class activityName){
+        sesionViewModel.obtieneDatosPacientes().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean obtenidos) {
+                if(obtenidos){
+                    Toast.makeText(getContext(), "Permitiendo el acceso al usuario " + username.getText().toString(), Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getActivity(), activityName);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK) ;
+                    startActivity(intent);
+                }else{
+                    Toast.makeText(getActivity(), "Error al obtener datos", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
 }

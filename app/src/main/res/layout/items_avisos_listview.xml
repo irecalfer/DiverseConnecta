@@ -1,16 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/itemAvisoListView"
-        android:layout_width="fill_parent"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:textSize="20sp"
-        android:padding="@dimen/activity_horizontal_margin"
-        android:text="@string/placeholder"
-        android:textColor="@color/md_theme_black" />
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/fotoEmpleadoAvisos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:layout_gravity="center"
+            android:contentDescription="@string/foto_avisos"
+            android:layout_marginStart="8dp"
+            android:minWidth="50dp"
+            android:maxWidth="150dp"
+            android:minHeight="50dp"
+            android:maxHeight="150dp"
+            android:src="@mipmap/ic_launcher" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/nombreEmpleadoAvisos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingTop="16dp"
+                android:textColor="@color/md_theme_light_surfaceTint"
+                android:textStyle="bold"
+                android:textSize="@dimen/defaultTextSize"
+                android:text="@string/nombreEmpleado" />
+
+            <TextView
+                android:id="@+id/itemAvisoListView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="@dimen/activity_horizontal_margin"
+                android:text="@string/placeholder"
+                android:textColor="@color/md_theme_black"
+                android:textSize="@dimen/defaultTextSize" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="match_parent"
+        android:layout_height="1.5dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginTop="12dp"
+        app:dividerColor="@color/md_theme_light_secondary" />
+
 </LinearLayout>

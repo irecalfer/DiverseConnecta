@@ -3,14 +3,17 @@ package com.calferinnovate.mediconnecta.View.Home.Fragments.HomeFragments.Rutina
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
+import com.calferinnovate.mediconnecta.Adaptadores.AvisosAdapter;
+import com.calferinnovate.mediconnecta.Model.Avisos;
 import com.calferinnovate.mediconnecta.Model.PeticionesJson;
 import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.ViewModel.AvisosViewModel;
@@ -25,12 +28,12 @@ import java.util.ArrayList;
  */
 public class AvisosListViewFragment extends Fragment {
 
-    private ListView avisosLV;
+    private RecyclerView avisosRecyclerView;
     private String fecha;
     private AvisosViewModel avisosViewModel;
     private PeticionesJson peticionesJson;
-    private ArrayList<String> listaContenidoAvisos = new ArrayList<>();
-    private ArrayAdapter<String> avisosAdapter;
+    private ArrayList<Avisos> avisosArrayList = new ArrayList<>();
+    private AvisosAdapter avisosAdapter;
 
 
     /**
@@ -60,7 +63,7 @@ public class AvisosListViewFragment extends Fragment {
      * @param view La vista inflada.
      */
     private void inicializaVariables(View view) {
-        avisosLV = view.findViewById(R.id.listViewAvisos);
+        avisosRecyclerView = view.findViewById(R.id.avisosRV);
     }
 
     /**
@@ -95,11 +98,15 @@ public class AvisosListViewFragment extends Fragment {
      * Obtiene una lista con el contenido de los avisos y actualiza el ListView con un ArrayAdapter.
      */
     public void rellenaListView(){
-        avisosViewModel.obtieneAvisosFecha(fecha).observe(getViewLifecycleOwner(), strings -> {
-            listaContenidoAvisos = strings;
-            avisosAdapter = new ArrayAdapter<>(requireActivity(), R.layout.items_avisos_listview, R.id.itemAvisoListView, listaContenidoAvisos);
-            avisosLV.setAdapter(avisosAdapter);
+        avisosViewModel.obtieneAvisosFecha(fecha).observe(getViewLifecycleOwner(), new Observer<ArrayList<Avisos>>() {
+            @Override
+            public void onChanged(ArrayList<Avisos> avisos) {
+                avisosAdapter = new AvisosAdapter(avisos, getContext());
+                avisosRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                avisosRecyclerView.setAdapter(avisosAdapter);
+            }
         });
+
     }
 
 }

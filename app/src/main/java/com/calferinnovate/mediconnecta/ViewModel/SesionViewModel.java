@@ -10,6 +10,7 @@ import com.android.volley.VolleyError;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
 import com.calferinnovate.mediconnecta.Model.Constantes;
 import com.calferinnovate.mediconnecta.Model.Empleado;
+import com.calferinnovate.mediconnecta.Model.Pacientes;
 import com.calferinnovate.mediconnecta.Model.PeticionesJson;
 
 import org.json.JSONArray;
@@ -25,6 +26,7 @@ public class SesionViewModel extends ViewModel {
     private ClaseGlobal claseGlobal;
     private PeticionesJson peticionesJson;
     private final MutableLiveData<Boolean> empleadoIniciaSesionMutableLiveData = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> pacientesObtenidos = new MutableLiveData<>();
     private final MutableLiveData<Boolean> empleadoEnfermero = new MutableLiveData<>();
     private final MutableLiveData<Boolean> empleadoAdministrativo = new MutableLiveData<>();
     private final MutableLiveData<Boolean> empleadoMedico = new MutableLiveData<>();
@@ -94,7 +96,57 @@ public class SesionViewModel extends ViewModel {
         });
     }
 
+    /**
+     * Método que realiza una solicitud al servidor a través de PeticionesJson para obtener la lista
+     * de pacientes pertenecientes a una unidad, setea la lista de pacientes en claseGlobal.
+     * Si se han obtenido correctamente los datos se pone el MutableLiveData pacientesObtenidos a true y devuelve el LiveData.
+     *
+     * @return LiveData booleano con la verificación de si se han obtenido los pacientes.
+     */
+    public LiveData<Boolean> obtieneDatosPacientes() {
+        String url = Constantes.url_part + "pacientes.php";
 
+        peticionesJson.getJsonObjectRequest(url, new PeticionesJson.MyJsonObjectResponseListener() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    if (!claseGlobal.getListaPacientes().isEmpty()) {
+                        claseGlobal.getListaPacientes().clear();
+                    }
+                    JSONArray jsonArray = response.getJSONArray("pacientes");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        Pacientes nuevoPacientes = obtieneNuevoPaciente(jsonObject);
+                        claseGlobal.getListaPacientes().add(nuevoPacientes);
+                    }
+
+                    claseGlobal.setListaPacientes(claseGlobal.getListaPacientes());
+                    pacientesObtenidos.postValue(true);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+                pacientesObtenidos.postValue(false);
+            }
+        });
+
+        return pacientesObtenidos;
+    }
+
+    private Pacientes obtieneNuevoPaciente(JSONObject jsonObject) {
+        return new Pacientes(jsonObject.optString("nombre"), jsonObject.optString("apellidos"),
+                jsonObject.optString("foto"), jsonObject.optString("fecha_nacimiento"),
+                jsonObject.optString("dni"), jsonObject.optString("lugar_nacimiento"),
+                jsonObject.optString("sexo"), jsonObject.optString("cip_sns"),
+                jsonObject.optInt("num_seguridad_social"), jsonObject.optInt("fk_id_unidad"),
+                jsonObject.optInt("fk_id_seguro"), jsonObject.optInt("fk_num_habitacion"),
+                jsonObject.optInt("fk_num_historia_clinica"), jsonObject.optString("fecha_ingreso"),
+                jsonObject.optString("estado_civil"));
+    }
 
 
 
