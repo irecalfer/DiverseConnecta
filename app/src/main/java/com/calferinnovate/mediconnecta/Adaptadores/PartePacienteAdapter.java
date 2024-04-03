@@ -3,8 +3,8 @@ package com.calferinnovate.mediconnecta.Adaptadores;
 import android.content.Context;
 import android.view.View;
 
+import com.calferinnovate.mediconnecta.Model.Alumnos;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
-import com.calferinnovate.mediconnecta.Model.Pacientes;
 import com.calferinnovate.mediconnecta.R;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -16,7 +16,7 @@ import java.time.format.DateTimeFormatter;
  */
 
 public class PartePacienteAdapter {
-    private final Pacientes paciente;
+    private final Alumnos paciente;
     private final ClaseGlobal claseGlobal;
     private final Context context;
     private TextInputEditText fechaHora;
@@ -26,7 +26,7 @@ public class PartePacienteAdapter {
     /**
      * Constructor del adaptador.
      */
-    public PartePacienteAdapter(Pacientes paciente, ClaseGlobal claseGlobal, Context context) {
+    public PartePacienteAdapter(Alumnos paciente, ClaseGlobal claseGlobal, Context context) {
         this.paciente = paciente;
         this.claseGlobal = claseGlobal;
         this.context = context;

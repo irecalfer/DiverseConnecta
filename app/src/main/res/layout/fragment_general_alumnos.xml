@@ -5,7 +5,7 @@
     android:id="@+id/frameLayout5"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".View.Home.Fragments.Pacientes.GeneralPacientesFragment">
+    tools:context=".View.Home.Fragments.Pacientes.GeneralAlumnosFragment">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelineVertIzq"
@@ -77,7 +77,7 @@
                 app:layout_constraintGuide_percent="0.50" />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/labelNombrePaciente"
+                android:id="@+id/labelNombreAlumno"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -101,7 +101,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/labelApellidosPaciente"
+                android:id="@+id/labelApellidosAlumno"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -114,7 +114,7 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/apellidoPaciente"
+                    android:id="@+id/apellidoAlumno"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:enabled="false"
@@ -123,7 +123,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/labelSexoPaciente"
+                android:id="@+id/labelSexoAlumno"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -134,10 +134,10 @@
                 app:hintTextAppearance="@style/TextLabel"
                 app:layout_constraintEnd_toStartOf="@id/guiaCentro"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/labelNombrePaciente">
+                app:layout_constraintTop_toBottomOf="@id/labelNombreAlumno">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/sexoPaciente"
+                    android:id="@+id/sexoAlumno"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:enabled="false"
@@ -146,7 +146,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/labelDNIPaciente"
+                android:id="@+id/labelDNIAlumno"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -157,10 +157,10 @@
                 app:hintTextAppearance="@style/TextLabel"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/guiaCentro"
-                app:layout_constraintTop_toBottomOf="@id/labelApellidosPaciente">
+                app:layout_constraintTop_toBottomOf="@id/labelApellidosAlumno">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/dniPaciente"
+                    android:id="@+id/dniAlumno"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:enabled="false"
@@ -169,56 +169,9 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/labelLugarNacimientoPaciente"
+                android:id="@+id/labelEdadAlumno"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:hint="@string/lugarNacimientoPacienteLabel"
-                android:textColorHint="@color/md_theme_light_surfaceTint"
-                app:autoSizeTextType="uniform"
-                app:hintTextAppearance="@style/TextLabel"
-                app:layout_constraintEnd_toStartOf="@id/guiaCentro"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/labelSexoPaciente">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/lugarNacimientoPaciente"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:enabled="false"
-                    android:imeOptions="actionNext"
-                    android:textColor="@color/md_theme_black" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/labelSeguroPaciente"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:hint="@string/seguroPacienteLabel"
-                android:textColorHint="@color/md_theme_light_surfaceTint"
-                app:autoSizeTextType="uniform"
-                app:hintTextAppearance="@style/TextLabel"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/guiaCentro"
-                app:layout_constraintTop_toBottomOf="@id/labelDNIPaciente">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/seguroPaciente"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:enabled="false"
-                    android:imeOptions="actionNext"
-                    android:textColor="@color/md_theme_black" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/labelEdadPaciente"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:hint="@string/edadPacienteLabel"
                 android:textColorHint="@color/md_theme_light_surfaceTint"
@@ -226,10 +179,11 @@
                 app:hintTextAppearance="@style/TextLabel"
                 app:layout_constraintEnd_toStartOf="@id/guiaCentro"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/labelLugarNacimientoPaciente">
+                app:layout_constraintTop_toBottomOf="@id/labelSexoAlumno"
+                tools:layout_editor_absoluteY="228dp">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edadPaciente"
+                    android:id="@+id/edadAlumno"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:enabled="false"
@@ -238,21 +192,21 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/labelFechaNacimientoPaciente"
+                android:id="@+id/labelFechaNacimientoAlumno"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
                 android:hint="@string/FechaNacimientoPacienteLabel"
                 android:textColorHint="@color/md_theme_light_surfaceTint"
                 app:autoSizeTextType="uniform"
                 app:hintTextAppearance="@style/TextLabel"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/guiaCentro"
-                app:layout_constraintTop_toBottomOf="@id/labelSeguroPaciente">
+                app:layout_constraintTop_toBottomOf="@id/labelDNIAlumno"
+                tools:layout_editor_absoluteY="228dp">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/fechaNacimientoPaciente"
+                    android:id="@+id/fechaNacimientoAlumno"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:enabled="false"
@@ -261,21 +215,21 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/labelEstadoCivilPaciente"
+                android:id="@+id/labelProfesorAlumno"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:hint="@string/estadoCivilPacienteLabel"
+                android:hint="@string/profesorAlumnoLabel"
                 android:textColorHint="@color/md_theme_light_surfaceTint"
                 app:autoSizeTextType="uniform"
                 app:hintTextAppearance="@style/TextLabel"
                 app:layout_constraintEnd_toStartOf="@id/guiaCentro"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/labelEdadPaciente">
+                app:layout_constraintTop_toBottomOf="@id/labelEdadAlumno">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/estadoCivilPaciente"
+                    android:id="@+id/profesorAlumno"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:enabled="false"
@@ -284,67 +238,21 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/labelFechaIngresoPaciente"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:hint="@string/FechaIngresoPacienteLabel"
-                android:textColorHint="@color/md_theme_light_surfaceTint"
-                app:autoSizeTextType="uniform"
-                app:hintTextAppearance="@style/TextLabel"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/guiaCentro"
-                app:layout_constraintTop_toBottomOf="@id/labelFechaNacimientoPaciente">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/fechaIngresoPaciente"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:enabled="false"
-                    android:imeOptions="actionNext"
-                    android:textColor="@color/md_theme_black" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/labelUnidadPaciente"
+                android:id="@+id/labelAulaAlumno"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:hint="@string/unidadPacienteLabel"
-                android:textColorHint="@color/md_theme_light_surfaceTint"
-                app:autoSizeTextType="uniform"
-                app:hintTextAppearance="@style/TextLabel"
-                app:layout_constraintEnd_toStartOf="@id/guiaCentro"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/labelEstadoCivilPaciente">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/unidadPaciente"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:enabled="false"
-                    android:imeOptions="actionNext"
-                    android:textColor="@color/md_theme_black" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/labelHabitacionPaciente"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:hint="@string/habitacionPacienteLabel"
+                android:hint="@string/aulaAlumnoLabel"
                 android:textColorHint="@color/md_theme_light_surfaceTint"
                 app:autoSizeTextType="uniform"
                 app:hintTextAppearance="@style/TextLabel"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/guiaCentro"
-                app:layout_constraintTop_toBottomOf="@id/labelFechaIngresoPaciente">
+                app:layout_constraintTop_toBottomOf="@id/labelFechaNacimientoAlumno">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/habitacionPaciente"
+                    android:id="@+id/aulaAlumno"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:enabled="false"
@@ -353,44 +261,44 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/labelCipSnsPaciente"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:hint="@string/cipSnsPacienteLabel"
-                android:textColorHint="@color/md_theme_light_surfaceTint"
-                app:autoSizeTextType="uniform"
-                app:hintTextAppearance="@style/TextLabel"
-                app:layout_constraintEnd_toStartOf="@id/guiaCentro"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/labelUnidadPaciente">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/cipSnsPaciente"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:enabled="false"
-                    android:imeOptions="actionNext"
-                    android:textColor="@color/md_theme_black" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/labelNumSeguridadSocialPaciente"
+                android:id="@+id/labelATEAlumno"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:hint="@string/numSeguridadSocialPacienteLabel"
+                android:hint="@string/ateAlumnoLabel"
+                android:textColorHint="@color/md_theme_light_surfaceTint"
+                app:autoSizeTextType="uniform"
+                app:hintTextAppearance="@style/TextLabel"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/guiaCentro"
+                app:layout_constraintTop_toBottomOf="@id/labelProfesorAlumno"
+                tools:layout_editor_absoluteY="374dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/ateAlumno"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:imeOptions="actionNext"
+                    android:textColor="@color/md_theme_black" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/labelGradoDiscapacidad"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:hint="@string/gradoDiscapacidadLabel"
                 android:textColorHint="@color/md_theme_light_surfaceTint"
                 app:autoSizeTextType="uniform"
                 app:hintTextAppearance="@style/TextLabel"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/guiaCentro"
-                app:layout_constraintTop_toBottomOf="@id/labelHabitacionPaciente">
+                app:layout_constraintTop_toBottomOf="@id/labelAulaAlumno"
+                tools:layout_editor_absoluteY="374dp">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/numSeguridadSocialPaciente"
+                    android:id="@+id/gradoDiscapacidad"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:enabled="false"

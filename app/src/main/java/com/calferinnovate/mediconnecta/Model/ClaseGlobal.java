@@ -18,10 +18,9 @@ public class ClaseGlobal extends Application {
 
     //Declaración de objetos
     private Empleado empleado;
-    private Unidades unidades;
-    private ArrayList<Unidades> listaUnidades;
-    private ArrayList<Pacientes> listaPacientes;
-    private ArrayList<Area> listaAreas;
+    private ArrayList<Alumnos> listaAlumnos;
+    private ArrayList<Empleado> listaEmpleados;
+
 
 
 
@@ -35,9 +34,8 @@ public class ClaseGlobal extends Application {
      */
     public ClaseGlobal() {
         empleado = new Empleado();
-        unidades = new Unidades();
-        listaUnidades = new ArrayList<>();
-        listaPacientes = new ArrayList<>(); // Inicializa la lista de pacientes vacía
+        listaAlumnos = new ArrayList<>(); // Inicializa la lista de pacientes vacía
+        listaEmpleados = new ArrayList<>();
     }
 
     /**
@@ -63,38 +61,25 @@ public class ClaseGlobal extends Application {
         return empleado;
     }
 
-    public Unidades getUnidades() {
-        return unidades;
-    }
 
     public void setEmpleado(Empleado empleado) {
         this.empleado = empleado;
     }
 
-    public void setUnidades(Unidades unidades) {
-        this.unidades = unidades;
+
+    public ArrayList<Alumnos> getListaAlumnos() {
+        return listaAlumnos;
     }
 
-    public ArrayList<Unidades> getListaUnidades() {
-        return listaUnidades;
+    public void setListaAlumnos(ArrayList<Alumnos> listaPacientes) {
+        this.listaAlumnos = listaPacientes;
     }
 
-
-    public ArrayList<Pacientes> getListaPacientes() {
-        return listaPacientes;
+    public ArrayList<Empleado> getListaEmpleados() {
+        return listaEmpleados;
     }
 
-    public void setListaPacientes(ArrayList<Pacientes> listaPacientes) {
-        this.listaPacientes = listaPacientes;
+    public void setListaEmpleados(ArrayList<Empleado> listaEmpleados) {
+        this.listaEmpleados = listaEmpleados;
     }
-
-    public ArrayList<Area> getListaAreas() {
-        return listaAreas;
-    }
-
-    public void setListaAreas(ArrayList<Area> listaAreas) {
-        this.listaAreas = listaAreas;
-    }
-
-
 }

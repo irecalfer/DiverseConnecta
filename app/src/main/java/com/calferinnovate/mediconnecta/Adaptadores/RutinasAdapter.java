@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.calferinnovate.mediconnecta.Model.Pacientes;
+import com.calferinnovate.mediconnecta.Model.Alumnos;
 import com.calferinnovate.mediconnecta.Model.PacientesAgrupadosRutinas;
 import com.calferinnovate.mediconnecta.R;
 
@@ -23,7 +23,7 @@ import java.util.ArrayList;
 public class RutinasAdapter extends RecyclerView.Adapter<RutinasAdapter.ViewHolder> {
 
     private final ArrayList<PacientesAgrupadosRutinas> dataSet;
-    private final ArrayList<Pacientes> pacientes;
+    private final ArrayList<Alumnos> pacientes;
     private final Context context;
 
 
@@ -34,7 +34,7 @@ public class RutinasAdapter extends RecyclerView.Adapter<RutinasAdapter.ViewHold
      * @param context   contexto
      * @param pacientes lista de pacientes.
      */
-    public RutinasAdapter(ArrayList<PacientesAgrupadosRutinas> data, ArrayList<Pacientes> pacientes, Context context) {
+    public RutinasAdapter(ArrayList<PacientesAgrupadosRutinas> data, ArrayList<Alumnos> pacientes, Context context) {
         dataSet = data;
         this.pacientes = pacientes;
         this.context = context;
@@ -102,10 +102,10 @@ public class RutinasAdapter extends RecyclerView.Adapter<RutinasAdapter.ViewHold
      */
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        for (Pacientes paciente : pacientes) {
-            if (dataSet.get(position).getFkCipSns().equals(paciente.getCipSns())) {
+        for (Alumnos paciente : pacientes) {
+            if (dataSet.get(position).getFkCipSns().equals(paciente.getIdAlumno())) {
                 holder.getTextViewDatosPersonales().setText(paciente.getNombre() + " " + paciente.getApellidos());
-                holder.getTextViewHabitacion().setText("Habitacion:" + " " + paciente.getFkNumHabitacion());
+                holder.getTextViewHabitacion().setText("Habitacion:" + " " + paciente.getFkAula());
                 Glide.with(context).load(paciente.getFoto()).circleCrop().into(holder.getImageViewFoto());
                 break;
             }

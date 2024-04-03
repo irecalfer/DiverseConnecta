@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.calferinnovate.mediconnecta.Model.Avisos;
-import com.calferinnovate.mediconnecta.Model.Pacientes;
 import com.calferinnovate.mediconnecta.R;
 
 import java.util.ArrayList;

@@ -7,10 +7,10 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.android.volley.VolleyError;
+import com.calferinnovate.mediconnecta.Model.Alumnos;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
 import com.calferinnovate.mediconnecta.Model.Constantes;
 import com.calferinnovate.mediconnecta.Model.Empleado;
-import com.calferinnovate.mediconnecta.Model.Pacientes;
 import com.calferinnovate.mediconnecta.Model.PeticionesJson;
 
 import org.json.JSONArray;
@@ -27,46 +27,43 @@ public class SesionViewModel extends ViewModel {
     private PeticionesJson peticionesJson;
     private final MutableLiveData<Boolean> empleadoIniciaSesionMutableLiveData = new MutableLiveData<>();
     private final MutableLiveData<Boolean> pacientesObtenidos = new MutableLiveData<>();
-    private final MutableLiveData<Boolean> empleadoEnfermero = new MutableLiveData<>();
-    private final MutableLiveData<Boolean> empleadoAdministrativo = new MutableLiveData<>();
-    private final MutableLiveData<Boolean> empleadoMedico = new MutableLiveData<>();
-    private final MutableLiveData<Boolean> empleadoTerapeutaOcupacional = new MutableLiveData<>();
-    private final MutableLiveData<Boolean> empleadoFisio = new MutableLiveData<>();
-    private final MutableLiveData<Boolean> empleadoTrabajadorSocial = new MutableLiveData<>();
-    private MutableLiveData<String> cargoEmpleado = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> empleadosObtenidos = new MutableLiveData<>();
 
     /**
      * Constructor vacío del ViewModel
      */
-    public SesionViewModel(){
+    public SesionViewModel() {
 
     }
 
     /**
      * Constructor que recive ViewModelArgs para inicializar dependencias.
+     *
      * @param viewModelArgs contiene las instancias de ClaseGlobal y PeticionesJson necesarias para el
      *                      ViewModel.
      */
-    public SesionViewModel(ViewModelArgs viewModelArgs){
+    public SesionViewModel(ViewModelArgs viewModelArgs) {
         claseGlobal = viewModelArgs.getClaseGlobal();
         peticionesJson = viewModelArgs.getPeticionesJson();
     }
 
     /**
      * Obtiene un LiveData para observar el estado de inicio de sesión del empleado.
+     *
      * @return empleadoIniciaSesionMutableLiveData LiveData que indica si el empleado ha iniciado sesión.
      */
-    public LiveData<Boolean> getEmpleadoIniciaSesion(){
+    public LiveData<Boolean> getEmpleadoIniciaSesion() {
         return empleadoIniciaSesionMutableLiveData;
     }
 
     /**
      * Inicia sesión del empleado haciendo una solicitud JSON al servidor.
      * Actualiza el estado de inicio de sesión en LiveData según la respuesta del servidor.
-     * @param user Nombre de usuario del empleado. Obtenido del TextView username del fragmento SesionFragment.
+     *
+     * @param user     Nombre de usuario del empleado. Obtenido del TextView username del fragmento SesionFragment.
      * @param password Contraseña del empleado. Obtenido del TextView password del fragmento SesionFragment.
      */
-    public void inicioSesion(String user, String password){
+    public void inicioSesion(String user, String password) {
         String url = Constantes.url_part + "inicio_sesion.php?user=" + user +
                 "&pwd=" + password;
         peticionesJson.getJsonObjectRequest(url, new PeticionesJson.MyJsonObjectResponseListener() {
@@ -78,7 +75,7 @@ public class SesionViewModel extends ViewModel {
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject object = jsonArray.getJSONObject(i);
                         Empleado empleadoLogueado = new Empleado(object.optString("user"), object.optString("pwd"),
-                                object.optString("nombre"), object.optString("apellidos"), object.optString("nombreCargo"),
+                                object.optString("nombre"), object.optString("apellidos"),
                                 object.optInt("cod_empleado"), object.optInt("fk_cargo"), object.getString("foto"));
                         claseGlobal.setEmpleado(empleadoLogueado);
                     }
@@ -96,6 +93,7 @@ public class SesionViewModel extends ViewModel {
         });
     }
 
+
     /**
      * Método que realiza una solicitud al servidor a través de PeticionesJson para obtener la lista
      * de pacientes pertenecientes a una unidad, setea la lista de pacientes en claseGlobal.
@@ -103,24 +101,24 @@ public class SesionViewModel extends ViewModel {
      *
      * @return LiveData booleano con la verificación de si se han obtenido los pacientes.
      */
-    public LiveData<Boolean> obtieneDatosPacientes() {
-        String url = Constantes.url_part + "pacientes.php";
+    public LiveData<Boolean> obtieneDatosAlumnos() {
+        String url = Constantes.url_part + "alumnos.php";
 
         peticionesJson.getJsonObjectRequest(url, new PeticionesJson.MyJsonObjectResponseListener() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    if (!claseGlobal.getListaPacientes().isEmpty()) {
-                        claseGlobal.getListaPacientes().clear();
+                    if (!claseGlobal.getListaAlumnos().isEmpty()) {
+                        claseGlobal.getListaAlumnos().clear();
                     }
-                    JSONArray jsonArray = response.getJSONArray("pacientes");
+                    JSONArray jsonArray = response.getJSONArray("alumnos");
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        Pacientes nuevoPacientes = obtieneNuevoPaciente(jsonObject);
-                        claseGlobal.getListaPacientes().add(nuevoPacientes);
+                        Alumnos nuevoAlumnos = obtieneNuevoPaciente(jsonObject);
+                        claseGlobal.getListaAlumnos().add(nuevoAlumnos);
                     }
 
-                    claseGlobal.setListaPacientes(claseGlobal.getListaPacientes());
+                    claseGlobal.setListaAlumnos(claseGlobal.getListaAlumnos());
                     pacientesObtenidos.postValue(true);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -137,15 +135,62 @@ public class SesionViewModel extends ViewModel {
         return pacientesObtenidos;
     }
 
-    private Pacientes obtieneNuevoPaciente(JSONObject jsonObject) {
-        return new Pacientes(jsonObject.optString("nombre"), jsonObject.optString("apellidos"),
+    private Alumnos obtieneNuevoPaciente(JSONObject jsonObject) {
+        return new Alumnos(jsonObject.optString("nombre"), jsonObject.optString("apellidos"),
                 jsonObject.optString("foto"), jsonObject.optString("fecha_nacimiento"),
-                jsonObject.optString("dni"), jsonObject.optString("lugar_nacimiento"),
-                jsonObject.optString("sexo"), jsonObject.optString("cip_sns"),
-                jsonObject.optInt("num_seguridad_social"), jsonObject.optInt("fk_id_unidad"),
-                jsonObject.optInt("fk_id_seguro"), jsonObject.optInt("fk_num_habitacion"),
-                jsonObject.optInt("fk_num_historia_clinica"), jsonObject.optString("fecha_ingreso"),
-                jsonObject.optString("estado_civil"));
+                jsonObject.optString("dni"),
+                jsonObject.optString("sexo"), jsonObject.optString("grado_discapacidad"),
+                jsonObject.optInt("id_alumno"), jsonObject.optInt("fk_profesor"),
+                jsonObject.optInt("fk_aula"));
+    }
+
+
+    /**
+     * Método que realiza una solicitud al servidor a través de PeticionesJson para obtener la lista
+     * de pacientes pertenecientes a una unidad, setea la lista de pacientes en claseGlobal.
+     * Si se han obtenido correctamente los datos se pone el MutableLiveData pacientesObtenidos a true y devuelve el LiveData.
+     *
+     * @return LiveData booleano con la verificación de si se han obtenido los pacientes.
+     */
+    public LiveData<Boolean> obtieneDatosEmpleados() {
+        String url = Constantes.url_part + "empleados.php";
+
+        peticionesJson.getJsonObjectRequest(url, new PeticionesJson.MyJsonObjectResponseListener() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    if (!claseGlobal.getListaEmpleados().isEmpty()) {
+                        claseGlobal.getListaEmpleados().clear();
+                    }
+                    JSONArray jsonArray = response.getJSONArray("empleados");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        Empleado nuevoEmpleado= obtieneNuevoEmpleado(jsonObject);
+                        claseGlobal.getListaEmpleados().add(nuevoEmpleado);
+                    }
+
+                    claseGlobal.setListaEmpleados(claseGlobal.getListaEmpleados());
+                    empleadosObtenidos.postValue(true);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+                empleadosObtenidos.postValue(false);
+            }
+        });
+
+        return pacientesObtenidos;
+    }
+
+    private Empleado obtieneNuevoEmpleado(JSONObject jsonObject) {
+        return new Empleado(jsonObject.optString("user"), jsonObject.optString("pwd"),
+                jsonObject.optString("nombre"), jsonObject.optString("apellidos"),
+                jsonObject.optInt("cod_empleado"), jsonObject.optInt("fk_cargo"),
+                jsonObject.optString("foto"));
     }
 
 

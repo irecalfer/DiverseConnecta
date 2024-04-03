@@ -5,7 +5,7 @@
     android:id="@+id/frameLayout5"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".View.Home.Fragments.Addiciones.GeneralPacientesFragmentAnadidos">
+    tools:context=".View.Home.Fragments.Addiciones.GeneralAlumnosFragmentAnadidos">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelineVertIzq"

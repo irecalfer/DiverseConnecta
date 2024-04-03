@@ -13,15 +13,13 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.calferinnovate.mediconnecta.Adaptadores.RutinasAdapter;
+import com.calferinnovate.mediconnecta.Model.Alumnos;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
-import com.calferinnovate.mediconnecta.Model.Pacientes;
 import com.calferinnovate.mediconnecta.Model.PeticionesJson;
-import com.calferinnovate.mediconnecta.Model.Unidades;
 import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.View.Home.Fragments.HomeFragment;
 import com.calferinnovate.mediconnecta.View.IOnBackPressed;
 import com.calferinnovate.mediconnecta.ViewModel.ConsultasYRutinasDiariasViewModel;
-import com.calferinnovate.mediconnecta.ViewModel.ViewModelArgs;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelArgsJson;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelFactory;
 import com.google.android.material.tabs.TabLayout;
@@ -39,9 +37,8 @@ public class ConsultasYRutinasDiariasFragment extends Fragment implements IOnBac
     private RecyclerView rvConsultas;
     private RutinasAdapter rutinasAdapter;
     private TabLayout tabLayout;
-    private Unidades unidades;
     private ClaseGlobal claseGlobal;
-    private ArrayList<Pacientes> listaPacientes;
+    private ArrayList<Alumnos> listaPacientes;
     private EditText fechaRutina;
     private ConsultasYRutinasDiariasViewModel consultasYRutinasDiariasViewModel;
     private String tipoRutinaActual;
@@ -80,8 +77,7 @@ public class ConsultasYRutinasDiariasFragment extends Fragment implements IOnBac
      */
     public void inicializaVariables(View view) {
         claseGlobal = ClaseGlobal.getInstance();
-        unidades = claseGlobal.getUnidades();
-        listaPacientes = claseGlobal.getListaPacientes();
+        listaPacientes = claseGlobal.getListaAlumnos();
 
         rvConsultas = view.findViewById(R.id.rvRutinas);
         tabLayout = view.findViewById(R.id.tabLayoutRutinas);
@@ -187,13 +183,14 @@ public class ConsultasYRutinasDiariasFragment extends Fragment implements IOnBac
      */
     private void obtenerDatosRutinas() {
         // Realiza la solicitud HTTP utilizando el ViewModel y pasa la fecha, unidad y tipo de rutina
+        /*
         consultasYRutinasDiariasViewModel.obtieneDatosRutinasDiaPacientes(fecha,
                 unidades.getNombreUnidad(), tipoRutinaActual).observe(getViewLifecycleOwner(), pacientesAgrupadosRutinas -> {
             rutinasAdapter = new RutinasAdapter(pacientesAgrupadosRutinas, listaPacientes, getContext());
             rvConsultas.setAdapter(rutinasAdapter);
 
             rutinasAdapter.notifyDataSetChanged();
-        });
+        });*/
 
 
     }

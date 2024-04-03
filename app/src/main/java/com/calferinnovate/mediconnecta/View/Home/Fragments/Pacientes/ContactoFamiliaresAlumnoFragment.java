@@ -15,11 +15,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.calferinnovate.mediconnecta.Adaptadores.FamiliaresAdapter;
+import com.calferinnovate.mediconnecta.Model.Alumnos;
 import com.calferinnovate.mediconnecta.View.Home.Fragments.PacientesFragment;
 import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
 import com.calferinnovate.mediconnecta.View.IOnBackPressed;
-import com.calferinnovate.mediconnecta.Model.Pacientes;
 import com.calferinnovate.mediconnecta.Model.PeticionesJson;
 import com.calferinnovate.mediconnecta.ViewModel.SharedPacientesViewModel;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelArgs;
@@ -28,7 +28,7 @@ import com.calferinnovate.mediconnecta.ViewModel.ViewModelFactory;
 /**
  * Fragmento encargado de mostrar a lista de Datos de los contactos de los pacientes.
  */
-public class ContactoFamiliaresPacienteFragment extends Fragment implements IOnBackPressed {
+public class ContactoFamiliaresAlumnoFragment extends Fragment implements IOnBackPressed {
     private ClaseGlobal claseGlobal;
     private SharedPacientesViewModel sharedPacientesViewModel;
     private RecyclerView recyclerView;
@@ -118,7 +118,7 @@ public class ContactoFamiliaresPacienteFragment extends Fragment implements IOnB
      * configura el adaptador FamiliaresAdapter y actualiza el RecyclerView con la lista obtenida.
      * @param paciente Paciente seleccionado.
      */
-    public void obtieneListaFamiliares(Pacientes paciente){
+    public void obtieneListaFamiliares(Alumnos paciente){
         sharedPacientesViewModel.obtieneContactoFamiliares(paciente).observe(getViewLifecycleOwner(), contactoFamiliares -> {
             FamiliaresAdapter adapter = new FamiliaresAdapter(contactoFamiliares, getContext());
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());

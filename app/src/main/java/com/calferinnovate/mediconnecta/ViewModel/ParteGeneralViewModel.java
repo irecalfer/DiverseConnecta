@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.android.volley.VolleyError;
-import com.calferinnovate.mediconnecta.Model.Caidas;
 import com.calferinnovate.mediconnecta.Model.Constantes;
 import com.calferinnovate.mediconnecta.Model.Parte;
 import com.calferinnovate.mediconnecta.Model.PeticionesJson;

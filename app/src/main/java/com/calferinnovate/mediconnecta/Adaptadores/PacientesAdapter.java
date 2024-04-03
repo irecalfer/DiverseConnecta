@@ -14,7 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.calferinnovate.mediconnecta.Model.Pacientes;
+import com.calferinnovate.mediconnecta.Model.Alumnos;
 import com.calferinnovate.mediconnecta.R;
 
 import java.util.ArrayList;
@@ -33,8 +33,8 @@ public class PacientesAdapter extends RecyclerView.Adapter<PacientesAdapter.Paci
         void onClick(int position);
     }
 
-    private final ArrayList<Pacientes> listaPacientes;
-    ArrayList<Pacientes> listaOriginal;
+    private final ArrayList<Alumnos> listaPacientes;
+    ArrayList<Alumnos> listaOriginal;
     private final Context mContext;
     private ItemClickListener clickListener;
 
@@ -45,7 +45,7 @@ public class PacientesAdapter extends RecyclerView.Adapter<PacientesAdapter.Paci
      * @param context        Contexto
      * @param clickListener  Escucha del click.
      */
-    public PacientesAdapter(ArrayList<Pacientes> listaPacientes, Context context, ItemClickListener clickListener) {
+    public PacientesAdapter(ArrayList<Alumnos> listaPacientes, Context context, ItemClickListener clickListener) {
         this.listaPacientes = listaPacientes;
         mContext = context;
         this.clickListener = clickListener;
@@ -79,15 +79,15 @@ public class PacientesAdapter extends RecyclerView.Adapter<PacientesAdapter.Paci
      */
     @Override
     public void onBindViewHolder(@NonNull PacientesViewHolder holder, int position) {
-        Pacientes pacientes = listaPacientes.get(position);
+        Alumnos alumnos = listaPacientes.get(position);
 
-        configuraFotoPacientes(holder, pacientes);
-        configuraDatosYTamaño(holder, pacientes);
+        configuraFotoPacientes(holder, alumnos);
+        configuraDatosYTamaño(holder, alumnos);
 
 
     }
 
-    private void configuraFotoPacientes(PacientesViewHolder holder, Pacientes pacientes){
+    private void configuraFotoPacientes(PacientesViewHolder holder, Alumnos alumnos){
         DisplayMetrics displayMetrics = new DisplayMetrics();
         ((Activity) mContext).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
@@ -99,13 +99,13 @@ public class PacientesAdapter extends RecyclerView.Adapter<PacientesAdapter.Paci
 
 
         Glide.with(mContext)
-                .load(pacientes.getFoto())
+                .load(alumnos.getFoto())
                 .circleCrop()
                 .override(targetWidth, targetHeight)  // Aquí se establece el tamaño deseado
                 .into(holder.fotoPacienteImageView);
     }
 
-    private void configuraDatosYTamaño(PacientesViewHolder holder, Pacientes pacientes) {
+    private void configuraDatosYTamaño(PacientesViewHolder holder, Alumnos alumnos) {
         DisplayMetrics displayMetrics = new DisplayMetrics();
         ((Activity) mContext).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
@@ -116,14 +116,12 @@ public class PacientesAdapter extends RecyclerView.Adapter<PacientesAdapter.Paci
 
         int desiredTextSize = (int) (screenHeight * textPercentage);
 
-        holder.nombreCompletoTextView.setText(pacientes.getNombre());
+        holder.nombreCompletoTextView.setText(alumnos.getNombre());
         holder.nombreCompletoTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
 
-        holder.apellidos.setText(pacientes.getApellidos());
+        holder.apellidos.setText(alumnos.getApellidos());
         holder.apellidos.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
 
-        holder.habitacionTextView.setText("Habitación:" + " " + pacientes.getFkNumHabitacion());
-        holder.habitacionTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
     }
 
 
@@ -146,7 +144,7 @@ public class PacientesAdapter extends RecyclerView.Adapter<PacientesAdapter.Paci
             listaPacientes.clear();
             listaPacientes.addAll(listaOriginal);
         } else {
-            List<Pacientes> collection = listaPacientes.stream()
+            List<Alumnos> collection = listaPacientes.stream()
                     .filter(i -> i.getNombre().toLowerCase().contains(busqueda.toLowerCase()))
                     .collect(Collectors.toList());
             listaPacientes.clear();

@@ -57,7 +57,7 @@ if($resultado -> num_rows > 0){
 'noche' => $fila['noche']
        ));
     }
-   // Genera el formato JSON una vez que se han agrupado todos los pacientes
+   // Genera el formato JSON una vez que se han agrupado todos los alumnos
      echo json_encode($return_arr);
 }
 

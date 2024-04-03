@@ -5,8 +5,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +13,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.calferinnovate.mediconnecta.R;
-import com.calferinnovate.mediconnecta.View.Home.Fragments.Addiciones.GeneralPacientesFragmentAnadidos;
+import com.calferinnovate.mediconnecta.View.Home.Fragments.Addiciones.GeneralAlumnosFragmentAnadidos;
 
 public class AnadirPacienteFragment extends Fragment {
 
@@ -45,7 +43,7 @@ public class AnadirPacienteFragment extends Fragment {
         datosGeneralesBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new GeneralPacientesFragmentAnadidos()).addToBackStack(null).commit();
+                requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new GeneralAlumnosFragmentAnadidos()).addToBackStack(null).commit();
             }
         });
     }

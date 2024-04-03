@@ -2,13 +2,19 @@ package com.calferinnovate.mediconnecta.View.Home.Fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.MenuHost;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -16,10 +22,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.calferinnovate.mediconnecta.Adaptadores.PacientesAdapter;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
-import com.calferinnovate.mediconnecta.Model.Pacientes;
+import com.calferinnovate.mediconnecta.Model.Alumnos;
 import com.calferinnovate.mediconnecta.Model.PeticionesJson;
 import com.calferinnovate.mediconnecta.R;
-import com.calferinnovate.mediconnecta.View.Home.Fragments.Pacientes.DetallePacientesFragment;
+import com.calferinnovate.mediconnecta.View.Home.Fragments.Addiciones.GeneralAlumnosFragmentAnadidos;
+import com.calferinnovate.mediconnecta.View.Home.Fragments.Pacientes.DetalleAlumnoFragment;
 import com.calferinnovate.mediconnecta.View.IOnBackPressed;
 import com.calferinnovate.mediconnecta.ViewModel.SharedPacientesViewModel;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelArgs;
@@ -34,10 +41,12 @@ public class PacientesFragment extends Fragment implements PacientesAdapter.Item
     private RecyclerView recycler;
     private SearchView searchView;
     private ClaseGlobal claseGlobal;
-    private ArrayList<Pacientes> listaPacientes;
+    private ArrayList<Alumnos> listaPacientes;
     private SharedPacientesViewModel sharedPacientesViewModel;
     private PeticionesJson peticionesJson;
     private PacientesAdapter adapter;
+    private MenuHost menuHost;
+
 
     /**
      * Método llamado cuando se crea la vista del fragmento.
@@ -54,6 +63,8 @@ public class PacientesFragment extends Fragment implements PacientesAdapter.Item
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_pacientes, container, false);
+        menuHost = requireActivity();
+        cambiarToolbar();
         getActivity().setTitle("Pacientes");
 
         inicializaVariables(view);
@@ -68,6 +79,27 @@ public class PacientesFragment extends Fragment implements PacientesAdapter.Item
         return view;
     }
 
+    public void cambiarToolbar(){
+       MenuProvider menuProvider = new MenuProvider() {
+           @Override
+           public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+               menuInflater.inflate(R.menu.app_bar_usuarios, menu);
+           }
+
+           @Override
+           public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+               if(menuItem.getItemId() == R.id.action_añadir_usuario){
+                   getParentFragmentManager().beginTransaction().replace(R.id.fragment_container, new GeneralAlumnosFragmentAnadidos()).commit();
+                   return true;
+               }
+               return false;
+           }
+       };
+
+       requireActivity().addMenuProvider(menuProvider, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
+
+    }
+
     /**
      * Método que inicializa las variables miembro y enlaza los componentes de la UI con las variables.
      *
@@ -75,7 +107,7 @@ public class PacientesFragment extends Fragment implements PacientesAdapter.Item
      */
     public void inicializaVariables(View view) {
         claseGlobal = ClaseGlobal.getInstance();
-        listaPacientes = claseGlobal.getListaPacientes();
+        listaPacientes = claseGlobal.getListaAlumnos();
         recycler = view.findViewById(R.id.recyclerViewPacientes);
         searchView = view.findViewById(R.id.searchPacientes);
     }
@@ -100,6 +132,7 @@ public class PacientesFragment extends Fragment implements PacientesAdapter.Item
         ViewModelFactory<SharedPacientesViewModel> factory = new ViewModelFactory<>(viewModelArgs);
         sharedPacientesViewModel = new ViewModelProvider(requireActivity(), factory).get(SharedPacientesViewModel.class);
     }
+
 
     /**
      * Método que configura el Recycler View, pasa la lista de pacientes al adaptador, lo configura y
@@ -170,7 +203,7 @@ public class PacientesFragment extends Fragment implements PacientesAdapter.Item
     public void onClick(int position) {
         sharedPacientesViewModel.setPaciente(position);
         adapter.notifyDataSetChanged();
-        getParentFragmentManager().beginTransaction().replace(R.id.fragment_container, new DetallePacientesFragment()).commit();
+        getParentFragmentManager().beginTransaction().replace(R.id.fragment_container, new DetalleAlumnoFragment()).commit();
 
     }
 

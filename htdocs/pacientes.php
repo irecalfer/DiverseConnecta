@@ -12,9 +12,9 @@ if(isset($_GET["nombre"])){
     $resultado = $conexion ->query($consulta);
     
 if($resultado -> num_rows > 0){
-    $return_arr['pacientes'] = array();
+    $return_arr['alumnos'] = array();
     while($fila = $resultado->fetch_array()){
-        array_push($return_arr['pacientes'], array(
+        array_push($return_arr['alumnos'], array(
         'cip_sns'=> $fila['cip_sns'],
 'nombre'=> $fila['nombre'],
 'apellidos'=> $fila['apellidos'],

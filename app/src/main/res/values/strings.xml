@@ -56,14 +56,14 @@
     <string name="open_nav">Abrir navegador</string>
     <string name="close_nav">Cerrar navegador</string>
     <string name="avisos">Avisos</string>
-    <string name="svRecyclerViewRutinas">Contiene las rutinas diarias de los pacientes</string>
+    <string name="svRecyclerViewRutinas">Contiene las rutinas diarias de los alumnos</string>
     <string name="rutinas">Rutina del día</string>
     <string name="tabVisitas">Visitas</string>
     <string name="tabSalidas">Salidas</string>
     <string name="tabFisio">Fisioterapeuta</string>
     <string name="tabCuras">Curas</string>
     <string name="tabConsultasMedicas">Consultas Médicas</string>
-    <string name="content_description_foto_residente">Imagen de cada uno de los pacientes</string>
+    <string name="content_description_foto_residente">Imagen de cada uno de los alumnos</string>
     <string name="content_description_foto_paciente_detalle">Foto del paciente en el detalle</string>
     <string name="nombrePacienteLabel">Nombre</string>
     <string name="apellidoPacienteLabel">Apellidos</string>
@@ -154,4 +154,11 @@
     <string name="nacimientoFecha">Calendario fecha nacimiento</string>
     <string name="foto_avisos">Foto de los empleados en los avisos</string>
     <string name="nombreEmpleado">Nombre empleado</string>
+    <string name="anadirUsuario">Añadir usuario</string>
+    <string name="editarUsuario">Editar usuario</string>
+    <string name="eliminarUsuario">Eliminar usuario</string>
+    <string name="profesorAlumnoLabel">Profesor</string>
+    <string name="aulaAlumnoLabel">Aula</string>
+    <string name="ateAlumnoLabel">ATE</string>
+    <string name="gradoDiscapacidadLabel">Grado Discapacidad</string>
 </resources>

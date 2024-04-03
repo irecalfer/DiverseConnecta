@@ -25,8 +25,6 @@ import com.calferinnovate.mediconnecta.Model.PeticionesJson;
 import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
 import com.calferinnovate.mediconnecta.View.Home.HomeActivity;
-import com.calferinnovate.mediconnecta.View.Home.HomeActivityAdministrativos;
-import com.calferinnovate.mediconnecta.View.Home.HomeActivityEnfermeros;
 import com.calferinnovate.mediconnecta.ViewModel.SesionViewModel;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelArgs;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelFactory;
@@ -148,7 +146,7 @@ public class SesionFragment extends Fragment {
     }
 
 
-    private void configuraImagenLogo(){
+    private void configuraImagenLogo() {
         DisplayMetrics displayMetrics = new DisplayMetrics();
         requireActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
@@ -161,10 +159,11 @@ public class SesionFragment extends Fragment {
         Glide.with(this).load(getImage("logo_mediconnecta")).override(targetWidth, targetHeight).into(logo);
     }
 
-    private int getImage(String imageName){
+    private int getImage(String imageName) {
         int drawableResourceId = this.getResources().getIdentifier(imageName, "drawable", requireActivity().getPackageName());
         return drawableResourceId;
     }
+
     /**
      * Método que se llama en el onViewCreate para verificar el estado del inicio de sesión.
      * Llama al método getEmpleadoIniciaSesion del ViewModel SesionViewModel y comprueba si los datos
@@ -176,17 +175,8 @@ public class SesionFragment extends Fragment {
     public void verificaEstadoInicioSesion() {
         sesionViewModel.getEmpleadoIniciaSesion().observe(getViewLifecycleOwner(), sesion -> {
             if (sesion) {
-                if(claseGlobal.getEmpleado().getNombreCargo().equals("Enfermero")){
-                    Toast.makeText(getContext(), "Permitiendo el acceso al usuario " + username.getText().toString(), Toast.LENGTH_SHORT).show();
-                    obtieneListaPacientes(HomeActivityEnfermeros.class);
-                }else if(claseGlobal.getEmpleado().getNombreCargo().equals("Administrativo")){
-                    Toast.makeText(getContext(), "Permitiendo el acceso al usuario " + username.getText().toString(), Toast.LENGTH_SHORT).show();
-                    obtieneListaPacientes(HomeActivityAdministrativos.class);
-                }else{
-                    Toast.makeText(getContext(), "Permitiendo el acceso al usuario " + username.getText().toString(), Toast.LENGTH_SHORT).show();
-                    navController.navigate(R.id.action_sesionFragment_to_seleccionUnidadFragment);
-                }
-
+                Toast.makeText(getContext(), "Permitiendo el acceso al usuario " + username.getText().toString(), Toast.LENGTH_SHORT).show();
+                obtieneListaAlumnos(HomeActivity.class);
             } else {
                 Toast.makeText(getContext(), "Usuario o contraseña incorrecta", Toast.LENGTH_SHORT).show();
             }
@@ -223,19 +213,20 @@ public class SesionFragment extends Fragment {
         }
     }
 
-    public void obtieneListaPacientes(Class activityName){
-        sesionViewModel.obtieneDatosPacientes().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+    public void obtieneListaAlumnos(Class activityName) {
+        sesionViewModel.obtieneDatosAlumnos().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean obtenidos) {
-                if(obtenidos){
+                if (obtenidos) {
                     Toast.makeText(getContext(), "Permitiendo el acceso al usuario " + username.getText().toString(), Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(getActivity(), activityName);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK) ;
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
-                }else{
+                } else {
                     Toast.makeText(getActivity(), "Error al obtener datos", Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
+
 }

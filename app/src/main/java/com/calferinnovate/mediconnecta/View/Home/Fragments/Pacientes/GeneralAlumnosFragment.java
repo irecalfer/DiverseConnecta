@@ -11,9 +11,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.calferinnovate.mediconnecta.Adaptadores.PacientesGeneralAdapter;
+import com.calferinnovate.mediconnecta.Adaptadores.AlumnosGeneralAdapter;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
-import com.calferinnovate.mediconnecta.Model.Pacientes;
+import com.calferinnovate.mediconnecta.Model.Alumnos;
 import com.calferinnovate.mediconnecta.Model.PeticionesJson;
 import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.View.Home.Fragments.PacientesFragment;
@@ -26,14 +26,14 @@ import com.calferinnovate.mediconnecta.ViewModel.ViewModelFactory;
 /**
  * Fragmento encargado de mostrar los datos personales del paciente.
  */
-public class GeneralPacientesFragment extends Fragment implements IOnBackPressed {
+public class GeneralAlumnosFragment extends Fragment implements IOnBackPressed {
 
 
     private TextView seguroTextView;
     private SharedPacientesViewModel sharedPacientesViewModel;
     private ClaseGlobal claseGlobal;
     private PeticionesJson peticionesJson;
-    private Pacientes pacienteActual;
+    private Alumnos pacienteActual;
 
 
     /**
@@ -49,7 +49,7 @@ public class GeneralPacientesFragment extends Fragment implements IOnBackPressed
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_general_pacientes, container, false);
+        View view = inflater.inflate(R.layout.fragment_general_alumnos, container, false);
         inicializaVariables(view);
         inicializaViewModel();
         return view;
@@ -63,7 +63,6 @@ public class GeneralPacientesFragment extends Fragment implements IOnBackPressed
      */
     public void inicializaVariables(View view) {
         claseGlobal = ClaseGlobal.getInstance();
-        seguroTextView = view.findViewById(R.id.seguroPaciente);
     }
 
     /**
@@ -112,28 +111,14 @@ public class GeneralPacientesFragment extends Fragment implements IOnBackPressed
         sharedPacientesViewModel.getPaciente().observe(getViewLifecycleOwner(), pacientes -> {
             pacienteActual = pacientes;
 
-            PacientesGeneralAdapter pacienteAdapter = new PacientesGeneralAdapter(pacienteActual, requireContext());
+            AlumnosGeneralAdapter pacienteAdapter = new AlumnosGeneralAdapter(pacienteActual, requireContext());
             pacienteAdapter.rellenaUI(view);
-            SetearSeguro(pacienteActual);
+
 
         });
     }
 
-    /**
-     * Llama al método getSeguro() del ViewModel y actualiza la UI con el seguro del paciente si lo tiene,
-     * en caso de que no tenga seguro indica que no lo tiene.
-     *
-     * @param paciente Paciente Seleccionado
-     */
-    public void SetearSeguro(Pacientes paciente) {
-        sharedPacientesViewModel.obtieneSeguroPacientes(paciente).observe(getViewLifecycleOwner(), seguro -> {
-            if (seguro != null) {
-                seguroTextView.setText(String.format("%s %d", seguro.getNombreSeguro(), seguro.getTelefono()));
-            } else {
-                seguroTextView.setText(R.string.sinSeguro);
-            }
-        });
-    }
+
 
     /**
      * Método que agrega la lógica específica del fragmento para manejar el restroceso.

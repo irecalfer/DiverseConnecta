@@ -4,8 +4,12 @@ package com.calferinnovate.mediconnecta.View.Home;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,6 +21,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
+import androidx.core.view.MenuProvider;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -24,15 +29,15 @@ import androidx.fragment.app.FragmentManager;
 import com.bumptech.glide.Glide;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
 import com.calferinnovate.mediconnecta.Model.Empleado;
-import com.calferinnovate.mediconnecta.Model.Unidades;
 import com.calferinnovate.mediconnecta.R;
+import com.calferinnovate.mediconnecta.View.Home.Fragments.AnadirPacienteFragment;
 import com.calferinnovate.mediconnecta.View.Home.Fragments.HomeFragment;
-import com.calferinnovate.mediconnecta.View.Home.Fragments.NormasEmpresaFragment;
 import com.calferinnovate.mediconnecta.View.Home.Fragments.PacientesFragment;
 import com.calferinnovate.mediconnecta.View.Home.Fragments.ParteGeneralFragment;
 import com.calferinnovate.mediconnecta.View.IOnBackPressed;
 import com.calferinnovate.mediconnecta.View.Sesion.MainActivity;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.FirebaseApp;
 
 /**
  * HomeActivity proporciona la funcionalidad de Navegación entre los fragmentos del Home a través del
@@ -43,9 +48,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     private DrawerLayout drawerLayout;
     private Empleado empleado;
-    private Unidades unidad;
     private Toolbar toolbar;
     private NavigationView navigationView;
+    private MenuProvider menuProvider;
 
     /**
      * Se llama cuando se crea la actividad. Configura la interfaz de usuario, inicializa
@@ -57,10 +62,15 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
+        setContentView(R.layout.activity_home_administrativos);
+        FirebaseApp.initializeApp(this);
         inicializaVariables();
         enlazaRecursos();
+
+
 
         estableceBarraDeHerramientas();
         rellenaDatosPersonalesNavigationDrawer(navigationView);
@@ -78,7 +88,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     public void inicializaVariables() {
         ClaseGlobal claseGlobal = ClaseGlobal.getInstance();
         empleado = claseGlobal.getEmpleado();
-        unidad = claseGlobal.getUnidades();
     }
 
     /**
@@ -96,11 +105,24 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
      */
     private void estableceBarraDeHerramientas() {
         setSupportActionBar(toolbar);
-
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+
+        menuProvider = new MenuProvider() {
+            @Override
+            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+
+            }
+
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                return false;
+            }
+        };
+
+        addMenuProvider(menuProvider);
     }
 
     /**
@@ -112,12 +134,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         View headerView = navigationView.getHeaderView(0);
         ImageView fotoEmpleadoND = headerView.findViewById(R.id.fotoEmpleadoND);
         TextView nombreEmpleadoND = headerView.findViewById(R.id.nombreEmpleadoND);
-        TextView unidadND = headerView.findViewById(R.id.unidadND);
 
         Glide.with(getApplicationContext()).load(empleado.getFoto()).circleCrop().into(fotoEmpleadoND);
 
         nombreEmpleadoND.setText(String.format("%s %s", empleado.getNombre(), empleado.getApellidos()));
-        unidadND.setText(unidad.getNombreUnidad());
+
     }
 
     /**
@@ -159,10 +180,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
         } else if (item.getItemId() == R.id.pacientes_item_id) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PacientesFragment()).addToBackStack(null).commit();
-        } else if (item.getItemId() == R.id.parte_general_item_id) {
+        } else if(item.getItemId() == R.id.añadir_paciente_item_id){
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AnadirPacienteFragment()).addToBackStack(null).commit();
+        }else if (item.getItemId() == R.id.parte_general_item_id) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ParteGeneralFragment()).addToBackStack(null).commit();
-        } else if (item.getItemId() == R.id.normas_empresa_item_id) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new NormasEmpresaFragment()).addToBackStack(null).commit();
         } else if (item.getItemId() == R.id.cierre_sesion_item_id) {
             dialogCerrarSesion();
         } else if (item.getItemId() == R.id.cambio_unidad_item_id) {

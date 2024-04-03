@@ -14,9 +14,7 @@ import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.calferinnovate.mediconnecta.Adaptadores.CaidasAdapter;
 import com.calferinnovate.mediconnecta.Adaptadores.ParteAdapter;
-import com.calferinnovate.mediconnecta.Model.Caidas;
 import com.calferinnovate.mediconnecta.Model.Parte;
 import com.calferinnovate.mediconnecta.Model.PeticionesJson;
 import com.calferinnovate.mediconnecta.R;
@@ -42,7 +40,6 @@ public class ParteGeneralFragment extends Fragment implements IOnBackPressed {
     private PeticionesJson peticionesJson;
     private String fechaInicio, fechaFin;
     private ParteAdapter parteAdapter;
-    private CaidasAdapter caidasAdapter;
     private TableLayout tableLayoutPartes, tableLayoutCaidas;
     private ArrayList<Parte> listaPartes;
     private ArrayList<Caidas> listaCaidas;
@@ -151,7 +148,6 @@ public class ParteGeneralFragment extends Fragment implements IOnBackPressed {
             fechaFin = formato.format(dateFin);
 
             rellenaPartes();
-            rellenaCaidas();
         });
     }
 
@@ -185,35 +181,6 @@ public class ParteGeneralFragment extends Fragment implements IOnBackPressed {
         }
 
         parteAdapter.notifyDataSetChanged();
-    }
-
-    /**
-     * Método que llama al método obtieneCaidasPeriodo del ParteGeneralViewModel pasando fecha inicio y fin,
-     * configura el adaptador CaidasAdapter y llama a creaTablaCaidas para actualizar el TableLayout.
-     */
-    public void rellenaCaidas() {
-        parteGeneralViewModel.obtieneCaidasPeriodo(fechaInicio, fechaFin).observe(getViewLifecycleOwner(), caidas -> {
-            listaCaidas = caidas;
-            caidasAdapter = new CaidasAdapter(requireContext(), listaCaidas);
-            tableLayoutCaidas.removeAllViews();
-            creaTablaCaidas();
-        });
-    }
-
-    /**
-     * Método que crea dinámicamente las filas de la tabla tableLayoutCaidas. Infla el header y posteriormente
-     * las filas.
-     */
-    public void creaTablaCaidas() {
-        View headerView = caidasAdapter.inflaElHeader(tableLayoutCaidas);
-        tableLayoutCaidas.addView(headerView);
-
-        for (Caidas caida : listaCaidas) {
-            View rowView = caidasAdapter.getView(listaCaidas.indexOf(caida), null, tableLayoutCaidas);
-            tableLayoutCaidas.addView(rowView);
-        }
-
-        caidasAdapter.notifyDataSetChanged();
     }
 
 

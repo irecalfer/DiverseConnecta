@@ -4,7 +4,7 @@ package com.calferinnovate.mediconnecta.Model;
 // guardarlo en la variable name y poder consultarlo desde otras activities.
 public class Empleado{
 
-    private String user,pass,nombre, apellidos, nombreCargo;
+    private String user,pass,nombre, apellidos;
     private int cod_empleado, fk_cargo;
     private String foto;
 
@@ -13,13 +13,11 @@ public class Empleado{
     public Empleado() {
     }
 
-    public Empleado(String user, String pass, String nombre, String apellidos, 
-                    String nombreCargo, int cod_empleado, int fk_cargo, String foto) {
+    public Empleado(String user, String pass, String nombre, String apellidos, int cod_empleado, int fk_cargo, String foto) {
         this.user = user;
         this.pass = pass;
         this.nombre = nombre;
         this.apellidos = apellidos;
-        this.nombreCargo = nombreCargo;
         this.cod_empleado = cod_empleado;
         this.fk_cargo = fk_cargo;
         this.foto = foto;
@@ -76,13 +74,6 @@ public class Empleado{
         this.fk_cargo = fk_cargo;
     }
 
-    public String getNombreCargo() {
-        return nombreCargo;
-    }
-
-    public void setNombreCargo(String nombreCargo) {
-        this.nombreCargo = nombreCargo;
-    }
 
     public String getFoto() {
         return foto;

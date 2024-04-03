@@ -35,10 +35,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
 import com.calferinnovate.mediconnecta.Model.Constantes;
-import com.calferinnovate.mediconnecta.Model.Habitaciones;
 import com.calferinnovate.mediconnecta.Model.PeticionesJson;
-import com.calferinnovate.mediconnecta.Model.Seguro;
-import com.calferinnovate.mediconnecta.Model.Unidades;
 import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.View.Home.Fragments.PacientesFragment;
 import com.calferinnovate.mediconnecta.View.IOnBackPressed;
@@ -64,13 +61,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 
 /**
  * Fragmento encargado de mostrar los datos personales del paciente.
  */
-public class GeneralPacientesFragmentAnadidos extends Fragment implements IOnBackPressed {
+public class GeneralAlumnosFragmentAnadidos extends Fragment implements IOnBackPressed {
 
 
     private ImageView fotoPaciente;
@@ -86,7 +82,6 @@ public class GeneralPacientesFragmentAnadidos extends Fragment implements IOnBac
     private ActivityResultLauncher<Intent> pickImageLauncher;
     private String imageBase64;
     private int idUnidad, idSeguro;
-    private ArrayList<Unidades> unidadesArrayList = new ArrayList<>();
     private ArrayList<Seguro> seguroArrayList = new ArrayList<>();
     private StorageReference storageReference;
 
@@ -193,53 +188,16 @@ public class GeneralPacientesFragmentAnadidos extends Fragment implements IOnBac
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        obtenerListasYPoblarSpinners();
-        obtenerUnidadesYPoblarSpinners();
         obtieneSexoPacientes();
-        obtieneEstadoCivilPaciente();
         seleccionaFechaNacimiento();
         seleccionaFechaIngreso();
         listenerImageView();
 
     }
 
-    private void obtenerListasYPoblarSpinners() {
-        sharedPacientesViewModel.obtieneListaSeguros().observe(getViewLifecycleOwner(), new Observer<ArrayList<Seguro>>() {
-            @Override
-            public void onChanged(ArrayList<Seguro> seguros) {
-                ArrayList<String> listaSeguros = new ArrayList<String>();
-                for (Seguro seguro : seguros) {
-                    String tmp = seguro.getNombreSeguro() + " " + seguro.getTelefono();
-                    listaSeguros.add(tmp);
-                    seguroArrayList.add(seguro);
-                }
-                ArrayAdapter<String> segurosAdapter = new ArrayAdapter<>(requireActivity(), R.layout.my_spinner, listaSeguros);
-                segurosAdapter.setDropDownViewResource(R.layout.my_spinner);
-                seguroSp.setAdapter(segurosAdapter);
 
-                seguroSp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        if (parent.getId() == R.id.seguroPacienteNuevoSpinner) {
-                            seguroSeleccionado = parent.getSelectedItem().toString();
-                            for(Seguro seguro: seguroArrayList){
-                                if((seguro.getNombreSeguro() + " " + seguro.getTelefono()).equals(seguroSeleccionado)){
-                                    idSeguro = seguro.getIdSeguro();
-                                }
-                            }
-                        }
-                    }
 
-                    @Override
-                    public void onNothingSelected(AdapterView<?> parent) {
-
-                    }
-                });
-            }
-        });
-    }
-
-    private void obtenerUnidadesYPoblarSpinners() {
+    /*private void obtenerUnidadesYPoblarSpinners() {
         sharedPacientesViewModel.obtieneListaDeUnidades().observe(getViewLifecycleOwner(), new Observer<ArrayList<Unidades>>() {
             @Override
             public void onChanged(ArrayList<Unidades> unidades) {
@@ -254,9 +212,9 @@ public class GeneralPacientesFragmentAnadidos extends Fragment implements IOnBac
                 seleccionarUnidad();
             }
         });
-    }
+    }*/
 
-    private void seleccionarUnidad() {
+    /*private void seleccionarUnidad() {
         unidadSp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -276,8 +234,9 @@ public class GeneralPacientesFragmentAnadidos extends Fragment implements IOnBac
 
             }
         });
-    }
+    }*/
 
+    /*
     private void obtieneHabitacionesYPoblarSpinner() {
         sharedPacientesViewModel.obtieneHabitacionesUnidades(unidadSeleccionada).observe(getViewLifecycleOwner(), new Observer<ArrayList<Habitaciones>>() {
             @Override
@@ -304,7 +263,7 @@ public class GeneralPacientesFragmentAnadidos extends Fragment implements IOnBac
                 });
             }
         });
-    }
+    }*/
 
     private void obtieneSexoPacientes() {
         sharedPacientesViewModel.obtieneSexoPacientesEnum().observe(getViewLifecycleOwner(), new Observer<ArrayList<String>>() {
@@ -328,27 +287,7 @@ public class GeneralPacientesFragmentAnadidos extends Fragment implements IOnBac
         });
     }
 
-    private void obtieneEstadoCivilPaciente(){
-        sharedPacientesViewModel.obtieneEstadoCivilPacientesEnum().observe(getViewLifecycleOwner(), new Observer<ArrayList<String>>() {
-            @Override
-            public void onChanged(ArrayList<String> listaEstadoCivil) {
-                ArrayAdapter<String> estadoCivilAdapter = new ArrayAdapter<>(requireActivity(), R.layout.my_spinner, listaEstadoCivil);
-                estadoCivilAdapter.setDropDownViewResource(R.layout.my_spinner);
-                estadoCivilSp.setAdapter(estadoCivilAdapter);
-                estadoCivilSp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        estadoCivilSeleccionado = parent.getItemAtPosition(position).toString();
-                    }
 
-                    @Override
-                    public void onNothingSelected(AdapterView<?> parent) {
-
-                    }
-                });
-            }
-        });
-    }
 
     private void seleccionaFechaNacimiento(){
       MaterialDatePicker.Builder<Long> materialDateBuilder = MaterialDatePicker.Builder.datePicker();

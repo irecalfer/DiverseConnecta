@@ -2,19 +2,23 @@ package com.calferinnovate.mediconnecta.View.Home.Fragments.Pacientes;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.MenuHost;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.calferinnovate.mediconnecta.View.Home.Fragments.PacientesFragment;
 import com.calferinnovate.mediconnecta.View.IOnBackPressed;
-import com.calferinnovate.mediconnecta.Model.Area;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
-import com.calferinnovate.mediconnecta.Model.Unidades;
 import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.ViewModel.SharedPacientesViewModel;
 import com.google.android.material.tabs.TabLayout;
@@ -23,12 +27,13 @@ import com.google.android.material.tabs.TabLayout;
  * Fragmento que proporciona un TabLayout para desplazarse por los datos del paciente y un fragment container
  * donde se reemplazará los fragmentos de detalle del paciente.
  */
-public class DetallePacientesFragment extends Fragment implements IOnBackPressed {
+public class DetalleAlumnoFragment extends Fragment implements IOnBackPressed {
 
     private TabLayout tabLayoutPaciente;
     private SharedPacientesViewModel sharedPacientesViewModel;
     private ClaseGlobal claseGlobal;
     private String nombreArea;
+    private MenuHost menuHost;
 
 
     /**
@@ -45,10 +50,12 @@ public class DetallePacientesFragment extends Fragment implements IOnBackPressed
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_detalle_pacientes, container, false);
+        View view = inflater.inflate(R.layout.fragment_detalle_alumnos, container, false);
         asignarValoresAVariables(view);
         sharedPacientesViewModel = new ViewModelProvider(requireActivity()).get(SharedPacientesViewModel.class);
         getActivity().setTitle("Detalles Paciente");
+        menuHost = requireActivity();
+        cambiarToolbar();
         return view;
     }
 
@@ -79,7 +86,7 @@ public class DetallePacientesFragment extends Fragment implements IOnBackPressed
      */
     public void listenerTabLayoutDetalle() {
         if (tabLayoutPaciente.getTabCount() > 0) {
-            getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new GeneralPacientesFragment()).commit();
+            getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new GeneralAlumnosFragment()).commit();
         }
 
         tabLayoutPaciente.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -105,6 +112,28 @@ public class DetallePacientesFragment extends Fragment implements IOnBackPressed
 
     }
 
+    public void cambiarToolbar(){
+        MenuProvider menuProvider = new MenuProvider() {
+            @Override
+            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                menuInflater.inflate(R.menu.app_menu_opciones_usuarios, menu);
+            }
+
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                if(menuItem.getItemId() == R.id.action_editar_usuario){
+                    return true;
+                }else if(menuItem.getItemId() == R.id.action_eliminar_usuario){
+                    return true;
+                }
+
+                return false;
+            }
+        };
+
+        requireActivity().addMenuProvider(menuProvider, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
+    }
+
     /**
      * Método que navega al fragmento según el Tab seleccionado. En caso de ser seleccionado el Tab Pautas
      * llama a seleccionarTipoPautasArea().
@@ -113,48 +142,17 @@ public class DetallePacientesFragment extends Fragment implements IOnBackPressed
     public void navegaAlFragmento(String tabSeleccionado){
         switch (tabSeleccionado) {
             case "General":
-                getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new GeneralPacientesFragment()).commit();
+                getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new GeneralAlumnosFragment()).commit();
                 break;
             case "Contactos":
-                getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new ContactoFamiliaresPacienteFragment()).commit();
-                break;
-            case "Clínica":
-                getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new ClinicaPacientesFragment()).commit();
-                break;
-            case "Pautas":
-                seleccionarTipoPautasAreas();
+                getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new ContactoFamiliaresAlumnoFragment()).commit();
                 break;
             case "Parte":
                 getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new PartePacientesFragment()).commit();
                 break;
-            case "Parte Caídas":
-                getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new ParteCaidasPacientesFragment()).commit();
-                break;
         }
     }
 
-    /**
-     * Método que obtiene el Paciente seleccionado y verifica si pertenece al area de Geriatría o Salud Mental,
-     * según cual sea navega a un fragmento de Pautas diferente.
-     */
-    public void seleccionarTipoPautasAreas() {
-        sharedPacientesViewModel.getPaciente().observe(getViewLifecycleOwner(), pacientes -> {
-            for (Unidades unidades : claseGlobal.getListaUnidades()) {
-                if (unidades.getId_unidad() == pacientes.getFkIdUnidad()) {
-                    for (Area areas : claseGlobal.getListaAreas()) {
-                        if (unidades.getFk_area() == areas.getId_area()) {
-                            nombreArea = areas.getNombre();
-                        }
-                    }
-                }
-            }
-        });
-        if (nombreArea.equals("Geriatría")) {
-            getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new PautasPacientesGeriatriaFragment()).commit();
-        } else {
-            getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new PautasSaludMentalPacientesFragment()).commit();
-        }
-    }
 
     /**
      * Método que agrega la lógica específica del fragmento para manejar el restroceso.

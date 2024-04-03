@@ -8,9 +8,9 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.calferinnovate.mediconnecta.Model.Alumnos;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
-import com.calferinnovate.mediconnecta.Model.Pacientes;
-import com.calferinnovate.mediconnecta.Model.Unidades;
+import com.calferinnovate.mediconnecta.Model.Empleado;
 import com.calferinnovate.mediconnecta.R;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -21,18 +21,17 @@ import java.time.format.DateTimeFormatter;
 /**
  * Adaptador que pobla el Fragmento GeneralPacientes con los datos de este.
  */
-public class PacientesGeneralAdapter {
+public class AlumnosGeneralAdapter {
 
     private ImageView fotoPaciente;
-    private TextInputEditText nombre, apellidos, sexo, dni, lugarNacimiento, edad, fechaNacimiento,
-            estadoCivil, fechaIngreso, unidad, habitacion, cipSns, numSeguridadSocial;
-    private final Pacientes paciente;
+    private TextInputEditText nombre, apellidos, sexo, dni, edad, fechaNacimiento, profesor;
+    private final Alumnos paciente;
     private final Context context;
 
     /**
      * Constrctor del adaptador
      */
-    public PacientesGeneralAdapter(Pacientes paciente, Context context) {
+    public AlumnosGeneralAdapter(Alumnos paciente, Context context) {
         this.paciente = paciente;
         this.context = context;
     }
@@ -55,18 +54,13 @@ public class PacientesGeneralAdapter {
     public void enlazaRecursos(View view) {
         fotoPaciente = view.findViewById(R.id.fotoPacienteDetalle);
         nombre = view.findViewById(R.id.nombrePaciente);
-        apellidos = view.findViewById(R.id.apellidoPaciente);
-        sexo = view.findViewById(R.id.sexoPaciente);
-        dni = view.findViewById(R.id.dniPaciente);
-        lugarNacimiento = view.findViewById(R.id.lugarNacimientoPaciente);
-        edad = view.findViewById(R.id.edadPaciente);
-        fechaNacimiento = view.findViewById(R.id.fechaNacimientoPaciente);
-        estadoCivil = view.findViewById(R.id.estadoCivilPaciente);
-        fechaIngreso = view.findViewById(R.id.fechaIngresoPaciente);
-        unidad = view.findViewById(R.id.unidadPaciente);
-        habitacion = view.findViewById(R.id.habitacionPaciente);
-        cipSns = view.findViewById(R.id.cipSnsPaciente);
-        numSeguridadSocial = view.findViewById(R.id.numSeguridadSocialPaciente);
+        apellidos = view.findViewById(R.id.apellidoAlumno);
+        sexo = view.findViewById(R.id.sexoAlumno);
+        dni = view.findViewById(R.id.dniAlumno);
+        edad = view.findViewById(R.id.edadAlumno);
+        fechaNacimiento = view.findViewById(R.id.fechaNacimientoAlumno);
+        profesor = view.findViewById(R.id.profesorAlumno);
+
     }
 
     /**
@@ -97,8 +91,6 @@ public class PacientesGeneralAdapter {
         dni.setText(paciente.getDni());
         dni.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
 
-        lugarNacimiento.setText(paciente.getLugarNacimiento());
-        lugarNacimiento.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
 
         edad.setText(String.valueOf(calculaEdad(paciente)));
         edad.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
@@ -106,23 +98,15 @@ public class PacientesGeneralAdapter {
         fechaNacimiento.setText(formateaFecha(paciente.getFechaNacimiento()));
         fechaNacimiento.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
 
-        estadoCivil.setText(paciente.getEstadoCivil());
-        estadoCivil.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
+        profesor.setText(obtieneNombreProfesor());
+        profesor.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
 
-        fechaIngreso.setText(formateaFecha(paciente.getFechaIngreso()));
-        fechaIngreso.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
+    }
 
-        unidad.setText(nombreUnidad(paciente));
-        unidad.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
-
-        habitacion.setText(String.valueOf(paciente.getFkNumHabitacion()));
-        habitacion.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
-
-        cipSns.setText(paciente.getCipSns());
-        cipSns.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
-
-        numSeguridadSocial.setText(String.valueOf(paciente.getNumSeguridadSocial()));
-        numSeguridadSocial.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
+    private String obtieneNombreProfesor(){
+        for(Empleado e: ClaseGlobal.getInstance().getListaEmpleados()){
+            if(e.getNombre() == )
+        }
     }
 
     private void configuraFotoPacientes(){
@@ -141,12 +125,12 @@ public class PacientesGeneralAdapter {
     /**
      * Método usado para calcular la edad del paciente a partir de su fecha de nacimiento.
      *
-     * @param pacientes Paciente seleccionado
+     * @param alumnos Paciente seleccionado
      * @return La edad del paciente.
      */
-    private int calculaEdad(Pacientes pacientes) {
+    private int calculaEdad(Alumnos alumnos) {
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate fechaNac = LocalDate.parse(pacientes.getFechaNacimiento(), fmt);
+        LocalDate fechaNac = LocalDate.parse(alumnos.getFechaNacimiento(), fmt);
         LocalDate ahora = LocalDate.now();
 
         Period period = Period.between(fechaNac, ahora);
@@ -181,7 +165,8 @@ public class PacientesGeneralAdapter {
      * @param paciente Paciente seleccionado
      * @return nombre de la unidad.
      */
-    private String nombreUnidad(Pacientes paciente) {
+    /*
+    private String nombreUnidad(Alumnos paciente) {
         String nombreUnidad = "";
         for (Unidades unidades : ClaseGlobal.getInstance().getListaUnidades()) {
             if (paciente.getFkIdUnidad() == unidades.getId_unidad()) {
@@ -189,5 +174,5 @@ public class PacientesGeneralAdapter {
             }
         }
         return nombreUnidad;
-    }
+    }*/
 }

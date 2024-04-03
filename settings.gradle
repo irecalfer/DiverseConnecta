@@ -19,5 +19,5 @@ dependencyResolutionManagement {
 
 
 
-rootProject.name = "MediConnecta"
+rootProject.name = "MediConnecta Carrechiquilla"
 include ':app'

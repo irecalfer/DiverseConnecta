@@ -1,6 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Base application theme. -->
     <style name="Theme.MediConnecta" parent="Theme.Material3.Light.NoActionBar">
+        <item name="android:windowFullscreen">true</item>
         <item name="colorPrimary">@color/md_theme_light_primary</item>
         <item name="colorOnPrimary">@color/md_theme_light_onPrimary</item>
         <item name="colorPrimaryContainer">@color/md_theme_light_primaryContainer</item>
@@ -34,6 +35,8 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
+
+
 
     <style name="Theme.MediConnecta.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 

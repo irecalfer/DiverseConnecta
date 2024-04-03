@@ -18,9 +18,9 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.calferinnovate.mediconnecta.Adaptadores.PartePacienteAdapter;
+import com.calferinnovate.mediconnecta.Model.Alumnos;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
 import com.calferinnovate.mediconnecta.Model.Constantes;
-import com.calferinnovate.mediconnecta.Model.Pacientes;
 import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.View.Home.Fragments.PacientesFragment;
 import com.calferinnovate.mediconnecta.View.IOnBackPressed;
@@ -107,7 +107,7 @@ public class PartePacientesFragment extends Fragment implements IOnBackPressed {
      * @param pacienteActual Paciente seleccionado.
      * @param view           Vista inflada.
      */
-    public void rellenaUI(Pacientes pacienteActual, View view) {
+    public void rellenaUI(Alumnos pacienteActual, View view) {
         PartePacienteAdapter partePacienteAdapter = new PartePacienteAdapter(pacienteActual, claseGlobal, requireContext());
         partePacienteAdapter.rellenaUI(view);
     }
@@ -117,7 +117,7 @@ public class PartePacientesFragment extends Fragment implements IOnBackPressed {
      *
      * @param pacienteActual Paciente seleccionado.
      */
-    public void clickListenerButtonRegistrar(Pacientes pacienteActual) {
+    public void clickListenerButtonRegistrar(Alumnos pacienteActual) {
         registrarParteBtn.setOnClickListener(v -> {
             registraElParte(pacienteActual);
             descripcion.setText("");
@@ -134,9 +134,9 @@ public class PartePacientesFragment extends Fragment implements IOnBackPressed {
      *
      * @param paciente Paciente Seleccionado.
      */
-    public void registraElParte(Pacientes paciente) {
+    public void registraElParte(Alumnos alumno) {
         final String fecha = fechaDateTimeSql();
-        final String cipSns = paciente.getCipSns();
+        final int idAlumno = alumno.getIdAlumno();
         final String descripcionParte = descripcion.getText().toString();
         final int codEmpleado = claseGlobal.getEmpleado().getCod_empleado();
 
@@ -168,7 +168,7 @@ public class PartePacientesFragment extends Fragment implements IOnBackPressed {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> parametros = new Hashtable<>();
-                parametros.put("fk_cip_sns", cipSns.trim());
+                parametros.put("fk_id_alumno", String.valueOf(idAlumno));
                 parametros.put("descripcion", descripcionParte.trim());
                 parametros.put("fk_cod_empleado", String.valueOf(codEmpleado));
                 parametros.put("fecha", fecha.trim());
