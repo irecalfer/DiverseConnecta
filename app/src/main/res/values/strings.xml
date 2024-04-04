@@ -161,4 +161,20 @@
     <string name="aulaAlumnoLabel">Aula</string>
     <string name="ateAlumnoLabel">ATE</string>
     <string name="gradoDiscapacidadLabel">Grado Discapacidad</string>
+    <string name="pae">PAE</string>
+    <string name="seguimientoAlumno">Seguimiento</string>
+    <string name="crisis">Crisis</string>
+    <string name="CursoEmisionLabel">Cruso de emisión</string>
+    <string name="fechaNacimientoPaeeLabel">Fecha de nacimiento</string>
+    <string name="enfermeraAlumnoLabel">Enfermera</string>
+    <string name="protesis">Prótesis</string>
+    <string name="ortesis">Órtesis</string>
+    <string name="gafas">Gafas</string>
+    <string name="otros">Otros</string>
+    <string name="audifonos">Audífonos</string>
+    <string name="fiebreLabel">Fiebre</string>
+    <string name="alergiasLabel">Alergias</string>
+    <string name="diagnosticoLabel">Diagnóstico Clínico</string>
+    <string name="dietasLabel">Dietas/Alimentación</string>
+    <string name="medicacionLabel">Medicación</string>
 </resources>

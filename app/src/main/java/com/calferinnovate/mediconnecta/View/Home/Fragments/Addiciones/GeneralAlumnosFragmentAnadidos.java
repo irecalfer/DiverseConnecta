@@ -37,7 +37,7 @@ import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
 import com.calferinnovate.mediconnecta.Model.Constantes;
 import com.calferinnovate.mediconnecta.Model.PeticionesJson;
 import com.calferinnovate.mediconnecta.R;
-import com.calferinnovate.mediconnecta.View.Home.Fragments.PacientesFragment;
+import com.calferinnovate.mediconnecta.View.Home.Fragments.AlumnosFragment;
 import com.calferinnovate.mediconnecta.View.IOnBackPressed;
 import com.calferinnovate.mediconnecta.ViewModel.SharedPacientesViewModel;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelArgs;
@@ -82,7 +82,6 @@ public class GeneralAlumnosFragmentAnadidos extends Fragment implements IOnBackP
     private ActivityResultLauncher<Intent> pickImageLauncher;
     private String imageBase64;
     private int idUnidad, idSeguro;
-    private ArrayList<Seguro> seguroArrayList = new ArrayList<>();
     private StorageReference storageReference;
 
 
@@ -514,7 +513,7 @@ public class GeneralAlumnosFragmentAnadidos extends Fragment implements IOnBackP
      */
     @Override
     public boolean onBackPressed() {
-        requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PacientesFragment()).commit();
+        requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AlumnosFragment()).commit();
         return true;
     }
 }

@@ -27,10 +27,7 @@ public class SharedPacientesViewModel extends ViewModel {
 
     private final MutableLiveData<ArrayList<Alumnos>> mutablePacientesList = new MutableLiveData<>();
     private final MutableLiveData<Alumnos> mutablePaciente = new MutableLiveData<>();
-    private final MutableLiveData<Seguro> mutableSeguro = new MutableLiveData<>();
-    private final MutableLiveData<ArrayList<Seguro>> mutableSeguroList = new MutableLiveData<>();
     private final MutableLiveData<ArrayList<ContactoFamiliares>> mutableFamiliaresList = new MutableLiveData<>();
-    private final MutableLiveData<ArrayList<Pautas>> mutablePautasList = new MutableLiveData<>();
     private final MutableLiveData<ArrayList<String>> listaLugaresLiveData = new MutableLiveData<>();
     private final MutableLiveData<ArrayList<String>> listaSexoLiveData = new MutableLiveData<>();
     private final MutableLiveData<ArrayList<String>> listaEstadoCivilLiveData = new MutableLiveData<>();
@@ -140,48 +137,6 @@ public class SharedPacientesViewModel extends ViewModel {
 
 
 
-    /**
-     * Método que realiza una solicitud al servidor a través de PeticionesJson para obtener la lista de
-     * pautas de un paciente, encapsula el contenido del arraylist en mutablePautasList y devuelve el LiveData.
-     *
-     * @param paciente Paciente seleccionado.
-     * @return LiveData con la lista de pautas pertenecientes al paciente.
-     */
-    public LiveData<ArrayList<Pautas>> obtienePautasPaciente(Alumnos paciente) {
-        String url = Constantes.url_part + "pautas.php?cip_sns=" + paciente.getIdAlumno();
-        mutablePautasList.setValue(new ArrayList<>());
-
-        peticionesJson.getJsonObjectRequest(url, new PeticionesJson.MyJsonObjectResponseListener() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    ArrayList<Pautas> pautasArrayList = new ArrayList<>();
-                    JSONArray jsonArray = response.getJSONArray("pautas");
-
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        Pautas nuevaPauta = new Pautas(jsonObject.optString("pauta"),
-                                jsonObject.optString("observaciones"), jsonObject.optString("mañana"),
-                                jsonObject.optString("tarde"), jsonObject.optString("noche"));
-                        pautasArrayList.add(nuevaPauta);
-                    }
-
-                    if (!pautasArrayList.isEmpty()) {
-                        mutablePautasList.postValue(new ArrayList<>(pautasArrayList));
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-            }
-        });
-
-        return mutablePautasList;
-    }
 
 
 

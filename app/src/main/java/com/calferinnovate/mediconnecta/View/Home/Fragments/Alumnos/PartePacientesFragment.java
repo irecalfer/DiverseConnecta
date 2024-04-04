@@ -1,4 +1,4 @@
-package com.calferinnovate.mediconnecta.View.Home.Fragments.Pacientes;
+package com.calferinnovate.mediconnecta.View.Home.Fragments.Alumnos;
 
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -22,7 +22,7 @@ import com.calferinnovate.mediconnecta.Model.Alumnos;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
 import com.calferinnovate.mediconnecta.Model.Constantes;
 import com.calferinnovate.mediconnecta.R;
-import com.calferinnovate.mediconnecta.View.Home.Fragments.PacientesFragment;
+import com.calferinnovate.mediconnecta.View.Home.Fragments.AlumnosFragment;
 import com.calferinnovate.mediconnecta.View.IOnBackPressed;
 import com.calferinnovate.mediconnecta.ViewModel.SharedPacientesViewModel;
 import com.google.android.material.textfield.TextInputEditText;
@@ -198,7 +198,7 @@ public class PartePacientesFragment extends Fragment implements IOnBackPressed {
      */
     @Override
     public boolean onBackPressed() {
-        requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PacientesFragment()).commit();
+        requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AlumnosFragment()).commit();
         return true;
     }
 }

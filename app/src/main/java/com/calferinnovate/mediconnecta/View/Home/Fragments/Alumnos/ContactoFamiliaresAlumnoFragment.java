@@ -1,4 +1,4 @@
-package com.calferinnovate.mediconnecta.View.Home.Fragments.Pacientes;
+package com.calferinnovate.mediconnecta.View.Home.Fragments.Alumnos;
 
 import android.os.Bundle;
 
@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 
 import com.calferinnovate.mediconnecta.Adaptadores.FamiliaresAdapter;
 import com.calferinnovate.mediconnecta.Model.Alumnos;
-import com.calferinnovate.mediconnecta.View.Home.Fragments.PacientesFragment;
+import com.calferinnovate.mediconnecta.View.Home.Fragments.AlumnosFragment;
 import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
 import com.calferinnovate.mediconnecta.View.IOnBackPressed;
@@ -134,7 +134,7 @@ public class ContactoFamiliaresAlumnoFragment extends Fragment implements IOnBac
 
     @Override
     public boolean onBackPressed() {
-        requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PacientesFragment()).commit();
+        requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AlumnosFragment()).commit();
         return true;
     }
 }

@@ -20,6 +20,10 @@ public class ClaseGlobal extends Application {
     private Empleado empleado;
     private ArrayList<Alumnos> listaAlumnos;
     private ArrayList<Empleado> listaEmpleados;
+    private ArrayList<Aulas> listaAulas;
+    private ArrayList<EmpleadosTrabajanAulas> listaEmpleadosAulas;
+    private ArrayList<NivelEscolar> listaNivelEscolar;
+    private ArrayList<String> listaGradosDiscapacidad;
 
 
 
@@ -36,6 +40,11 @@ public class ClaseGlobal extends Application {
         empleado = new Empleado();
         listaAlumnos = new ArrayList<>(); // Inicializa la lista de pacientes vacía
         listaEmpleados = new ArrayList<>();
+        listaAulas = new ArrayList<>();
+        listaEmpleadosAulas = new ArrayList<>();
+        listaNivelEscolar = new ArrayList<>();
+        listaGradosDiscapacidad = new ArrayList<>();
+
     }
 
     /**
@@ -81,5 +90,37 @@ public class ClaseGlobal extends Application {
 
     public void setListaEmpleados(ArrayList<Empleado> listaEmpleados) {
         this.listaEmpleados = listaEmpleados;
+    }
+
+    public ArrayList<Aulas> getListaAulas() {
+        return listaAulas;
+    }
+
+    public void setListaAulas(ArrayList<Aulas> listaAulas) {
+        this.listaAulas = listaAulas;
+    }
+
+    public ArrayList<EmpleadosTrabajanAulas> getListaEmpleadosAulas() {
+        return listaEmpleadosAulas;
+    }
+
+    public void setListaEmpleadosAulas(ArrayList<EmpleadosTrabajanAulas> listaEmpleadosAulas) {
+        this.listaEmpleadosAulas = listaEmpleadosAulas;
+    }
+
+    public ArrayList<NivelEscolar> getListaNivelEscolar() {
+        return listaNivelEscolar;
+    }
+
+    public void setListaNivelEscolar(ArrayList<NivelEscolar> listaNivelEscolar) {
+        this.listaNivelEscolar = listaNivelEscolar;
+    }
+
+    public ArrayList<String> getListaGradosDiscapacidad() {
+        return listaGradosDiscapacidad;
+    }
+
+    public void setListaGradosDiscapacidad(ArrayList<String> listaGradosDiscapacidad) {
+        this.listaGradosDiscapacidad = listaGradosDiscapacidad;
     }
 }

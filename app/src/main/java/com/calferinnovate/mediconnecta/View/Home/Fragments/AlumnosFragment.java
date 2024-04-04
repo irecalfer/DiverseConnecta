@@ -26,7 +26,7 @@ import com.calferinnovate.mediconnecta.Model.Alumnos;
 import com.calferinnovate.mediconnecta.Model.PeticionesJson;
 import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.View.Home.Fragments.Addiciones.GeneralAlumnosFragmentAnadidos;
-import com.calferinnovate.mediconnecta.View.Home.Fragments.Pacientes.DetalleAlumnoFragment;
+import com.calferinnovate.mediconnecta.View.Home.Fragments.Alumnos.DetalleAlumnoFragment;
 import com.calferinnovate.mediconnecta.View.IOnBackPressed;
 import com.calferinnovate.mediconnecta.ViewModel.SharedPacientesViewModel;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelArgs;
@@ -37,7 +37,7 @@ import java.util.ArrayList;
 /**
  * PacientesFragment es un fragmento que muestra la lista de pacientes pertenecientes a una unidad.
  */
-public class PacientesFragment extends Fragment implements PacientesAdapter.ItemClickListener, IOnBackPressed {
+public class AlumnosFragment extends Fragment implements PacientesAdapter.ItemClickListener, IOnBackPressed {
     private RecyclerView recycler;
     private SearchView searchView;
     private ClaseGlobal claseGlobal;

@@ -9,8 +9,10 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.calferinnovate.mediconnecta.Model.Alumnos;
+import com.calferinnovate.mediconnecta.Model.Aulas;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
 import com.calferinnovate.mediconnecta.Model.Empleado;
+import com.calferinnovate.mediconnecta.Model.EmpleadosTrabajanAulas;
 import com.calferinnovate.mediconnecta.R;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -24,15 +26,16 @@ import java.time.format.DateTimeFormatter;
 public class AlumnosGeneralAdapter {
 
     private ImageView fotoPaciente;
-    private TextInputEditText nombre, apellidos, sexo, dni, edad, fechaNacimiento, profesor;
-    private final Alumnos paciente;
+    private TextInputEditText nombre, apellidos, sexo, dni, edad, fechaNacimiento, profesor, aula, ate,
+    gradoDiscapacidad;
+    private final Alumnos alumno;
     private final Context context;
 
     /**
      * Constrctor del adaptador
      */
-    public AlumnosGeneralAdapter(Alumnos paciente, Context context) {
-        this.paciente = paciente;
+    public AlumnosGeneralAdapter(Alumnos alumno, Context context) {
+        this.alumno = alumno;
         this.context = context;
     }
 
@@ -60,7 +63,9 @@ public class AlumnosGeneralAdapter {
         edad = view.findViewById(R.id.edadAlumno);
         fechaNacimiento = view.findViewById(R.id.fechaNacimientoAlumno);
         profesor = view.findViewById(R.id.profesorAlumno);
-
+        aula = view.findViewById(R.id.aulaAlumno);
+        ate = view.findViewById(R.id.ateAlumno);
+        gradoDiscapacidad = view.findViewById(R.id.gradoDiscapacidad);
     }
 
     /**
@@ -79,34 +84,74 @@ public class AlumnosGeneralAdapter {
 
         int desiredTextSize = (int) (screenHeight * textPercentage);
 
-        nombre.setText(paciente.getNombre());
+        nombre.setText(alumno.getNombre());
         nombre.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
 
-        apellidos.setText(paciente.getApellidos());
+        apellidos.setText(alumno.getApellidos());
         apellidos.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
 
-        sexo.setText(paciente.getSexo());
+        sexo.setText(alumno.getSexo());
         sexo.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
 
-        dni.setText(paciente.getDni());
+        dni.setText(alumno.getDni());
         dni.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
 
 
-        edad.setText(String.valueOf(calculaEdad(paciente)));
+        edad.setText(String.valueOf(calculaEdad(alumno)));
         edad.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
 
-        fechaNacimiento.setText(formateaFecha(paciente.getFechaNacimiento()));
+        fechaNacimiento.setText(formateaFecha(alumno.getFechaNacimiento()));
         fechaNacimiento.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
 
-        profesor.setText(obtieneNombreProfesor());
+        profesor.setText(obtieneNombreProfesor(alumno));
         profesor.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
 
+        aula.setText(obtieneNombreAula(alumno));
+        aula.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
+
+        ate.setText(obtieneNombreATE(alumno));
+        ate.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
+
+        gradoDiscapacidad.setText(alumno.getGradoDiscapacidad());
+        gradoDiscapacidad.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
     }
 
-    private String obtieneNombreProfesor(){
-        for(Empleado e: ClaseGlobal.getInstance().getListaEmpleados()){
-            if(e.getNombre() == )
+    private String obtieneNombreProfesor(Alumnos alumno){
+        String nombreEmpleado = "";
+        for(EmpleadosTrabajanAulas a: ClaseGlobal.getInstance().getListaEmpleadosAulas()){
+            if(a.getFkAula() == alumno.getFkAula()){
+                for(Empleado e: ClaseGlobal.getInstance().getListaEmpleados()){
+                    if(a.getFkCodEmpleado() == e.getCod_empleado() && e.getFk_cargo() == 9 ){
+                        nombreEmpleado =  e.getNombre()+" "+e.getApellidos();
+                    }
+                }
+            }
         }
+        return nombreEmpleado;
+    }
+
+    private String obtieneNombreATE(Alumnos alumno){
+        String nombreEmpleado = "";
+        for(EmpleadosTrabajanAulas a: ClaseGlobal.getInstance().getListaEmpleadosAulas()){
+            if(a.getFkAula() == alumno.getFkAula()){
+                for(Empleado e: ClaseGlobal.getInstance().getListaEmpleados()){
+                    if(a.getFkCodEmpleado() == e.getCod_empleado() && e.getFk_cargo() == 10 ){
+                        nombreEmpleado =  e.getNombre()+" "+e.getApellidos();
+                    }
+                }
+            }
+        }
+        return nombreEmpleado;
+    }
+
+    private String obtieneNombreAula(Alumnos alumno){
+        String nombreaAula = "";
+        for(Aulas a: ClaseGlobal.getInstance().getListaAulas()){
+            if(a.getIdAula() == alumno.getFkAula()){
+                nombreaAula = a.getNombreAula();
+            }
+        }
+        return nombreaAula;
     }
 
     private void configuraFotoPacientes(){
@@ -120,7 +165,7 @@ public class AlumnosGeneralAdapter {
         int targetHeight = Math.min(screenHeight, 300); // Tamaño máximo
 
 
-        Glide.with(context).load(paciente.getFoto()).circleCrop().override(targetWidth, targetHeight).into(fotoPaciente);
+        Glide.with(context).load(alumno.getFoto()).circleCrop().override(targetWidth, targetHeight).into(fotoPaciente);
     }
     /**
      * Método usado para calcular la edad del paciente a partir de su fecha de nacimiento.

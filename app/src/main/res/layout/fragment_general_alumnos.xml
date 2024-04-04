@@ -5,7 +5,7 @@
     android:id="@+id/frameLayout5"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".View.Home.Fragments.Pacientes.GeneralAlumnosFragment">
+    tools:context=".View.Home.Fragments.Alumnos.GeneralAlumnosFragment">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelineVertIzq"
@@ -243,6 +243,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
                 android:hint="@string/aulaAlumnoLabel"
                 android:textColorHint="@color/md_theme_light_surfaceTint"
                 app:autoSizeTextType="uniform"
@@ -263,8 +264,9 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/labelATEAlumno"
                 android:layout_width="0dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
                 android:hint="@string/ateAlumnoLabel"
                 android:textColorHint="@color/md_theme_light_surfaceTint"
                 app:autoSizeTextType="uniform"
@@ -287,6 +289,8 @@
                 android:id="@+id/labelGradoDiscapacidad"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:hint="@string/gradoDiscapacidadLabel"
                 android:textColorHint="@color/md_theme_light_surfaceTint"

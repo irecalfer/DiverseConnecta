@@ -176,7 +176,7 @@ public class SesionFragment extends Fragment {
         sesionViewModel.getEmpleadoIniciaSesion().observe(getViewLifecycleOwner(), sesion -> {
             if (sesion) {
                 Toast.makeText(getContext(), "Permitiendo el acceso al usuario " + username.getText().toString(), Toast.LENGTH_SHORT).show();
-                obtieneListaAlumnos(HomeActivity.class);
+                obtieneDatos(HomeActivity.class);
             } else {
                 Toast.makeText(getContext(), "Usuario o contraseña incorrecta", Toast.LENGTH_SHORT).show();
             }
@@ -213,7 +213,37 @@ public class SesionFragment extends Fragment {
         }
     }
 
-    public void obtieneListaAlumnos(Class activityName) {
+    public void obtieneDatos(Class activityName) {
+        sesionViewModel.obtieneDatosEmpleados().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean obtenidos) {
+                if(obtenidos){
+
+                }else{
+                    Toast.makeText(getContext(), "Ha ocurrido un error al cargar los datos", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        sesionViewModel.obtieneRelacionEmpleadosAulas().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+
+            }
+        });
+
+        sesionViewModel.obtieneAulas().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+
+            }
+        });
+
+        sesionViewModel.obtieneNivelEscolar().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+
+            }
+        });
         sesionViewModel.obtieneDatosAlumnos().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean obtenidos) {

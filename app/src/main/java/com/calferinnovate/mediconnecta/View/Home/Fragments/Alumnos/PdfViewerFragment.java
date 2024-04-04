@@ -1,4 +1,4 @@
-package com.calferinnovate.mediconnecta.View.Home.Fragments.Pacientes;
+package com.calferinnovate.mediconnecta.View.Home.Fragments.Alumnos;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

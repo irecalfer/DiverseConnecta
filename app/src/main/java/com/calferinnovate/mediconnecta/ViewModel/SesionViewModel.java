@@ -8,9 +8,12 @@ import androidx.lifecycle.ViewModel;
 
 import com.android.volley.VolleyError;
 import com.calferinnovate.mediconnecta.Model.Alumnos;
+import com.calferinnovate.mediconnecta.Model.Aulas;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
 import com.calferinnovate.mediconnecta.Model.Constantes;
 import com.calferinnovate.mediconnecta.Model.Empleado;
+import com.calferinnovate.mediconnecta.Model.EmpleadosTrabajanAulas;
+import com.calferinnovate.mediconnecta.Model.NivelEscolar;
 import com.calferinnovate.mediconnecta.Model.PeticionesJson;
 
 import org.json.JSONArray;
@@ -28,6 +31,9 @@ public class SesionViewModel extends ViewModel {
     private final MutableLiveData<Boolean> empleadoIniciaSesionMutableLiveData = new MutableLiveData<>();
     private final MutableLiveData<Boolean> pacientesObtenidos = new MutableLiveData<>();
     private final MutableLiveData<Boolean> empleadosObtenidos = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> relacionEmpleadosAulasObtenidos = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> aulasObtenidas = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> nivelesEscolaresObtenidos = new MutableLiveData<>();
 
     /**
      * Constructor vacío del ViewModel
@@ -193,7 +199,144 @@ public class SesionViewModel extends ViewModel {
                 jsonObject.optString("foto"));
     }
 
+    /**
+     * Método que realiza una solicitud al servidor a través de PeticionesJson para obtener la lista
+     * de pacientes pertenecientes a una unidad, setea la lista de pacientes en claseGlobal.
+     * Si se han obtenido correctamente los datos se pone el MutableLiveData pacientesObtenidos a true y devuelve el LiveData.
+     *
+     * @return LiveData booleano con la verificación de si se han obtenido los pacientes.
+     */
+    public LiveData<Boolean> obtieneRelacionEmpleadosAulas() {
+        String url = Constantes.url_part + "empleadosAulas.php";
 
+        peticionesJson.getJsonObjectRequest(url, new PeticionesJson.MyJsonObjectResponseListener() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    if (!claseGlobal.getListaEmpleadosAulas().isEmpty()) {
+                        claseGlobal.getListaEmpleadosAulas().clear();
+                    }
+                    JSONArray jsonArray = response.getJSONArray("empleadosAulas");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        EmpleadosTrabajanAulas nuevaRelacion= obtieneNuevaRelacion(jsonObject);
+                        claseGlobal.getListaEmpleadosAulas().add(nuevaRelacion);
+                    }
 
+                    claseGlobal.setListaEmpleadosAulas(claseGlobal.getListaEmpleadosAulas());
+                    relacionEmpleadosAulasObtenidos.postValue(true);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+                relacionEmpleadosAulasObtenidos.postValue(false);
+            }
+        });
+
+        return relacionEmpleadosAulasObtenidos;
+    }
+
+    private EmpleadosTrabajanAulas obtieneNuevaRelacion(JSONObject jsonObject) {
+        return new EmpleadosTrabajanAulas(jsonObject.optInt("id_relacion_empleados_aulas"),
+                jsonObject.optInt("cod_empleado"),
+                jsonObject.optInt("id_aula"));
+    }
+
+    /**
+     * Método que realiza una solicitud al servidor a través de PeticionesJson para obtener la lista
+     * de pacientes pertenecientes a una unidad, setea la lista de pacientes en claseGlobal.
+     * Si se han obtenido correctamente los datos se pone el MutableLiveData pacientesObtenidos a true y devuelve el LiveData.
+     *
+     * @return LiveData booleano con la verificación de si se han obtenido los pacientes.
+     */
+    public LiveData<Boolean> obtieneAulas() {
+        String url = Constantes.url_part + "aulas.php";
+
+        peticionesJson.getJsonObjectRequest(url, new PeticionesJson.MyJsonObjectResponseListener() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    if (!claseGlobal.getListaAulas().isEmpty()) {
+                        claseGlobal.getListaAulas().clear();
+                    }
+                    JSONArray jsonArray = response.getJSONArray("aulas");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        Aulas nuevaAula= obtieneNuevaAula(jsonObject);
+                        claseGlobal.getListaAulas().add(nuevaAula);
+                    }
+
+                    claseGlobal.setListaAulas(claseGlobal.getListaAulas());
+                    aulasObtenidas.postValue(true);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+                aulasObtenidas.postValue(false);
+            }
+        });
+
+        return aulasObtenidas;
+    }
+
+    private Aulas obtieneNuevaAula(JSONObject jsonObject) {
+        return new Aulas(jsonObject.optInt("id_aula"),
+                jsonObject.optInt("fk_nivel_escolar"),
+                jsonObject.optString("nombre"));
+    }
+
+    /**
+     * Método que realiza una solicitud al servidor a través de PeticionesJson para obtener la lista
+     * de pacientes pertenecientes a una unidad, setea la lista de pacientes en claseGlobal.
+     * Si se han obtenido correctamente los datos se pone el MutableLiveData pacientesObtenidos a true y devuelve el LiveData.
+     *
+     * @return LiveData booleano con la verificación de si se han obtenido los pacientes.
+     */
+    public LiveData<Boolean> obtieneNivelEscolar() {
+        String url = Constantes.url_part + "nivel_escolar.php";
+
+        peticionesJson.getJsonObjectRequest(url, new PeticionesJson.MyJsonObjectResponseListener() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    if (!claseGlobal.getListaNivelEscolar().isEmpty()) {
+                        claseGlobal.getListaNivelEscolar().clear();
+                    }
+                    JSONArray jsonArray = response.getJSONArray("nivel_escolar");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        NivelEscolar nuevoNivel= obtieneNuevoNivel(jsonObject);
+                        claseGlobal.getListaNivelEscolar().add(nuevoNivel);
+                    }
+
+                    claseGlobal.setListaNivelEscolar(claseGlobal.getListaNivelEscolar());
+                    nivelesEscolaresObtenidos.postValue(true);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+                nivelesEscolaresObtenidos.postValue(false);
+            }
+        });
+
+        return nivelesEscolaresObtenidos;
+    }
+
+    private NivelEscolar obtieneNuevoNivel(JSONObject jsonObject) {
+        return new NivelEscolar(jsonObject.optInt("id_nivel_escolar"),
+                jsonObject.optString("nombre_nivel"));
+    }
 
 }

@@ -1,4 +1,4 @@
-package com.calferinnovate.mediconnecta.View.Home.Fragments.Pacientes;
+package com.calferinnovate.mediconnecta.View.Home.Fragments.Alumnos;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,7 +16,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.calferinnovate.mediconnecta.View.Home.Fragments.PacientesFragment;
+import com.calferinnovate.mediconnecta.View.Home.Fragments.AlumnosFragment;
 import com.calferinnovate.mediconnecta.View.IOnBackPressed;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
 import com.calferinnovate.mediconnecta.R;
@@ -147,9 +147,16 @@ public class DetalleAlumnoFragment extends Fragment implements IOnBackPressed {
             case "Contactos":
                 getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new ContactoFamiliaresAlumnoFragment()).commit();
                 break;
-            case "Parte":
+            case "PAE":
                 getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new PartePacientesFragment()).commit();
                 break;
+            case "Seguimiento":
+                getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerSeguimiento, new SeguimientoFragment()).commit();
+                break;
+            case "Crisis":
+                getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerPAE, new PaeFragment()).commit();
+                break;
+
         }
     }
 
@@ -161,7 +168,7 @@ public class DetalleAlumnoFragment extends Fragment implements IOnBackPressed {
      */
     @Override
     public boolean onBackPressed() {
-        requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PacientesFragment()).commit();
+        requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AlumnosFragment()).commit();
         return true;
     }
 

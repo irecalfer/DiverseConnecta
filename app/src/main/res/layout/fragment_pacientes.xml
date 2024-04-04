@@ -5,7 +5,7 @@
     android:id="@+id/frameLayout3"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".View.Home.Fragments.PacientesFragment">
+    tools:context=".View.Home.Fragments.AlumnosFragment">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbarPacientes"

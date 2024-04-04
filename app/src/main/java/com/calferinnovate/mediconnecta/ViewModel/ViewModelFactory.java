@@ -48,9 +48,7 @@ public class ViewModelFactory<T extends ViewModel> implements ViewModelProvider.
             return (T) new ConsultasYRutinasDiariasViewModel(viewModelArgsJson);
         } else if (modelClass == SharedPacientesViewModel.class) {
             return (T) new SharedPacientesViewModel(viewModelArgs);
-        } else if (modelClass == ParteGeneralViewModel.class) {
-            return (T) new ParteGeneralViewModel(viewModelArgsJson);
-        }  else if (modelClass == SesionViewModel.class) {
+        } else if (modelClass == SesionViewModel.class) {
             return (T) new SesionViewModel(viewModelArgs);
         } else if (modelClass == AvisosViewModel.class) {
             return (T) new AvisosViewModel(viewModelArgsJson);
