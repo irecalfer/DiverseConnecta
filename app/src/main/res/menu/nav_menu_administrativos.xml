@@ -17,12 +17,8 @@
                 <item
                     android:id="@+id/pacientes_item_id"
                     android:icon="@drawable/residentes_icon"
-                    android:title="@string/pacientes_item" />
+                    android:title="@string/alumnos_item" />
 
-                <item
-                    android:id="@+id/añadir_paciente_item_id"
-                    android:icon="@drawable/person_add_24px"
-                    android:title="@string/pacientes_item" />
 
                 <item
                     android:id="@+id/parte_general_item_id"

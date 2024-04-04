@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.calferinnovate.mediconnecta.Model.Alumnos;
+import com.calferinnovate.mediconnecta.Model.Aulas;
+import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
 import com.calferinnovate.mediconnecta.R;
 
 import java.util.ArrayList;
@@ -24,7 +26,7 @@ import java.util.stream.Collectors;
 /**
  * Adaptador utilizado para poblar el RecyclerView de la lista de pacientes pertenecientes a una unidad.
  */
-public class PacientesAdapter extends RecyclerView.Adapter<PacientesAdapter.PacientesViewHolder> {
+public class AlumnosAdapter extends RecyclerView.Adapter<AlumnosAdapter.PacientesViewHolder> {
 
     /**
      * Interfaz para que el fragmento implemente el listener y poder capturar el evento fuera del adaptador
@@ -45,7 +47,7 @@ public class PacientesAdapter extends RecyclerView.Adapter<PacientesAdapter.Paci
      * @param context        Contexto
      * @param clickListener  Escucha del click.
      */
-    public PacientesAdapter(ArrayList<Alumnos> listaPacientes, Context context, ItemClickListener clickListener) {
+    public AlumnosAdapter(ArrayList<Alumnos> listaPacientes, Context context, ItemClickListener clickListener) {
         this.listaPacientes = listaPacientes;
         mContext = context;
         this.clickListener = clickListener;
@@ -122,10 +124,20 @@ public class PacientesAdapter extends RecyclerView.Adapter<PacientesAdapter.Paci
         holder.apellidos.setText(alumnos.getApellidos());
         holder.apellidos.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
 
+        holder.aulaTextView.setText(obtieneNombreAula(alumnos));
+        holder.aulaTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
     }
 
 
-
+    private String obtieneNombreAula(Alumnos alumno){
+        String nombreAula="";
+        for(Aulas a: ClaseGlobal.getInstance().getListaAulas()){
+            if(a.getIdAula() == alumno.getFkAula()){
+                nombreAula = a.getNombreAula();
+            }
+        }
+        return nombreAula;
+    }
 
 
 
@@ -172,7 +184,7 @@ public class PacientesAdapter extends RecyclerView.Adapter<PacientesAdapter.Paci
     public class PacientesViewHolder extends RecyclerView.ViewHolder {
         private final ImageView fotoPacienteImageView;
         private final TextView nombreCompletoTextView;
-        private final TextView habitacionTextView;
+        private final TextView aulaTextView;
         private final TextView apellidos;
 
 
@@ -180,7 +192,7 @@ public class PacientesAdapter extends RecyclerView.Adapter<PacientesAdapter.Paci
             super(itemView);
             fotoPacienteImageView = itemView.findViewById(R.id.idResidenteFoto);
             nombreCompletoTextView = itemView.findViewById(R.id.idNombreCompleto);
-            habitacionTextView = itemView.findViewById(R.id.idHabitacion);
+            aulaTextView = itemView.findViewById(R.id.idHabitacion);
             apellidos = itemView.findViewById(R.id.idApellidosCompletos);
 
             itemView.setOnClickListener(new View.OnClickListener() {

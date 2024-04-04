@@ -53,7 +53,7 @@ public class DetalleAlumnoFragment extends Fragment implements IOnBackPressed {
         View view = inflater.inflate(R.layout.fragment_detalle_alumnos, container, false);
         asignarValoresAVariables(view);
         sharedAlumnosViewModel = new ViewModelProvider(requireActivity()).get(SharedAlumnosViewModel.class);
-        getActivity().setTitle("Detalles Paciente");
+        getActivity().setTitle("Detalles Alumno");
         menuHost = requireActivity();
         cambiarToolbar();
         return view;

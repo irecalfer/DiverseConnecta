@@ -15,7 +15,6 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.View.Home.Fragments.HomeFragments.RutinasAvisos.AvisosListViewFragment;
-import com.calferinnovate.mediconnecta.View.Home.Fragments.HomeFragments.RutinasAvisos.ConsultasYRutinasDiariasFragment;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -94,7 +93,7 @@ public class HomeFragment extends Fragment {
             calendar.set(year, month, dayOfMonth);
             fechaActual = new SimpleDateFormat("yyyy-MM-dd").format(calendar.getTime());
             abrirFragmentoAvisos(fechaActual);
-            listenerButtonRutinas(fechaActual);
+            //listenerButtonRutinas(fechaActual);
         });
     }
 
@@ -129,7 +128,7 @@ public class HomeFragment extends Fragment {
      *
      * @param fechaActual Fecha seleccionada.
      */
-    public void listenerButtonRutinas(String fechaActual) {
+    /*public void listenerButtonRutinas(String fechaActual) {
         rutinasBtn.setOnClickListener(v -> {
             ConsultasYRutinasDiariasFragment consultasYRutinasDiariasFragment = new ConsultasYRutinasDiariasFragment();
 
@@ -143,6 +142,6 @@ public class HomeFragment extends Fragment {
             transaction.addToBackStack(null);
             transaction.commit();
         });
-    }
+    }*/
 
 }

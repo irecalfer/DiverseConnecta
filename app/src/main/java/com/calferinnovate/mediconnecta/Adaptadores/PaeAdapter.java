@@ -68,7 +68,7 @@ public class PaeAdapter {
         fechaNacimiento.setText(alumno.getFechaNacimiento());
         fechaNacimiento.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
 
-        cursoEmision.setText(pae.getCursoEmision()+"/"+pae.getCursoEmisionFin());
+        cursoEmision.setText(String.valueOf(pae.getCursoEmision())+"/"+String.valueOf(pae.getCursoEmisionFin()));
         cursoEmision.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
 
         tutor.setText(obtieneNombreTutor(pae));

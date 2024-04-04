@@ -50,6 +50,7 @@ public class GeneralAlumnosFragment extends Fragment implements IOnBackPressed {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_general_alumnos, container, false);
+        getActivity().setTitle("Alumnos");
         inicializaVariables(view);
         inicializaViewModel();
         return view;

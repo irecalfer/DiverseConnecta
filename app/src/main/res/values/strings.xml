@@ -178,4 +178,5 @@
     <string name="dietasLabel">Dietas/Alimentación</string>
     <string name="medicacionLabel">Medicación</string>
     <string name="tutorLabel">Tutor</string>
+    <string name="alumnos_item">Alumnos</string>
 </resources>

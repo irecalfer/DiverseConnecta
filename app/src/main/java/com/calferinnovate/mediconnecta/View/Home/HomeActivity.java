@@ -179,9 +179,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
         } else if (item.getItemId() == R.id.pacientes_item_id) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AlumnosFragment()).addToBackStack(null).commit();
-        } else if(item.getItemId() == R.id.añadir_paciente_item_id){
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AnadirPacienteFragment()).addToBackStack(null).commit();
-        }else if (item.getItemId() == R.id.cierre_sesion_item_id) {
+        } else if (item.getItemId() == R.id.cierre_sesion_item_id) {
             dialogCerrarSesion();
         } else if (item.getItemId() == R.id.cambio_unidad_item_id) {
             dialogCambioUnidad();

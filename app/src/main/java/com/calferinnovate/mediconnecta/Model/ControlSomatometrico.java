@@ -27,30 +27,6 @@ public class ControlSomatometrico {
         this.tensionArterial = tensionArterial;
     }
 
-    // Método para obtener el tipo de dato
-    public String getTipoDato() {
-        // Aquí puedes implementar la lógica para determinar el tipo de dato
-        // Por ejemplo, podrías devolver "Peso" si el atributo "peso" no es nulo, "Talla" si "talla" no es nulo, etc.
-        if (String.valueOf(peso) != null) {
-            return "Peso";
-        } else if (talla != null) {
-            return "Talla";
-        } else if (String.valueOf(imc) != null) {
-            return "IMC";
-        }else if (String.valueOf(percentil) != null) {
-            return "Percentil";
-        } else if (String.valueOf(temperatura) != null) {
-            return "Tª";
-        } else if (tensionArterial != null) {
-            return "T.A";
-        }else if (String.valueOf(frecuenciaCardiaca) != null) {
-            return "F.C";
-        }else if (String.valueOf(saturacionO2) != null) {
-            return "Sat. O2";
-        }
-        // Ajusta la lógica según tus necesidades y la estructura real de tu clase ControlSomatometrico
-        return "Desconocido";
-    }
 
 
     public int getIdControl() {

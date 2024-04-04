@@ -20,7 +20,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.calferinnovate.mediconnecta.Adaptadores.PacientesAdapter;
+import com.calferinnovate.mediconnecta.Adaptadores.AlumnosAdapter;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
 import com.calferinnovate.mediconnecta.Model.Alumnos;
 import com.calferinnovate.mediconnecta.Model.PeticionesJson;
@@ -37,14 +37,14 @@ import java.util.ArrayList;
 /**
  * PacientesFragment es un fragmento que muestra la lista de pacientes pertenecientes a una unidad.
  */
-public class AlumnosFragment extends Fragment implements PacientesAdapter.ItemClickListener, IOnBackPressed {
+public class AlumnosFragment extends Fragment implements AlumnosAdapter.ItemClickListener, IOnBackPressed {
     private RecyclerView recycler;
     private SearchView searchView;
     private ClaseGlobal claseGlobal;
     private ArrayList<Alumnos> listaPacientes;
     private SharedAlumnosViewModel sharedAlumnosViewModel;
     private PeticionesJson peticionesJson;
-    private PacientesAdapter adapter;
+    private AlumnosAdapter adapter;
     private MenuHost menuHost;
 
 
@@ -65,7 +65,7 @@ public class AlumnosFragment extends Fragment implements PacientesAdapter.ItemCl
         View view = inflater.inflate(R.layout.fragment_pacientes, container, false);
         menuHost = requireActivity();
         cambiarToolbar();
-        getActivity().setTitle("Pacientes");
+        getActivity().setTitle("Alumnos");
 
         inicializaVariables(view);
         inicializaViewModel();
@@ -141,7 +141,7 @@ public class AlumnosFragment extends Fragment implements PacientesAdapter.ItemCl
     public void poblaRecyclerPacientes() {
         recycler.setHasFixedSize(true);
 
-        adapter = new PacientesAdapter(listaPacientes, getContext(), this);
+        adapter = new AlumnosAdapter(listaPacientes, getContext(), this);
 
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
 

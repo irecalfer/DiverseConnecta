@@ -191,7 +191,7 @@ public class SharedAlumnosViewModel extends ViewModel {
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                         Pae nuevoPae = new Pae(jsonObject.optInt("id_pae"), jsonObject.optInt("curso_emision_inicio"),
-                                jsonObject.optInt("curso_emision_fin"), jsonObject.optInt("fk_id_enfermero"),
+                                jsonObject.optInt("curso_emision_final"), jsonObject.optInt("fk_id_enfermero"),
                                 jsonObject.optInt("fk_id_profesor"), jsonObject.optInt("fk_id_alumnos"),
                                 jsonObject.optString("alergias"), jsonObject.optString("diagnostico_clinico"),
                                 jsonObject.optString("fiebre"), jsonObject.optString("dieta_alimentacion"),

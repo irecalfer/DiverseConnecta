@@ -44,9 +44,7 @@ public class ViewModelFactory<T extends ViewModel> implements ViewModelProvider.
      */
     @Override
     public <T extends ViewModel> T create(Class<T> modelClass) {
-        if (modelClass == ConsultasYRutinasDiariasViewModel.class) {
-            return (T) new ConsultasYRutinasDiariasViewModel(viewModelArgsJson);
-        } else if (modelClass == SharedAlumnosViewModel.class) {
+        if (modelClass == SharedAlumnosViewModel.class) {
             return (T) new SharedAlumnosViewModel(viewModelArgs);
         } else if (modelClass == SesionViewModel.class) {
             return (T) new SesionViewModel(viewModelArgs);
