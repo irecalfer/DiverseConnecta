@@ -20,7 +20,7 @@ import com.calferinnovate.mediconnecta.View.Home.Fragments.AlumnosFragment;
 import com.calferinnovate.mediconnecta.View.IOnBackPressed;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
 import com.calferinnovate.mediconnecta.R;
-import com.calferinnovate.mediconnecta.ViewModel.SharedPacientesViewModel;
+import com.calferinnovate.mediconnecta.ViewModel.SharedAlumnosViewModel;
 import com.google.android.material.tabs.TabLayout;
 
 /**
@@ -30,7 +30,7 @@ import com.google.android.material.tabs.TabLayout;
 public class DetalleAlumnoFragment extends Fragment implements IOnBackPressed {
 
     private TabLayout tabLayoutPaciente;
-    private SharedPacientesViewModel sharedPacientesViewModel;
+    private SharedAlumnosViewModel sharedAlumnosViewModel;
     private ClaseGlobal claseGlobal;
     private String nombreArea;
     private MenuHost menuHost;
@@ -52,7 +52,7 @@ public class DetalleAlumnoFragment extends Fragment implements IOnBackPressed {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_detalle_alumnos, container, false);
         asignarValoresAVariables(view);
-        sharedPacientesViewModel = new ViewModelProvider(requireActivity()).get(SharedPacientesViewModel.class);
+        sharedAlumnosViewModel = new ViewModelProvider(requireActivity()).get(SharedAlumnosViewModel.class);
         getActivity().setTitle("Detalles Paciente");
         menuHost = requireActivity();
         cambiarToolbar();
@@ -148,13 +148,13 @@ public class DetalleAlumnoFragment extends Fragment implements IOnBackPressed {
                 getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new ContactoFamiliaresAlumnoFragment()).commit();
                 break;
             case "PAE":
-                getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new PartePacientesFragment()).commit();
+                getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new PaeFragment()).commit();
                 break;
             case "Seguimiento":
-                getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerSeguimiento, new SeguimientoFragment()).commit();
+                getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new SeguimientoFragment()).commit();
                 break;
             case "Crisis":
-                getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerPAE, new PaeFragment()).commit();
+                getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new CrisisFragment()).commit();
                 break;
 
         }

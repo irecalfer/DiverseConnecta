@@ -89,6 +89,10 @@
         <item name="android:autoSizeMaxTextSize">32sp</item>
     </style>
 
+    <style name="CustomTabLayout" parent="Widget.MaterialComponents.TabLayout">
+        <item name="tabMaxWidth">0dp</item>
+    </style>
+
 
 
 

@@ -9,6 +9,8 @@ import com.calferinnovate.mediconnecta.Model.Alumnos;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
 import com.calferinnovate.mediconnecta.Model.Constantes;
 import com.calferinnovate.mediconnecta.Model.ContactoFamiliares;
+import com.calferinnovate.mediconnecta.Model.ControlSomatometrico;
+import com.calferinnovate.mediconnecta.Model.Pae;
 import com.calferinnovate.mediconnecta.Model.PeticionesJson;
 
 import org.json.JSONArray;
@@ -23,7 +25,7 @@ import java.util.ArrayList;
  * y utiliza LiveData para transmitir los datos hacia la UI, posteriormente proporciona actualizaciones
  * a los observadores del fragmento.
  */
-public class SharedPacientesViewModel extends ViewModel {
+public class SharedAlumnosViewModel extends ViewModel {
 
     private final MutableLiveData<ArrayList<Alumnos>> mutablePacientesList = new MutableLiveData<>();
     private final MutableLiveData<Alumnos> mutablePaciente = new MutableLiveData<>();
@@ -32,12 +34,14 @@ public class SharedPacientesViewModel extends ViewModel {
     private final MutableLiveData<ArrayList<String>> listaSexoLiveData = new MutableLiveData<>();
     private final MutableLiveData<ArrayList<String>> listaEstadoCivilLiveData = new MutableLiveData<>();
     private PeticionesJson peticionesJson;
+    private MutableLiveData<ArrayList<Pae>> mutablePaeList = new MutableLiveData<>();
+    private MutableLiveData<ArrayList<ControlSomatometrico>> mutableControlSomatometricoList = new MutableLiveData<>();
 
 
     /**
      * Constructor por defecto.
      */
-    public SharedPacientesViewModel() {
+    public SharedAlumnosViewModel() {
 
     }
 
@@ -47,7 +51,7 @@ public class SharedPacientesViewModel extends ViewModel {
      *
      * @param viewModelArgs Instancia de ViewModelArgs que proporciona PeticionesJson y ClaseGlobal.
      */
-    public SharedPacientesViewModel(ViewModelArgs viewModelArgs) {
+    public SharedAlumnosViewModel(ViewModelArgs viewModelArgs) {
         this.peticionesJson = viewModelArgs.getPeticionesJson();
         ClaseGlobal claseGlobal = viewModelArgs.getClaseGlobal();
     }
@@ -173,6 +177,86 @@ public class SharedPacientesViewModel extends ViewModel {
         });
 
         return listaSexoLiveData;
+    }
+
+    public LiveData<ArrayList<Pae>> obtienePae(Alumnos alumno) {
+        String url = Constantes.url_part + "pae.php?id_alumno=" + alumno.getIdAlumno();
+
+        peticionesJson.getJsonObjectRequest(url, new PeticionesJson.MyJsonObjectResponseListener() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    ArrayList<Pae> paeArrayList = new ArrayList<>();
+                    JSONArray jsonArray = response.getJSONArray("pae");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        Pae nuevoPae = new Pae(jsonObject.optInt("id_pae"), jsonObject.optInt("curso_emision_inicio"),
+                                jsonObject.optInt("curso_emision_fin"), jsonObject.optInt("fk_id_enfermero"),
+                                jsonObject.optInt("fk_id_profesor"), jsonObject.optInt("fk_id_alumnos"),
+                                jsonObject.optString("alergias"), jsonObject.optString("diagnostico_clinico"),
+                                jsonObject.optString("fiebre"), jsonObject.optString("dieta_alimentacion"),
+                                jsonObject.optString("protesis"), jsonObject.optString("ortesis"),
+                                jsonObject.optString("gafas"), jsonObject.optString("audifonos"),
+                                jsonObject.optString("otros"), jsonObject.optString("medicacion")
+                        );
+                        paeArrayList.add(nuevoPae);
+                    }
+
+                    if (!paeArrayList.isEmpty()) {
+                        mutablePaeList.postValue(new ArrayList<>(paeArrayList));
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+
+        return mutablePaeList;
+    }
+
+    public LiveData<ArrayList<ControlSomatometrico>> obtieneControlSomatometrico(Pae pae) {
+        String url = Constantes.url_part + "control_somatometrico.php?id_pae=" + pae.getIdPae();
+
+        peticionesJson.getJsonObjectRequest(url, new PeticionesJson.MyJsonObjectResponseListener() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    ArrayList<ControlSomatometrico> controlSomatometricoArrayList= new ArrayList<>();
+                    JSONArray jsonArray = response.getJSONArray("control");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        ControlSomatometrico nuevoControl = new ControlSomatometrico(jsonObject.optInt("id_control"),
+                                jsonObject.optInt("frecuencia_cardiaca"),
+                                jsonObject.optInt("saturacion_o2"), jsonObject.optInt("fk_trimestre"),
+                                jsonObject.optInt("fk_id_pae"), jsonObject.optDouble("peso"), jsonObject.optDouble("imc"),
+                                jsonObject.optDouble("percentil"), jsonObject.optDouble("temperatura"),
+                                jsonObject.optString("talla"), jsonObject.optString("tension_arterial")
+                        );
+                        controlSomatometricoArrayList.add(nuevoControl);
+                    }
+
+                    if (!controlSomatometricoArrayList.isEmpty()) {
+                        mutableControlSomatometricoList.postValue(new ArrayList<>(controlSomatometricoArrayList));
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+
+        return mutableControlSomatometricoList;
     }
 
 

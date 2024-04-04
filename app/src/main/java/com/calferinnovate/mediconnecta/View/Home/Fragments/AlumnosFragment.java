@@ -28,7 +28,7 @@ import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.View.Home.Fragments.Addiciones.GeneralAlumnosFragmentAnadidos;
 import com.calferinnovate.mediconnecta.View.Home.Fragments.Alumnos.DetalleAlumnoFragment;
 import com.calferinnovate.mediconnecta.View.IOnBackPressed;
-import com.calferinnovate.mediconnecta.ViewModel.SharedPacientesViewModel;
+import com.calferinnovate.mediconnecta.ViewModel.SharedAlumnosViewModel;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelArgs;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelFactory;
 
@@ -42,7 +42,7 @@ public class AlumnosFragment extends Fragment implements PacientesAdapter.ItemCl
     private SearchView searchView;
     private ClaseGlobal claseGlobal;
     private ArrayList<Alumnos> listaPacientes;
-    private SharedPacientesViewModel sharedPacientesViewModel;
+    private SharedAlumnosViewModel sharedAlumnosViewModel;
     private PeticionesJson peticionesJson;
     private PacientesAdapter adapter;
     private MenuHost menuHost;
@@ -129,8 +129,8 @@ public class AlumnosFragment extends Fragment implements PacientesAdapter.ItemCl
             }
         };
 
-        ViewModelFactory<SharedPacientesViewModel> factory = new ViewModelFactory<>(viewModelArgs);
-        sharedPacientesViewModel = new ViewModelProvider(requireActivity(), factory).get(SharedPacientesViewModel.class);
+        ViewModelFactory<SharedAlumnosViewModel> factory = new ViewModelFactory<>(viewModelArgs);
+        sharedAlumnosViewModel = new ViewModelProvider(requireActivity(), factory).get(SharedAlumnosViewModel.class);
     }
 
 
@@ -154,7 +154,7 @@ public class AlumnosFragment extends Fragment implements PacientesAdapter.ItemCl
      * Método que llama al método getPacientesList del ViewModel y actualiza el adaptador del RecyclerView.
      */
     public void actualizaListaPacientes() {
-        sharedPacientesViewModel.getPacientesList().observe(getViewLifecycleOwner(), pacientes -> {
+        sharedAlumnosViewModel.getPacientesList().observe(getViewLifecycleOwner(), pacientes -> {
             adapter.notifyDataSetChanged();
         });
     }
@@ -201,7 +201,7 @@ public class AlumnosFragment extends Fragment implements PacientesAdapter.ItemCl
      */
     @Override
     public void onClick(int position) {
-        sharedPacientesViewModel.setPaciente(position);
+        sharedAlumnosViewModel.setPaciente(position);
         adapter.notifyDataSetChanged();
         getParentFragmentManager().beginTransaction().replace(R.id.fragment_container, new DetalleAlumnoFragment()).commit();
 

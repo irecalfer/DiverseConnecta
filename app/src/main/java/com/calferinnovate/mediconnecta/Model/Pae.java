@@ -2,7 +2,7 @@ package com.calferinnovate.mediconnecta.Model;
 
 public class Pae {
 
-    private int idPae, idCursoEmision, fkIdEnfermero, fkIdProfesor, fkAula, fkIdAlumno;
+    private int idPae, cursoEmision, cursoEmisionFin, fkIdEnfermero, fkIdProfesor, fkAula, fkIdAlumno;
 
     private String alergias, diagnosticoClinico, fiebre, dieta, protesis, ortesis, gafas, audifonos, otros,
     medicacion;
@@ -10,14 +10,14 @@ public class Pae {
     public Pae() {
     }
 
-    public Pae(int idPae, int idCursoEmision, int fkIdEnfermero, int fkIdProfesor, int fkAula, int fkIdAlumno,
+    public Pae(int idPae, int cursoEmision, int cursoEmisionFin,int fkIdEnfermero, int fkIdProfesor, int fkIdAlumno,
                String alergias, String diagnosticoClinico, String fiebre, String dieta, String protesis,
                String ortesis, String gafas, String audifonos, String otros, String medicacion) {
         this.idPae = idPae;
-        this.idCursoEmision = idCursoEmision;
+        this.cursoEmision = cursoEmision;
+        this.cursoEmisionFin = cursoEmisionFin;
         this.fkIdEnfermero = fkIdEnfermero;
         this.fkIdProfesor = fkIdProfesor;
-        this.fkAula = fkAula;
         this.fkIdAlumno = fkIdAlumno;
         this.alergias = alergias;
         this.diagnosticoClinico = diagnosticoClinico;
@@ -39,12 +39,12 @@ public class Pae {
         this.idPae = idPae;
     }
 
-    public int getIdCursoEmision() {
-        return idCursoEmision;
+    public int getCursoEmision() {
+        return cursoEmision;
     }
 
-    public void setIdCursoEmision(int idCursoEmision) {
-        this.idCursoEmision = idCursoEmision;
+    public void setCursoEmision(int cursoEmision) {
+        this.cursoEmision = cursoEmision;
     }
 
     public int getFkIdEnfermero() {
@@ -157,5 +157,13 @@ public class Pae {
 
     public void setMedicacion(String medicacion) {
         this.medicacion = medicacion;
+    }
+
+    public int getCursoEmisionFin() {
+        return cursoEmisionFin;
+    }
+
+    public void setCursoEmisionFin(int cursoEmisionFin) {
+        this.cursoEmisionFin = cursoEmisionFin;
     }
 }

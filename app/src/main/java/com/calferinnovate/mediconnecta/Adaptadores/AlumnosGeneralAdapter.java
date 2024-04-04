@@ -56,7 +56,7 @@ public class AlumnosGeneralAdapter {
      */
     public void enlazaRecursos(View view) {
         fotoPaciente = view.findViewById(R.id.fotoPacienteDetalle);
-        nombre = view.findViewById(R.id.nombrePaciente);
+        nombre = view.findViewById(R.id.nombreAlumno);
         apellidos = view.findViewById(R.id.apellidoAlumno);
         sexo = view.findViewById(R.id.sexoAlumno);
         dni = view.findViewById(R.id.dniAlumno);

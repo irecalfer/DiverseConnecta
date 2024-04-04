@@ -39,7 +39,7 @@ import com.calferinnovate.mediconnecta.Model.PeticionesJson;
 import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.View.Home.Fragments.AlumnosFragment;
 import com.calferinnovate.mediconnecta.View.IOnBackPressed;
-import com.calferinnovate.mediconnecta.ViewModel.SharedPacientesViewModel;
+import com.calferinnovate.mediconnecta.ViewModel.SharedAlumnosViewModel;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelArgs;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelFactory;
 import com.google.android.gms.tasks.Continuation;
@@ -78,7 +78,7 @@ public class GeneralAlumnosFragmentAnadidos extends Fragment implements IOnBackP
     fechaIngresoSeleccionada, habitacionSeleccionada;
     private ClaseGlobal claseGlobal;
     private PeticionesJson peticionesJson;
-    private SharedPacientesViewModel sharedPacientesViewModel;
+    private SharedAlumnosViewModel sharedAlumnosViewModel;
     private ActivityResultLauncher<Intent> pickImageLauncher;
     private String imageBase64;
     private int idUnidad, idSeguro;
@@ -156,8 +156,8 @@ public class GeneralAlumnosFragmentAnadidos extends Fragment implements IOnBackP
             }
         };
 
-        ViewModelFactory<SharedPacientesViewModel> factory = new ViewModelFactory<>(viewModelArgs);
-        sharedPacientesViewModel = new ViewModelProvider(requireActivity(), factory).get(SharedPacientesViewModel.class);
+        ViewModelFactory<SharedAlumnosViewModel> factory = new ViewModelFactory<>(viewModelArgs);
+        sharedAlumnosViewModel = new ViewModelProvider(requireActivity(), factory).get(SharedAlumnosViewModel.class);
     }
 
     private void inicializaLauncherSeleccionarImagenes(){
@@ -265,7 +265,7 @@ public class GeneralAlumnosFragmentAnadidos extends Fragment implements IOnBackP
     }*/
 
     private void obtieneSexoPacientes() {
-        sharedPacientesViewModel.obtieneSexoPacientesEnum().observe(getViewLifecycleOwner(), new Observer<ArrayList<String>>() {
+        sharedAlumnosViewModel.obtieneSexoPacientesEnum().observe(getViewLifecycleOwner(), new Observer<ArrayList<String>>() {
             @Override
             public void onChanged(ArrayList<String> listaSexo) {
                 ArrayAdapter<String> sexoAdapter = new ArrayAdapter<>(requireActivity(), R.layout.my_spinner, listaSexo);

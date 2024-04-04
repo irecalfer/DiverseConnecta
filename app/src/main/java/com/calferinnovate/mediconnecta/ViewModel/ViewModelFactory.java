@@ -46,12 +46,14 @@ public class ViewModelFactory<T extends ViewModel> implements ViewModelProvider.
     public <T extends ViewModel> T create(Class<T> modelClass) {
         if (modelClass == ConsultasYRutinasDiariasViewModel.class) {
             return (T) new ConsultasYRutinasDiariasViewModel(viewModelArgsJson);
-        } else if (modelClass == SharedPacientesViewModel.class) {
-            return (T) new SharedPacientesViewModel(viewModelArgs);
+        } else if (modelClass == SharedAlumnosViewModel.class) {
+            return (T) new SharedAlumnosViewModel(viewModelArgs);
         } else if (modelClass == SesionViewModel.class) {
             return (T) new SesionViewModel(viewModelArgs);
         } else if (modelClass == AvisosViewModel.class) {
             return (T) new AvisosViewModel(viewModelArgsJson);
+        } else if (modelClass == PaeViewModel.class) {
+            return (T) new PaeViewModel(viewModelArgs);
         }
         throw new IllegalArgumentException("Unknown ViewModel class");
     }

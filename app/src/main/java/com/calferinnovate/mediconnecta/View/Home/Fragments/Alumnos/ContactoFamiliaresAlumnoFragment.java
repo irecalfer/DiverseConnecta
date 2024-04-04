@@ -21,7 +21,7 @@ import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
 import com.calferinnovate.mediconnecta.View.IOnBackPressed;
 import com.calferinnovate.mediconnecta.Model.PeticionesJson;
-import com.calferinnovate.mediconnecta.ViewModel.SharedPacientesViewModel;
+import com.calferinnovate.mediconnecta.ViewModel.SharedAlumnosViewModel;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelArgs;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelFactory;
 
@@ -30,7 +30,7 @@ import com.calferinnovate.mediconnecta.ViewModel.ViewModelFactory;
  */
 public class ContactoFamiliaresAlumnoFragment extends Fragment implements IOnBackPressed {
     private ClaseGlobal claseGlobal;
-    private SharedPacientesViewModel sharedPacientesViewModel;
+    private SharedAlumnosViewModel sharedAlumnosViewModel;
     private RecyclerView recyclerView;
     private PeticionesJson peticionesJson;
 
@@ -86,9 +86,9 @@ public class ContactoFamiliaresAlumnoFragment extends Fragment implements IOnBac
             }
         };
 
-        ViewModelFactory<SharedPacientesViewModel> factory = new ViewModelFactory<>(viewModelArgs);
+        ViewModelFactory<SharedAlumnosViewModel> factory = new ViewModelFactory<>(viewModelArgs);
         // Inicializa el ViewModel
-        sharedPacientesViewModel = new ViewModelProvider(requireActivity(), factory).get(SharedPacientesViewModel.class);
+        sharedAlumnosViewModel = new ViewModelProvider(requireActivity(), factory).get(SharedAlumnosViewModel.class);
     }
 
     /**
@@ -110,7 +110,7 @@ public class ContactoFamiliaresAlumnoFragment extends Fragment implements IOnBac
      * Método que obtiene el paciente seleccionado y llama a obtieneListaFamiliares para obtener la lista de contactos.
      */
     public void observaPacienteYObtieneContactos(){
-        sharedPacientesViewModel.getPaciente().observe(getViewLifecycleOwner(), pacientes -> obtieneListaFamiliares(pacientes));
+        sharedAlumnosViewModel.getPaciente().observe(getViewLifecycleOwner(), pacientes -> obtieneListaFamiliares(pacientes));
     }
 
     /**
@@ -119,7 +119,7 @@ public class ContactoFamiliaresAlumnoFragment extends Fragment implements IOnBac
      * @param paciente Paciente seleccionado.
      */
     public void obtieneListaFamiliares(Alumnos paciente){
-        sharedPacientesViewModel.obtieneContactoFamiliares(paciente).observe(getViewLifecycleOwner(), contactoFamiliares -> {
+        sharedAlumnosViewModel.obtieneContactoFamiliares(paciente).observe(getViewLifecycleOwner(), contactoFamiliares -> {
             FamiliaresAdapter adapter = new FamiliaresAdapter(contactoFamiliares, getContext());
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
 

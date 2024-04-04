@@ -18,7 +18,7 @@ import com.calferinnovate.mediconnecta.Model.PeticionesJson;
 import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.View.Home.Fragments.AlumnosFragment;
 import com.calferinnovate.mediconnecta.View.IOnBackPressed;
-import com.calferinnovate.mediconnecta.ViewModel.SharedPacientesViewModel;
+import com.calferinnovate.mediconnecta.ViewModel.SharedAlumnosViewModel;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelArgs;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelFactory;
 
@@ -30,7 +30,7 @@ public class GeneralAlumnosFragment extends Fragment implements IOnBackPressed {
 
 
     private TextView seguroTextView;
-    private SharedPacientesViewModel sharedPacientesViewModel;
+    private SharedAlumnosViewModel sharedAlumnosViewModel;
     private ClaseGlobal claseGlobal;
     private PeticionesJson peticionesJson;
     private Alumnos pacienteActual;
@@ -82,8 +82,8 @@ public class GeneralAlumnosFragment extends Fragment implements IOnBackPressed {
             }
         };
 
-        ViewModelFactory<SharedPacientesViewModel> factory = new ViewModelFactory<>(viewModelArgs);
-        sharedPacientesViewModel = new ViewModelProvider(requireActivity(), factory).get(SharedPacientesViewModel.class);
+        ViewModelFactory<SharedAlumnosViewModel> factory = new ViewModelFactory<>(viewModelArgs);
+        sharedAlumnosViewModel = new ViewModelProvider(requireActivity(), factory).get(SharedAlumnosViewModel.class);
     }
 
     /**
@@ -108,7 +108,7 @@ public class GeneralAlumnosFragment extends Fragment implements IOnBackPressed {
      * @param view La vista inflada.
      */
     public void rellenaUIAdaptador(View view) {
-        sharedPacientesViewModel.getPaciente().observe(getViewLifecycleOwner(), pacientes -> {
+        sharedAlumnosViewModel.getPaciente().observe(getViewLifecycleOwner(), pacientes -> {
             pacienteActual = pacientes;
 
             AlumnosGeneralAdapter pacienteAdapter = new AlumnosGeneralAdapter(pacienteActual, requireContext());

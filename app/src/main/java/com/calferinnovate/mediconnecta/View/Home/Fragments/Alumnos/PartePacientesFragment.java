@@ -24,7 +24,7 @@ import com.calferinnovate.mediconnecta.Model.Constantes;
 import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.View.Home.Fragments.AlumnosFragment;
 import com.calferinnovate.mediconnecta.View.IOnBackPressed;
-import com.calferinnovate.mediconnecta.ViewModel.SharedPacientesViewModel;
+import com.calferinnovate.mediconnecta.ViewModel.SharedAlumnosViewModel;
 import com.google.android.material.textfield.TextInputEditText;
 
 import org.json.JSONException;
@@ -44,7 +44,7 @@ public class PartePacientesFragment extends Fragment implements IOnBackPressed {
     private TextInputEditText descripcion;
     private Button registrarParteBtn;
     private ClaseGlobal claseGlobal;
-    private SharedPacientesViewModel sharedPacientesViewModel;
+    private SharedAlumnosViewModel sharedAlumnosViewModel;
 
     /**
      * Método llamado cuando se crea la vista del fragmento.
@@ -65,7 +65,7 @@ public class PartePacientesFragment extends Fragment implements IOnBackPressed {
         claseGlobal = ClaseGlobal.getInstance();
         enlazaRecursos(view);
         getActivity().setTitle("Parte");
-        sharedPacientesViewModel = new ViewModelProvider(requireActivity()).get(SharedPacientesViewModel.class);
+        sharedAlumnosViewModel = new ViewModelProvider(requireActivity()).get(SharedAlumnosViewModel.class);
         return view;
     }
 
@@ -93,7 +93,7 @@ public class PartePacientesFragment extends Fragment implements IOnBackPressed {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        sharedPacientesViewModel.getPaciente().observe(getViewLifecycleOwner(), paciente -> {
+        sharedAlumnosViewModel.getPaciente().observe(getViewLifecycleOwner(), paciente -> {
             rellenaUI(paciente, view);
             clickListenerButtonRegistrar(paciente);
         });
