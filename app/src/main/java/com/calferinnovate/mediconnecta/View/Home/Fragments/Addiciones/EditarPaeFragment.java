@@ -1,4 +1,4 @@
-package com.calferinnovate.mediconnecta.View.Home.Fragments.Alumnos;
+package com.calferinnovate.mediconnecta.View.Home.Fragments.Addiciones;
 
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -12,7 +12,6 @@ import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,7 +19,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -32,40 +30,30 @@ import com.calferinnovate.mediconnecta.Model.ControlSomatometrico;
 import com.calferinnovate.mediconnecta.Model.Pae;
 import com.calferinnovate.mediconnecta.Model.PeticionesJson;
 import com.calferinnovate.mediconnecta.R;
-import com.calferinnovate.mediconnecta.View.Home.Fragments.Addiciones.EditarPaeFragment;
 import com.calferinnovate.mediconnecta.View.IOnBackPressed;
 import com.calferinnovate.mediconnecta.ViewModel.SharedAlumnosViewModel;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelArgs;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelFactory;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 
-public class PaeFragment extends Fragment implements IOnBackPressed {
+public class EditarPaeFragment extends Fragment implements IOnBackPressed {
+
     private ClaseGlobal claseGlobal;
     private TableLayout tablaPae;
     private PeticionesJson peticionesJson;
     private SharedAlumnosViewModel sharedAlumnosViewModel;
     private Alumnos alumno;
-    private  ArrayList<String> propiedades = new ArrayList<>(Arrays.asList("Peso", "Talla", "IMC", "Percentil", "Tª", "T.A", "F.C", "Sat. O2"));
+    private  String[] propiedades = {"Peso", "Talla", "IMC", "Percentil", "Tª", "T.A", "F.C", "Sat. O2"};
     private String[] header = {"1er Trimestre", "2º Trimestre", "3er Trimestre"};
     private MenuHost menuHost;
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_pae, container, false);
+        View view = inflater.inflate(R.layout.fragment_editar_pae, container, false);
         getActivity().setTitle("PAE");
         menuHost = requireActivity();
         cambiarToolbar();
@@ -160,7 +148,7 @@ public class PaeFragment extends Fragment implements IOnBackPressed {
         sharedAlumnosViewModel.obtieneControlSomatometrico(pae).observe(getViewLifecycleOwner(), new Observer<ArrayList<ControlSomatometrico>>() {
             @Override
             public void onChanged(ArrayList<ControlSomatometrico> controlSomatometricos) {
-                ArrayList<ControlSomatometrico> controlTemp = new ArrayList<>(controlSomatometricos);
+
                 // Crear una fila para cada propiedad
                 for (String propiedad : propiedades) {
                     TableRow filaPropiedad = new TableRow(getActivity());
@@ -179,7 +167,7 @@ public class PaeFragment extends Fragment implements IOnBackPressed {
                     filaPropiedad.addView(textViewPropiedad);
 
                     // Agregar los datos correspondientes para cada trimestre
-                    for (ControlSomatometrico control : controlTemp) {
+                    for (ControlSomatometrico control : controlSomatometricos) {
                         EditText editText = new EditText(getActivity());
                         String dato = obtenerDatoPropiedad(control, propiedad);
                         editText.setText(dato);
@@ -190,12 +178,10 @@ public class PaeFragment extends Fragment implements IOnBackPressed {
 
                     // Agregar la fila a la tabla
                     tablaPae.addView(filaPropiedad);
-
-
                 }
-                propiedades.clear();
-                //controlSomatometricos.clear();
+
             }
+
         });
     }
 
@@ -226,13 +212,13 @@ public class PaeFragment extends Fragment implements IOnBackPressed {
         MenuProvider menuProvider = new MenuProvider() {
             @Override
             public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
-                menuInflater.inflate(R.menu.app_menu_opciones_pae, menu);
+                menuInflater.inflate(R.menu.app_menu_opciones_pae_editar, menu);
             }
 
             @Override
             public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
-                if(menuItem.getItemId() == R.id.action_editar_pae){
-                    getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new EditarPaeFragment()).commit();
+                if(menuItem.getItemId() == R.id.action_confirmar_pae){
+                    return true;
                 }
 
                 return false;

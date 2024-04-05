@@ -33,7 +33,7 @@ public class DetalleAlumnoFragment extends Fragment implements IOnBackPressed {
     private SharedAlumnosViewModel sharedAlumnosViewModel;
     private ClaseGlobal claseGlobal;
     private String nombreArea;
-    private MenuHost menuHost;
+
 
 
     /**
@@ -54,8 +54,6 @@ public class DetalleAlumnoFragment extends Fragment implements IOnBackPressed {
         asignarValoresAVariables(view);
         sharedAlumnosViewModel = new ViewModelProvider(requireActivity()).get(SharedAlumnosViewModel.class);
         getActivity().setTitle("Detalles Alumno");
-        menuHost = requireActivity();
-        cambiarToolbar();
         return view;
     }
 
@@ -110,28 +108,6 @@ public class DetalleAlumnoFragment extends Fragment implements IOnBackPressed {
             }
         });
 
-    }
-
-    public void cambiarToolbar(){
-        MenuProvider menuProvider = new MenuProvider() {
-            @Override
-            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
-                menuInflater.inflate(R.menu.app_menu_opciones_usuarios, menu);
-            }
-
-            @Override
-            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
-                if(menuItem.getItemId() == R.id.action_editar_usuario){
-                    return true;
-                }else if(menuItem.getItemId() == R.id.action_eliminar_usuario){
-                    return true;
-                }
-
-                return false;
-            }
-        };
-
-        requireActivity().addMenuProvider(menuProvider, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
     }
 
     /**

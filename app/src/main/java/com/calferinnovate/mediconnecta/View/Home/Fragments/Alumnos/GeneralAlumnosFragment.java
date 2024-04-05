@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.MenuHost;
 import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Lifecycle;
@@ -39,6 +40,7 @@ public class GeneralAlumnosFragment extends Fragment implements IOnBackPressed {
     private ClaseGlobal claseGlobal;
     private PeticionesJson peticionesJson;
     private Alumnos pacienteActual;
+    private MenuHost menuHost;
 
 
     /**
@@ -55,7 +57,9 @@ public class GeneralAlumnosFragment extends Fragment implements IOnBackPressed {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_general_alumnos, container, false);
-        getActivity().setTitle("Alumnos");
+        getActivity().setTitle("Datos personales Alumno");
+        menuHost = requireActivity();
+        cambiarToolbar();
         inicializaVariables(view);
         inicializaViewModel();
         return view;

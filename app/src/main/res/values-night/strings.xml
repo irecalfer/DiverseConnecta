@@ -144,4 +144,6 @@
     <string name="dietasLabel">Dietas/Alimentación</string>
     <string name="medicacionLabel">Medicación</string>
     <string name="alumnos_item">Alumnos</string>
+    <string name="editarPae">Editar Pae</string>
+    <string name="confirmar">Confirmar</string>
 </resources>
