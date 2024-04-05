@@ -2,13 +2,18 @@ package com.calferinnovate.mediconnecta.View.Home.Fragments.Alumnos;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.calferinnovate.mediconnecta.Adaptadores.AlumnosGeneralAdapter;
@@ -100,6 +105,30 @@ public class GeneralAlumnosFragment extends Fragment implements IOnBackPressed {
         super.onViewCreated(view, savedInstanceState);
         rellenaUIAdaptador(view);
     }
+
+    public void cambiarToolbar(){
+        MenuProvider menuProvider = new MenuProvider() {
+            @Override
+            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                menuInflater.inflate(R.menu.app_menu_opciones_usuarios, menu);
+            }
+
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                if(menuItem.getItemId() == R.id.action_editar_usuario){
+                    return true;
+                }else if(menuItem.getItemId() == R.id.action_eliminar_usuario){
+                    return true;
+                }
+
+                return false;
+            }
+        };
+
+        requireActivity().addMenuProvider(menuProvider, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
+    }
+
+
 
     /**
      * Método encargado de actualizar la UI con los datos del paciente. Llama a getPaciente en SharedPacientesViewModel
