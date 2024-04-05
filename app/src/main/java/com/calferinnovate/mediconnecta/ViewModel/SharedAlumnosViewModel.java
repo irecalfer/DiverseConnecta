@@ -36,6 +36,7 @@ public class SharedAlumnosViewModel extends ViewModel {
     private PeticionesJson peticionesJson;
     private MutableLiveData<ArrayList<Pae>> mutablePaeList = new MutableLiveData<>();
     private MutableLiveData<ArrayList<ControlSomatometrico>> mutableControlSomatometricoList = new MutableLiveData<>();
+    ArrayList<Pae> paeArrayList = new ArrayList<>();
 
 
     /**
@@ -105,7 +106,7 @@ public class SharedAlumnosViewModel extends ViewModel {
      */
     public LiveData<ArrayList<ContactoFamiliares>> obtieneContactoFamiliares(Alumnos paciente) {
         String url = Constantes.url_part + "familiares.php?cip_sns=" + paciente.getIdAlumno();
-        mutableFamiliaresList.setValue(new ArrayList<>());
+
 
         peticionesJson.getJsonObjectRequest(url, new PeticionesJson.MyJsonObjectResponseListener() {
             @Override
@@ -181,12 +182,14 @@ public class SharedAlumnosViewModel extends ViewModel {
 
     public LiveData<ArrayList<Pae>> obtienePae(Alumnos alumno) {
         String url = Constantes.url_part + "pae.php?id_alumno=" + alumno.getIdAlumno();
-
+        if(!paeArrayList.isEmpty()){
+            paeArrayList.clear();
+        }
         peticionesJson.getJsonObjectRequest(url, new PeticionesJson.MyJsonObjectResponseListener() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    ArrayList<Pae> paeArrayList = new ArrayList<>();
+
                     JSONArray jsonArray = response.getJSONArray("pae");
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
@@ -202,9 +205,9 @@ public class SharedAlumnosViewModel extends ViewModel {
                         paeArrayList.add(nuevoPae);
                     }
 
-                    if (!paeArrayList.isEmpty()) {
+
                         mutablePaeList.postValue(new ArrayList<>(paeArrayList));
-                    }
+
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -222,7 +225,6 @@ public class SharedAlumnosViewModel extends ViewModel {
 
     public LiveData<ArrayList<ControlSomatometrico>> obtieneControlSomatometrico(Pae pae) {
         String url = Constantes.url_part + "control_somatometrico.php?id_pae=" + pae.getIdPae();
-
         peticionesJson.getJsonObjectRequest(url, new PeticionesJson.MyJsonObjectResponseListener() {
             @Override
             public void onResponse(JSONObject response) {

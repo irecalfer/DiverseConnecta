@@ -18,6 +18,7 @@ public class ClaseGlobal extends Application {
 
     //Declaración de objetos
     private Empleado empleado;
+    private Pae pae;
     private ArrayList<Alumnos> listaAlumnos;
     private ArrayList<Empleado> listaEmpleados;
     private ArrayList<Aulas> listaAulas;
@@ -44,6 +45,7 @@ public class ClaseGlobal extends Application {
         listaEmpleadosAulas = new ArrayList<>();
         listaNivelEscolar = new ArrayList<>();
         listaGradosDiscapacidad = new ArrayList<>();
+        pae = new Pae();
 
     }
 

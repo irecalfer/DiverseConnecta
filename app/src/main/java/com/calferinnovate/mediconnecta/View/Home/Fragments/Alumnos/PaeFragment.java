@@ -32,7 +32,9 @@ import com.calferinnovate.mediconnecta.Model.ControlSomatometrico;
 import com.calferinnovate.mediconnecta.Model.Pae;
 import com.calferinnovate.mediconnecta.Model.PeticionesJson;
 import com.calferinnovate.mediconnecta.R;
+import com.calferinnovate.mediconnecta.View.Home.Fragments.Addiciones.CrearPaeFragment;
 import com.calferinnovate.mediconnecta.View.Home.Fragments.Addiciones.EditarPaeFragment;
+import com.calferinnovate.mediconnecta.View.Home.Fragments.AlumnosFragment;
 import com.calferinnovate.mediconnecta.View.IOnBackPressed;
 import com.calferinnovate.mediconnecta.ViewModel.SharedAlumnosViewModel;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelArgs;
@@ -139,7 +141,8 @@ public class PaeFragment extends Fragment implements IOnBackPressed {
         sharedAlumnosViewModel.getPaciente().observe(getViewLifecycleOwner(), new Observer<Alumnos>() {
             @Override
             public void onChanged(Alumnos alumnos) {
-                obtienePae(alumnos, view, lp);
+                Alumnos alumno = alumnos;
+                obtienePae(alumno, view, lp);
 
             }
         });
@@ -149,9 +152,14 @@ public class PaeFragment extends Fragment implements IOnBackPressed {
         sharedAlumnosViewModel.obtienePae(alumno).observe(getViewLifecycleOwner(), new Observer<ArrayList<Pae>>() {
             @Override
             public void onChanged(ArrayList<Pae> paes) {
-                PaeAdapter paeAdapter = new PaeAdapter(alumno, paes.get(0), requireContext());
-                paeAdapter.rellenaUI(view);
-                rellenaFilasControl(paes.get(0), lp);
+                if(paes.size() == 0){
+                    getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new CrearPaeFragment()).commit();
+              }else{
+                    PaeAdapter paeAdapter = new PaeAdapter(alumno, paes.get(0), requireContext());
+                    paeAdapter.rellenaUI(view);
+                    rellenaFilasControl(paes.get(0), lp);
+                }
+
             }
         });
     }
@@ -194,6 +202,7 @@ public class PaeFragment extends Fragment implements IOnBackPressed {
 
                 }
                 propiedades.clear();
+
                 //controlSomatometricos.clear();
             }
         });
@@ -246,6 +255,7 @@ public class PaeFragment extends Fragment implements IOnBackPressed {
 
     @Override
     public boolean onBackPressed() {
-        return false;
+        requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AlumnosFragment()).commit();
+        return true;
     }
 }
