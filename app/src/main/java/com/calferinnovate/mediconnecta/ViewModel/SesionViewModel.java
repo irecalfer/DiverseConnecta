@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel;
 import com.android.volley.VolleyError;
 import com.calferinnovate.mediconnecta.Model.Alumnos;
 import com.calferinnovate.mediconnecta.Model.Aulas;
+import com.calferinnovate.mediconnecta.Model.Cargo;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
 import com.calferinnovate.mediconnecta.Model.Constantes;
 import com.calferinnovate.mediconnecta.Model.Empleado;
@@ -34,6 +35,7 @@ public class SesionViewModel extends ViewModel {
     private final MutableLiveData<Boolean> relacionEmpleadosAulasObtenidos = new MutableLiveData<>();
     private final MutableLiveData<Boolean> aulasObtenidas = new MutableLiveData<>();
     private final MutableLiveData<Boolean> nivelesEscolaresObtenidos = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> cargosObtenidos = new MutableLiveData<>();
 
     /**
      * Constructor vacío del ViewModel
@@ -337,6 +339,40 @@ public class SesionViewModel extends ViewModel {
     private NivelEscolar obtieneNuevoNivel(JSONObject jsonObject) {
         return new NivelEscolar(jsonObject.optInt("id_nivel_escolar"),
                 jsonObject.optString("nombre_nivel"));
+    }
+
+    public LiveData<Boolean> obtieneCargos() {
+        String url = Constantes.url_part + "cargos.php";
+
+        peticionesJson.getJsonObjectRequest(url, new PeticionesJson.MyJsonObjectResponseListener() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    if (!claseGlobal.getCargoArrayList().isEmpty()) {
+                        claseGlobal.getCargoArrayList().clear();
+                    }
+                    JSONArray jsonArray = response.getJSONArray("cargos");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        Cargo nuevoCargo= new Cargo(jsonObject.optInt("id_cargo"), jsonObject.optString("nombre"));
+                        claseGlobal.getCargoArrayList().add(nuevoCargo);
+                    }
+
+                    claseGlobal.setCargoArrayList(claseGlobal.getCargoArrayList());
+                    cargosObtenidos.postValue(true);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+                cargosObtenidos.postValue(false);
+            }
+        });
+
+        return cargosObtenidos;
     }
 
 }

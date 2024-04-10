@@ -7,4 +7,6 @@
         <item name="android:autoSizeMinTextSize">12sp</item>
         <item name="android:autoSizeMaxTextSize">16sp</item>
     </style>
+
+    <dimen name="texto_input_layout">16sp</dimen>
 </resources>

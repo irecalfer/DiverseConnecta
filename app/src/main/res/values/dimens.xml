@@ -17,7 +17,7 @@
     <dimen name="autoCompleteTextSize">18sp</dimen>
 
     <dimen name="defaultTextSize">18sp</dimen>
-
+    <dimen name="texto_input_layout">16sp</dimen>
 
 
 </resources>

@@ -244,6 +244,13 @@ public class SesionFragment extends Fragment {
 
             }
         });
+
+        sesionViewModel.obtieneCargos().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+
+            }
+        });
         sesionViewModel.obtieneDatosAlumnos().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean obtenidos) {
