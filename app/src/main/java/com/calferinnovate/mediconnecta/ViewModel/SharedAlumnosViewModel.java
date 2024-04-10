@@ -10,6 +10,7 @@ import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
 import com.calferinnovate.mediconnecta.Model.Constantes;
 import com.calferinnovate.mediconnecta.Model.ContactoFamiliares;
 import com.calferinnovate.mediconnecta.Model.ControlSomatometrico;
+import com.calferinnovate.mediconnecta.Model.Curso;
 import com.calferinnovate.mediconnecta.Model.Pae;
 import com.calferinnovate.mediconnecta.Model.PeticionesJson;
 
@@ -36,7 +37,8 @@ public class SharedAlumnosViewModel extends ViewModel {
     private PeticionesJson peticionesJson;
     private MutableLiveData<ArrayList<Pae>> mutablePaeList = new MutableLiveData<>();
     private MutableLiveData<ArrayList<ControlSomatometrico>> mutableControlSomatometricoList = new MutableLiveData<>();
-    ArrayList<Pae> paeArrayList = new ArrayList<>();
+    private ArrayList<Pae> paeArrayList = new ArrayList<>();
+    private MutableLiveData<ArrayList<String>> mutableLiveDataCursos = new MutableLiveData<>();
 
 
     /**
@@ -200,7 +202,8 @@ public class SharedAlumnosViewModel extends ViewModel {
                                 jsonObject.optString("fiebre"), jsonObject.optString("dieta_alimentacion"),
                                 jsonObject.optString("protesis"), jsonObject.optString("ortesis"),
                                 jsonObject.optString("gafas"), jsonObject.optString("audifonos"),
-                                jsonObject.optString("otros"), jsonObject.optString("medicacion")
+                                jsonObject.optString("otros"), jsonObject.optString("medicacion"),
+                                jsonObject.optString("datos_importantes")
                         );
                         paeArrayList.add(nuevoPae);
                     }
@@ -259,6 +262,39 @@ public class SharedAlumnosViewModel extends ViewModel {
         });
 
         return mutableControlSomatometricoList;
+    }
+
+    public LiveData<ArrayList<String>> obtieneListaCursos(){
+        String url = Constantes.url_part+"listaCursos.php";
+
+        peticionesJson.getJsonObjectRequest(url, new PeticionesJson.MyJsonObjectResponseListener() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try{
+                    ArrayList<String> cursoArrayList = new ArrayList<>();
+                    JSONArray jsonArray = response.getJSONArray("cursos");
+                    for(int i =0; i<jsonArray.length();i++){
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        Curso nuevoCurso = new Curso(jsonObject.optString("añoInicio"),
+                                jsonObject.optString("añoFin"));
+                        cursoArrayList.add(nuevoCurso.getAñoInicio()+"/"+nuevoCurso.getAñoFin());
+                    }
+
+                    if(!cursoArrayList.isEmpty()){
+                        mutableLiveDataCursos.postValue(new ArrayList<>(cursoArrayList));
+                    }
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        return mutableLiveDataCursos;
     }
 
 

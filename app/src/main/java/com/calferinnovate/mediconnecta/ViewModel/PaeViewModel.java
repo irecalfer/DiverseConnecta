@@ -55,7 +55,8 @@ public class PaeViewModel extends ViewModel {
                                 jsonObject.optString("fiebre"), jsonObject.optString("dieta_alimentacion"),
                                 jsonObject.optString("protesis"), jsonObject.optString("ortesis"),
                                 jsonObject.optString("gafas"), jsonObject.optString("audifonos"),
-                                jsonObject.optString("otros"), jsonObject.optString("medicacion")
+                                jsonObject.optString("otros"), jsonObject.optString("medicacion"),
+                                jsonObject.optString("datos_importantes")
                                 );
                         paeArrayList.add(nuevoPae);
                     }

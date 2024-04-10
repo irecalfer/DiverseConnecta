@@ -181,4 +181,6 @@
     <string name="alumnos_item">Alumnos</string>
     <string name="editarPae">Editar Pae</string>
     <string name="confirmar">Confirmar</string>
+    <string name="DatosImportantesLabel">Datos Importantes</string>
+    <string name="barra">/</string>
 </resources>

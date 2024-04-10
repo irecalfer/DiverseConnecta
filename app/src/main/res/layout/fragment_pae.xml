@@ -72,21 +72,28 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.33" />
+            app:layout_constraintGuide_percent="0.30" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guidelinePercentMidBottomIll"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.55"/>
+            app:layout_constraintGuide_percent="0.47"/>
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guidelinePercentEndIll"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.77"/>
+            app:layout_constraintGuide_percent="0.65"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelinePercentBottomIll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.82"/>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/labelNombreAlumno"
@@ -463,20 +470,47 @@
             android:layout_height="0dp"
             android:layout_marginStart="20dp"
             android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
             android:layout_marginEnd="20dp"
             android:autoSizeMaxTextSize="100sp"
             android:autoSizeMinTextSize="12sp"
             android:hint="@string/medicacionLabel"
             android:textColorHint="@color/md_theme_light_surfaceTint"
             app:hintTextAppearance="@style/TextLabel"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/guidelinePercentBottomIll"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/guidelinePercentDer"
-            app:layout_constraintTop_toTopOf="@id/guidelinePercentEndIll">
+            app:layout_constraintTop_toBottomOf="@id/guidelinePercentEndIll">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/medicacion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:imeOptions="actionNext"
+                android:inputType="text|textMultiLine"
+                android:textColor="@color/md_theme_black" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/datosImportantesLabel"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="20dp"
+            android:autoSizeMaxTextSize="100sp"
+            android:autoSizeMinTextSize="12sp"
+            android:hint="@string/DatosImportantesLabel"
+            android:textColorHint="@color/md_theme_light_surfaceTint"
+            app:hintTextAppearance="@style/TextLabel"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/guidelinePercentDer"
+            app:layout_constraintTop_toBottomOf="@id/guidelinePercentBottomIll">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/datosImportantes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:enabled="false"

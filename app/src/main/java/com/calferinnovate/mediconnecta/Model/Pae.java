@@ -5,14 +5,14 @@ public class Pae {
     private int idPae, cursoEmision, cursoEmisionFin, fkIdEnfermero, fkIdProfesor, fkAula, fkIdAlumno;
 
     private String alergias, diagnosticoClinico, fiebre, dieta, protesis, ortesis, gafas, audifonos, otros,
-    medicacion;
+    medicacion, datosImportantes;
 
     public Pae() {
     }
 
     public Pae(int idPae, int cursoEmision, int cursoEmisionFin,int fkIdEnfermero, int fkIdProfesor, int fkIdAlumno,
                String alergias, String diagnosticoClinico, String fiebre, String dieta, String protesis,
-               String ortesis, String gafas, String audifonos, String otros, String medicacion) {
+               String ortesis, String gafas, String audifonos, String otros, String medicacion, String datosImportantes) {
         this.idPae = idPae;
         this.cursoEmision = cursoEmision;
         this.cursoEmisionFin = cursoEmisionFin;
@@ -29,6 +29,7 @@ public class Pae {
         this.audifonos = audifonos;
         this.otros = otros;
         this.medicacion = medicacion;
+        this.datosImportantes = datosImportantes;
     }
 
     public int getIdPae() {
@@ -165,5 +166,13 @@ public class Pae {
 
     public void setCursoEmisionFin(int cursoEmisionFin) {
         this.cursoEmisionFin = cursoEmisionFin;
+    }
+
+    public String getDatosImportantes() {
+        return datosImportantes;
+    }
+
+    public void setDatosImportantes(String datosImportantes) {
+        this.datosImportantes = datosImportantes;
     }
 }
