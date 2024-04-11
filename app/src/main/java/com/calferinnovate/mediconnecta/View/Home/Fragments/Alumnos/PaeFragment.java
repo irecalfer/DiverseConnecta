@@ -73,6 +73,7 @@ public class PaeFragment extends Fragment implements IOnBackPressed {
         cambiarToolbar();
         inicializaVariables(view);
         inicializaViewModel();
+        obtieneDatosAlumno(view);
         creaTablaSeguimiento(view);
         return view;
     }
@@ -132,7 +133,6 @@ public class PaeFragment extends Fragment implements IOnBackPressed {
         tablaPae.addView(fila, 0);
         // Rellenar la tabla con los datos de cada propiedad para cada trimestre
         obtieneDatosAlumno(view, lp);
-
     }
 
 
@@ -152,19 +152,15 @@ public class PaeFragment extends Fragment implements IOnBackPressed {
         sharedAlumnosViewModel.obtienePae(alumno).observe(getViewLifecycleOwner(), new Observer<ArrayList<Pae>>() {
             @Override
             public void onChanged(ArrayList<Pae> paes) {
-                if(paes.size() == 0){
-                    getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new CrearPaeFragment()).commit();
-              }else{
                     PaeAdapter paeAdapter = new PaeAdapter(alumno, paes.get(0), requireContext());
                     paeAdapter.rellenaUI(view);
                     rellenaFilasControl(paes.get(0), lp);
                 }
 
-            }
         });
     }
 
-    public void rellenaFilasControl(Pae pae, TableRow.LayoutParams lp){
+   /* public void rellenaFilasControl(Pae pae, TableRow.LayoutParams lp){
         sharedAlumnosViewModel.obtieneControlSomatometrico(pae).observe(getViewLifecycleOwner(), new Observer<ArrayList<ControlSomatometrico>>() {
             @Override
             public void onChanged(ArrayList<ControlSomatometrico> controlSomatometricos) {
@@ -204,6 +200,47 @@ public class PaeFragment extends Fragment implements IOnBackPressed {
                 propiedades.clear();
 
                 //controlSomatometricos.clear();
+            }
+        });
+    }*/
+
+    public void rellenaFilasControl(Pae pae, TableRow.LayoutParams lp){
+        sharedAlumnosViewModel.obtieneControlSomatometrico(pae).observe(getViewLifecycleOwner(), new Observer<ArrayList<ControlSomatometrico>>() {
+            @Override
+            public void onChanged(ArrayList<ControlSomatometrico> controlSomatometricos) {
+                ArrayList<ControlSomatometrico> controlTemp = new ArrayList<>(controlSomatometricos);
+                // Crear una fila para cada propiedad
+                for (String propiedad : propiedades) {
+                    TableRow filaPropiedad = new TableRow(getActivity());
+                    filaPropiedad.setLayoutParams(lp);
+
+                    // Agregar el nombre de la propiedad como encabezado
+                    TextView textViewPropiedad = new TextView(getActivity());
+                    textViewPropiedad.setText(propiedad);
+                    textViewPropiedad.setTypeface(null, Typeface.BOLD);
+                    textViewPropiedad.setTextSize(20); // Tamaño de letra grande
+                    textViewPropiedad.setTextColor(Color.WHITE); // Texto en blanco
+                    textViewPropiedad.setBackgroundColor(Color.parseColor("#006B58")); // Fondo verde oscuro
+                    filaPropiedad.addView(textViewPropiedad);
+
+                    // Agregar los datos correspondientes para cada trimestre
+                    for (ControlSomatometrico control : controlTemp) {
+                        EditText editText = new EditText(getActivity());
+                        String dato = obtenerDatoPropiedad(control, propiedad);
+                        editText.setText(dato);
+
+                        // Establecer parámetros de diseño para EditText
+                        TableRow.LayoutParams editTextParams = new TableRow.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f); // Peso 1 para que se expanda
+                        editText.setLayoutParams(editTextParams);
+
+                        filaPropiedad.addView(editText);
+                    }
+
+                    // Agregar la fila a la tabla
+                    tablaPae.addView(filaPropiedad);
+                }
+
+                propiedades.clear();
             }
         });
     }
@@ -255,7 +292,7 @@ public class PaeFragment extends Fragment implements IOnBackPressed {
 
     @Override
     public boolean onBackPressed() {
-        requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AlumnosFragment()).commit();
+        requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new GeneralAlumnosFragment()).commit();
         return true;
     }
 }

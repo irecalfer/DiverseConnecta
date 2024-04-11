@@ -30,6 +30,8 @@ import com.calferinnovate.mediconnecta.Model.ControlSomatometrico;
 import com.calferinnovate.mediconnecta.Model.Curso;
 import com.calferinnovate.mediconnecta.Model.PeticionesJson;
 import com.calferinnovate.mediconnecta.R;
+import com.calferinnovate.mediconnecta.View.Home.Fragments.Alumnos.GeneralAlumnosFragment;
+import com.calferinnovate.mediconnecta.View.Home.Fragments.AlumnosFragment;
 import com.calferinnovate.mediconnecta.View.IOnBackPressed;
 import com.calferinnovate.mediconnecta.ViewModel.SharedAlumnosViewModel;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelArgs;
@@ -49,6 +51,7 @@ public class CrearPaeFragment extends Fragment implements IOnBackPressed {
     private SharedAlumnosViewModel sharedAlumnosViewModel;
     private PeticionesJson peticionesJson;
     private CreaPaeAdapter paeAdapter;
+    private ArrayList<String> cursosArrayList = new ArrayList<>();
 
 
     @Override
@@ -125,10 +128,11 @@ public class CrearPaeFragment extends Fragment implements IOnBackPressed {
         sharedAlumnosViewModel.obtieneListaCursos().observe(getViewLifecycleOwner(), new Observer<ArrayList<String>>() {
             @Override
             public void onChanged(ArrayList<String> cursos) {
-                paeAdapter = new CreaPaeAdapter(alumno, cursos, claseGlobal, requireActivity());
-                paeAdapter.rellenaUI(view);
+                cursosArrayList = cursos;
             }
         });
+        paeAdapter = new CreaPaeAdapter(alumno, cursosArrayList, claseGlobal, requireActivity());
+        paeAdapter.rellenaUI(view);
     }
     public void creaTablaSeguimiento(View view){
         // Primero dibujar el encabezado; esto es poner "TALLAS" y a la derecha todas las tallas
@@ -144,7 +148,7 @@ public class CrearPaeFragment extends Fragment implements IOnBackPressed {
         TextView tv = new TextView(getActivity());
         tv.setTypeface(null, Typeface.BOLD);
         tv.setText("Control");
-        tv.setTextSize(24);
+        tv.setTextSize(28);
         tv.setTextColor(Color.WHITE); // Texto en blanco
 
         fila.addView(tv);
@@ -153,7 +157,7 @@ public class CrearPaeFragment extends Fragment implements IOnBackPressed {
         for (int x = 0; x < header.length; x++) {
             TextView tvTalla = new TextView(getActivity());
             tvTalla.setText(header[x]);
-            tvTalla.setTextSize(24);
+            tv.setTextSize(28);
 
             tvTalla.setTextColor(Color.WHITE); // Texto en blanco
 
@@ -178,7 +182,7 @@ public class CrearPaeFragment extends Fragment implements IOnBackPressed {
             TextView textViewPropiedad = new TextView(getActivity());
             textViewPropiedad.setText(propiedad);
             textViewPropiedad.setTypeface(null, Typeface.BOLD);
-            textViewPropiedad.setTextSize(20); // Tamaño de letra grande
+            textViewPropiedad.setTextSize(24); // Tamaño de letra grande
             textViewPropiedad.setTextColor(Color.WHITE); // Texto en blanco
             textViewPropiedad.setBackgroundColor(Color.parseColor("#006B58")); // Fondo verde oscuro
 
@@ -204,6 +208,7 @@ public class CrearPaeFragment extends Fragment implements IOnBackPressed {
 
     @Override
     public boolean onBackPressed() {
-        return false;
+        requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new GeneralAlumnosFragment()).commit();
+        return true;
     }
 }

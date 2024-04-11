@@ -14,14 +14,20 @@ import androidx.core.view.MenuHost;
 import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.calferinnovate.mediconnecta.Model.Alumnos;
+import com.calferinnovate.mediconnecta.Model.Pae;
+import com.calferinnovate.mediconnecta.View.Home.Fragments.Addiciones.CrearPaeFragment;
 import com.calferinnovate.mediconnecta.View.Home.Fragments.AlumnosFragment;
 import com.calferinnovate.mediconnecta.View.IOnBackPressed;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
 import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.ViewModel.SharedAlumnosViewModel;
 import com.google.android.material.tabs.TabLayout;
+
+import java.util.ArrayList;
 
 /**
  * Fragmento que proporciona un TabLayout para desplazarse por los datos del paciente y un fragment container
@@ -121,7 +127,23 @@ public class DetalleAlumnoFragment extends Fragment implements IOnBackPressed {
                 getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new GeneralAlumnosFragment()).commit();
                 break;
             case "PAE":
-                getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new PaeFragment()).commit();
+                sharedAlumnosViewModel.getPaciente().observe(getViewLifecycleOwner(), new Observer<Alumnos>() {
+                    @Override
+                    public void onChanged(Alumnos alumnos) {
+                        sharedAlumnosViewModel.obtienePae(alumnos).observe(getViewLifecycleOwner(), new Observer<ArrayList<Pae>>() {
+                            @Override
+                            public void onChanged(ArrayList<Pae> paes) {
+                                if(paes != null){
+                                    if(paes.isEmpty()){
+                                        getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new CrearPaeFragment()).commit();
+                                    }else{
+                                        getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new PaeFragment()).commit();
+                                    }
+                                }
+                            }
+                        });
+                    }
+                });
                 break;
             case "Seguimiento":
                 getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new SeguimientoFragment()).commit();

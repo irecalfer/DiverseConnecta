@@ -281,6 +281,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:enabled="true"
+                android:textSize="@dimen/defaultTextSize"
                 android:imeOptions="actionNext"
                 android:inputType="text|textMultiLine"
                 android:textColor="@color/md_theme_black" />
@@ -308,6 +309,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:enabled="true"
+                android:textSize="@dimen/defaultTextSize"
                 android:imeOptions="actionNext"
                 android:textColor="@color/md_theme_black" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -335,6 +337,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:enabled="true"
+                android:textSize="@dimen/defaultTextSize"
                 android:imeOptions="actionNext"
                 android:textColor="@color/md_theme_black" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -361,6 +364,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:enabled="true"
+                android:textSize="@dimen/defaultTextSize"
                 android:imeOptions="actionNext"
                 android:textColor="@color/md_theme_black" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -387,6 +391,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:enabled="true"
+                android:textSize="@dimen/defaultTextSize"
                 android:imeOptions="actionNext"
                 android:textColor="@color/md_theme_black" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -413,6 +418,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:enabled="true"
+                android:textSize="@dimen/defaultTextSize"
                 android:imeOptions="actionNext"
                 android:inputType="text|textMultiLine"
                 android:textColor="@color/md_theme_black" />
@@ -440,6 +446,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:enabled="true"
+                android:textSize="@dimen/defaultTextSize"
                 android:imeOptions="actionNext"
                 android:inputType="text|textMultiLine"
                 android:textColor="@color/md_theme_black" />
@@ -467,6 +474,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:enabled="true"
+                android:textSize="@dimen/defaultTextSize"
                 android:imeOptions="actionNext"
                 android:inputType="text|textMultiLine"
                 android:textColor="@color/md_theme_black" />
@@ -495,6 +503,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:enabled="true"
+                android:textSize="@dimen/defaultTextSize"
                 android:imeOptions="actionNext"
                 android:inputType="text|textMultiLine"
                 android:textColor="@color/md_theme_black" />
@@ -523,6 +532,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:enabled="true"
+                android:textSize="@dimen/defaultTextSize"
                 android:imeOptions="actionNext"
                 android:inputType="text|textMultiLine"
                 android:textColor="@color/md_theme_black" />

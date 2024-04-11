@@ -71,7 +71,7 @@ public class CreaPaeAdapter {
                 }
             }
         }
-        ArrayAdapter<String> tutoresAdapter = new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, nombreTutoresArrayList);
+        ArrayAdapter<String> tutoresAdapter = new ArrayAdapter<>(context,R.layout.my_spinner, nombreTutoresArrayList);
         tutorTv.setAdapter(tutoresAdapter);
         tutorTv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -90,7 +90,7 @@ public class CreaPaeAdapter {
                 }
             }
         }
-        ArrayAdapter<String> enfermerasAdapter = new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, nombreEnfermerasArrayList);
+        ArrayAdapter<String> enfermerasAdapter = new ArrayAdapter<>(context, R.layout.my_spinner, nombreEnfermerasArrayList);
         enfermeraTV.setAdapter(enfermerasAdapter);
         enfermeraTV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

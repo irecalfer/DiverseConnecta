@@ -1,5 +1,7 @@
 package com.calferinnovate.mediconnecta.ViewModel;
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -37,8 +39,8 @@ public class SharedAlumnosViewModel extends ViewModel {
     private PeticionesJson peticionesJson;
     private MutableLiveData<ArrayList<Pae>> mutablePaeList = new MutableLiveData<>();
     private MutableLiveData<ArrayList<ControlSomatometrico>> mutableControlSomatometricoList = new MutableLiveData<>();
-    private ArrayList<Pae> paeArrayList = new ArrayList<>();
     private MutableLiveData<ArrayList<String>> mutableLiveDataCursos = new MutableLiveData<>();
+
 
 
     /**
@@ -184,14 +186,12 @@ public class SharedAlumnosViewModel extends ViewModel {
 
     public LiveData<ArrayList<Pae>> obtienePae(Alumnos alumno) {
         String url = Constantes.url_part + "pae.php?id_alumno=" + alumno.getIdAlumno();
-        if(!paeArrayList.isEmpty()){
-            paeArrayList.clear();
-        }
+
         peticionesJson.getJsonObjectRequest(url, new PeticionesJson.MyJsonObjectResponseListener() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-
+                    ArrayList<Pae> paeArrayList = new ArrayList<>();
                     JSONArray jsonArray = response.getJSONArray("pae");
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
@@ -209,17 +209,20 @@ public class SharedAlumnosViewModel extends ViewModel {
                     }
 
 
-                        mutablePaeList.postValue(new ArrayList<>(paeArrayList));
-
+                      if(!paeArrayList.isEmpty()){
+                          mutablePaeList.postValue(new ArrayList<>(paeArrayList));
+                      }
 
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    Log.d("Error", "falla");
                 }
             }
 
             @Override
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
+                Log.d("Error", "falla 2");
             }
         });
 
