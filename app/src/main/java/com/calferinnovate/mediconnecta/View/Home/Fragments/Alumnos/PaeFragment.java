@@ -5,6 +5,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.view.MenuHost;
 import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
@@ -13,6 +14,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -54,12 +56,7 @@ public class PaeFragment extends Fragment implements IOnBackPressed {
     private  ArrayList<String> propiedades = new ArrayList<>(Arrays.asList("Peso", "Talla", "IMC", "Percentil", "Tª", "T.A", "F.C", "Sat. O2"));
     private String[] header = {"1er Trimestre", "2º Trimestre", "3er Trimestre"};
     private MenuHost menuHost;
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
+    private TableRow.LayoutParams lp;
 
 
 
@@ -71,16 +68,24 @@ public class PaeFragment extends Fragment implements IOnBackPressed {
         getActivity().setTitle("PAE");
         menuHost = requireActivity();
         cambiarToolbar();
+        // Observa el estado de carga y actualiza la interfaz de usuario según sea necesario
         inicializaVariables(view);
         inicializaViewModel();
-        obtieneDatosAlumno(view);
-        creaTablaSeguimiento(view);
         return view;
     }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        obtieneDatosAlumno(view);
+    }
+
+
 
     public void inicializaVariables(View view){
         claseGlobal = ClaseGlobal.getInstance();
         tablaPae = view.findViewById(R.id.tablaControlPae);
+        alumno = new Alumnos();
     }
 
     public void inicializaViewModel() {
@@ -100,10 +105,38 @@ public class PaeFragment extends Fragment implements IOnBackPressed {
         sharedAlumnosViewModel = new ViewModelProvider(requireActivity(), factory).get(SharedAlumnosViewModel.class);
     }
 
-    public void creaTablaSeguimiento(View view){
+
+
+
+    public void obtieneDatosAlumno(View view){
+        sharedAlumnosViewModel.getPaciente().observe(getViewLifecycleOwner(), new Observer<Alumnos>() {
+            @Override
+            public void onChanged(Alumnos alumnos) {
+                alumno = alumnos;
+                //sharedAlumnosViewModel.limpiarDatos();
+                obtienePae(alumno, view);
+            }
+        });
+    }
+
+    public void obtienePae(Alumnos alumno, View view){
+        Log.d("PAE_FRAGMENT", "Obteniendo lista de PAE...");
+        sharedAlumnosViewModel.obtienePae(alumno).observe(getViewLifecycleOwner(), new Observer<ArrayList<Pae>>() {
+            @Override
+            public void onChanged(ArrayList<Pae> paes) {
+                if (!paes.isEmpty()) {
+                    PaeAdapter paeAdapter = new PaeAdapter(alumno, paes.get(0), requireContext());
+                    paeAdapter.rellenaUI(view);
+                    creaTablaSeguimiento(view, paes);
+                }
+            }
+        });
+    }
+
+    public void creaTablaSeguimiento(View view, ArrayList<Pae> paeArrayList){
         // Primero dibujar el encabezado; esto es poner "TALLAS" y a la derecha todas las tallas
         TableRow fila = new TableRow(getActivity());
-        TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
+        lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
         fila.setLayoutParams(lp);
 
         // Establecer el fondo de color del encabezado
@@ -132,33 +165,49 @@ public class PaeFragment extends Fragment implements IOnBackPressed {
 // Finalmente agregar la fila en la primera posición
         tablaPae.addView(fila, 0);
         // Rellenar la tabla con los datos de cada propiedad para cada trimestre
-        obtieneDatosAlumno(view, lp);
-    }
-
-
-
-    public void obtieneDatosAlumno(View view, TableRow.LayoutParams lp){
-        sharedAlumnosViewModel.getPaciente().observe(getViewLifecycleOwner(), new Observer<Alumnos>() {
+        Log.d("paecontrol", String.valueOf(paeArrayList.get(0).getIdPae()));
+        sharedAlumnosViewModel.obtieneControlSomatometrico(paeArrayList.get(0)).observe(getViewLifecycleOwner(), new Observer<ArrayList<ControlSomatometrico>>() {
             @Override
-            public void onChanged(Alumnos alumnos) {
-                Alumnos alumno = alumnos;
-                obtienePae(alumno, view, lp);
+            public void onChanged(ArrayList<ControlSomatometrico> controlSomatometricos) {
+                ArrayList<ControlSomatometrico> controlTemp = new ArrayList<>(controlSomatometricos);
+                Log.d("paecontrol2", String.valueOf(paeArrayList.get(0).getIdPae()));
+                Log.d("paecontrol2", String.valueOf(controlTemp.get(0).getImc()));
+                // Crear una fila para cada propiedad
+                for (String propiedad : propiedades) {
+                    TableRow filaPropiedad = new TableRow(getActivity());
+                    filaPropiedad.setLayoutParams(lp);
 
+                    // Agregar el nombre de la propiedad como encabezado
+                    TextView textViewPropiedad = new TextView(getActivity());
+                    textViewPropiedad.setText(propiedad);
+                    textViewPropiedad.setTypeface(null, Typeface.BOLD);
+                    textViewPropiedad.setTextSize(20); // Tamaño de letra grande
+                    textViewPropiedad.setTextColor(Color.WHITE); // Texto en blanco
+                    textViewPropiedad.setBackgroundColor(Color.parseColor("#006B58")); // Fondo verde oscuro
+                    filaPropiedad.addView(textViewPropiedad);
+
+                    // Agregar los datos correspondientes para cada trimestre
+                    for (ControlSomatometrico control : controlTemp) {
+                        EditText editText = new EditText(getActivity());
+                        String dato = obtenerDatoPropiedad(control, propiedad);
+                        editText.setText(dato);
+
+                        // Establecer parámetros de diseño para EditText
+                        TableRow.LayoutParams editTextParams = new TableRow.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f); // Peso 1 para que se expanda
+                        editText.setLayoutParams(editTextParams);
+
+                        filaPropiedad.addView(editText);
+                    }
+
+                    // Agregar la fila a la tabla
+                    tablaPae.addView(filaPropiedad);
+                }
+
+                propiedades.clear();
             }
         });
     }
 
-    public void obtienePae(Alumnos alumno, View view, TableRow.LayoutParams lp){
-        sharedAlumnosViewModel.obtienePae(alumno).observe(getViewLifecycleOwner(), new Observer<ArrayList<Pae>>() {
-            @Override
-            public void onChanged(ArrayList<Pae> paes) {
-                    PaeAdapter paeAdapter = new PaeAdapter(alumno, paes.get(0), requireContext());
-                    paeAdapter.rellenaUI(view);
-                    rellenaFilasControl(paes.get(0), lp);
-                }
-
-        });
-    }
 
    /* public void rellenaFilasControl(Pae pae, TableRow.LayoutParams lp){
         sharedAlumnosViewModel.obtieneControlSomatometrico(pae).observe(getViewLifecycleOwner(), new Observer<ArrayList<ControlSomatometrico>>() {
@@ -204,46 +253,7 @@ public class PaeFragment extends Fragment implements IOnBackPressed {
         });
     }*/
 
-    public void rellenaFilasControl(Pae pae, TableRow.LayoutParams lp){
-        sharedAlumnosViewModel.obtieneControlSomatometrico(pae).observe(getViewLifecycleOwner(), new Observer<ArrayList<ControlSomatometrico>>() {
-            @Override
-            public void onChanged(ArrayList<ControlSomatometrico> controlSomatometricos) {
-                ArrayList<ControlSomatometrico> controlTemp = new ArrayList<>(controlSomatometricos);
-                // Crear una fila para cada propiedad
-                for (String propiedad : propiedades) {
-                    TableRow filaPropiedad = new TableRow(getActivity());
-                    filaPropiedad.setLayoutParams(lp);
 
-                    // Agregar el nombre de la propiedad como encabezado
-                    TextView textViewPropiedad = new TextView(getActivity());
-                    textViewPropiedad.setText(propiedad);
-                    textViewPropiedad.setTypeface(null, Typeface.BOLD);
-                    textViewPropiedad.setTextSize(20); // Tamaño de letra grande
-                    textViewPropiedad.setTextColor(Color.WHITE); // Texto en blanco
-                    textViewPropiedad.setBackgroundColor(Color.parseColor("#006B58")); // Fondo verde oscuro
-                    filaPropiedad.addView(textViewPropiedad);
-
-                    // Agregar los datos correspondientes para cada trimestre
-                    for (ControlSomatometrico control : controlTemp) {
-                        EditText editText = new EditText(getActivity());
-                        String dato = obtenerDatoPropiedad(control, propiedad);
-                        editText.setText(dato);
-
-                        // Establecer parámetros de diseño para EditText
-                        TableRow.LayoutParams editTextParams = new TableRow.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f); // Peso 1 para que se expanda
-                        editText.setLayoutParams(editTextParams);
-
-                        filaPropiedad.addView(editText);
-                    }
-
-                    // Agregar la fila a la tabla
-                    tablaPae.addView(filaPropiedad);
-                }
-
-                propiedades.clear();
-            }
-        });
-    }
 
 
 
@@ -292,7 +302,7 @@ public class PaeFragment extends Fragment implements IOnBackPressed {
 
     @Override
     public boolean onBackPressed() {
-        requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new GeneralAlumnosFragment()).commit();
+        requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AlumnosFragment()).commit();
         return true;
     }
 }

@@ -42,6 +42,7 @@ public class DetalleAlumnoFragment extends Fragment implements IOnBackPressed {
 
 
 
+
     /**
      * Método llamado cuando se crea la vista del fragmento.
      * Infla el diseño de la UI desde el archivo XML fragment_detalle_pacientes.xml.
@@ -99,7 +100,9 @@ public class DetalleAlumnoFragment extends Fragment implements IOnBackPressed {
                 String tabSeleccionado = (String) tab.getText();
 
                 assert tabSeleccionado != null;
-                navegaAlFragmento(tabSeleccionado);
+
+                    navegaAlFragmento(tabSeleccionado);
+
             }
 
 
@@ -127,23 +130,7 @@ public class DetalleAlumnoFragment extends Fragment implements IOnBackPressed {
                 getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new GeneralAlumnosFragment()).commit();
                 break;
             case "PAE":
-                sharedAlumnosViewModel.getPaciente().observe(getViewLifecycleOwner(), new Observer<Alumnos>() {
-                    @Override
-                    public void onChanged(Alumnos alumnos) {
-                        sharedAlumnosViewModel.obtienePae(alumnos).observe(getViewLifecycleOwner(), new Observer<ArrayList<Pae>>() {
-                            @Override
-                            public void onChanged(ArrayList<Pae> paes) {
-                                if(paes != null){
-                                    if(paes.isEmpty()){
-                                        getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new CrearPaeFragment()).commit();
-                                    }else{
-                                        getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new PaeFragment()).commit();
-                                    }
-                                }
-                            }
-                        });
-                    }
-                });
+                seleccionaTipoPae();
                 break;
             case "Seguimiento":
                 getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new SeguimientoFragment()).commit();
@@ -154,6 +141,29 @@ public class DetalleAlumnoFragment extends Fragment implements IOnBackPressed {
 
         }
     }
+
+
+    public void seleccionaTipoPae() {
+        // Limpiar datos del paciente anterior
+            sharedAlumnosViewModel.limpiarDatos();
+            sharedAlumnosViewModel.getPaciente().observe(getViewLifecycleOwner(), new Observer<Alumnos>() {
+                @Override
+                public void onChanged(Alumnos alumnos) {
+                    sharedAlumnosViewModel.obtienePae(alumnos).observe(getViewLifecycleOwner(), new Observer<ArrayList<Pae>>() {
+                        @Override
+                        public void onChanged(ArrayList<Pae> paeArrayList) {
+                            sharedAlumnosViewModel.getPaciente().removeObservers(getViewLifecycleOwner());
+                            sharedAlumnosViewModel.obtienePae(alumnos).removeObservers(getViewLifecycleOwner());
+                            if (!paeArrayList.isEmpty()) {
+                                getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new PaeFragment()).commit();
+                            } else {
+                                getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new CrearPaeFragment()).commit();
+                            }
+                        }
+                    });
+                }
+            });
+        }
 
 
     /**

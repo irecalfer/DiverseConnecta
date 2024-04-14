@@ -5,6 +5,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.view.MenuHost;
 import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
@@ -28,6 +29,7 @@ import com.calferinnovate.mediconnecta.Model.Alumnos;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
 import com.calferinnovate.mediconnecta.Model.ControlSomatometrico;
 import com.calferinnovate.mediconnecta.Model.Curso;
+import com.calferinnovate.mediconnecta.Model.Pae;
 import com.calferinnovate.mediconnecta.Model.PeticionesJson;
 import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.View.Home.Fragments.Alumnos.GeneralAlumnosFragment;
@@ -50,8 +52,7 @@ public class CrearPaeFragment extends Fragment implements IOnBackPressed {
     private TableLayout tablaPae;
     private SharedAlumnosViewModel sharedAlumnosViewModel;
     private PeticionesJson peticionesJson;
-    private CreaPaeAdapter paeAdapter;
-    private ArrayList<String> cursosArrayList = new ArrayList<>();
+    private CreaPaeAdapter creaPaeAdapter;
 
 
     @Override
@@ -65,10 +66,16 @@ public class CrearPaeFragment extends Fragment implements IOnBackPressed {
         inicializaViewModel();
         cambiarToolbar();
         inicializaVariables(view);
-        rellenaDatosConocidos(view);
-        creaTablaSeguimiento(view);
+
 
         return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        rellenaDatosConocidos(view);
+        creaTablaSeguimiento(view);
     }
 
     public void inicializaVariables(View view){
@@ -118,6 +125,7 @@ public class CrearPaeFragment extends Fragment implements IOnBackPressed {
         sharedAlumnosViewModel.getPaciente().observe(getViewLifecycleOwner(), new Observer<Alumnos>() {
             @Override
             public void onChanged(Alumnos alumnos) {
+                // Limpia los datos del PAE al cambiar de alumno
                 seteaDatos(alumnos, view);
             }
         });
@@ -128,11 +136,12 @@ public class CrearPaeFragment extends Fragment implements IOnBackPressed {
         sharedAlumnosViewModel.obtieneListaCursos().observe(getViewLifecycleOwner(), new Observer<ArrayList<String>>() {
             @Override
             public void onChanged(ArrayList<String> cursos) {
-                cursosArrayList = cursos;
+                creaPaeAdapter = new CreaPaeAdapter(alumno, cursos, claseGlobal, requireActivity());
+                creaPaeAdapter.rellenaUI(view);
             }
         });
-        paeAdapter = new CreaPaeAdapter(alumno, cursosArrayList, claseGlobal, requireActivity());
-        paeAdapter.rellenaUI(view);
+
+
     }
     public void creaTablaSeguimiento(View view){
         // Primero dibujar el encabezado; esto es poner "TALLAS" y a la derecha todas las tallas
@@ -208,7 +217,7 @@ public class CrearPaeFragment extends Fragment implements IOnBackPressed {
 
     @Override
     public boolean onBackPressed() {
-        requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new GeneralAlumnosFragment()).commit();
+        requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AlumnosFragment()).commit();
         return true;
     }
 }

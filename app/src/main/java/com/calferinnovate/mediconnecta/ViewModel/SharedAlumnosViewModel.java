@@ -37,9 +37,10 @@ public class SharedAlumnosViewModel extends ViewModel {
     private final MutableLiveData<ArrayList<String>> listaSexoLiveData = new MutableLiveData<>();
     private final MutableLiveData<ArrayList<String>> listaEstadoCivilLiveData = new MutableLiveData<>();
     private PeticionesJson peticionesJson;
-    private MutableLiveData<ArrayList<Pae>> mutablePaeList = new MutableLiveData<>();
-    private MutableLiveData<ArrayList<ControlSomatometrico>> mutableControlSomatometricoList = new MutableLiveData<>();
-    private MutableLiveData<ArrayList<String>> mutableLiveDataCursos = new MutableLiveData<>();
+    private  MutableLiveData<ArrayList<Pae>> mutablePaeList = new MutableLiveData<>();
+    private  MutableLiveData<ArrayList<ControlSomatometrico>> mutableControlSomatometricoList = new MutableLiveData<>();
+    private final MutableLiveData<ArrayList<String>> mutableLiveDataCursos = new MutableLiveData<>();
+
 
 
 
@@ -185,84 +186,84 @@ public class SharedAlumnosViewModel extends ViewModel {
     }
 
     public LiveData<ArrayList<Pae>> obtienePae(Alumnos alumno) {
-        String url = Constantes.url_part + "pae.php?id_alumno=" + alumno.getIdAlumno();
+            String url = Constantes.url_part + "pae.php?id_alumno=" + alumno.getIdAlumno();
+            peticionesJson.getJsonObjectRequest(url, new PeticionesJson.MyJsonObjectResponseListener() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    try {
+                        ArrayList<Pae> paeArrayList = new ArrayList<>();
+                        JSONArray jsonArray = response.getJSONArray("pae");
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject jsonObject = jsonArray.getJSONObject(i);
+                            Pae nuevoPae = new Pae(jsonObject.optInt("id_pae"), jsonObject.optInt("curso_emision_inicio"),
+                                    jsonObject.optInt("curso_emision_final"), jsonObject.optInt("fk_id_enfermero"),
+                                    jsonObject.optInt("fk_id_profesor"), jsonObject.optInt("fk_id_alumnos"),
+                                    jsonObject.optString("alergias"), jsonObject.optString("diagnostico_clinico"),
+                                    jsonObject.optString("fiebre"), jsonObject.optString("dieta_alimentacion"),
+                                    jsonObject.optString("protesis"), jsonObject.optString("ortesis"),
+                                    jsonObject.optString("gafas"), jsonObject.optString("audifonos"),
+                                    jsonObject.optString("otros"), jsonObject.optString("medicacion"),
+                                    jsonObject.optString("datos_importantes")
+                            );
+                            paeArrayList.add(nuevoPae);
+                        }
 
-        peticionesJson.getJsonObjectRequest(url, new PeticionesJson.MyJsonObjectResponseListener() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    ArrayList<Pae> paeArrayList = new ArrayList<>();
-                    JSONArray jsonArray = response.getJSONArray("pae");
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        Pae nuevoPae = new Pae(jsonObject.optInt("id_pae"), jsonObject.optInt("curso_emision_inicio"),
-                                jsonObject.optInt("curso_emision_final"), jsonObject.optInt("fk_id_enfermero"),
-                                jsonObject.optInt("fk_id_profesor"), jsonObject.optInt("fk_id_alumnos"),
-                                jsonObject.optString("alergias"), jsonObject.optString("diagnostico_clinico"),
-                                jsonObject.optString("fiebre"), jsonObject.optString("dieta_alimentacion"),
-                                jsonObject.optString("protesis"), jsonObject.optString("ortesis"),
-                                jsonObject.optString("gafas"), jsonObject.optString("audifonos"),
-                                jsonObject.optString("otros"), jsonObject.optString("medicacion"),
-                                jsonObject.optString("datos_importantes")
-                        );
-                        paeArrayList.add(nuevoPae);
+                        mutablePaeList.postValue(new ArrayList<>(paeArrayList));
+
+                        // Una vez que se obtenga el PAE, se procede a obtener el control somatométrico
+                        for (Pae pae : paeArrayList) {
+                            obtieneControlSomatometrico(pae);
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-
-
-                      if(!paeArrayList.isEmpty()){
-                          mutablePaeList.postValue(new ArrayList<>(paeArrayList));
-                      }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    Log.d("Error", "falla");
                 }
-            }
 
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-                Log.d("Error", "falla 2");
-            }
-        });
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    error.printStackTrace();
+                }
+            });
 
         return mutablePaeList;
     }
 
+    // Método para obtener el control somatométrico del PAE
     public LiveData<ArrayList<ControlSomatometrico>> obtieneControlSomatometrico(Pae pae) {
-        String url = Constantes.url_part + "control_somatometrico.php?id_pae=" + pae.getIdPae();
-        peticionesJson.getJsonObjectRequest(url, new PeticionesJson.MyJsonObjectResponseListener() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    ArrayList<ControlSomatometrico> controlSomatometricoArrayList= new ArrayList<>();
-                    JSONArray jsonArray = response.getJSONArray("control");
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        ControlSomatometrico nuevoControl = new ControlSomatometrico(jsonObject.optInt("id_control"),
-                                jsonObject.optInt("frecuencia_cardiaca"),
-                                jsonObject.optInt("saturacion_o2"), jsonObject.optInt("fk_trimestre"),
-                                jsonObject.optInt("fk_id_pae"), jsonObject.optDouble("peso"), jsonObject.optDouble("imc"),
-                                jsonObject.optDouble("percentil"), jsonObject.optDouble("temperatura"),
-                                jsonObject.optString("talla"), jsonObject.optString("tension_arterial")
-                        );
-                        controlSomatometricoArrayList.add(nuevoControl);
-                    }
+            String url = Constantes.url_part + "control_somatometrico.php?id_pae=" + pae.getIdPae();
+            peticionesJson.getJsonObjectRequest(url, new PeticionesJson.MyJsonObjectResponseListener() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    try {
+                        ArrayList<ControlSomatometrico> controlSomatometricoArrayList= new ArrayList<>();
+                        JSONArray jsonArray = response.getJSONArray("control");
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject jsonObject = jsonArray.getJSONObject(i);
+                            ControlSomatometrico nuevoControl = new ControlSomatometrico(jsonObject.optInt("id_control"),
+                                    jsonObject.optInt("frecuencia_cardiaca"),
+                                    jsonObject.optInt("saturacion_o2"), jsonObject.optInt("fk_trimestre"),
+                                    jsonObject.optInt("fk_id_pae"), jsonObject.optDouble("peso"), jsonObject.optDouble("imc"),
+                                    jsonObject.optDouble("percentil"), jsonObject.optDouble("temperatura"),
+                                    jsonObject.optString("talla"), jsonObject.optString("tension_arterial")
+                            );
+                            controlSomatometricoArrayList.add(nuevoControl);
+                        }
 
-                    if (!controlSomatometricoArrayList.isEmpty()) {
-                        mutableControlSomatometricoList.postValue(new ArrayList<>(controlSomatometricoArrayList));
-                    }
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                            mutableControlSomatometricoList.postValue(new ArrayList<>(controlSomatometricoArrayList));
+
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
 
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-            }
-        });
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    error.printStackTrace();
+                }
+            });
 
         return mutableControlSomatometricoList;
     }
@@ -299,6 +300,13 @@ public class SharedAlumnosViewModel extends ViewModel {
 
         return mutableLiveDataCursos;
     }
+
+    // Método para limpiar los datos del PAE al cambiar de alumno
+    public void limpiarDatos() {
+        mutablePaeList = new MutableLiveData<>();
+        mutableControlSomatometricoList = new MutableLiveData<>();
+    }
+
 
 
 }
