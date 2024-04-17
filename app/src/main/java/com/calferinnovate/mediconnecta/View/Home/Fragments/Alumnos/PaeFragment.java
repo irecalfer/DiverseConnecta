@@ -133,17 +133,16 @@ public class PaeFragment extends Fragment implements IOnBackPressed {
         });
     }
 
-    public void creaTablaSeguimiento(View view, ArrayList<Pae> paeArrayList){
-        // Primero dibujar el encabezado; esto es poner "TALLAS" y a la derecha todas las tallas
+    public void creaEncabezadoTabla() {
         TableRow fila = new TableRow(getActivity());
         lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
         fila.setLayoutParams(lp);
 
         // Establecer el fondo de color del encabezado
         fila.setBackgroundColor(Color.parseColor("#006B58")); // Cambia el color según tus preferencias
-// Borde
-        //fila.setBackgroundResource(R.drawable.borde_tabla);
-//El elemento de la izquierda
+        // Borde
+        // fila.setBackgroundResource(R.drawable.borde_tabla);
+        // El elemento de la izquierda
         TextView tv = new TextView(getActivity());
         tv.setTypeface(null, Typeface.BOLD);
         tv.setText("Control");
@@ -152,7 +151,7 @@ public class PaeFragment extends Fragment implements IOnBackPressed {
 
         fila.addView(tv);
 
-// Ahora agregar las tallas
+        // Ahora agregar las tallas
         for (int x = 0; x < header.length; x++) {
             TextView tvTalla = new TextView(getActivity());
             tvTalla.setText(header[x]);
@@ -162,16 +161,20 @@ public class PaeFragment extends Fragment implements IOnBackPressed {
 
             fila.addView(tvTalla);
         }
-// Finalmente agregar la fila en la primera posición
+        // Finalmente agregar la fila en la primera posición
         tablaPae.addView(fila, 0);
+    }
+    public void creaTablaSeguimiento(View view, ArrayList<Pae> paeArrayList){
+        // Limpia la tabla antes de volver a crear las filas y el encabezado
+        tablaPae.removeAllViews();
+
+        // Crea el encabezado de la tabla
+        creaEncabezadoTabla();
         // Rellenar la tabla con los datos de cada propiedad para cada trimestre
-        Log.d("paecontrol", String.valueOf(paeArrayList.get(0).getIdPae()));
         sharedAlumnosViewModel.obtieneControlSomatometrico(paeArrayList.get(0)).observe(getViewLifecycleOwner(), new Observer<ArrayList<ControlSomatometrico>>() {
             @Override
             public void onChanged(ArrayList<ControlSomatometrico> controlSomatometricos) {
                 ArrayList<ControlSomatometrico> controlTemp = new ArrayList<>(controlSomatometricos);
-                Log.d("paecontrol2", String.valueOf(paeArrayList.get(0).getIdPae()));
-                Log.d("paecontrol2", String.valueOf(controlTemp.get(0).getImc()));
                 // Crear una fila para cada propiedad
                 for (String propiedad : propiedades) {
                     TableRow filaPropiedad = new TableRow(getActivity());

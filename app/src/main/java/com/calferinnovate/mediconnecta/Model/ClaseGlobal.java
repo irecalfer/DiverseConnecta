@@ -26,7 +26,7 @@ public class ClaseGlobal extends Application {
     private ArrayList<NivelEscolar> listaNivelEscolar;
     private ArrayList<String> listaGradosDiscapacidad;
     private ArrayList<Cargo> cargoArrayList;
-
+    private ArrayList<Curso> cursoArrayList;
 
 
 
@@ -48,6 +48,7 @@ public class ClaseGlobal extends Application {
         listaGradosDiscapacidad = new ArrayList<>();
         pae = new Pae();
         cargoArrayList = new ArrayList<>();
+        cursoArrayList = new ArrayList<>();
 
     }
 
@@ -134,5 +135,13 @@ public class ClaseGlobal extends Application {
 
     public void setCargoArrayList(ArrayList<Cargo> cargoArrayList) {
         this.cargoArrayList = cargoArrayList;
+    }
+
+    public ArrayList<Curso> getCursoArrayList() {
+        return cursoArrayList;
+    }
+
+    public void setCursoArrayList(ArrayList<Curso> cursoArrayList) {
+        this.cursoArrayList = cursoArrayList;
     }
 }

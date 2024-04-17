@@ -10,6 +10,7 @@ public class Curso {
     public Curso(String añoInicio, String añoFin) {
         this.añoInicio = añoInicio;
         this.añoFin = añoFin;
+
     }
 
     public String getAñoInicio() {
@@ -27,4 +28,5 @@ public class Curso {
     public void setAñoFin(String añoFin) {
         this.añoFin = añoFin;
     }
+
 }

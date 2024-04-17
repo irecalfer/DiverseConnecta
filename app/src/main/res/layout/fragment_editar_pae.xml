@@ -148,6 +148,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/labelCursoEmision"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="20dp"
@@ -157,23 +158,27 @@
             android:autoSizeMinTextSize="12sp"
             android:hint="@string/CursoEmisionLabel"
             android:textColorHint="@color/md_theme_light_surfaceTint"
+            app:boxBackgroundMode="outline"
+            app:hintEnabled="true"
             app:hintTextAppearance="@style/TextLabel"
             app:layout_constraintBottom_toTopOf="@id/guidelineMidBottom"
             app:layout_constraintEnd_toStartOf="@id/guidelinePercentIzq"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/guidelineMid">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/cursoEmision"
+
+            <AutoCompleteTextView
+                android:id="@+id/cursos_exposed_dropdown"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:enabled="true"
-                android:imeOptions="actionNext"
-                android:textColor="@color/md_theme_black" />
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textSize="@dimen/defaultTextSize"
+                android:inputType="none" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/labelTutorAlumno"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="20dp"
@@ -189,17 +194,18 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/guidelineMidBottom">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/tutorAlumno"
+            <AutoCompleteTextView
+                android:id="@+id/tutor_exposed_dropdown"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:enabled="true"
-                android:imeOptions="actionNext"
-                android:textColor="@color/md_theme_black" />
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textSize="@dimen/defaultTextSize"
+                android:inputType="none"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/labelEnfermeraAlumno"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="20dp"
@@ -215,13 +221,13 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/guidelineEnd">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/enfermeraAlumno"
+            <AutoCompleteTextView
+                android:id="@+id/enfermera_exposed_dropdown"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:enabled="true"
-                android:imeOptions="actionNext"
-                android:textColor="@color/md_theme_black" />
+                android:layout_height="match_parent"
+                android:textSize="@dimen/defaultTextSize"
+                android:layout_weight="1"
+                android:inputType="none"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout

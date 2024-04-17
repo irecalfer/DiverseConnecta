@@ -6,12 +6,14 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 
+import androidx.lifecycle.Observer;
+
 import com.calferinnovate.mediconnecta.Model.Alumnos;
 import com.calferinnovate.mediconnecta.Model.Cargo;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
-import com.calferinnovate.mediconnecta.Model.Curso;
 import com.calferinnovate.mediconnecta.Model.Empleado;
 import com.calferinnovate.mediconnecta.R;
+import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;
 
@@ -22,15 +24,36 @@ public class CreaPaeAdapter {
     private ClaseGlobal claseGlobal;
     private Context context;
 
-
     private AutoCompleteTextView cursosTV, tutorTv, enfermeraTV;
+    private TextInputEditText nombreTV, nacimientoTV;
+    private String curso, tutor, enfermera;
+    private ArrayList<String> nombreTutoresArrayList, nombreEnfermerasArrayList;
+    private ItemItemSelectedListener listener;
 
-    public CreaPaeAdapter(Alumnos alumno, ArrayList<String> cursoArrayList,ClaseGlobal claseGlobal, Context context){
+
+
+
+    public interface ItemItemSelectedListener {
+        void onSpinnerItemSelected(String curso, String tutor, String enfermera);
+    }
+
+    // Método para establecer el escuchador de eventos
+    public void setSpinnerItemSelectedListener(ItemItemSelectedListener listener) {
+        this.listener = listener;
+    }
+
+    /**
+     * Este metodo se utiliza desde el fragmento que captura el evento de clic de los items
+     */
+
+
+    public CreaPaeAdapter(Alumnos alumno, ArrayList<String> cursoArrayList, ClaseGlobal claseGlobal, Context context){
         this.alumno = alumno;
         this.cursoArrayList = cursoArrayList;
         this.claseGlobal = claseGlobal;
         this.context = context;
     }
+
 
     /**
      * Método utilizado para actualizar la UI.
@@ -39,31 +62,58 @@ public class CreaPaeAdapter {
      */
     public void rellenaUI(View view) {
         enlazaRecursos(view);
-        seteaDatos();
+        seteaDatosConocidos();
+        setupSpinners();
     }
 
     public void enlazaRecursos(View view){
         cursosTV = view.findViewById(R.id.cursos_exposed_dropdown);
         tutorTv = view.findViewById(R.id.tutor_exposed_dropdown);
         enfermeraTV = view.findViewById(R.id.enfermera_exposed_dropdown);
-
+        nombreTV = view.findViewById(R.id.nombreAlumno);
+        nacimientoTV = view.findViewById(R.id.fechaNacimientoPae);
     }
 
-    public void seteaDatos(){
-        ArrayAdapter<String> cursosAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, cursoArrayList);
+
+    public void seteaDatosConocidos(){
+        nombreTV.setText(alumno.getNombre()+" "+alumno.getApellidos());
+        nacimientoTV.setText(alumno.getFechaNacimiento());
+    }
+
+
+    public String getCurso() {
+        return curso;
+    }
+
+    public String getTutor() {
+        return tutor;
+    }
+
+    public String getEnfermera() {
+        return enfermera;
+    }
+
+    // Método para inicializar los spinners y establecer los listeners
+    public void setupSpinners() {
+        setupCursosSpinner();
+        setupTutorSpinner();
+        setupEnfermeraSpinner();
+    }
+
+    private void setupCursosSpinner() {
+        ArrayAdapter<String> cursosAdapter = new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, cursoArrayList);
         cursosTV.setAdapter(cursosAdapter);
         cursosTV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+                curso = (String) parent.getItemAtPosition(position);
+                notifyItemSelectedListener();
             }
         });
-        obtieneListaTutores();
-        obtieneListaEnfermeras();
     }
 
-    public void obtieneListaTutores(){
-        ArrayList<String> nombreTutoresArrayList = new ArrayList<>();
+    private void setupTutorSpinner() {
+        nombreTutoresArrayList = new ArrayList<>();
         for(Cargo c: claseGlobal.getCargoArrayList()){
             for(Empleado e: claseGlobal.getListaEmpleados()){
                 if(e.getFk_cargo() == c.getIdCargo() && c.getNombreCargo().equals("Profesor")){
@@ -76,13 +126,14 @@ public class CreaPaeAdapter {
         tutorTv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+                tutor = (String) parent.getItemAtPosition(position);
+                notifyItemSelectedListener();
             }
         });
     }
 
-    public void obtieneListaEnfermeras(){
-        ArrayList<String> nombreEnfermerasArrayList = new ArrayList<>();
+    private void setupEnfermeraSpinner() {
+        nombreEnfermerasArrayList = new ArrayList<>();
         for(Cargo c: claseGlobal.getCargoArrayList()){
             for(Empleado e: claseGlobal.getListaEmpleados()){
                 if(e.getFk_cargo() == c.getIdCargo() && c.getNombreCargo().equals("Enfermera")){
@@ -95,8 +146,16 @@ public class CreaPaeAdapter {
         enfermeraTV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+                enfermera = (String) parent.getItemAtPosition(position);
+                notifyItemSelectedListener();
             }
         });
     }
+
+    private void notifyItemSelectedListener() {
+        if (listener != null) {
+            listener.onSpinnerItemSelected(curso, tutor, enfermera);
+        }
+    }
+
 }
