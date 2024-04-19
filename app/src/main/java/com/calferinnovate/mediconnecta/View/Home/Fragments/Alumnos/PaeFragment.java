@@ -28,6 +28,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.calferinnovate.mediconnecta.Adaptadores.PaeAdapter;
+import com.calferinnovate.mediconnecta.Interfaces.OnPaeUpdatedListener;
 import com.calferinnovate.mediconnecta.Model.Alumnos;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
 import com.calferinnovate.mediconnecta.Model.ControlSomatometrico;
@@ -57,6 +58,8 @@ public class PaeFragment extends Fragment implements IOnBackPressed {
     private String[] header = {"1er Trimestre", "2º Trimestre", "3er Trimestre"};
     private MenuHost menuHost;
     private TableRow.LayoutParams lp;
+    View view;
+    private Pae datosPae;
 
 
 
@@ -64,7 +67,7 @@ public class PaeFragment extends Fragment implements IOnBackPressed {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_pae, container, false);
+        view = inflater.inflate(R.layout.fragment_pae, container, false);
         getActivity().setTitle("PAE");
         menuHost = requireActivity();
         cambiarToolbar();
@@ -308,4 +311,7 @@ public class PaeFragment extends Fragment implements IOnBackPressed {
         requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AlumnosFragment()).commit();
         return true;
     }
+
+
+
 }

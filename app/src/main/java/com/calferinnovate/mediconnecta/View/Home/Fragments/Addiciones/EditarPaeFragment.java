@@ -13,6 +13,7 @@ import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -32,6 +33,7 @@ import com.android.volley.toolbox.Volley;
 import com.calferinnovate.mediconnecta.Adaptadores.CreaPaeAdapter;
 import com.calferinnovate.mediconnecta.Adaptadores.EditaPaeAdapter;
 import com.calferinnovate.mediconnecta.Adaptadores.PaeAdapter;
+import com.calferinnovate.mediconnecta.Interfaces.OnPaeUpdatedListener;
 import com.calferinnovate.mediconnecta.Interfaces.PaeInsertionObserver;
 import com.calferinnovate.mediconnecta.Model.Alumnos;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
@@ -42,6 +44,9 @@ import com.calferinnovate.mediconnecta.Model.Pae;
 import com.calferinnovate.mediconnecta.Model.PaeInsertionObservable;
 import com.calferinnovate.mediconnecta.Model.PeticionesJson;
 import com.calferinnovate.mediconnecta.R;
+import com.calferinnovate.mediconnecta.View.Home.Fragments.Alumnos.GeneralAlumnosFragment;
+import com.calferinnovate.mediconnecta.View.Home.Fragments.Alumnos.PaeFragment;
+import com.calferinnovate.mediconnecta.View.Home.Fragments.AlumnosFragment;
 import com.calferinnovate.mediconnecta.View.IOnBackPressed;
 import com.calferinnovate.mediconnecta.ViewModel.SharedAlumnosViewModel;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelArgs;
@@ -57,7 +62,7 @@ import java.util.Hashtable;
 import java.util.Map;
 
 
-public class EditarPaeFragment extends Fragment implements IOnBackPressed, EditaPaeAdapter.ItemItemSelectedListener, PaeInsertionObserver {
+public class EditarPaeFragment extends Fragment implements IOnBackPressed, EditaPaeAdapter.ItemItemSelectedListener, PaeInsertionObserver{
 
     private ClaseGlobal claseGlobal;
     private TableLayout tablaPae;
@@ -74,6 +79,11 @@ public class EditarPaeFragment extends Fragment implements IOnBackPressed, Edita
     private ArrayList<ControlSomatometrico> controlTrimestres;
     private TableRow.LayoutParams lp;
     private PaeInsertionObservable paeInsertionObservable = new PaeInsertionObservable();
+    //Agregamos variable booleana de bandera
+    private boolean controlRegistrado = false;
+    private Pae paeObtenido;
+    private boolean isObservingPae = false;
+    private boolean actualizado = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -99,15 +109,12 @@ public class EditarPaeFragment extends Fragment implements IOnBackPressed, Edita
     }
 
 
-
-
-
-
     public void inicializaVariables(View view) {
         claseGlobal = ClaseGlobal.getInstance();
         tablaPae = view.findViewById(R.id.tablaControlPae);
         alumnoSeleccionado = new Alumnos();
         controlTrimestres = new ArrayList<>();
+        paeObtenido = new Pae();
     }
 
     public void enlazaRecursos(View view) {
@@ -154,6 +161,10 @@ public class EditarPaeFragment extends Fragment implements IOnBackPressed, Edita
                 alumnoSeleccionado = alumnos;
                 seteaDatos(alumnos, view);
 
+                // Solo observa el Pae si aún no se ha obtenido
+                if (paeObtenido == null) {
+                    observaPae();
+                }
             }
         });
     }
@@ -168,7 +179,7 @@ public class EditarPaeFragment extends Fragment implements IOnBackPressed, Edita
                     @Override
                     public void onChanged(ArrayList<Pae> paes) {
                         if (!paes.isEmpty()) {
-                            EditaPaeAdapter editaPaeAdapter = new EditaPaeAdapter(alumnoSeleccionado, cursos, paes.get(0),claseGlobal, requireContext());
+                            EditaPaeAdapter editaPaeAdapter = new EditaPaeAdapter(alumnoSeleccionado, cursos, paes.get(0), claseGlobal, requireContext());
                             editaPaeAdapter.setSpinnerItemSelectedListener(EditarPaeFragment.this); // Pasa el listener al adaptador
                             editaPaeAdapter.rellenaUI(view);
                             //tablaPae.removeAllViews();
@@ -214,7 +225,7 @@ public class EditarPaeFragment extends Fragment implements IOnBackPressed, Edita
         tablaPae.addView(fila, 0);
     }
 
-    public void creaTablaSeguimiento(View view, ArrayList<Pae> paeArrayList){
+    public void creaTablaSeguimiento(View view, ArrayList<Pae> paeArrayList) {
         tablaPae.removeAllViews();
         // Crea el encabezado de la tabla
         creaEncabezadoTabla();
@@ -295,6 +306,11 @@ public class EditarPaeFragment extends Fragment implements IOnBackPressed, Edita
             public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
                 if (menuItem.getItemId() == R.id.action_confirmar_pae) {
                     registraElPae();
+                    sharedAlumnosViewModel.limpiarDatos();
+                    if(actualizado){
+                        getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new PaeFragment()).commit();
+                    }
+
                     return true;
                 }
 
@@ -304,6 +320,7 @@ public class EditarPaeFragment extends Fragment implements IOnBackPressed, Edita
 
         requireActivity().addMenuProvider(menuProvider, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
     }
+
 
     public void registraElPae() {
 
@@ -379,6 +396,7 @@ public class EditarPaeFragment extends Fragment implements IOnBackPressed, Edita
 
 
     }
+
     public String[] obtieneIdCursoSeleccionado() {
         int tamañoCurso = cursoSeleccionado.length();
         int separadorCurso = cursoSeleccionado.indexOf("/");
@@ -413,13 +431,10 @@ public class EditarPaeFragment extends Fragment implements IOnBackPressed, Edita
     }
 
 
-
-
     @Override
     public boolean onBackPressed() {
         return false;
     }
-
 
 
     @Override
@@ -438,27 +453,32 @@ public class EditarPaeFragment extends Fragment implements IOnBackPressed, Edita
     }
 
     public void observaPae() {
-        //Observamos el pae una vez que se ha subido a la base de datos
-        sharedAlumnosViewModel.obtienePae(alumnoSeleccionado).observe(getViewLifecycleOwner(), new Observer<ArrayList<Pae>>() {
-            @Override
-            public void onChanged(ArrayList<Pae> paeArrayList) {
-                if (paeArrayList != null && !paeArrayList.isEmpty()) {
-                    Pae pae = paeArrayList.get(0);
-                    if (pae != null) {
-                        controlTrimestres = obtenerDatosControl();
-                        registraElControl(controlTrimestres, pae);
+        if (!isObservingPae) {
+            sharedAlumnosViewModel.obtienePae(alumnoSeleccionado).observe(getViewLifecycleOwner(), new Observer<ArrayList<Pae>>() {
+                @Override
+                public void onChanged(ArrayList<Pae> paeArrayList) {
+                    if (paeArrayList != null && !paeArrayList.isEmpty()) {
+                        Pae pae = paeArrayList.get(0);
+                        if (pae != null) {
+                            isObservingPae = true;
+                            actualizado = true;
+                            controlTrimestres = obtenerDatosControlSomatometrico();
+                            actualizaElControl(controlTrimestres, pae);
+                        } else {
+                            Toast.makeText(requireContext(), "El PAE todavía no se ha subido", Toast.LENGTH_SHORT).show();
+                        }
                     } else {
-                        Toast.makeText(requireContext(), "El PAE todavía no se ha subido", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(requireContext(), "La lista está vacía", Toast.LENGTH_SHORT).show();
                     }
-                } else {
-                    Toast.makeText(requireContext(), "La lista está vacía", Toast.LENGTH_SHORT).show();
-                }
 
-            }
-        });
+                }
+            });
+        }
+
     }
 
-    public ArrayList<ControlSomatometrico> obtenerDatosControl() {
+
+    public ArrayList<ControlSomatometrico> obtenerDatosControlSomatometrico() {
         ArrayList<ControlSomatometrico> control = new ArrayList<>();
 
         // Itera sobre las columnas, comenzando desde la segunda columna
@@ -466,7 +486,7 @@ public class EditarPaeFragment extends Fragment implements IOnBackPressed, Edita
         for (int j = 1; j <= numColumnas; j++) {
             // Crea un objeto ControlSomatometrico para cada columna
             ControlSomatometrico controlSomatometrico = new ControlSomatometrico();
-
+            controlSomatometrico.setFkTrimestre(j);
             // Itera sobre las filas
             int numFilas = tablaPae.getChildCount();
             for (int i = 1; i < numFilas; i++) { // Comienza desde 1 para omitir la primera fila (encabezado)
@@ -517,18 +537,17 @@ public class EditarPaeFragment extends Fragment implements IOnBackPressed, Edita
         return control;
     }
 
-    public void registraElControl(ArrayList<ControlSomatometrico> controlTrimestres, Pae pae) {
-        // Itera sobre los objetos ControlSomatometrico
-        for (int i = 0; i < controlTrimestres.size(); i++) {
-            ControlSomatometrico controlSomatometrico = controlTrimestres.get(i);
-            int numeroTrimestre = i + 1; // El primer trimestre es 1, por lo que sumamos 1 al índice
+    public void actualizaElControl(ArrayList<ControlSomatometrico> controlTrimestres, Pae pae) {
 
-            // Envía el objeto ControlSomatometrico a la base de datos junto con el número del trimestre
-            enviarControlSomatometricoABaseDeDatos(controlSomatometrico, numeroTrimestre, pae);
+        for(ControlSomatometrico controlSomatometrico: controlTrimestres){
+            actualizaControlSomatometricoABaseDeDatos(controlSomatometrico, controlSomatometrico.getFkTrimestre(), pae);
         }
+
+
     }
 
-    public void enviarControlSomatometricoABaseDeDatos(ControlSomatometrico controlSomatometrico, int numeroTrimestre, Pae pae) {
+    public void actualizaControlSomatometricoABaseDeDatos(ControlSomatometrico controlSomatometrico, int numeroTrimestre, Pae pae) {
+        // Registro de depuración para verificar el valor del trimestre recibido
         String url = Constantes.url_part + "actualiza_control_somatometrico.php";
 
         StringRequest stringRequest;
@@ -538,6 +557,7 @@ public class EditarPaeFragment extends Fragment implements IOnBackPressed, Edita
                 String message = jsonResponse.getString("message");
 
                 if ("Actualización exitosa del control somatométrico".equals(message)) {
+                    Log.d("actualiza", "Numero de trimestre pasado: " + String.valueOf(numeroTrimestre));
                     Toast.makeText(getContext(), "Control actualizado correctamente", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getContext(), "Error al actualizar el control somatométrico", Toast.LENGTH_SHORT).show();
@@ -573,4 +593,7 @@ public class EditarPaeFragment extends Fragment implements IOnBackPressed, Edita
         RequestQueue requestQueue = Volley.newRequestQueue(requireContext());
         requestQueue.add(stringRequest);
     }
+
+
+
 }
