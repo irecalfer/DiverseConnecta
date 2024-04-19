@@ -155,9 +155,9 @@ public class DetalleAlumnoFragment extends Fragment implements IOnBackPressed {
                             sharedAlumnosViewModel.getPaciente().removeObservers(getViewLifecycleOwner());
                             sharedAlumnosViewModel.obtienePae(alumnos).removeObservers(getViewLifecycleOwner());
                             if (!paeArrayList.isEmpty()) {
-                                getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new PaeFragment()).commit();
+                                getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new PaeFragment()).addToBackStack(null).commit();
                             } else {
-                                getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new CrearPaeFragment()).commit();
+                                getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new CrearPaeFragment()).addToBackStack(null).commit();
                             }
                         }
                     });

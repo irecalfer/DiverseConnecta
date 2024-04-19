@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 import androidx.core.view.MenuHost;
 import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -84,6 +85,8 @@ public class EditarPaeFragment extends Fragment implements IOnBackPressed, Edita
     private Pae paeObtenido;
     private boolean isObservingPae = false;
     private boolean actualizado = false;
+    private int actualizacionesCompletadas = 0;
+    private final int totalActualizaciones = 3; // Total de actualizaciones que se esperan
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -108,6 +111,11 @@ public class EditarPaeFragment extends Fragment implements IOnBackPressed, Edita
         obtieneDatosAlumno(view);
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        paeInsertionObservable.removeObserver(this);
+    }
 
     public void inicializaVariables(View view) {
         claseGlobal = ClaseGlobal.getInstance();
@@ -306,11 +314,6 @@ public class EditarPaeFragment extends Fragment implements IOnBackPressed, Edita
             public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
                 if (menuItem.getItemId() == R.id.action_confirmar_pae) {
                     registraElPae();
-                    sharedAlumnosViewModel.limpiarDatos();
-                    if(actualizado){
-                        getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new PaeFragment()).commit();
-                    }
-
                     return true;
                 }
 
@@ -433,7 +436,8 @@ public class EditarPaeFragment extends Fragment implements IOnBackPressed, Edita
 
     @Override
     public boolean onBackPressed() {
-        return false;
+        getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new CrearPaeFragment()).addToBackStack(null).commit();
+        return true;
     }
 
 
@@ -461,7 +465,6 @@ public class EditarPaeFragment extends Fragment implements IOnBackPressed, Edita
                         Pae pae = paeArrayList.get(0);
                         if (pae != null) {
                             isObservingPae = true;
-                            actualizado = true;
                             controlTrimestres = obtenerDatosControlSomatometrico();
                             actualizaElControl(controlTrimestres, pae);
                         } else {
@@ -542,7 +545,7 @@ public class EditarPaeFragment extends Fragment implements IOnBackPressed, Edita
         for(ControlSomatometrico controlSomatometrico: controlTrimestres){
             actualizaControlSomatometricoABaseDeDatos(controlSomatometrico, controlSomatometrico.getFkTrimestre(), pae);
         }
-
+        actualizado = true;
 
     }
 
@@ -559,6 +562,13 @@ public class EditarPaeFragment extends Fragment implements IOnBackPressed, Edita
                 if ("Actualización exitosa del control somatométrico".equals(message)) {
                     Log.d("actualiza", "Numero de trimestre pasado: " + String.valueOf(numeroTrimestre));
                     Toast.makeText(getContext(), "Control actualizado correctamente", Toast.LENGTH_SHORT).show();
+                    actualizacionesCompletadas++;
+
+                    // Verificar si todas las actualizaciones han finalizado
+                    if (actualizacionesCompletadas == totalActualizaciones) {
+                        // Todas las actualizaciones han finalizado, iniciar la transacción al nuevo fragmento
+                        iniciarTransaccionNuevoFragmento();
+                    }
                 } else {
                     Toast.makeText(getContext(), "Error al actualizar el control somatométrico", Toast.LENGTH_SHORT).show();
                 }
@@ -594,6 +604,9 @@ public class EditarPaeFragment extends Fragment implements IOnBackPressed, Edita
         requestQueue.add(stringRequest);
     }
 
-
+    public void iniciarTransaccionNuevoFragmento(){
+        sharedAlumnosViewModel.limpiarDatos();
+        getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new PaeFragment()).addToBackStack(null).commit();
+    }
 
 }

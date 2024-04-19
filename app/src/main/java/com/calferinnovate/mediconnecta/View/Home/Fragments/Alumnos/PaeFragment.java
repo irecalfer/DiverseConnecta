@@ -58,7 +58,6 @@ public class PaeFragment extends Fragment implements IOnBackPressed {
     private String[] header = {"1er Trimestre", "2º Trimestre", "3er Trimestre"};
     private MenuHost menuHost;
     private TableRow.LayoutParams lp;
-    View view;
     private Pae datosPae;
 
 
@@ -67,7 +66,7 @@ public class PaeFragment extends Fragment implements IOnBackPressed {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_pae, container, false);
+        View view = inflater.inflate(R.layout.fragment_pae, container, false);
         getActivity().setTitle("PAE");
         menuHost = requireActivity();
         cambiarToolbar();
@@ -294,7 +293,7 @@ public class PaeFragment extends Fragment implements IOnBackPressed {
             @Override
             public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
                 if(menuItem.getItemId() == R.id.action_editar_pae){
-                    getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new EditarPaeFragment()).commit();
+                    getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new EditarPaeFragment()).addToBackStack(null).setReorderingAllowed(true).commit();
                 }
 
                 return false;
