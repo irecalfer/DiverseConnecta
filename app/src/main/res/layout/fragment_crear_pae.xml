@@ -192,17 +192,18 @@
             android:textColorHint="@color/md_theme_light_surfaceTint"
             app:hintTextAppearance="@style/TextLabel"
             app:layout_constraintBottom_toTopOf="@id/guidelineEnd"
-            app:layout_constraintEnd_toStartOf="@id/guidelinePercentIzq"
+            app:layout_constraintEnd_toStartOf="@id/guidelinePercentAula"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/guidelineMidBottom">
 
             <AutoCompleteTextView
-                android:id="@+id/tutor_exposed_dropdown"
+                android:id="@+id/tutorAlumno"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:textSize="@dimen/defaultTextSize"
-                android:inputType="none"/>
+                android:enabled="true"
+                android:imeOptions="actionNext"
+                android:textColor="@color/md_theme_black"
+                android:textSize="@dimen/defaultTextSize" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -569,6 +570,77 @@
             </ScrollView>
         </LinearLayout>
 
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelinePercentAula"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.17"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/labelAula"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="20dp"
+            android:autoSizeMaxTextSize="100sp"
+            android:autoSizeMinTextSize="12sp"
+            android:hint="@string/aulaAlumnoLabel"
+            android:textColorHint="@color/md_theme_light_surfaceTint"
+            app:hintTextAppearance="@style/TextLabel"
+            app:layout_constraintBottom_toTopOf="@id/guidelineEnd"
+            app:layout_constraintEnd_toStartOf="@id/guidelinePercentIzq"
+            app:layout_constraintStart_toStartOf="@id/guidelinePercentAula"
+            app:layout_constraintTop_toBottomOf="@id/guidelineMidBottom">
+
+            <AutoCompleteTextView
+                android:id="@+id/aulaAlumnoPae"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:enabled="true"
+                android:imeOptions="actionNext"
+                android:textColor="@color/md_theme_black"
+                android:textSize="@dimen/defaultTextSize" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelinePercentModificacion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.94"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/labelModificado"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="20dp"
+            android:autoSizeMaxTextSize="100sp"
+            android:autoSizeMinTextSize="12sp"
+            android:hint="@string/modificacion"
+            android:textColorHint="@color/md_theme_light_surfaceTint"
+            app:hintAnimationEnabled="false"
+            app:hintEnabled="false"
+            app:hintTextAppearance="@style/TextLabel"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/guidelinePercentDer"
+            app:layout_constraintTop_toBottomOf="@id/guidelinePercentModificacion">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/modificado"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:enabled="false"
+                android:imeOptions="actionNext"
+                android:text="@string/modificacion"
+                android:textColor="@color/md_theme_black"
+                android:textSize="20sp" />
+        </com.google.android.material.textfield.TextInputLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

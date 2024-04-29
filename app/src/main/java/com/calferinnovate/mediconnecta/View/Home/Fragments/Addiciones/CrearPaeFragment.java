@@ -45,6 +45,7 @@ import com.calferinnovate.mediconnecta.Model.PaeInsertionObservable;
 import com.calferinnovate.mediconnecta.Model.PeticionesJson;
 import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.View.Home.Fragments.Alumnos.GeneralAlumnosFragment;
+import com.calferinnovate.mediconnecta.View.Home.Fragments.Alumnos.PaeFragment;
 import com.calferinnovate.mediconnecta.View.Home.Fragments.AlumnosFragment;
 import com.calferinnovate.mediconnecta.View.IOnBackPressed;
 import com.calferinnovate.mediconnecta.ViewModel.SharedAlumnosViewModel;
@@ -107,6 +108,11 @@ public class CrearPaeFragment extends Fragment implements IOnBackPressed, CreaPa
         creaTablaSeguimiento(view);
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        paeInsertionObservable.removeObserver(this);
+    }
 
     public void inicializaVariables(View view) {
         claseGlobal = ClaseGlobal.getInstance();
@@ -476,16 +482,17 @@ public class CrearPaeFragment extends Fragment implements IOnBackPressed, CreaPa
                 String message = jsonResponse.getString("message");
 
                 if ("Registro exitoso".equals(message)) {
-                    Toast.makeText(getContext(), "Caída registrada correctamente", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "PAE registrado correctamente", Toast.LENGTH_SHORT).show();
+                    iniciarTransaccionNuevoFragmento();
                 } else {
-                    Toast.makeText(getContext(), "Error al registrar la caída", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Error al registrar el PAE", Toast.LENGTH_SHORT).show();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
                 Toast.makeText(getContext(), "Error en el formato de respuesta", Toast.LENGTH_SHORT).show();
             }
         }, error -> {
-            Toast.makeText(getContext(), "Ha habido un error al intentar registrar el parte", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Ha habido un error al intentar registrar el PAE", Toast.LENGTH_SHORT).show();
             error.printStackTrace();
         }) {
             @Override
@@ -532,5 +539,10 @@ public class CrearPaeFragment extends Fragment implements IOnBackPressed, CreaPa
     @Override
     public void onPaeInserted() {
         observaPae();
+    }
+
+    public void iniciarTransaccionNuevoFragmento(){
+        sharedAlumnosViewModel.limpiarDatos();
+        getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new PaeFragment()).addToBackStack(null).commit();
     }
 }
