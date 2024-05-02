@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.android.volley.VolleyError;
 import com.calferinnovate.mediconnecta.Model.Alumnos;
+import com.calferinnovate.mediconnecta.Model.Aulas;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
 import com.calferinnovate.mediconnecta.Model.Constantes;
 import com.calferinnovate.mediconnecta.Model.ContactoFamiliares;
@@ -40,6 +41,7 @@ public class SharedAlumnosViewModel extends ViewModel {
     private MutableLiveData<ArrayList<Pae>> mutablePaeList = new MutableLiveData<>();
     private MutableLiveData<ArrayList<ControlSomatometrico>> mutableControlSomatometricoList = new MutableLiveData<>();
     private final MutableLiveData<ArrayList<String>> mutableLiveDataCursos = new MutableLiveData<>();
+    private final MutableLiveData<ArrayList<Aulas>> mutableLiveDataAulas = new MutableLiveData<>();
 
 
     /**
@@ -189,19 +191,14 @@ public class SharedAlumnosViewModel extends ViewModel {
                                 jsonObject.optString("protesis"), jsonObject.optString("ortesis"),
                                 jsonObject.optString("gafas"), jsonObject.optString("audifonos"),
                                 jsonObject.optString("otros"), jsonObject.optString("medicacion"),
-                                jsonObject.optString("datos_importantes")
+                                jsonObject.optString("datos_importantes"), jsonObject.optInt("ultima_modificacion_personal"),
+                                jsonObject.optString("ultima_modificacion_tiempo"), jsonObject.optInt("fk_id_aula")
                         );
                         paeArrayList.add(nuevoPae);
                     }
 
 
                     mutablePaeList.postValue(new ArrayList<>(paeArrayList));
-
-
-                    // Una vez que se obtenga el PAE, se procede a obtener el control somatométrico
-                        /*for (Pae pae : paeArrayList) {
-                            obtieneControlSomatometrico(pae);
-                        }*/
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -256,6 +253,42 @@ public class SharedAlumnosViewModel extends ViewModel {
         return mutableControlSomatometricoList;
     }
 
+
+
+    public LiveData<ArrayList<Aulas>> obtieneListaAulas() {
+        String url = Constantes.url_part + "aulas.php";
+
+        peticionesJson.getJsonObjectRequest(url, new PeticionesJson.MyJsonObjectResponseListener() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    ArrayList<Aulas> aulasArrayList = new ArrayList<>();
+                    JSONArray jsonArray = response.getJSONArray("aulas");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        Aulas nuevaAula = new Aulas(jsonObject.optInt("id_aula"),
+                                jsonObject.optInt("fk_nivel_escolar"), jsonObject.optString("nombre"));
+                        aulasArrayList.add(nuevaAula);
+                    }
+
+                    if (!aulasArrayList.isEmpty()) {
+                        mutableLiveDataAulas.postValue(new ArrayList<>(aulasArrayList));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        return mutableLiveDataAulas;
+    }
+
+
     public LiveData<ArrayList<String>> obtieneListaCursos() {
         String url = Constantes.url_part + "listaCursos.php";
 
@@ -290,7 +323,6 @@ public class SharedAlumnosViewModel extends ViewModel {
 
         return mutableLiveDataCursos;
     }
-
     // Método para limpiar los datos del PAE al cambiar de alumno
     public void limpiarDatos() {
         mutablePaeList = new MutableLiveData<>();

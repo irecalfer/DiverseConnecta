@@ -144,4 +144,6 @@ public class ClaseGlobal extends Application {
     public void setCursoArrayList(ArrayList<Curso> cursoArrayList) {
         this.cursoArrayList = cursoArrayList;
     }
+
+
 }

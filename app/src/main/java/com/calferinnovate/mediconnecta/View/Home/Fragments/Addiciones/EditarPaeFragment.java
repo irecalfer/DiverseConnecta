@@ -33,6 +33,7 @@ import com.android.volley.toolbox.Volley;
 import com.calferinnovate.mediconnecta.Adaptadores.EditaPaeAdapter;
 import com.calferinnovate.mediconnecta.Interfaces.PaeInsertionObserver;
 import com.calferinnovate.mediconnecta.Model.Alumnos;
+import com.calferinnovate.mediconnecta.Model.Aulas;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
 import com.calferinnovate.mediconnecta.Model.Constantes;
 import com.calferinnovate.mediconnecta.Model.ControlSomatometrico;
@@ -51,6 +52,8 @@ import com.google.android.material.textfield.TextInputEditText;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -69,7 +72,7 @@ public class EditarPaeFragment extends Fragment implements IOnBackPressed, Edita
     private MenuHost menuHost;
     private TextInputEditText nombreAlumno, fechaNacimiento, cursoEmision, tutor, enfermera, protesis,
             ortesis, gafas, audifonos, otros, fiebre, alergias, diagnosticoClinico, dietas, medicacion, datosImportantes;
-    private String cursoSeleccionado, tutorSeleccionado, enfermeraSeleccionada;
+    private String cursoSeleccionado, tutorSeleccionado, enfermeraSeleccionada, aulaSeleccionada;
     private String[] cursoActual = new String[2];
     private ArrayList<ControlSomatometrico> controlTrimestres;
     private TableRow.LayoutParams lp;
@@ -338,6 +341,9 @@ public class EditarPaeFragment extends Fragment implements IOnBackPressed, Edita
         final String medicacionPae = medicacion.getText().toString();
         final String datos = datosImportantes.getText().toString();
         final int id_alumno = alumnoSeleccionado.getIdAlumno();
+        final int enfermeraModifica = claseGlobal.getEmpleado().getCod_empleado();
+        final String tiempoModifica = formateaFechaModificacion();
+        final int idAula = obtieneIdAula();
 
          /*validacionesDatos(factoresDeRiesgo, causasCaida, circunstanciasCaida, consecuenciasCaida,
                 observacionesCaida, caidaPresenciada, avisadoFamilia);*/
@@ -352,7 +358,7 @@ public class EditarPaeFragment extends Fragment implements IOnBackPressed, Edita
 
                 if ("Actualización exitosa".equals(message)) {
                     // Después de completar la inserción del Pae, notifica a los observadores
-                    paeInsertionObservable.notifyPaeInserted();
+
                     Toast.makeText(getContext(), "Caída registrada correctamente", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getContext(), "Error al actualizar el PAE", Toast.LENGTH_SHORT).show();
@@ -385,13 +391,16 @@ public class EditarPaeFragment extends Fragment implements IOnBackPressed, Edita
                 parametros.put("medicacionPae", medicacionPae.trim());
                 parametros.put("datos", datos.trim());
                 parametros.put("id_alumno", String.valueOf(id_alumno).trim());
+                parametros.put("id_enfermera_modifica", String.valueOf(enfermeraModifica).trim());
+                parametros.put("tiempo_modificado", tiempoModifica.trim());
+                parametros.put("fk_id_aula", String.valueOf(idAula).trim());
                 return parametros;
             }
         };
         RequestQueue requestQueue = Volley.newRequestQueue(requireContext());
         requestQueue.add(stringRequest);
 
-
+        paeInsertionObservable.notifyPaeInserted();
     }
 
     public String[] obtieneIdCursoSeleccionado() {
@@ -408,7 +417,8 @@ public class EditarPaeFragment extends Fragment implements IOnBackPressed, Edita
     public int obtieneIdTutor() {
         int codigo = 0;
         for (Empleado e : claseGlobal.getListaEmpleados()) {
-            if (e.getNombre().equals(tutorSeleccionado)) {
+            String nombreCompleto = e.getNombre()+" "+e.getApellidos();
+            if (nombreCompleto.equals(tutorSeleccionado)) {
                 codigo = e.getCod_empleado();
                 return codigo;
             }
@@ -419,7 +429,8 @@ public class EditarPaeFragment extends Fragment implements IOnBackPressed, Edita
     public int obtieneIdEnfermera() {
         int codigo = 0;
         for (Empleado e : claseGlobal.getListaEmpleados()) {
-            if (e.getNombre().equals(enfermeraSeleccionada)) {
+            String nombreCompleto = e.getNombre()+" "+e.getApellidos();
+            if (nombreCompleto.equals(enfermeraSeleccionada)) {
                 codigo = e.getCod_empleado();
                 return codigo;
             }
@@ -427,6 +438,24 @@ public class EditarPaeFragment extends Fragment implements IOnBackPressed, Edita
         return codigo;
     }
 
+    private int obtieneIdAula(){
+        int codigo = 0;
+        for(Aulas a: claseGlobal.getListaAulas()){
+            if(a.getNombreAula().equals(aulaSeleccionada)){
+                codigo = a.getIdAula();
+            }
+        }
+        return codigo;
+    }
+
+
+    private String formateaFechaModificacion(){
+        DateTimeFormatter formatoSalida = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+        LocalDateTime fechaEntrada = LocalDateTime.now();
+
+        return fechaEntrada.format(formatoSalida);
+    }
 
     @Override
     public boolean onBackPressed() {
@@ -436,11 +465,12 @@ public class EditarPaeFragment extends Fragment implements IOnBackPressed, Edita
 
 
     @Override
-    public void onSpinnerItemSelected(String curso, String tutor, String enfermera) {
+    public void onSpinnerItemSelected(String curso, String tutor, String enfermera, String aulas) {
         // Aquí recibes los elementos seleccionados de los spinners
         cursoSeleccionado = curso;
         tutorSeleccionado = tutor;
         enfermeraSeleccionada = enfermera;
+        aulaSeleccionada = aulas;
 
         // Haz lo que necesites con los elementos seleccionados
     }
@@ -451,7 +481,9 @@ public class EditarPaeFragment extends Fragment implements IOnBackPressed, Edita
     }
 
     public void observaPae() {
+
         if (!isObservingPae) {
+            sharedAlumnosViewModel.limpiarDatos();
             sharedAlumnosViewModel.obtienePae(alumnoSeleccionado).observe(getViewLifecycleOwner(), new Observer<ArrayList<Pae>>() {
                 @Override
                 public void onChanged(ArrayList<Pae> paeArrayList) {

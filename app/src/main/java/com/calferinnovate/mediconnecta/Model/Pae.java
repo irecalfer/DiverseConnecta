@@ -2,17 +2,18 @@ package com.calferinnovate.mediconnecta.Model;
 
 public class Pae {
 
-    private int idPae, cursoEmision, cursoEmisionFin, fkIdEnfermero, fkIdProfesor, fkAula, fkIdAlumno;
+    private int idPae, cursoEmision, cursoEmisionFin, fkIdEnfermero, fkIdProfesor, fkAula, fkIdAlumno, idEnfermeroModifica;
 
     private String alergias, diagnosticoClinico, fiebre, dieta, protesis, ortesis, gafas, audifonos, otros,
-    medicacion, datosImportantes;
+    medicacion, datosImportantes, tiempoDeModificacion;
 
     public Pae() {
     }
 
     public Pae(int idPae, int cursoEmision, int cursoEmisionFin,int fkIdEnfermero, int fkIdProfesor, int fkIdAlumno,
                String alergias, String diagnosticoClinico, String fiebre, String dieta, String protesis,
-               String ortesis, String gafas, String audifonos, String otros, String medicacion, String datosImportantes) {
+               String ortesis, String gafas, String audifonos, String otros, String medicacion,
+               String datosImportantes, int idEnfermeroModifica, String tiempoDeModificacion, int fkAula) {
         this.idPae = idPae;
         this.cursoEmision = cursoEmision;
         this.cursoEmisionFin = cursoEmisionFin;
@@ -30,6 +31,10 @@ public class Pae {
         this.otros = otros;
         this.medicacion = medicacion;
         this.datosImportantes = datosImportantes;
+        this.idEnfermeroModifica = idEnfermeroModifica;
+        this.tiempoDeModificacion = tiempoDeModificacion;
+        this.fkAula = fkAula;
+
     }
 
     public int getIdPae() {
@@ -175,4 +180,22 @@ public class Pae {
     public void setDatosImportantes(String datosImportantes) {
         this.datosImportantes = datosImportantes;
     }
+
+    public int getIdEnfermeroModifica() {
+        return idEnfermeroModifica;
+    }
+
+    public void setIdEnfermeroModifica(int idEnfermeroModifica) {
+        this.idEnfermeroModifica = idEnfermeroModifica;
+    }
+
+    public String getTiempoDeModificacion() {
+        return tiempoDeModificacion;
+    }
+
+    public void setTiempoDeModificacion(String tiempoDeModificacion) {
+        this.tiempoDeModificacion = tiempoDeModificacion;
+    }
+
+
 }

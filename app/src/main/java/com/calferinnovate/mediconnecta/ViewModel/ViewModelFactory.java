@@ -50,8 +50,6 @@ public class ViewModelFactory<T extends ViewModel> implements ViewModelProvider.
             return (T) new SesionViewModel(viewModelArgs);
         } else if (modelClass == AvisosViewModel.class) {
             return (T) new AvisosViewModel(viewModelArgsJson);
-        } else if (modelClass == PaeViewModel.class) {
-            return (T) new PaeViewModel(viewModelArgs);
         }
         throw new IllegalArgumentException("Unknown ViewModel class");
     }

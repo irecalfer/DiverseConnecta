@@ -4,9 +4,14 @@ import android.app.Activity;
 import android.content.Context;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
+import android.view.Menu;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+import androidx.core.view.MenuProvider;
+
 import com.calferinnovate.mediconnecta.Model.Alumnos;
+import com.calferinnovate.mediconnecta.Model.Aulas;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
 import com.calferinnovate.mediconnecta.Model.ControlSomatometrico;
 import com.calferinnovate.mediconnecta.Model.Empleado;
@@ -14,18 +19,25 @@ import com.calferinnovate.mediconnecta.Model.Pae;
 import com.calferinnovate.mediconnecta.R;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 public class PaeAdapter {
 
     private Alumnos alumno;
     private Context context;
     private Pae pae;
     private TextInputEditText nombre, fechaNacimiento, cursoEmision, tutor, enfermera, fiebre, alergias,
-    protesis, ortesis, gafas, audifonos, otros, diagnostico, dietas, medicacion;
+    protesis, ortesis, gafas, audifonos, otros, diagnostico, dietas, medicacion, aula, ultimaModidicacion,
+    datosImportantes;
+    private Menu menu;
 
-    public PaeAdapter(Alumnos alumno, Pae pae, Context context) {
+    public PaeAdapter(Alumnos alumno, Pae pae, Context context, Menu menu) {
         this.alumno = alumno;
         this.pae = pae;
         this.context = context;
+        this.menu = menu;
     }
 
     public void rellenaUI(View view) {
@@ -49,6 +61,9 @@ public class PaeAdapter {
         diagnostico = view.findViewById(R.id.diagnostico);
         dietas = view.findViewById(R.id.dietas);
         medicacion = view.findViewById(R.id.medicacion);
+        aula = view.findViewById(R.id.aulaAlumnoPae);
+        ultimaModidicacion = view.findViewById(R.id.modificado);
+        datosImportantes = view.findViewById(R.id.datosImportantes);
     }
 
     public void seteaDatos(){
@@ -106,6 +121,15 @@ public class PaeAdapter {
 
         medicacion.setText(pae.getMedicacion());
         medicacion.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
+
+        aula.setText(obtieneNombreAula(pae));
+        aula.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
+
+        ultimaModidicacion.setText(seteaUltimoModificado(pae));
+        ultimaModidicacion.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
+
+        datosImportantes.setText(pae.getDatosImportantes());
+        datosImportantes.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
     }
 
     private String obtieneNombreTutor(Pae pae){
@@ -126,5 +150,38 @@ public class PaeAdapter {
             }
         }
         return nombreEnfermera;
+    }
+
+    private String obtieneNombreAula(Pae pae){
+        String nombreAula = "";
+        for(Aulas a: ClaseGlobal.getInstance().getListaAulas()){
+            if(a.getIdAula() == pae.getFkAula()){
+                nombreAula = a.getNombreAula();
+            }
+        }
+        return nombreAula;
+    }
+
+    private String seteaUltimoModificado(Pae pae){
+        String enfermeraModificacion = "", tiempoModificacion, ultimoModificado;
+
+        for(Empleado e: ClaseGlobal.getInstance().getListaEmpleados()){
+            if(e.getCod_empleado() == pae.getIdEnfermeroModifica()){
+                enfermeraModificacion = e.getNombre()+" "+e.getApellidos();
+            }
+        }
+
+        tiempoModificacion = formateaFechaModificacion(pae.getTiempoDeModificacion());
+        ultimoModificado = enfermeraModificacion+" "+"a: "+tiempoModificacion;
+        return ultimoModificado;
+    }
+
+    private String formateaFechaModificacion(String fechaHora){
+        DateTimeFormatter formatoEntrada = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        DateTimeFormatter formatoSalida = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+
+        LocalDateTime fechaEntrada = LocalDateTime.parse(fechaHora, formatoEntrada);
+
+        return fechaEntrada.format(formatoSalida);
     }
 }

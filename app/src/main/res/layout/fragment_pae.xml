@@ -7,9 +7,15 @@
     android:layout_height="match_parent"
     tools:context=".View.Home.Fragments.Alumnos.PaeFragment">
 
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guidelineTop"
@@ -79,7 +85,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.47"/>
+            app:layout_constraintGuide_percent="0.49"/>
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guidelinePercentEndIll"
@@ -93,7 +99,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.82"/>
+            app:layout_constraintGuide_percent="0.85"/>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/labelNombreAlumno"
@@ -115,7 +121,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/nombreAlumno"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:enabled="false"
                 android:imeOptions="actionNext"
                 android:textColor="@color/md_theme_black" />
@@ -127,21 +133,20 @@
             android:layout_height="0dp"
             android:layout_marginStart="20dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="20dp"
             android:autoSizeMaxTextSize="100sp"
             android:autoSizeMinTextSize="12sp"
             android:hint="@string/fechaNacimientoPaeeLabel"
             android:textColorHint="@color/md_theme_light_surfaceTint"
             app:hintTextAppearance="@style/TextLabel"
             app:layout_constraintBottom_toTopOf="@id/guidelineMid"
-            app:layout_constraintEnd_toStartOf="@id/guidelinePercentIzq"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/guidelinePercentAula"
             app:layout_constraintTop_toBottomOf="@id/guidelineTop">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/fechaNacimientoPae"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:enabled="false"
                 android:imeOptions="actionNext"
                 android:textColor="@color/md_theme_black" />
@@ -159,15 +164,15 @@
             android:hint="@string/CursoEmisionLabel"
             android:textColorHint="@color/md_theme_light_surfaceTint"
             app:hintTextAppearance="@style/TextLabel"
-            app:layout_constraintBottom_toTopOf="@id/guidelineMidBottom"
+            app:layout_constraintBottom_toTopOf="@id/guidelineMid"
             app:layout_constraintEnd_toStartOf="@id/guidelinePercentIzq"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/guidelineMid">
+            app:layout_constraintStart_toStartOf="@id/guidelinePercentAula"
+            app:layout_constraintTop_toBottomOf="@id/guidelineTop">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/cursoEmision"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:enabled="false"
                 android:imeOptions="actionNext"
                 android:textColor="@color/md_theme_black" />
@@ -185,15 +190,15 @@
             android:hint="@string/tutorLabel"
             android:textColorHint="@color/md_theme_light_surfaceTint"
             app:hintTextAppearance="@style/TextLabel"
-            app:layout_constraintBottom_toTopOf="@id/guidelineEnd"
+            app:layout_constraintBottom_toTopOf="@id/guidelineMidBottom"
             app:layout_constraintEnd_toStartOf="@id/guidelinePercentAula"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/guidelineMidBottom">
+            app:layout_constraintTop_toBottomOf="@id/guidelineMid">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/tutorAlumno"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:enabled="false"
                 android:imeOptions="actionNext"
                 android:textColor="@color/md_theme_black" />
@@ -211,15 +216,15 @@
             android:hint="@string/enfermeraAlumnoLabel"
             android:textColorHint="@color/md_theme_light_surfaceTint"
             app:hintTextAppearance="@style/TextLabel"
-            app:layout_constraintBottom_toTopOf="@id/guidelinePercentMid"
+            app:layout_constraintBottom_toTopOf="@id/guidelineEnd"
             app:layout_constraintEnd_toStartOf="@id/guidelinePercentIzq"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/guidelineEnd">
+            app:layout_constraintTop_toBottomOf="@id/guidelineMidBottom">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/enfermeraAlumno"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:enabled="false"
                 android:imeOptions="actionNext"
                 android:textColor="@color/md_theme_black" />
@@ -245,7 +250,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/fiebrePae"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:enabled="false"
                 android:imeOptions="actionNext"
                 android:textColor="@color/md_theme_black" />
@@ -271,7 +276,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/alergias"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:enabled="false"
                 android:imeOptions="actionNext"
                 android:inputType="text|textMultiLine"
@@ -298,7 +303,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/protesis"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:enabled="false"
                 android:imeOptions="actionNext"
                 android:textColor="@color/md_theme_black" />
@@ -325,7 +330,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/ortesis"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:enabled="false"
                 android:imeOptions="actionNext"
                 android:textColor="@color/md_theme_black" />
@@ -351,7 +356,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/gafas"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:enabled="false"
                 android:imeOptions="actionNext"
                 android:textColor="@color/md_theme_black" />
@@ -377,7 +382,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/audifonos"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:enabled="false"
                 android:imeOptions="actionNext"
                 android:textColor="@color/md_theme_black" />
@@ -403,7 +408,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/otros"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:enabled="false"
                 android:imeOptions="actionNext"
                 android:inputType="text|textMultiLine"
@@ -430,7 +435,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/diagnostico"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:enabled="false"
                 android:imeOptions="actionNext"
                 android:inputType="text|textMultiLine"
@@ -457,7 +462,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/dietas"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:enabled="false"
                 android:imeOptions="actionNext"
                 android:inputType="text|textMultiLine"
@@ -484,7 +489,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/medicacion"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:enabled="false"
                 android:imeOptions="actionNext"
                 android:inputType="text|textMultiLine"
@@ -497,14 +502,14 @@
             android:layout_height="0dp"
             android:layout_marginStart="20dp"
             android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
             android:layout_marginEnd="20dp"
+            android:layout_marginBottom="5dp"
             android:autoSizeMaxTextSize="100sp"
             android:autoSizeMinTextSize="12sp"
             android:hint="@string/DatosImportantesLabel"
             android:textColorHint="@color/md_theme_light_surfaceTint"
             app:hintTextAppearance="@style/TextLabel"
-            app:layout_constraintBottom_toBottomOf="@id/guidelinePercentModificacion"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/guidelinePercentDer"
             app:layout_constraintTop_toBottomOf="@id/guidelinePercentBottomIll">
@@ -512,7 +517,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/datosImportantes"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:enabled="false"
                 android:imeOptions="actionNext"
                 android:inputType="text|textMultiLine"
@@ -569,54 +574,47 @@
             android:hint="@string/aulaAlumnoLabel"
             android:textColorHint="@color/md_theme_light_surfaceTint"
             app:hintTextAppearance="@style/TextLabel"
-            app:layout_constraintBottom_toTopOf="@id/guidelineEnd"
+            app:layout_constraintBottom_toTopOf="@id/guidelineMidBottom"
             app:layout_constraintEnd_toStartOf="@id/guidelinePercentIzq"
             app:layout_constraintStart_toStartOf="@id/guidelinePercentAula"
-            app:layout_constraintTop_toBottomOf="@id/guidelineMidBottom">
+            app:layout_constraintTop_toBottomOf="@id/guidelineMid">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/aulaAlumnoPae"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:enabled="false"
                 android:imeOptions="actionNext"
                 android:textColor="@color/md_theme_black" />
         </com.google.android.material.textfield.TextInputLayout>
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guidelinePercentModificacion"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.94"/>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/labelModificado"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="8dp"
             android:layout_marginEnd="20dp"
             android:autoSizeMaxTextSize="100sp"
             android:autoSizeMinTextSize="12sp"
-            app:hintEnabled="false"
             android:textColorHint="@color/md_theme_light_surfaceTint"
             app:hintTextAppearance="@style/TextLabel"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/guidelinePercentDer"
-            app:layout_constraintTop_toBottomOf="@id/guidelinePercentModificacion">
+            app:hintEnabled="true"
+            android:hint="@string/modificacion"
+            app:layout_constraintBottom_toTopOf="@id/guidelinePercentMid"
+            app:layout_constraintEnd_toStartOf="@id/guidelinePercentIzq"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/guidelineEnd">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/modificado"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:enabled="false"
-                android:text="@string/modificacion"
                 android:imeOptions="actionNext"
-                android:textSize="20sp"
+                android:text="@string/modificacion"
                 android:textColor="@color/md_theme_black" />
         </com.google.android.material.textfield.TextInputLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 </FrameLayout>

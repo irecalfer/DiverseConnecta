@@ -35,6 +35,7 @@ import com.android.volley.toolbox.Volley;
 import com.calferinnovate.mediconnecta.Adaptadores.CreaPaeAdapter;
 import com.calferinnovate.mediconnecta.Interfaces.PaeInsertionObserver;
 import com.calferinnovate.mediconnecta.Model.Alumnos;
+import com.calferinnovate.mediconnecta.Model.Aulas;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
 import com.calferinnovate.mediconnecta.Model.Constantes;
 import com.calferinnovate.mediconnecta.Model.ControlSomatometrico;
@@ -57,6 +58,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Array;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -74,7 +78,7 @@ public class CrearPaeFragment extends Fragment implements IOnBackPressed, CreaPa
     private SharedAlumnosViewModel sharedAlumnosViewModel;
     private PeticionesJson peticionesJson;
     private CreaPaeAdapter creaPaeAdapter;
-    private String cursoSeleccionado, tutorSeleccionado, enfermeraSeleccionada;
+    private String cursoSeleccionado, tutorSeleccionado, enfermeraSeleccionada, aulaSeleccionada;
     private ArrayList<String> cursosArrayList = new ArrayList<>();
     private Alumnos alumnoSeleccionado;
     private TextInputEditText nombreAlumno, fechaNacimiento, cursoEmision, tutor, enfermera, protesis,
@@ -82,6 +86,7 @@ public class CrearPaeFragment extends Fragment implements IOnBackPressed, CreaPa
     private String[] cursoActual = new String[2];
     private ArrayList<ControlSomatometrico> controlTrimestres;
     private PaeInsertionObservable paeInsertionObservable = new PaeInsertionObservable();
+    private ArrayList<Aulas> aulasArrayList = new ArrayList<>();
 
 
     @Override
@@ -195,7 +200,7 @@ public class CrearPaeFragment extends Fragment implements IOnBackPressed, CreaPa
             @Override
             public void onChanged(ArrayList<String> cursos) {
                 cursosArrayList = cursos;
-                creaPaeAdapter = new CreaPaeAdapter(alumno, cursosArrayList, claseGlobal, requireActivity());
+                creaPaeAdapter = new CreaPaeAdapter(alumno, cursosArrayList, claseGlobal, requireActivity(), ClaseGlobal.getInstance().getListaAulas());
                 creaPaeAdapter.setSpinnerItemSelectedListener(CrearPaeFragment.this); // Pasa el listener al adaptador
                 creaPaeAdapter.rellenaUI(view);
             }
@@ -350,6 +355,9 @@ public class CrearPaeFragment extends Fragment implements IOnBackPressed, CreaPa
         final String medicacionPae = medicacion.getText().toString();
         final String datos = datosImportantes.getText().toString();
         final int id_alumno = alumnoSeleccionado.getIdAlumno();
+        final int id_enfermera_modifica = ClaseGlobal.getInstance().getEmpleado().getCod_empleado();
+        final String tiempo_modificado = fechaDateTimeSql().trim();
+        final int fk_id_aula = obtieneIdAula();
 
          /*validacionesDatos(factoresDeRiesgo, causasCaida, circunstanciasCaida, consecuenciasCaida,
                 observacionesCaida, caidaPresenciada, avisadoFamilia);*/
@@ -397,6 +405,9 @@ public class CrearPaeFragment extends Fragment implements IOnBackPressed, CreaPa
                 parametros.put("medicacionPae", medicacionPae.trim());
                 parametros.put("datos", datos.trim());
                 parametros.put("id_alumno", String.valueOf(id_alumno).trim());
+                parametros.put("id_enfermera_modifica", String.valueOf(id_enfermera_modifica).trim());
+                parametros.put("tiempo_modificado", tiempo_modificado.trim());
+                parametros.put("fk_id_aula", String.valueOf(fk_id_aula).trim());
                 return parametros;
             }
         };
@@ -404,6 +415,11 @@ public class CrearPaeFragment extends Fragment implements IOnBackPressed, CreaPa
         requestQueue.add(stringRequest);
 
 
+    }
+
+    public String fechaDateTimeSql() {
+        DateTimeFormatter fechaHora = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return fechaHora.format(LocalDateTime.now());
     }
 
     public void observaPae() {
@@ -460,6 +476,15 @@ public class CrearPaeFragment extends Fragment implements IOnBackPressed, CreaPa
         return codigo;
     }
 
+    public int obtieneIdAula() {
+        int codigo = 0;
+        for (Aulas a : aulasArrayList) {
+            if (String.valueOf(a.getIdAula()).equals(aulaSeleccionada)) {
+                codigo = a.getIdAula();
+            }
+        }
+        return codigo;
+    }
 
     public void registraElControl(ArrayList<ControlSomatometrico> controlTrimestres, Pae pae) {
         // Itera sobre los objetos ControlSomatometrico
@@ -527,12 +552,12 @@ public class CrearPaeFragment extends Fragment implements IOnBackPressed, CreaPa
 
 
     @Override
-    public void onSpinnerItemSelected(String curso, String tutor, String enfermera) {
+    public void onSpinnerItemSelected(String curso, String tutor, String enfermera, String aula) {
         // Aquí recibes los elementos seleccionados de los spinners
         cursoSeleccionado = curso;
         tutorSeleccionado = tutor;
         enfermeraSeleccionada = enfermera;
-
+        aulaSeleccionada = aula;
         // Haz lo que necesites con los elementos seleccionados
     }
 
@@ -541,7 +566,7 @@ public class CrearPaeFragment extends Fragment implements IOnBackPressed, CreaPa
         observaPae();
     }
 
-    public void iniciarTransaccionNuevoFragmento(){
+    public void iniciarTransaccionNuevoFragmento() {
         sharedAlumnosViewModel.limpiarDatos();
         getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new PaeFragment()).addToBackStack(null).commit();
     }

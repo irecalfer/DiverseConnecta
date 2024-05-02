@@ -54,6 +54,7 @@ public class PaeFragment extends Fragment implements IOnBackPressed {
     private MenuHost menuHost;
     private TableRow.LayoutParams lp;
     private Pae datosPae;
+    private Menu menuPae;
 
 
 
@@ -122,7 +123,7 @@ public class PaeFragment extends Fragment implements IOnBackPressed {
             @Override
             public void onChanged(ArrayList<Pae> paes) {
                 if (!paes.isEmpty()) {
-                    PaeAdapter paeAdapter = new PaeAdapter(alumno, paes.get(0), requireContext());
+                    PaeAdapter paeAdapter = new PaeAdapter(alumno, paes.get(0), requireContext(), menuPae);
                     paeAdapter.rellenaUI(view);
                     creaTablaSeguimiento(view, paes);
                 }
@@ -209,49 +210,6 @@ public class PaeFragment extends Fragment implements IOnBackPressed {
     }
 
 
-   /* public void rellenaFilasControl(Pae pae, TableRow.LayoutParams lp){
-        sharedAlumnosViewModel.obtieneControlSomatometrico(pae).observe(getViewLifecycleOwner(), new Observer<ArrayList<ControlSomatometrico>>() {
-            @Override
-            public void onChanged(ArrayList<ControlSomatometrico> controlSomatometricos) {
-                ArrayList<ControlSomatometrico> controlTemp = new ArrayList<>(controlSomatometricos);
-                // Crear una fila para cada propiedad
-                for (String propiedad : propiedades) {
-                    TableRow filaPropiedad = new TableRow(getActivity());
-                    filaPropiedad.setLayoutParams(lp);
-                    // Establecer el fondo de color de la fila
-
-
-                    // Agregar el nombre de la propiedad como encabezado
-                    TextView textViewPropiedad = new TextView(getActivity());
-                    textViewPropiedad.setText(propiedad);
-                    textViewPropiedad.setTypeface(null, Typeface.BOLD);
-                    textViewPropiedad.setTextSize(20); // Tamaño de letra grande
-                    textViewPropiedad.setTextColor(Color.WHITE); // Texto en blanco
-                    textViewPropiedad.setBackgroundColor(Color.parseColor("#006B58")); // Fondo verde oscuro
-
-                    filaPropiedad.addView(textViewPropiedad);
-
-                    // Agregar los datos correspondientes para cada trimestre
-                    for (ControlSomatometrico control : controlTemp) {
-                        EditText editText = new EditText(getActivity());
-                        String dato = obtenerDatoPropiedad(control, propiedad);
-                        editText.setText(dato);
-
-
-                        filaPropiedad.addView(editText);
-                    }
-
-                    // Agregar la fila a la tabla
-                    tablaPae.addView(filaPropiedad);
-
-
-                }
-                propiedades.clear();
-
-                //controlSomatometricos.clear();
-            }
-        });
-    }*/
 
 
 
@@ -278,11 +236,14 @@ public class PaeFragment extends Fragment implements IOnBackPressed {
             default:
                 return "";
         }
-    }public void cambiarToolbar(){
+    }
+
+    public Menu cambiarToolbar(){
         MenuProvider menuProvider = new MenuProvider() {
             @Override
             public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
                 menuInflater.inflate(R.menu.app_menu_opciones_pae, menu);
+                menuPae = menu;
             }
 
             @Override
@@ -296,6 +257,7 @@ public class PaeFragment extends Fragment implements IOnBackPressed {
         };
 
         requireActivity().addMenuProvider(menuProvider, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
+        return menuPae;
     }
 
 
