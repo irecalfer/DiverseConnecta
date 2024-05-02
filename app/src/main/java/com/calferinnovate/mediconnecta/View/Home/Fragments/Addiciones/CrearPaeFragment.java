@@ -476,11 +476,12 @@ public class CrearPaeFragment extends Fragment implements IOnBackPressed, CreaPa
         return codigo;
     }
 
-    public int obtieneIdAula() {
+    private int obtieneIdAula(){
         int codigo = 0;
-        for (Aulas a : aulasArrayList) {
-            if (String.valueOf(a.getIdAula()).equals(aulaSeleccionada)) {
+        for(Aulas a: claseGlobal.getListaAulas()){
+            if(a.getNombreAula().equals(aulaSeleccionada)){
                 codigo = a.getIdAula();
+                return codigo;
             }
         }
         return codigo;

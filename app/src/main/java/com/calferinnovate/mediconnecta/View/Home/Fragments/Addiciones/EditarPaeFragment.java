@@ -358,7 +358,7 @@ public class EditarPaeFragment extends Fragment implements IOnBackPressed, Edita
 
                 if ("Actualización exitosa".equals(message)) {
                     // Después de completar la inserción del Pae, notifica a los observadores
-
+                    paeInsertionObservable.notifyPaeInserted();
                     Toast.makeText(getContext(), "Caída registrada correctamente", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getContext(), "Error al actualizar el PAE", Toast.LENGTH_SHORT).show();
@@ -400,7 +400,7 @@ public class EditarPaeFragment extends Fragment implements IOnBackPressed, Edita
         RequestQueue requestQueue = Volley.newRequestQueue(requireContext());
         requestQueue.add(stringRequest);
 
-        paeInsertionObservable.notifyPaeInserted();
+
     }
 
     public String[] obtieneIdCursoSeleccionado() {

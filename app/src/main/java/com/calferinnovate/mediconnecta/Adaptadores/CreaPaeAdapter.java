@@ -29,8 +29,8 @@ public class CreaPaeAdapter {
 
     private AutoCompleteTextView cursosTV, tutorTv, enfermeraTV, aulasTV;
     private TextInputEditText nombreTV, nacimientoTV;
-    private String curso, tutor, enfermera, aula;
-    private ArrayList<String> nombreTutoresArrayList, nombreEnfermerasArrayList;
+    private String curso, tutor, enfermera, aulas;
+    private ArrayList<String> nombreTutoresArrayList, nombreEnfermerasArrayList, nombreAulasArrayList;
     private ItemItemSelectedListener listener;
     private ArrayList<Aulas> aulasArrayList;
 
@@ -173,19 +173,20 @@ public class CreaPaeAdapter {
         }
         ArrayAdapter<String> aulasAdapter = new ArrayAdapter<>(context, R.layout.my_spinner, nombreAulasArrayList);
         aulasTV.setAdapter(aulasAdapter);
-        aula = aulasTV.getText().toString();
+        aulas = aulasTV.getText().toString();
         aulasTV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                aula = (String) parent.getItemAtPosition(position);
+                aulas = (String) parent.getItemAtPosition(position);
                 notifyItemSelectedListener();
             }
         });
     }
 
+
     private void notifyItemSelectedListener() {
         if (listener != null) {
-            listener.onSpinnerItemSelected(curso, tutor, enfermera, aula);
+            listener.onSpinnerItemSelected(curso, tutor, enfermera, aulas);
         }
     }
 
