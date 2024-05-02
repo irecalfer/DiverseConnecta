@@ -169,7 +169,8 @@ private Pae pae;
     }
 
     private void setupCursosSpinner() {
-        ArrayAdapter<String> cursosAdapter = new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, cursoArrayList);
+        ArrayAdapter<String> cursosAdapter = new ArrayAdapter<>(context, android.R.layout.select_dialog_item, cursoArrayList);
+        cursosTV.setThreshold(1);
         cursosTV.setAdapter(cursosAdapter);
 
         cursosTV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -194,7 +195,8 @@ private Pae pae;
                 }
             }
         }
-        ArrayAdapter<String> tutoresAdapter = new ArrayAdapter<>(context, R.layout.my_spinner, nombreTutoresArrayList);
+        ArrayAdapter<String> tutoresAdapter = new ArrayAdapter<>(context, android.R.layout.select_dialog_item, nombreTutoresArrayList);
+        tutorTv.setThreshold(1);
         tutorTv.setAdapter(tutoresAdapter);
         tutorTv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -218,7 +220,8 @@ private Pae pae;
                 }
             }
         }
-        ArrayAdapter<String> enfermerasAdapter = new ArrayAdapter<>(context, R.layout.my_spinner, nombreEnfermerasArrayList);
+        ArrayAdapter<String> enfermerasAdapter = new ArrayAdapter<>(context, android.R.layout.select_dialog_item, nombreEnfermerasArrayList);
+        enfermeraTV.setThreshold(1);
         enfermeraTV.setAdapter(enfermerasAdapter);
         enfermeraTV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -239,7 +242,8 @@ private Pae pae;
                     nombreAulasArrayList.add(a.getNombreAula());
             }
 
-        ArrayAdapter<String> aulasAdapter = new ArrayAdapter<>(context, R.layout.my_spinner, nombreAulasArrayList);
+        ArrayAdapter<String> aulasAdapter = new ArrayAdapter<>(context, android.R.layout.select_dialog_item, nombreAulasArrayList);
+        aulasTV.setThreshold(1);
         aulasTV.setAdapter(aulasAdapter);
         aulasTV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

@@ -150,7 +150,6 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/labelCursoEmision"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="20dp"
@@ -174,13 +173,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:textSize="@dimen/defaultTextSize"
-                android:inputType="none" />
+                android:textSize="@dimen/defaultTextSize" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/labelTutorAlumno"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="20dp"
@@ -208,7 +205,6 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/labelEnfermeraAlumno"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="20dp"
@@ -229,8 +225,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:textSize="@dimen/defaultTextSize"
-                android:layout_weight="1"
-                android:inputType="none"/>
+                android:layout_weight="1" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -579,7 +574,6 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/labelAula"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="20dp"
