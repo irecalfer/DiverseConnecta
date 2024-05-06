@@ -196,15 +196,16 @@ public class CrearPaeFragment extends Fragment implements IOnBackPressed, CreaPa
     }
 
     public void seteaDatos(Alumnos alumno, View view) {
+        final ArrayList<String>[] cursosArraylist = new ArrayList[]{new ArrayList<>()};
         sharedAlumnosViewModel.obtieneListaCursos().observe(getViewLifecycleOwner(), new Observer<ArrayList<String>>() {
             @Override
-            public void onChanged(ArrayList<String> cursos) {
-                cursosArrayList = cursos;
+            public void onChanged(ArrayList<String> strings) {
+              cursosArraylist[0] = strings;
+            }
+        });
                 creaPaeAdapter = new CreaPaeAdapter(alumno, cursosArrayList, claseGlobal, requireActivity(), ClaseGlobal.getInstance().getListaAulas());
                 creaPaeAdapter.setSpinnerItemSelectedListener(CrearPaeFragment.this); // Pasa el listener al adaptador
                 creaPaeAdapter.rellenaUI(view);
-            }
-        });
 
 
     }

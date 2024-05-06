@@ -21,6 +21,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
+
 /**
  * ViewModel encargado de gestionar el inicio de sesión.
  * Contiene métodos para iniciar sesión y proporciona un LiveDara para observar el estado de la sesión.
@@ -162,7 +164,7 @@ public class SesionViewModel extends ViewModel {
      */
     public LiveData<Boolean> obtieneDatosEmpleados() {
         String url = Constantes.url_part + "empleados.php";
-
+        empleadosObtenidos.setValue(false);
         peticionesJson.getJsonObjectRequest(url, new PeticionesJson.MyJsonObjectResponseListener() {
             @Override
             public void onResponse(JSONObject response) {
@@ -191,7 +193,7 @@ public class SesionViewModel extends ViewModel {
             }
         });
 
-        return pacientesObtenidos;
+        return empleadosObtenidos;
     }
 
     private Empleado obtieneNuevoEmpleado(JSONObject jsonObject) {
@@ -373,6 +375,10 @@ public class SesionViewModel extends ViewModel {
         });
 
         return cargosObtenidos;
+    }
+
+    public void recargarDatosEmpleados() {
+        obtieneDatosEmpleados(); // Método para obtener los datos de los empleados
     }
 
 }

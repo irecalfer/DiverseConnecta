@@ -28,6 +28,7 @@ import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.calferinnovate.mediconnecta.Adaptadores.EditaPaeAdapter;
@@ -44,6 +45,7 @@ import com.calferinnovate.mediconnecta.Model.PeticionesJson;
 import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.View.Home.Fragments.Alumnos.PaeFragment;
 import com.calferinnovate.mediconnecta.View.IOnBackPressed;
+import com.calferinnovate.mediconnecta.ViewModel.SesionViewModel;
 import com.calferinnovate.mediconnecta.ViewModel.SharedAlumnosViewModel;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelArgs;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelFactory;
@@ -60,12 +62,13 @@ import java.util.Hashtable;
 import java.util.Map;
 
 
-public class EditarPaeFragment extends Fragment implements IOnBackPressed, EditaPaeAdapter.ItemItemSelectedListener, PaeInsertionObserver{
+public class EditarPaeFragment extends Fragment implements IOnBackPressed, EditaPaeAdapter.ItemItemSelectedListener, PaeInsertionObserver {
 
     private ClaseGlobal claseGlobal;
     private TableLayout tablaPae;
     private PeticionesJson peticionesJson;
     private SharedAlumnosViewModel sharedAlumnosViewModel;
+    private SesionViewModel sesionViewModel;
     private Alumnos alumnoSeleccionado;
     private final String[] propiedades = {"Peso", "Talla", "IMC", "Percentil", "Tª", "T.A", "F.C", "Sat. O2"};
     private final String[] header = {"1er Trimestre", "2º Trimestre", "3er Trimestre"};
@@ -81,9 +84,11 @@ public class EditarPaeFragment extends Fragment implements IOnBackPressed, Edita
     private boolean controlRegistrado = false;
     private Pae paeObtenido;
     private boolean isObservingPae = false;
-    private boolean actualizado = false;
     private int actualizacionesCompletadas = 0;
     private final int totalActualizaciones = 3; // Total de actualizaciones que se esperan
+    private ArrayList<Empleado> empleadosActualizados = new ArrayList<>();
+    private ArrayList<String> cursosActualizadosArrayList = new ArrayList<>();
+    private boolean datosActualizados = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -176,26 +181,25 @@ public class EditarPaeFragment extends Fragment implements IOnBackPressed, Edita
 
     public void seteaDatos(Alumnos alumno, View view) {
         // Primero dibujar el encabezado; esto es poner "TALLAS" y a la derecha todas las tallas
-
         sharedAlumnosViewModel.obtieneListaCursos().observe(getViewLifecycleOwner(), new Observer<ArrayList<String>>() {
             @Override
-            public void onChanged(ArrayList<String> cursos) {
-                sharedAlumnosViewModel.obtienePae(alumno).observe(getViewLifecycleOwner(), new Observer<ArrayList<Pae>>() {
-                    @Override
-                    public void onChanged(ArrayList<Pae> paes) {
-                        if (!paes.isEmpty()) {
-                            EditaPaeAdapter editaPaeAdapter = new EditaPaeAdapter(alumnoSeleccionado, cursos, paes.get(0), claseGlobal, requireContext());
-                            editaPaeAdapter.setSpinnerItemSelectedListener(EditarPaeFragment.this); // Pasa el listener al adaptador
-                            editaPaeAdapter.rellenaUI(view);
-                            //tablaPae.removeAllViews();
-                            creaTablaSeguimiento(view, paes);
-                        }
-
-                    }
-                });
+            public void onChanged(ArrayList<String> strings) {
+                cursosActualizadosArrayList = strings;
             }
         });
+        sharedAlumnosViewModel.obtienePae(alumno).observe(getViewLifecycleOwner(), new Observer<ArrayList<Pae>>() {
+            @Override
+            public void onChanged(ArrayList<Pae> paes) {
+                if (!paes.isEmpty()) {
+                    EditaPaeAdapter editaPaeAdapter = new EditaPaeAdapter(alumnoSeleccionado, cursosActualizadosArrayList, paes.get(0), claseGlobal, requireContext());
+                    editaPaeAdapter.setSpinnerItemSelectedListener(EditarPaeFragment.this); // Pasa el listener al adaptador
+                    editaPaeAdapter.rellenaUI(view);
+                    //tablaPae.removeAllViews();
+                    creaTablaSeguimiento(view, paes);
+                }
 
+            }
+        });
     }
 
     public void creaEncabezadoTabla() {
@@ -329,10 +333,166 @@ public class EditarPaeFragment extends Fragment implements IOnBackPressed, Edita
         final String cursoEmisionFin = cursoActual[1];
         final int tutor = obtieneIdTutor();
         final int enfermera = obtieneIdEnfermera();
+        final int idAula = obtieneIdAula();
+        final String nombreAulaNueva = aulaSeleccionada;
+        final String nombreTutor = tutorSeleccionado;
+        final String nombreEnfermera = enfermeraSeleccionada;
+
+        if (idAula == 0 || tutor == 0 || enfermera == 0) {
+            verificaCamposEnBBDD(cursoEmisionInicio, cursoEmisionFin,
+                    nombreAulaNueva, nombreTutor, nombreEnfermera);
+
+        } else {
+            insertaRegistroPae();
+        }
+
+         /*validacionesDatos(factoresDeRiesgo, causasCaida, circunstanciasCaida, consecuenciasCaida,
+                observacionesCaida, caidaPresenciada, avisadoFamilia);*/
+    }
+
+
+    public String[] obtieneIdCursoSeleccionado() {
+        int tamañoCurso = cursoSeleccionado.length();
+        int separadorCurso = cursoSeleccionado.indexOf("/");
+        String cursoInicio, cursoFin;
+        cursoInicio = cursoSeleccionado.substring(0, separadorCurso);
+        cursoFin = cursoSeleccionado.substring(separadorCurso + 1, tamañoCurso);
+        cursoActual[0] = cursoInicio;
+        cursoActual[1] = cursoFin;
+        return cursoActual;
+    }
+
+    public int obtieneIdTutor() {
+        int codigo = 0;
+        for (Empleado e : claseGlobal.getListaEmpleados()) {
+            String nombreCompleto = e.getNombre();
+            if (nombreCompleto.equals(tutorSeleccionado)) {
+                codigo = e.getCod_empleado();
+                return codigo;
+            }
+        }
+        return codigo;
+    }
+
+    public int obtieneIdEnfermera() {
+        int codigo = 0;
+        for (Empleado e : claseGlobal.getListaEmpleados()) {
+            String nombreCompleto = e.getNombre();
+            if (nombreCompleto.equals(enfermeraSeleccionada)) {
+                codigo = e.getCod_empleado();
+                return codigo;
+            }
+        }
+        return codigo;
+    }
+
+    private int obtieneIdAula() {
+        int codigo = 0;
+        for (Aulas a : claseGlobal.getListaAulas()) {
+            if (a.getNombreAula().equals(aulaSeleccionada)) {
+                codigo = a.getIdAula();
+            }
+        }
+        return codigo;
+    }
+
+
+    private String formateaFechaModificacion() {
+        DateTimeFormatter formatoSalida = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+        LocalDateTime fechaEntrada = LocalDateTime.now();
+
+        return fechaEntrada.format(formatoSalida);
+    }
+
+    private void verificaCamposEnBBDD(String cursoInicio, String cursoFin, String nombreAula,
+                                      String nombreTutor, String nombreEnfermera) {
+        String url = Constantes.url_part + "inserta_nuevos_registros.php";
+
+
+        StringRequest stringRequest;
+        stringRequest = new StringRequest(Request.Method.POST, url, response -> {
+            try {
+                Log.d("Respuesta del servidor", response);
+                JSONObject jsonResponse = new JSONObject(response);
+                String message = jsonResponse.getString("message");
+
+                if ("Actualización exitosa".equals(message)) {
+                    // Después de completar la inserción del Pae, notifica a los observadores
+                    Toast.makeText(getContext(), "Nuevos registros insertados correctamente", Toast.LENGTH_SHORT).show();
+                    Log.d("Respuesta PHP", response);
+                    // Llama al método run() en el objeto Runnable para ejecutar registraElPae() después de la inserción
+                    actualizaViewModels();
+                    callbackParaRegistraElPae();
+                } else {
+                    Toast.makeText(getContext(), "Error al insertar el PAE", Toast.LENGTH_SHORT).show();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Toast.makeText(getContext(), "Error en el formato de respuesta Insercción", Toast.LENGTH_SHORT).show();
+                Log.e("Error de parseo JSON", e.toString()); // Agrega este log para identificar cualquier error de parseo
+            }
+        }, error -> {
+            Toast.makeText(getContext(), "Ha habido un error al intentar insertar el PAE", Toast.LENGTH_SHORT).show();
+            error.printStackTrace();
+            Log.e("Error Volley", error.toString());
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> parametros = new Hashtable<>();
+
+                parametros.put("cursoEmisionInicio", cursoInicio.trim());
+                parametros.put("cursoEmisionFin", cursoFin.trim());
+                parametros.put("nombreAulaNueva", nombreAula.trim());
+                parametros.put("nombreTutor", nombreTutor.trim());
+                parametros.put("nombreEnfermera", nombreEnfermera.trim());
+                return parametros;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(requireContext());
+        requestQueue.add(stringRequest);
+
+
+    }
+
+    // Método de retorno de llamada para llamar a registraElPae() cuando la operación asincrónica se complete con éxito
+    private void callbackParaRegistraElPae() {
+        // Llama a registraElPae() después de que la operación asincrónica se complete con éxito
+        registraElPae();
+    }
+
+    private void actualizaViewModels() {
+        sharedAlumnosViewModel.obtieneListaAulas().observe(getViewLifecycleOwner(), new Observer<ArrayList<Aulas>>() {
+            @Override
+            public void onChanged(ArrayList<Aulas> aulas) {
+                claseGlobal.setListaAulas(aulas);
+            }
+        });
+        sharedAlumnosViewModel.obtieneListaCursos().observe(getViewLifecycleOwner(), new Observer<ArrayList<String>>() {
+            @Override
+            public void onChanged(ArrayList<String> cursosArrayList) {
+                cursosActualizadosArrayList = cursosArrayList;
+            }
+        });
+        sharedAlumnosViewModel.recargaListaEmpleados().observe(getViewLifecycleOwner(), new Observer<ArrayList<Empleado>>() {
+            @Override
+            public void onChanged(ArrayList<Empleado> empleados) {
+                claseGlobal.setListaEmpleados(empleados);
+
+            }
+        });
+    }
+
+    private void insertaRegistroPae() {
+        cursoActual = obtieneIdCursoSeleccionado();
+        final String cursoEmisionInicio = cursoActual[0];
+        final String cursoEmisionFin = cursoActual[1];
+        final int tutor = obtieneIdTutor();
+        final int enfermera = obtieneIdEnfermera();
         final String protesisPae = protesis.getText().toString();
         final String ortesisPae = ortesis.getText().toString();
         final String gafasPae = gafas.getText().toString();
-        final String audifonosPaae = audifonos.getText().toString();
+        final String audifonosPae = audifonos.getText().toString();
         final String otrosPae = otros.getText().toString();
         final String fiebrePae = fiebre.getText().toString();
         final String alergiasPae = alergias.getText().toString();
@@ -344,9 +504,6 @@ public class EditarPaeFragment extends Fragment implements IOnBackPressed, Edita
         final int enfermeraModifica = claseGlobal.getEmpleado().getCod_empleado();
         final String tiempoModifica = formateaFechaModificacion();
         final int idAula = obtieneIdAula();
-
-         /*validacionesDatos(factoresDeRiesgo, causasCaida, circunstanciasCaida, consecuenciasCaida,
-                observacionesCaida, caidaPresenciada, avisadoFamilia);*/
 
         String url = Constantes.url_part + "actualiza_el_pae.php";
 
@@ -370,6 +527,7 @@ public class EditarPaeFragment extends Fragment implements IOnBackPressed, Edita
         }, error -> {
             Toast.makeText(getContext(), "Ha habido un error al intentar actualizar el PAE", Toast.LENGTH_SHORT).show();
             error.printStackTrace();
+            error.toString();
         }) {
             @Override
             protected Map<String, String> getParams() {
@@ -382,7 +540,7 @@ public class EditarPaeFragment extends Fragment implements IOnBackPressed, Edita
                 parametros.put("protesisPae", protesisPae.trim());
                 parametros.put("ortesisPae", ortesisPae.trim());
                 parametros.put("gafasPae", gafasPae.trim());
-                parametros.put("audifonosPae", audifonosPaae.trim());
+                parametros.put("audifonosPae", audifonosPae.trim());
                 parametros.put("otrosPae", otrosPae.trim());
                 parametros.put("fiebrePae", fiebrePae.trim());
                 parametros.put("alergiasPae", alergiasPae.trim());
@@ -401,60 +559,6 @@ public class EditarPaeFragment extends Fragment implements IOnBackPressed, Edita
         requestQueue.add(stringRequest);
 
 
-    }
-
-    public String[] obtieneIdCursoSeleccionado() {
-        int tamañoCurso = cursoSeleccionado.length();
-        int separadorCurso = cursoSeleccionado.indexOf("/");
-        String cursoInicio, cursoFin;
-        cursoInicio = cursoSeleccionado.substring(0, separadorCurso);
-        cursoFin = cursoSeleccionado.substring(separadorCurso + 1, tamañoCurso);
-        cursoActual[0] = cursoInicio;
-        cursoActual[1] = cursoFin;
-        return cursoActual;
-    }
-
-    public int obtieneIdTutor() {
-        int codigo = 0;
-        for (Empleado e : claseGlobal.getListaEmpleados()) {
-            String nombreCompleto = e.getNombre()+" "+e.getApellidos();
-            if (nombreCompleto.equals(tutorSeleccionado)) {
-                codigo = e.getCod_empleado();
-                return codigo;
-            }
-        }
-        return codigo;
-    }
-
-    public int obtieneIdEnfermera() {
-        int codigo = 0;
-        for (Empleado e : claseGlobal.getListaEmpleados()) {
-            String nombreCompleto = e.getNombre()+" "+e.getApellidos();
-            if (nombreCompleto.equals(enfermeraSeleccionada)) {
-                codigo = e.getCod_empleado();
-                return codigo;
-            }
-        }
-        return codigo;
-    }
-
-    private int obtieneIdAula(){
-        int codigo = 0;
-        for(Aulas a: claseGlobal.getListaAulas()){
-            if(a.getNombreAula().equals(aulaSeleccionada)){
-                codigo = a.getIdAula();
-            }
-        }
-        return codigo;
-    }
-
-
-    private String formateaFechaModificacion(){
-        DateTimeFormatter formatoSalida = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
-        LocalDateTime fechaEntrada = LocalDateTime.now();
-
-        return fechaEntrada.format(formatoSalida);
     }
 
     @Override
@@ -568,10 +672,10 @@ public class EditarPaeFragment extends Fragment implements IOnBackPressed, Edita
 
     public void actualizaElControl(ArrayList<ControlSomatometrico> controlTrimestres, Pae pae) {
 
-        for(ControlSomatometrico controlSomatometrico: controlTrimestres){
+        for (ControlSomatometrico controlSomatometrico : controlTrimestres) {
             actualizaControlSomatometricoABaseDeDatos(controlSomatometrico, controlSomatometrico.getFkTrimestre(), pae);
         }
-        actualizado = true;
+        boolean actualizado = true;
 
     }
 
@@ -630,7 +734,7 @@ public class EditarPaeFragment extends Fragment implements IOnBackPressed, Edita
         requestQueue.add(stringRequest);
     }
 
-    public void iniciarTransaccionNuevoFragmento(){
+    public void iniciarTransaccionNuevoFragmento() {
         sharedAlumnosViewModel.limpiarDatos();
         getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new PaeFragment()).addToBackStack(null).commit();
     }

@@ -5,6 +5,7 @@ import android.util.Log;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.android.volley.VolleyError;
 import com.calferinnovate.mediconnecta.Model.Alumnos;
@@ -14,6 +15,7 @@ import com.calferinnovate.mediconnecta.Model.Constantes;
 import com.calferinnovate.mediconnecta.Model.ContactoFamiliares;
 import com.calferinnovate.mediconnecta.Model.ControlSomatometrico;
 import com.calferinnovate.mediconnecta.Model.Curso;
+import com.calferinnovate.mediconnecta.Model.Empleado;
 import com.calferinnovate.mediconnecta.Model.Pae;
 import com.calferinnovate.mediconnecta.Model.PeticionesJson;
 
@@ -40,8 +42,11 @@ public class SharedAlumnosViewModel extends ViewModel {
     private PeticionesJson peticionesJson;
     private MutableLiveData<ArrayList<Pae>> mutablePaeList = new MutableLiveData<>();
     private MutableLiveData<ArrayList<ControlSomatometrico>> mutableControlSomatometricoList = new MutableLiveData<>();
-    private final MutableLiveData<ArrayList<String>> mutableLiveDataCursos = new MutableLiveData<>();
-    private final MutableLiveData<ArrayList<Aulas>> mutableLiveDataAulas = new MutableLiveData<>();
+    private MutableLiveData<ArrayList<String>> mutableLiveDataCursos = new MutableLiveData<>();
+    private MutableLiveData<ArrayList<Aulas>> mutableLiveDataAulas = new MutableLiveData<>();
+    private MutableLiveData<ArrayList<Empleado>> mutableLiveDataEmpleadosActualizados = new MutableLiveData<>();
+    private ClaseGlobal  claseGlobal;
+
 
 
     /**
@@ -59,7 +64,7 @@ public class SharedAlumnosViewModel extends ViewModel {
      */
     public SharedAlumnosViewModel(ViewModelArgs viewModelArgs) {
         this.peticionesJson = viewModelArgs.getPeticionesJson();
-        ClaseGlobal claseGlobal = viewModelArgs.getClaseGlobal();
+        this.claseGlobal = viewModelArgs.getClaseGlobal();
     }
 
     /**
@@ -329,5 +334,44 @@ public class SharedAlumnosViewModel extends ViewModel {
         mutableControlSomatometricoList = new MutableLiveData<>();
     }
 
+    public LiveData<ArrayList<Empleado>> recargaListaEmpleados() {
+        String url = Constantes.url_part + "empleados.php";
+        peticionesJson.getJsonObjectRequest(url, new PeticionesJson.MyJsonObjectResponseListener() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    Log.d("Prueba", "Entra en try");
+                    if (!claseGlobal.getListaEmpleados().isEmpty()) {
+                        claseGlobal.getListaEmpleados().clear();
+                    }
+                    JSONArray jsonArray = response.getJSONArray("empleados");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        Empleado nuevoEmpleado= obtieneNuevoEmpleado(jsonObject);
+                        claseGlobal.getListaEmpleados().add(nuevoEmpleado);
+                    }
+                    claseGlobal.setListaEmpleados(claseGlobal.getListaEmpleados());
+                    mutableLiveDataEmpleadosActualizados.postValue(claseGlobal.getListaEmpleados());
+                } catch (JSONException e) {
+                    Log.d("Prueba", "Entra en catch");
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+                Log.d("Prueba", "onError");
+            }
+        });
+        return mutableLiveDataEmpleadosActualizados;
+    }
+
+    private Empleado obtieneNuevoEmpleado(JSONObject jsonObject) {
+        return new Empleado(jsonObject.optString("user"), jsonObject.optString("pwd"),
+                jsonObject.optString("nombre"), jsonObject.optString("apellidos"),
+                jsonObject.optInt("cod_empleado"), jsonObject.optInt("fk_cargo"),
+                jsonObject.optString("foto"));
+    }
 
 }

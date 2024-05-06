@@ -119,6 +119,7 @@ public class CreaPaeAdapter {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 curso = (String) parent.getItemAtPosition(position);
+                curso = cursosTV.getText().toString();
                 notifyItemSelectedListener();
             }
         });
@@ -137,11 +138,12 @@ public class CreaPaeAdapter {
         ArrayAdapter<String> tutoresAdapter = new ArrayAdapter<>(context,android.R.layout.select_dialog_item, nombreTutoresArrayList);
         tutorTv.setThreshold(1);
         tutorTv.setAdapter(tutoresAdapter);
-        tutor = tutorTv.getText().toString();
+        //tutor = tutorTv.getText().toString();
         tutorTv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 tutor = (String) parent.getItemAtPosition(position);
+                tutor = tutorTv.getText().toString();
                 notifyItemSelectedListener();
             }
         });
@@ -159,11 +161,12 @@ public class CreaPaeAdapter {
         ArrayAdapter<String> enfermerasAdapter = new ArrayAdapter<>(context, android.R.layout.select_dialog_item, nombreEnfermerasArrayList);
         enfermeraTV.setThreshold(1);
         enfermeraTV.setAdapter(enfermerasAdapter);
-        enfermera = enfermeraTV.getText().toString();
+        //enfermera = enfermeraTV.getText().toString();
         enfermeraTV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 enfermera = (String) parent.getItemAtPosition(position);
+                enfermera = enfermeraTV.getText().toString();
                 notifyItemSelectedListener();
             }
         });
@@ -177,11 +180,12 @@ public class CreaPaeAdapter {
         ArrayAdapter<String> aulasAdapter = new ArrayAdapter<>(context, android.R.layout.select_dialog_item, nombreAulasArrayList);
         aulasTV.setThreshold(1);
         aulasTV.setAdapter(aulasAdapter);
-        aulas = aulasTV.getText().toString();
+        //aulas = aulasTV.getText().toString();
         aulasTV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 aulas = (String) parent.getItemAtPosition(position);
+                aulas = aulasTV.getText().toString();
                 notifyItemSelectedListener();
             }
         });

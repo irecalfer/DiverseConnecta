@@ -2,6 +2,8 @@ package com.calferinnovate.mediconnecta.Adaptadores;
 
 import android.app.Activity;
 import android.content.Context;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.View;
@@ -181,6 +183,29 @@ private Pae pae;
             }
         });
 
+        cursosTV.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // No es necesario implementar este método
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // No es necesario implementar este método
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String cursoText = s.toString();
+                if (!cursoArrayList.contains(cursoText)) {
+                    // El texto ingresado no coincide con ningún elemento de la lista
+                    // Considerarlo como un nuevo elemento y guardarlo en la base de datos
+                    curso = cursoText;
+                    notifyItemSelectedListener();
+                }
+            }
+        });
+
         //SI no se ha seleccionado nada
         curso = cursosTV.getText().toString();
         notifyItemSelectedListener();
@@ -206,6 +231,29 @@ private Pae pae;
             }
         });
 
+        tutorTv.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // No es necesario implementar este método
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // No es necesario implementar este método
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String tutorText = s.toString();
+                if (!nombreTutoresArrayList.contains(tutorText)) {
+                    // El texto ingresado no coincide con ningún elemento de la lista
+                    // Considerarlo como un nuevo elemento y guardarlo en la base de datos
+                    tutor = tutorText;
+                    notifyItemSelectedListener();
+                }
+            }
+        });
+
         //Si no se ha seleccionado nada
         tutor = tutorTv.getText().toString();
         notifyItemSelectedListener();
@@ -227,10 +275,33 @@ private Pae pae;
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 enfermera = (String) parent.getItemAtPosition(position);
+                enfermera = enfermeraTV.getText().toString();
                 notifyItemSelectedListener();
             }
         });
 
+        enfermeraTV.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // No es necesario implementar este método
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // No es necesario implementar este método
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String enfermeraText = s.toString();
+                if (!nombreEnfermerasArrayList.contains(enfermeraText)) {
+                    // El texto ingresado no coincide con ningún elemento de la lista
+                    // Considerarlo como un nuevo elemento y guardarlo en la base de datos
+                    enfermera = enfermeraText;
+                    notifyItemSelectedListener();
+                }
+            }
+        });
         //Si no se ha seleccionado nada
         enfermera = enfermeraTV.getText().toString();
         notifyItemSelectedListener();
@@ -249,7 +320,31 @@ private Pae pae;
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 aulas = (String) parent.getItemAtPosition(position);
+                aulas = aulasTV.getText().toString();
                 notifyItemSelectedListener();
+            }
+        });
+
+        aulasTV.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // No es necesario implementar este método
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // No es necesario implementar este método
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String aulaText = s.toString();
+                if (!nombreAulasArrayList.contains(aulaText)) {
+                    // El texto ingresado no coincide con ningún elemento de la lista
+                    // Considerarlo como un nuevo elemento y guardarlo en la base de datos
+                    aulas = aulaText;
+                    notifyItemSelectedListener();
+                }
             }
         });
 
