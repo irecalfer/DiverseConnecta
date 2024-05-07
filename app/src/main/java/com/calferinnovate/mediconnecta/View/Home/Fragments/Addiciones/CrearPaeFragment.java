@@ -13,6 +13,7 @@ import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -79,14 +80,16 @@ public class CrearPaeFragment extends Fragment implements IOnBackPressed, CreaPa
     private PeticionesJson peticionesJson;
     private CreaPaeAdapter creaPaeAdapter;
     private String cursoSeleccionado, tutorSeleccionado, enfermeraSeleccionada, aulaSeleccionada;
-    private ArrayList<String> cursosArrayList = new ArrayList<>();
     private Alumnos alumnoSeleccionado;
     private TextInputEditText nombreAlumno, fechaNacimiento, cursoEmision, tutor, enfermera, protesis,
             ortesis, gafas, audifonos, otros, fiebre, alergias, diagnosticoClinico, dietas, medicacion, datosImportantes;
     private String[] cursoActual = new String[2];
     private ArrayList<ControlSomatometrico> controlTrimestres;
     private PaeInsertionObservable paeInsertionObservable = new PaeInsertionObservable();
-    private ArrayList<Aulas> aulasArrayList = new ArrayList<>();
+    private ArrayList<String> cursosActualizadosArrayList = new ArrayList<>();
+    private int actualizacionesCompletadas = 0;
+    private final int totalActualizaciones = 3; // Total de actualizaciones que se esperan
+    private boolean isObservingPae = false;
 
 
     @Override
@@ -196,17 +199,16 @@ public class CrearPaeFragment extends Fragment implements IOnBackPressed, CreaPa
     }
 
     public void seteaDatos(Alumnos alumno, View view) {
-        final ArrayList<String>[] cursosArraylist = new ArrayList[]{new ArrayList<>()};
+
         sharedAlumnosViewModel.obtieneListaCursos().observe(getViewLifecycleOwner(), new Observer<ArrayList<String>>() {
             @Override
-            public void onChanged(ArrayList<String> strings) {
-              cursosArraylist[0] = strings;
-            }
-        });
-                creaPaeAdapter = new CreaPaeAdapter(alumno, cursosArrayList, claseGlobal, requireActivity(), ClaseGlobal.getInstance().getListaAulas());
+            public void onChanged(ArrayList<String> cursos) {
+                cursosActualizadosArrayList = cursos;
+                creaPaeAdapter = new CreaPaeAdapter(alumno, cursosActualizadosArrayList, claseGlobal, requireActivity(), ClaseGlobal.getInstance().getListaAulas());
                 creaPaeAdapter.setSpinnerItemSelectedListener(CrearPaeFragment.this); // Pasa el listener al adaptador
                 creaPaeAdapter.rellenaUI(view);
-
+            }
+        });
 
     }
 
@@ -286,7 +288,7 @@ public class CrearPaeFragment extends Fragment implements IOnBackPressed, CreaPa
         for (int j = 1; j <= numColumnas; j++) {
             // Crea un objeto ControlSomatometrico para cada columna
             ControlSomatometrico controlSomatometrico = new ControlSomatometrico();
-
+            controlSomatometrico.setFkTrimestre(j);
             // Itera sobre las filas
             int numFilas = tablaPae.getChildCount();
             for (int i = 1; i < numFilas; i++) { // Comienza desde 1 para omitir la primera fila (encabezado)
@@ -344,10 +346,111 @@ public class CrearPaeFragment extends Fragment implements IOnBackPressed, CreaPa
         final String cursoEmisionFin = cursoActual[1];
         final int tutor = obtieneIdTutor();
         final int enfermera = obtieneIdEnfermera();
+        final int idAula = obtieneIdAula();
+        final String nombreAulaNueva = aulaSeleccionada;
+        final String nombreTutor = tutorSeleccionado;
+        final String nombreEnfermera = enfermeraSeleccionada;
+
+        if (idAula == 0 || tutor == 0 || enfermera == 0 || (!cursosActualizadosArrayList.contains(cursoEmisionInicio+"/"+cursoEmisionFin))) {
+            verificaCamposEnBBDD(cursoEmisionInicio, cursoEmisionFin,
+                    nombreAulaNueva, nombreTutor, nombreEnfermera);
+
+        } else {
+            insertaRegistroPae();
+        }
+
+         /*validacionesDatos(factoresDeRiesgo, causasCaida, circunstanciasCaida, consecuenciasCaida,
+                observacionesCaida, caidaPresenciada, avisadoFamilia);*/
+    }
+
+    private void verificaCamposEnBBDD(String cursoInicio, String cursoFin, String nombreAula,
+                                      String nombreTutor, String nombreEnfermera) {
+        String url = Constantes.url_part + "inserta_nuevos_registros.php";
+
+
+        StringRequest stringRequest;
+        stringRequest = new StringRequest(Request.Method.POST, url, response -> {
+            try {
+                Log.d("Respuesta del servidor", response);
+                JSONObject jsonResponse = new JSONObject(response);
+                String message = jsonResponse.getString("message");
+
+                if ("Actualización exitosa".equals(message)) {
+                    // Después de completar la inserción del Pae, notifica a los observadores
+                    Toast.makeText(getContext(), "Nuevos registros insertados correctamente", Toast.LENGTH_SHORT).show();
+                    Log.d("Respuesta PHP", response);
+                    // Llama al método run() en el objeto Runnable para ejecutar registraElPae() después de la inserción
+                    actualizaViewModels();
+                    callbackParaRegistraElPae();
+                } else {
+                    Toast.makeText(getContext(), "Error al insertar el PAE", Toast.LENGTH_SHORT).show();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Toast.makeText(getContext(), "Error en el formato de respuesta Insercción", Toast.LENGTH_SHORT).show();
+                Log.e("Error de parseo JSON", e.toString()); // Agrega este log para identificar cualquier error de parseo
+            }
+        }, error -> {
+            Toast.makeText(getContext(), "Ha habido un error al intentar insertar el PAE", Toast.LENGTH_SHORT).show();
+            error.printStackTrace();
+            Log.e("Error Volley", error.toString());
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> parametros = new Hashtable<>();
+
+                parametros.put("cursoEmisionInicio", cursoInicio.trim());
+                parametros.put("cursoEmisionFin", cursoFin.trim());
+                parametros.put("nombreAulaNueva", nombreAula.trim());
+                parametros.put("nombreTutor", nombreTutor.trim());
+                parametros.put("nombreEnfermera", nombreEnfermera.trim());
+                return parametros;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(requireContext());
+        requestQueue.add(stringRequest);
+
+
+    }
+
+    private void actualizaViewModels() {
+        sharedAlumnosViewModel.obtieneListaAulas().observe(getViewLifecycleOwner(), new Observer<ArrayList<Aulas>>() {
+            @Override
+            public void onChanged(ArrayList<Aulas> aulas) {
+                claseGlobal.setListaAulas(aulas);
+            }
+        });
+        sharedAlumnosViewModel.obtieneListaCursos().observe(getViewLifecycleOwner(), new Observer<ArrayList<String>>() {
+            @Override
+            public void onChanged(ArrayList<String> cursos) {
+                cursosActualizadosArrayList = cursos;
+            }
+        });
+        sharedAlumnosViewModel.recargaListaEmpleados().observe(getViewLifecycleOwner(), new Observer<ArrayList<Empleado>>() {
+            @Override
+            public void onChanged(ArrayList<Empleado> empleados) {
+                claseGlobal.setListaEmpleados(empleados);
+
+            }
+        });
+    }
+
+    // Método de retorno de llamada para llamar a registraElPae() cuando la operación asincrónica se complete con éxito
+    private void callbackParaRegistraElPae() {
+        // Llama a registraElPae() después de que la operación asincrónica se complete con éxito
+        registraElPae();
+    }
+
+    private void insertaRegistroPae() {
+        cursoActual = obtieneIdCursoSeleccionado();
+        final String cursoEmisionInicio = cursoActual[0];
+        final String cursoEmisionFin = cursoActual[1];
+        final int tutor = obtieneIdTutor();
+        final int enfermera = obtieneIdEnfermera();
         final String protesisPae = protesis.getText().toString();
         final String ortesisPae = ortesis.getText().toString();
         final String gafasPae = gafas.getText().toString();
-        final String audifonosPaae = audifonos.getText().toString();
+        final String audifonosPae = audifonos.getText().toString();
         final String otrosPae = otros.getText().toString();
         final String fiebrePae = fiebre.getText().toString();
         final String alergiasPae = alergias.getText().toString();
@@ -356,12 +459,9 @@ public class CrearPaeFragment extends Fragment implements IOnBackPressed, CreaPa
         final String medicacionPae = medicacion.getText().toString();
         final String datos = datosImportantes.getText().toString();
         final int id_alumno = alumnoSeleccionado.getIdAlumno();
-        final int id_enfermera_modifica = ClaseGlobal.getInstance().getEmpleado().getCod_empleado();
-        final String tiempo_modificado = fechaDateTimeSql().trim();
-        final int fk_id_aula = obtieneIdAula();
-
-         /*validacionesDatos(factoresDeRiesgo, causasCaida, circunstanciasCaida, consecuenciasCaida,
-                observacionesCaida, caidaPresenciada, avisadoFamilia);*/
+        final int enfermeraModifica = claseGlobal.getEmpleado().getCod_empleado();
+        final String tiempoModifica = fechaDateTimeSql();
+        final int idAula = obtieneIdAula();
 
         String url = Constantes.url_part + "crea_el_pae.php";
 
@@ -374,7 +474,7 @@ public class CrearPaeFragment extends Fragment implements IOnBackPressed, CreaPa
                 if ("Registro exitoso".equals(message)) {
                     // Después de completar la inserción del Pae, notifica a los observadores
                     paeInsertionObservable.notifyPaeInserted();
-                    Toast.makeText(getContext(), "Caída registrada correctamente", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Pae registrado correctamente", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getContext(), "Error al registrar la caída", Toast.LENGTH_SHORT).show();
                 }
@@ -397,7 +497,7 @@ public class CrearPaeFragment extends Fragment implements IOnBackPressed, CreaPa
                 parametros.put("protesisPae", protesisPae.trim());
                 parametros.put("ortesisPae", ortesisPae.trim());
                 parametros.put("gafasPae", gafasPae.trim());
-                parametros.put("audifonosPaae", audifonosPaae.trim());
+                parametros.put("audifonosPaae", audifonosPae.trim());
                 parametros.put("otrosPae", otrosPae.trim());
                 parametros.put("fiebrePae", fiebrePae.trim());
                 parametros.put("alergiasPae", alergiasPae.trim());
@@ -406,9 +506,9 @@ public class CrearPaeFragment extends Fragment implements IOnBackPressed, CreaPa
                 parametros.put("medicacionPae", medicacionPae.trim());
                 parametros.put("datos", datos.trim());
                 parametros.put("id_alumno", String.valueOf(id_alumno).trim());
-                parametros.put("id_enfermera_modifica", String.valueOf(id_enfermera_modifica).trim());
-                parametros.put("tiempo_modificado", tiempo_modificado.trim());
-                parametros.put("fk_id_aula", String.valueOf(fk_id_aula).trim());
+                parametros.put("id_enfermera_modifica", String.valueOf(enfermeraModifica).trim());
+                parametros.put("tiempo_modificado", tiempoModifica.trim());
+                parametros.put("fk_id_aula", String.valueOf(idAula).trim());
                 return parametros;
             }
         };
@@ -418,6 +518,7 @@ public class CrearPaeFragment extends Fragment implements IOnBackPressed, CreaPa
 
     }
 
+
     public String fechaDateTimeSql() {
         DateTimeFormatter fechaHora = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         return fechaHora.format(LocalDateTime.now());
@@ -425,23 +526,27 @@ public class CrearPaeFragment extends Fragment implements IOnBackPressed, CreaPa
 
     public void observaPae() {
         //Observamos el pae una vez que se ha subido a la base de datos
-        sharedAlumnosViewModel.obtienePae(alumnoSeleccionado).observe(getViewLifecycleOwner(), new Observer<ArrayList<Pae>>() {
-            @Override
-            public void onChanged(ArrayList<Pae> paeArrayList) {
-                if (paeArrayList != null && !paeArrayList.isEmpty()) {
-                    Pae pae = paeArrayList.get(0);
-                    if (pae != null) {
-                        controlTrimestres = obtenerDatosControl();
-                        registraElControl(controlTrimestres, pae);
+        if (!isObservingPae) {
+            sharedAlumnosViewModel.obtienePae(alumnoSeleccionado).observe(getViewLifecycleOwner(), new Observer<ArrayList<Pae>>() {
+                @Override
+                public void onChanged(ArrayList<Pae> paeArrayList) {
+                    if (paeArrayList != null && !paeArrayList.isEmpty()) {
+                        Pae pae = paeArrayList.get(0);
+                        if (pae != null) {
+                            isObservingPae = true;
+                            controlTrimestres = obtenerDatosControl();
+                            registraElControl(controlTrimestres, pae);
+                        } else {
+                            Toast.makeText(requireContext(), "El PAE todavía no se ha subido", Toast.LENGTH_SHORT).show();
+                        }
                     } else {
-                        Toast.makeText(requireContext(), "El PAE todavía no se ha subido", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(requireContext(), "La lista está vacía", Toast.LENGTH_SHORT).show();
                     }
-                } else {
-                    Toast.makeText(requireContext(), "La lista está vacía", Toast.LENGTH_SHORT).show();
-                }
 
-            }
-        });
+                }
+            });
+        }
+
     }
 
     public String[] obtieneIdCursoSeleccionado() {
@@ -490,13 +595,10 @@ public class CrearPaeFragment extends Fragment implements IOnBackPressed, CreaPa
 
     public void registraElControl(ArrayList<ControlSomatometrico> controlTrimestres, Pae pae) {
         // Itera sobre los objetos ControlSomatometrico
-        for (int i = 0; i < controlTrimestres.size(); i++) {
-            ControlSomatometrico controlSomatometrico = controlTrimestres.get(i);
-            int numeroTrimestre = i + 1; // El primer trimestre es 1, por lo que sumamos 1 al índice
-
-            // Envía el objeto ControlSomatometrico a la base de datos junto con el número del trimestre
-            enviarControlSomatometricoABaseDeDatos(controlSomatometrico, numeroTrimestre, pae);
+        for (ControlSomatometrico controlSomatometrico : controlTrimestres) {
+            enviarControlSomatometricoABaseDeDatos(controlSomatometrico, controlSomatometrico.getFkTrimestre(), pae);
         }
+        boolean actualizado = true;
     }
 
     public void enviarControlSomatometricoABaseDeDatos(ControlSomatometrico controlSomatometrico, int numeroTrimestre, Pae pae) {
@@ -510,7 +612,13 @@ public class CrearPaeFragment extends Fragment implements IOnBackPressed, CreaPa
 
                 if ("Registro exitoso".equals(message)) {
                     Toast.makeText(getContext(), "PAE registrado correctamente", Toast.LENGTH_SHORT).show();
-                    iniciarTransaccionNuevoFragmento();
+                    actualizacionesCompletadas++;
+
+                    // Verificar si todas las actualizaciones han finalizado
+                    if (actualizacionesCompletadas == totalActualizaciones) {
+                        // Todas las actualizaciones han finalizado, iniciar la transacción al nuevo fragmento
+                        iniciarTransaccionNuevoFragmento();
+                    }
                 } else {
                     Toast.makeText(getContext(), "Error al registrar el PAE", Toast.LENGTH_SHORT).show();
                 }

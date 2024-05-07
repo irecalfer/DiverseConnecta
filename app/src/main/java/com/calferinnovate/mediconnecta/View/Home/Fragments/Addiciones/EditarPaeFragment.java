@@ -338,7 +338,7 @@ public class EditarPaeFragment extends Fragment implements IOnBackPressed, Edita
         final String nombreTutor = tutorSeleccionado;
         final String nombreEnfermera = enfermeraSeleccionada;
 
-        if (idAula == 0 || tutor == 0 || enfermera == 0) {
+        if (idAula == 0 || tutor == 0 || enfermera == 0 || (!cursosActualizadosArrayList.contains(cursoEmisionInicio+"/"+cursoEmisionFin))) {
             verificaCamposEnBBDD(cursoEmisionInicio, cursoEmisionFin,
                     nombreAulaNueva, nombreTutor, nombreEnfermera);
 
@@ -391,6 +391,7 @@ public class EditarPaeFragment extends Fragment implements IOnBackPressed, Edita
         for (Aulas a : claseGlobal.getListaAulas()) {
             if (a.getNombreAula().equals(aulaSeleccionada)) {
                 codigo = a.getIdAula();
+                return  codigo;
             }
         }
         return codigo;
