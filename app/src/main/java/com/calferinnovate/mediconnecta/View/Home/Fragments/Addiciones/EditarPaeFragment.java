@@ -253,7 +253,7 @@ public class EditarPaeFragment extends Fragment implements IOnBackPressed, Edita
                     TextView textViewPropiedad = new TextView(getActivity());
                     textViewPropiedad.setText(propiedad);
                     textViewPropiedad.setTypeface(null, Typeface.BOLD);
-                    textViewPropiedad.setTextSize(20); // Tamaño de letra grande
+                    textViewPropiedad.setTextSize(24); // Tamaño de letra grande
                     textViewPropiedad.setTextColor(Color.WHITE); // Texto en blanco
                     textViewPropiedad.setBackgroundColor(Color.parseColor("#006B58")); // Fondo verde oscuro
                     filaPropiedad.addView(textViewPropiedad);
@@ -263,7 +263,7 @@ public class EditarPaeFragment extends Fragment implements IOnBackPressed, Edita
                         EditText editText = new EditText(getActivity());
                         String dato = obtenerDatoPropiedad(control, propiedad);
                         editText.setText(dato);
-
+                        editText.setTextSize(20);
                         // Establecer parámetros de diseño para EditText
                         TableRow.LayoutParams editTextParams = new TableRow.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f); // Peso 1 para que se expanda
                         editText.setLayoutParams(editTextParams);

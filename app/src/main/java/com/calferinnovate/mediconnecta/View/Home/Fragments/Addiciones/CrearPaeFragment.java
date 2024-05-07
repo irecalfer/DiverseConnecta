@@ -226,7 +226,7 @@ public class CrearPaeFragment extends Fragment implements IOnBackPressed, CreaPa
         TextView tv = new TextView(getActivity());
         tv.setTypeface(null, Typeface.BOLD);
         tv.setText("Control");
-        tv.setTextSize(28);
+        tv.setTextSize(24);
         tv.setTextColor(Color.WHITE); // Texto en blanco
 
         fila.addView(tv);
@@ -235,7 +235,7 @@ public class CrearPaeFragment extends Fragment implements IOnBackPressed, CreaPa
         for (int x = 0; x < header.length; x++) {
             TextView tvTalla = new TextView(getActivity());
             tvTalla.setText(header[x]);
-            tv.setTextSize(28);
+            tvTalla.setTextSize(24);
 
             tvTalla.setTextColor(Color.WHITE); // Texto en blanco
 
@@ -271,7 +271,7 @@ public class CrearPaeFragment extends Fragment implements IOnBackPressed, CreaPa
                 EditText editText = new EditText(getActivity());
                 //String dato = obtenerDatoPropiedad(control, propiedad);
                 //editText.setText(dato);
-
+                editText.setTextSize(20);
                 filaPropiedad.addView(editText);
             }
 

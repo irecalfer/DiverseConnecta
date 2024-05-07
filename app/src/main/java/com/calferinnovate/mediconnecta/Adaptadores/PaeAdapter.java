@@ -136,7 +136,7 @@ public class PaeAdapter {
         String nombreProfesor = "";
         for(Empleado e: ClaseGlobal.getInstance().getListaEmpleados()){
             if(e.getCod_empleado() == pae.getFkIdProfesor()){
-                nombreProfesor = e.getNombre()+" "+e.getApellidos();
+                nombreProfesor = e.getNombre();
             }
         }
         return nombreProfesor;
@@ -146,7 +146,7 @@ public class PaeAdapter {
         String nombreEnfermera = "";
         for(Empleado e: ClaseGlobal.getInstance().getListaEmpleados()){
             if(e.getCod_empleado() == pae.getFkIdEnfermero()){
-                nombreEnfermera = e.getNombre()+" "+e.getApellidos();
+                nombreEnfermera = e.getNombre();
             }
         }
         return nombreEnfermera;
@@ -167,12 +167,12 @@ public class PaeAdapter {
 
         for(Empleado e: ClaseGlobal.getInstance().getListaEmpleados()){
             if(e.getCod_empleado() == pae.getIdEnfermeroModifica()){
-                enfermeraModificacion = e.getNombre()+" "+e.getApellidos();
+                enfermeraModificacion = e.getNombre();
             }
         }
 
         tiempoModificacion = formateaFechaModificacion(pae.getTiempoDeModificacion());
-        ultimoModificado = enfermeraModificacion+" "+"a: "+tiempoModificacion;
+        ultimoModificado = enfermeraModificacion+" a "+tiempoModificacion;
         return ultimoModificado;
     }
 
