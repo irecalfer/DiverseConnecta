@@ -149,4 +149,5 @@
     <string name="DatosImportantesLabel">Datos Importantes</string>
     <string name="barra">/</string>
     <string name="modificacion">Modificado por:</string>
+    <string name="atras">Atrás</string>
 </resources>

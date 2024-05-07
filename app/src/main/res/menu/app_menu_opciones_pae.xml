@@ -2,11 +2,17 @@
     xmlns:android="http://schemas.android.com/apk/res/android" >
     <!-- Search, should appear as action button -->
 
+    <item android:id="@+id/action_atras_pae"
+        android:icon="@drawable/atras"
+        android:title="@string/atras"
+        android:iconTint="@color/md_theme_white"
+        app:showAsAction="ifRoom" />
     <item android:id="@+id/action_editar_pae"
         android:icon="@drawable/editar"
         android:title="@string/editarPae"
         android:iconTint="@color/md_theme_white"
         app:showAsAction="always" />
+
 
 
 

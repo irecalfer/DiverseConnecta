@@ -117,7 +117,6 @@
                 android:layout_height="wrap_content"
                 android:enabled="true"
                 android:imeOptions="actionNext"
-                android:textSize="@dimen/defaultTextSize"
                 android:textColor="@color/md_theme_black" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -127,15 +126,15 @@
             android:layout_height="0dp"
             android:layout_marginStart="20dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="20dp"
+            android:layout_marginEnd="8dp"
             android:autoSizeMaxTextSize="100sp"
             android:autoSizeMinTextSize="12sp"
             android:hint="@string/fechaNacimientoPaeeLabel"
             android:textColorHint="@color/md_theme_light_surfaceTint"
             app:hintTextAppearance="@style/TextLabel"
             app:layout_constraintBottom_toTopOf="@id/guidelineMid"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/guidelinePercentAula"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/guidelineTop">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -144,15 +143,15 @@
                 android:layout_height="wrap_content"
                 android:enabled="true"
                 android:imeOptions="actionNext"
-                android:textSize="@dimen/defaultTextSize"
-                android:textColor="@color/md_theme_black" />
+                android:textColor="@color/md_theme_black"
+                />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/labelCursoEmision"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="20dp"
             android:autoSizeMaxTextSize="100sp"
@@ -173,7 +172,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:textSize="@dimen/defaultTextSize" />
+                 />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -182,7 +181,7 @@
             android:layout_height="0dp"
             android:layout_marginStart="20dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="20dp"
+            android:layout_marginEnd="8dp"
             android:autoSizeMaxTextSize="100sp"
             android:autoSizeMinTextSize="12sp"
             android:hint="@string/tutorLabel"
@@ -199,8 +198,7 @@
                 android:layout_height="match_parent"
                 android:enabled="true"
                 android:imeOptions="actionNext"
-                android:textColor="@color/md_theme_black"
-                android:textSize="@dimen/defaultTextSize" />
+                android:textColor="@color/md_theme_black" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -224,7 +222,6 @@
                 android:id="@+id/enfermera_exposed_dropdown"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:textSize="@dimen/defaultTextSize"
                 android:layout_weight="1" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -250,7 +247,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:enabled="true"
-                android:textSize="@dimen/defaultTextSize"
                 android:imeOptions="actionNext"
                 android:textColor="@color/md_theme_black" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -277,7 +273,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:enabled="true"
-                android:textSize="@dimen/defaultTextSize"
                 android:imeOptions="actionNext"
                 android:inputType="text|textMultiLine"
                 android:textColor="@color/md_theme_black" />
@@ -305,7 +300,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:enabled="true"
-                android:textSize="@dimen/defaultTextSize"
                 android:imeOptions="actionNext"
                 android:textColor="@color/md_theme_black" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -333,7 +327,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:enabled="true"
-                android:textSize="@dimen/defaultTextSize"
                 android:imeOptions="actionNext"
                 android:textColor="@color/md_theme_black" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -360,7 +353,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:enabled="true"
-                android:textSize="@dimen/defaultTextSize"
                 android:imeOptions="actionNext"
                 android:textColor="@color/md_theme_black" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -387,7 +379,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:enabled="true"
-                android:textSize="@dimen/defaultTextSize"
                 android:imeOptions="actionNext"
                 android:textColor="@color/md_theme_black" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -414,7 +405,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:enabled="true"
-                android:textSize="@dimen/defaultTextSize"
                 android:imeOptions="actionNext"
                 android:inputType="text|textMultiLine"
                 android:textColor="@color/md_theme_black" />
@@ -442,7 +432,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:enabled="true"
-                android:textSize="@dimen/defaultTextSize"
                 android:imeOptions="actionNext"
                 android:inputType="text|textMultiLine"
                 android:textColor="@color/md_theme_black" />
@@ -470,7 +459,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:enabled="true"
-                android:textSize="@dimen/defaultTextSize"
                 android:imeOptions="actionNext"
                 android:inputType="text|textMultiLine"
                 android:textColor="@color/md_theme_black" />
@@ -499,7 +487,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:enabled="true"
-                android:textSize="@dimen/defaultTextSize"
                 android:imeOptions="actionNext"
                 android:inputType="text|textMultiLine"
                 android:textColor="@color/md_theme_black" />
@@ -528,7 +515,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:enabled="true"
-                android:textSize="@dimen/defaultTextSize"
                 android:imeOptions="actionNext"
                 android:inputType="text|textMultiLine"
                 android:textColor="@color/md_theme_black" />
@@ -576,7 +562,7 @@
             android:id="@+id/labelAula"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="20dp"
             android:autoSizeMaxTextSize="100sp"
@@ -595,8 +581,7 @@
                 android:layout_height="match_parent"
                 android:enabled="true"
                 android:imeOptions="actionNext"
-                android:textColor="@color/md_theme_black"
-                android:textSize="@dimen/defaultTextSize" />
+                android:textColor="@color/md_theme_black" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -604,6 +589,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="20dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="20dp"
             android:autoSizeMaxTextSize="100sp"
             android:autoSizeMinTextSize="12sp"
@@ -622,8 +608,7 @@
                 android:enabled="false"
                 android:imeOptions="actionNext"
                 android:text="@string/modificacion"
-                android:textColor="@color/md_theme_black"
-                android:textSize="20sp" />
+                android:textColor="@color/md_theme_black" />
         </com.google.android.material.textfield.TextInputLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 

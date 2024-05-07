@@ -126,15 +126,15 @@
             android:layout_height="0dp"
             android:layout_marginStart="20dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="20dp"
+            android:layout_marginEnd="8dp"
             android:autoSizeMaxTextSize="100sp"
             android:autoSizeMinTextSize="12sp"
             android:hint="@string/fechaNacimientoPaeeLabel"
             android:textColorHint="@color/md_theme_light_surfaceTint"
             app:hintTextAppearance="@style/TextLabel"
             app:layout_constraintBottom_toTopOf="@id/guidelineMid"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/guidelinePercentAula"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/guidelineTop">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -150,7 +150,7 @@
             android:id="@+id/labelCursoEmision"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="20dp"
             android:autoSizeMaxTextSize="100sp"
@@ -162,7 +162,7 @@
             app:hintTextAppearance="@style/TextLabel"
             app:layout_constraintBottom_toTopOf="@id/guidelineMid"
             app:layout_constraintEnd_toStartOf="@id/guidelinePercentIzq"
-            app:layout_constraintStart_toStartOf="@id/guidelinePercentAula"
+            app:layout_constraintStart_toEndOf="@+id/guidelinePercentAula"
             app:layout_constraintTop_toBottomOf="@id/guidelineTop">
 
 
@@ -179,7 +179,7 @@
             android:layout_height="0dp"
             android:layout_marginStart="20dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="20dp"
+            android:layout_marginEnd="8dp"
             android:autoSizeMaxTextSize="100sp"
             android:autoSizeMinTextSize="12sp"
             android:hint="@string/tutorLabel"
@@ -560,7 +560,7 @@
             android:id="@+id/labelAula"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="20dp"
             android:autoSizeMaxTextSize="100sp"
@@ -606,7 +606,7 @@
                 android:enabled="false"
                 android:imeOptions="actionNext"
                 android:textColor="@color/md_theme_black"
-                android:textSize="20sp" />
+                />
         </com.google.android.material.textfield.TextInputLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

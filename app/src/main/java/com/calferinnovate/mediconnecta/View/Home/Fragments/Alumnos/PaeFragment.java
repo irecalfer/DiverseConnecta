@@ -251,7 +251,10 @@ public class PaeFragment extends Fragment implements IOnBackPressed {
                 if(menuItem.getItemId() == R.id.action_editar_pae){
                     getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new EditarPaeFragment()).addToBackStack(null).setReorderingAllowed(true).commit();
                 }
-
+                if (menuItem.getItemId() == R.id.action_atras_pae) {
+                    requireActivity().getSupportFragmentManager().popBackStack();
+                    return true;
+                }
                 return false;
             }
         };

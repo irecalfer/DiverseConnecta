@@ -217,11 +217,7 @@ public class SesionFragment extends Fragment {
         sesionViewModel.obtieneDatosEmpleados().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean obtenidos) {
-                if(obtenidos){
 
-                }else{
-                    Toast.makeText(getContext(), "Ha ocurrido un error al cargar los datos", Toast.LENGTH_SHORT).show();
-                }
             }
         });
         sesionViewModel.obtieneRelacionEmpleadosAulas().observe(getViewLifecycleOwner(), new Observer<Boolean>() {

@@ -275,7 +275,6 @@ private Pae pae;
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 enfermera = (String) parent.getItemAtPosition(position);
-                enfermera = enfermeraTV.getText().toString();
                 notifyItemSelectedListener();
             }
         });
@@ -320,7 +319,6 @@ private Pae pae;
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 aulas = (String) parent.getItemAtPosition(position);
-                aulas = aulasTV.getText().toString();
                 notifyItemSelectedListener();
             }
         });
@@ -358,7 +356,7 @@ private Pae pae;
         String nombreProfesor = "";
         for(Empleado e: ClaseGlobal.getInstance().getListaEmpleados()){
             if(e.getCod_empleado() == pae.getFkIdProfesor()){
-                nombreProfesor = e.getNombre()+" "+e.getApellidos();
+                nombreProfesor = e.getNombre();
             }
         }
         return nombreProfesor;
@@ -368,7 +366,7 @@ private Pae pae;
         String nombreEnfermera = "";
         for(Empleado e: ClaseGlobal.getInstance().getListaEmpleados()){
             if(e.getCod_empleado() == pae.getFkIdEnfermero()){
-                nombreEnfermera = e.getNombre()+" "+e.getApellidos();
+                nombreEnfermera = e.getNombre();
             }
         }
         return nombreEnfermera;
@@ -395,7 +393,7 @@ private Pae pae;
 
         for(Empleado e: ClaseGlobal.getInstance().getListaEmpleados()){
             if(e.getCod_empleado() == pae.getIdEnfermeroModifica()){
-                enfermeraModificacion = e.getNombre()+" "+e.getApellidos();
+                enfermeraModificacion = e.getNombre();
             }
         }
 

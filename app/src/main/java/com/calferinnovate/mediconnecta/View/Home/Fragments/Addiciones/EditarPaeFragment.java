@@ -317,7 +317,10 @@ public class EditarPaeFragment extends Fragment implements IOnBackPressed, Edita
                     registraElPae();
                     return true;
                 }
-
+                if (menuItem.getItemId() == R.id.action_atras_pae) {
+                    requireActivity().getSupportFragmentManager().popBackStack();
+                    return true;
+                }
                 return false;
             }
         };
