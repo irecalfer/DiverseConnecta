@@ -172,6 +172,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:paddingStart="10dp"
                  />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -197,6 +198,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:enabled="true"
+                android:paddingStart="10dp"
                 android:imeOptions="actionNext"
                 android:textColor="@color/md_theme_black" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -222,7 +224,8 @@
                 android:id="@+id/enfermera_exposed_dropdown"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:paddingStart="10dp"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -580,6 +583,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:enabled="true"
+                android:paddingStart="10dp"
                 android:imeOptions="actionNext"
                 android:textColor="@color/md_theme_black" />
         </com.google.android.material.textfield.TextInputLayout>

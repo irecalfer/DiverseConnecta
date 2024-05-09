@@ -93,7 +93,10 @@
         <item name="tabMaxWidth">0dp</item>
     </style>
 
-
+<style name="searchViewAlumnos" parent="Widget.AppCompat.SearchView">
+    <item name="android:textSize">@dimen/defaultTextSize</item>
+    <item name="android:textColor">@color/md_theme_black</item>
+</style>
 
 
 

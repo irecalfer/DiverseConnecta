@@ -1,9 +1,15 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android" >
     <!-- Search, should appear as action button -->
+    <item android:id="@+id/action_search"
+        android:icon="@drawable/search"
+        android:title="@string/Busqueda"
+        android:iconTint="@color/md_theme_white"
+        app:showAsAction="ifRoom|collapseActionView"
+        app:actionViewClass="com.google.android.material.search.SearchView" />
     <item android:id="@+id/action_añadir_usuario"
         android:icon="@drawable/anadir_persona"
         android:title="@string/anadirUsuario"
         android:iconTint="@color/md_theme_white"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
 </menu>

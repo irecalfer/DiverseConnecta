@@ -150,4 +150,7 @@
     <string name="barra">/</string>
     <string name="modificacion">Modificado por:</string>
     <string name="atras">Atrás</string>
+    <string name="Busqueda">Búsqueda</string>
+    <string name="searchbar_hint">Escriba el nombre del alumno</string>
+    <string name="search">Escriba el nombre del alumno</string>
 </resources>

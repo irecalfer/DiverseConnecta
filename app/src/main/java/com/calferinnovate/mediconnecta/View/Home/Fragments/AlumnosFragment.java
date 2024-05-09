@@ -72,31 +72,30 @@ public class AlumnosFragment extends Fragment implements AlumnosAdapter.ItemClic
         poblaRecyclerPacientes();
         actualizaListaPacientes();
 
-
         //Implementamos la escucha al item
         adapter.setOnClickListener(this);
 
         return view;
     }
 
-    public void cambiarToolbar(){
-       MenuProvider menuProvider = new MenuProvider() {
-           @Override
-           public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
-               menuInflater.inflate(R.menu.app_bar_usuarios, menu);
-           }
+    public void cambiarToolbar() {
+        MenuProvider menuProvider = new MenuProvider() {
+            @Override
+            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                menuInflater.inflate(R.menu.app_bar_usuarios, menu);
+            }
 
-           @Override
-           public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
-               if(menuItem.getItemId() == R.id.action_añadir_usuario){
-                   getParentFragmentManager().beginTransaction().replace(R.id.fragment_container, new GeneralAlumnosFragmentAnadidos()).commit();
-                   return true;
-               }
-               return false;
-           }
-       };
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                if (menuItem.getItemId() == R.id.action_añadir_usuario) {
+                    getParentFragmentManager().beginTransaction().replace(R.id.fragment_container, new GeneralAlumnosFragmentAnadidos()).commit();
+                    return true;
+                }
+                return false;
+            }
+        };
 
-       requireActivity().addMenuProvider(menuProvider, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
+        requireActivity().addMenuProvider(menuProvider, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
 
     }
 
@@ -109,7 +108,7 @@ public class AlumnosFragment extends Fragment implements AlumnosAdapter.ItemClic
         claseGlobal = ClaseGlobal.getInstance();
         listaPacientes = claseGlobal.getListaAlumnos();
         recycler = view.findViewById(R.id.recyclerViewPacientes);
-        searchView = view.findViewById(R.id.searchPacientes);
+        searchView = view.findViewById(R.id.searchAlumnos);
     }
 
     /**
@@ -178,7 +177,7 @@ public class AlumnosFragment extends Fragment implements AlumnosAdapter.ItemClic
     /**
      * Implementa la lógica para filtrar la lista de pacientes.
      */
-    public void listenerSearchView() {
+   public void listenerSearchView() {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
