@@ -10,6 +10,6 @@
         android:icon="@drawable/confirmar"
         android:title="@string/confirmar"
         android:iconTint="@color/md_theme_white"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
 
 </menu>

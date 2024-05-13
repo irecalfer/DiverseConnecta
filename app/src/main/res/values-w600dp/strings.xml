@@ -153,4 +153,8 @@
     <string name="Busqueda">Búsqueda</string>
     <string name="searchbar_hint">Escriba el nombre del alumno</string>
     <string name="search">Escriba el nombre del alumno</string>
+    <string name="fechaSeguimiento">Fecha</string>
+    <string name="horaSeguimiento">Hora</string>
+    <string name="calendario_description">Selección de fecha</string>
+    <string name="hora_description">Selecciona hora</string>
 </resources>

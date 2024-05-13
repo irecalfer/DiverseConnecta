@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    tools:context=".View.Home.Fragments.Addiciones.CreaSeguimientoFragment">
+
+    <!-- Añade un espacio en blanco en la parte superior con un peso mayor -->
+    <Space
+        android:id="@+id/spaceTop"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.05" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineIzq"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.20" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineMid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.50" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineDer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.80" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/TVFecha"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_marginEnd="8dp"
+            android:hint="@string/fechaSeguimiento"
+            android:textColorHint="@color/md_theme_light_surfaceTint"
+            app:boxBackgroundMode="outline"
+            app:endIconContentDescription="@string/calendario_description"
+            app:endIconDrawable="@drawable/calendario"
+            app:endIconMode="custom"
+            app:endIconTint="@color/md_theme_dark_inversePrimary"
+            app:hintAnimationEnabled="false"
+            app:hintEnabled="true"
+            app:hintTextAppearance="@style/TextLabel"
+            app:layout_constraintEnd_toStartOf="@id/guidelineMid"
+            app:layout_constraintStart_toEndOf="@id/guidelineIzq"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/ETFechaSeguimiento"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColor="@color/md_theme_black"
+                android:textSize="@dimen/defaultTextSize" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/TVHora"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_marginStart="8dp"
+            android:hint="@string/horaSeguimiento"
+            app:boxBackgroundMode="outline"
+            android:textColorHint="@color/md_theme_light_surfaceTint"
+            app:endIconContentDescription="@string/hora_description"
+            app:endIconDrawable="@drawable/hora"
+            app:endIconMode="custom"
+            app:endIconTint="@color/md_theme_dark_inversePrimary"
+            app:hintTextAppearance="@style/TextLabel"
+            app:layout_constraintEnd_toStartOf="@id/guidelineDer"
+            app:layout_constraintStart_toEndOf="@id/guidelineMid"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/ETHoraSeguimiento"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColor="@color/md_theme_black"
+                android:textSize="@dimen/defaultTextSize" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/TVSeguimiento"
+            android:layout_width="0dp"
+            android:layout_height="300dp"
+            android:layout_marginTop="20dp"
+            android:hint="@string/seguimiento"
+            android:textColorHint="@color/md_theme_light_surfaceTint"
+            app:hintTextAppearance="@style/TextLabel"
+            app:layout_constraintEnd_toStartOf="@id/guidelineDer"
+            app:layout_constraintStart_toEndOf="@id/guidelineIzq"
+            app:layout_constraintTop_toBottomOf="@id/TVFecha">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/ETSeguimientoAlumno"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColor="@color/md_theme_black"
+                android:textSize="@dimen/defaultTextSize" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Space
+        android:id="@+id/spaceBottom"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.05" />
+
+</LinearLayout>

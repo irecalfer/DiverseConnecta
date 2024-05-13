@@ -19,6 +19,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.calferinnovate.mediconnecta.Model.Alumnos;
 import com.calferinnovate.mediconnecta.Model.Pae;
+import com.calferinnovate.mediconnecta.View.Home.Fragments.Addiciones.CreaSeguimientoFragment;
 import com.calferinnovate.mediconnecta.View.Home.Fragments.Addiciones.CrearPaeFragment;
 import com.calferinnovate.mediconnecta.View.Home.Fragments.AlumnosFragment;
 import com.calferinnovate.mediconnecta.View.IOnBackPressed;
@@ -133,7 +134,7 @@ public class DetalleAlumnoFragment extends Fragment implements IOnBackPressed {
                 seleccionaTipoPae();
                 break;
             case "Seguimiento":
-                getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new SeguimientoFragment()).commit();
+                getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new CreaSeguimientoFragment()).commit();
                 break;
             case "Crisis":
                 getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new CrisisFragment()).commit();
