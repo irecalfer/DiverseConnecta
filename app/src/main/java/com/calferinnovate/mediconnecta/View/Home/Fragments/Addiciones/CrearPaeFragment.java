@@ -162,10 +162,6 @@ public class CrearPaeFragment extends Fragment implements IOnBackPressed, CreaPa
                     registraElPae();
                     return true;
                 }
-                if (menuItem.getItemId() == R.id.action_atras_pae) {
-                    requireActivity().getSupportFragmentManager().popBackStack();
-                    return true;
-                }
                 return false;
             }
         };

@@ -1,7 +1,7 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android" >
     <!-- Search, should appear as action button -->
-    <item android:id="@+id/action_confirmar_pae"
+    <item android:id="@+id/action_confirmar"
         android:icon="@drawable/confirmar"
         android:title="@string/confirmar"
         android:iconTint="@color/md_theme_white"
