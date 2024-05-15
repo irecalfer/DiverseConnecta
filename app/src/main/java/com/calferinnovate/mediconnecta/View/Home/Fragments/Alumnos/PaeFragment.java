@@ -238,12 +238,11 @@ public class PaeFragment extends Fragment implements IOnBackPressed {
         }
     }
 
-    public Menu cambiarToolbar(){
+    public void cambiarToolbar(){
         MenuProvider menuProvider = new MenuProvider() {
             @Override
             public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
                 menuInflater.inflate(R.menu.app_menu_opciones_pae, menu);
-                menuPae = menu;
             }
 
             @Override
@@ -256,7 +255,6 @@ public class PaeFragment extends Fragment implements IOnBackPressed {
         };
 
         requireActivity().addMenuProvider(menuProvider, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
-        return menuPae;
     }
 
 

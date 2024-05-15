@@ -42,9 +42,9 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/TVFecha"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="100dp"
-                        android:layout_marginStart="100dp"
+                        android:layout_marginStart="20dp"
                         android:layout_marginEnd="8dp"
                         android:layout_weight="1"
                         android:hint="@string/fechaSeguimiento"
@@ -68,10 +68,10 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/TVHora"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="100dp"
                         android:layout_marginStart="8dp"
-                        android:layout_marginEnd="100dp"
+                        android:layout_marginEnd="20dp"
                         android:layout_weight="1"
                         android:hint="@string/horaSeguimiento"
                         android:textColorHint="@color/md_theme_light_surfaceTint"
@@ -95,14 +95,14 @@
                     android:id="@+id/TVSeguimiento"
                     android:layout_width="match_parent"
                     android:layout_height="300dp"
-                    android:layout_marginStart="100dp"
+                    android:layout_marginStart="20dp"
                     android:layout_marginTop="20dp"
-                    android:layout_marginEnd="100dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="20dp"
                     android:layout_weight="1"
                     android:hint="@string/seguimiento"
                     android:textColorHint="@color/md_theme_light_surfaceTint"
-                    app:hintTextAppearance="@style/TextLabel"
-                    android:layout_marginBottom="20dp">
+                    app:hintTextAppearance="@style/TextLabel">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/ETSeguimientoAlumno"

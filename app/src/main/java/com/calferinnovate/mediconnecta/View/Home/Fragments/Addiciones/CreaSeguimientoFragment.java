@@ -33,6 +33,7 @@ import com.calferinnovate.mediconnecta.Model.Alumnos;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
 import com.calferinnovate.mediconnecta.Model.Constantes;
 import com.calferinnovate.mediconnecta.Model.PeticionesJson;
+import com.calferinnovate.mediconnecta.Model.Seguimiento;
 import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.View.Home.Fragments.Alumnos.SeguimientoFragment;
 import com.calferinnovate.mediconnecta.ViewModel.SharedAlumnosViewModel;
@@ -52,6 +53,7 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.Map;
@@ -221,7 +223,12 @@ private MaterialToolbar toolbarSeguimiento;
                     Log.d("Respuesta PHP", response);
                     // Llama al método run() en el objeto Runnable para ejecutar registraElPae() después de la inserción
                     //navegaAlNuevoFragmento();
-                    dismiss();
+                    sharedAlumnosViewModel.getListaSeguimientos(alumno).observe(getViewLifecycleOwner(), new Observer<ArrayList<Seguimiento>>() {
+                        @Override
+                        public void onChanged(ArrayList<Seguimiento> seguimientoArrayList) {
+                            dismiss();
+                        }
+                    });
                 } else {
                     Toast.makeText(getContext(), "Error al insertar el seguimiento", Toast.LENGTH_SHORT).show();
                 }
