@@ -1,16 +1,8 @@
 package com.calferinnovate.mediconnecta.View.Home.Fragments.Addiciones;
 
-import android.graphics.drawable.Icon;
+import android.app.Activity;
+import android.app.Dialog;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.view.MenuProvider;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,11 +10,23 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.LinearLayout;
 import android.widget.Toast;
+import android.widget.Toolbar;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.MenuHost;
+import androidx.core.view.MenuProvider;
+import androidx.fragment.app.DialogFragment;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.calferinnovate.mediconnecta.Model.Alumnos;
@@ -30,11 +34,11 @@ import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
 import com.calferinnovate.mediconnecta.Model.Constantes;
 import com.calferinnovate.mediconnecta.Model.PeticionesJson;
 import com.calferinnovate.mediconnecta.R;
-import com.calferinnovate.mediconnecta.View.Home.Fragments.Alumnos.PaeFragment;
 import com.calferinnovate.mediconnecta.View.Home.Fragments.Alumnos.SeguimientoFragment;
 import com.calferinnovate.mediconnecta.ViewModel.SharedAlumnosViewModel;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelArgs;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelFactory;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.google.android.material.textfield.TextInputEditText;
@@ -53,7 +57,7 @@ import java.util.Hashtable;
 import java.util.Map;
 
 
-public class CreaSeguimientoFragment extends Fragment {
+public class CreaSeguimientoFragment extends DialogFragment {
 
 private SharedAlumnosViewModel sharedAlumnosViewModel;
 private PeticionesJson peticionesJson;
@@ -61,56 +65,63 @@ private ClaseGlobal claseGlobal;
 private TextInputEditText etFecha, etHora, etSeguimiento;
 private TextInputLayout tilFecha, tilHora;
 private String fechaSeguimientoSeleccionada, horaSeguimientoSeleccionada;
+public static final String TAG= "CreaSeguimientoFragment";
+private MenuHost menuHost;
+private MaterialToolbar toolbarSeguimiento;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
 
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        return super.onCreateDialog(savedInstanceState);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_crea_seguimiento, container, false);
+        getActivity().setTitle("Crea Seguimiento");
+        menuHost = requireActivity();
         inicializaRecursos(view);
         inicializaViewModel();
-
+        setupToolbar();
+        //cambiarToolbar();
         return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        cambiarToolbar();
         seleccionaFecha();
         seleccionaHora();
     }
 
-    public void cambiarToolbar() {
-        MenuProvider menuProvider = new MenuProvider() {
-            @Override
-            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
-                menuInflater.inflate(R.menu.app_menu_confirmar, menu);
-            }
 
+    public void setupToolbar(){
+        toolbarSeguimiento.inflateMenu(R.menu.app_menu_confirmar);
+        toolbarSeguimiento.setOnMenuItemClickListener(new androidx.appcompat.widget.Toolbar.OnMenuItemClickListener() {
             @Override
-            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
-                if (menuItem.getItemId() == R.id.action_confirmar) {
+            public boolean onMenuItemClick(MenuItem item) {
+                if (item.getItemId() == R.id.action_confirmar) {
                     sharedAlumnosViewModel.getPaciente().observe(getViewLifecycleOwner(), new Observer<Alumnos>() {
                         @Override
                         public void onChanged(Alumnos alumno) {
                             registraElSeguimiento(alumno);
                         }
                     });
-                    return true;
                 }
-                return false;
+                return true;
             }
-        };
-
-        requireActivity().addMenuProvider(menuProvider, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
+        });
     }
+
+
 
     public void inicializaRecursos(View view){
         claseGlobal = ClaseGlobal.getInstance();
@@ -119,6 +130,7 @@ private String fechaSeguimientoSeleccionada, horaSeguimientoSeleccionada;
         etSeguimiento = view.findViewById(R.id.ETSeguimientoAlumno);
         tilFecha = view.findViewById(R.id.TVFecha);
         tilHora = view.findViewById(R.id.TVHora);
+        toolbarSeguimiento = view.findViewById(R.id.toolbarCreaSeguimiento);
     }
 
     public void inicializaViewModel(){
@@ -208,7 +220,8 @@ private String fechaSeguimientoSeleccionada, horaSeguimientoSeleccionada;
                     Toast.makeText(getContext(), "Seguimiento registrado correctamente", Toast.LENGTH_SHORT).show();
                     Log.d("Respuesta PHP", response);
                     // Llama al método run() en el objeto Runnable para ejecutar registraElPae() después de la inserción
-                    navegaAlNuevoFragmento();
+                    //navegaAlNuevoFragmento();
+                    dismiss();
                 } else {
                     Toast.makeText(getContext(), "Error al insertar el seguimiento", Toast.LENGTH_SHORT).show();
                 }

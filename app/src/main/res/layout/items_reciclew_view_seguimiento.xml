@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineIzq"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.20"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineDer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.80"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/fechaSeguimiento"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="@string/fechaSeguimiento"
+            android:textColorHint="@color/md_theme_light_surfaceTint"
+            app:boxBackgroundMode="outline"
+            app:hintTextAppearance="@style/TextLabel"
+            app:layout_constraintEnd_toStartOf="@id/guidelineDer"
+            app:layout_constraintStart_toEndOf="@id/guidelineIzq"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/fechaSeguimientoTil"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/md_theme_black"
+                android:enabled="false"
+                android:textSize="@dimen/defaultTextSize" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/descripcionSeguimiento"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="@string/descripcionSeguimiento"
+            android:textColorHint="@color/md_theme_light_surfaceTint"
+            app:boxBackgroundMode="outline"
+            app:hintTextAppearance="@style/TextLabel"
+            app:layout_constraintEnd_toStartOf="@id/guidelineDer"
+            app:layout_constraintStart_toEndOf="@id/guidelineIzq"
+            app:layout_constraintTop_toBottomOf="@id/fechaSeguimiento">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/descripcionSeguimientoTil"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/md_theme_black"
+                android:enabled="false"
+                android:textSize="@dimen/defaultTextSize" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <View
+            android:id="@+id/divider4"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="8dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintEnd_toStartOf="@id/guidelineDer"
+            app:layout_constraintStart_toEndOf="@id/guidelineIzq"
+            app:layout_constraintTop_toBottomOf="@id/descripcionSeguimiento" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</LinearLayout>

@@ -192,4 +192,5 @@
     <string name="horaSeguimiento">Hora</string>
     <string name="calendario_description">Selección de fecha</string>
     <string name="hora_description">Selecciona hora</string>
+    <string name="descripcionSeguimiento">Descripción</string>
 </resources>

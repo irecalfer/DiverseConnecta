@@ -134,7 +134,7 @@ public class DetalleAlumnoFragment extends Fragment implements IOnBackPressed {
                 seleccionaTipoPae();
                 break;
             case "Seguimiento":
-                getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new CreaSeguimientoFragment()).commit();
+                getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new SeguimientoFragment()).commit();
                 break;
             case "Crisis":
                 getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new CrisisFragment()).commit();

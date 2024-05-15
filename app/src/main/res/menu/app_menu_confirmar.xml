@@ -6,5 +6,6 @@
         android:title="@string/confirmar"
         android:iconTint="@color/md_theme_white"
         app:showAsAction="always" />
+    <group />
 
 </menu>

@@ -18,6 +18,7 @@ import com.calferinnovate.mediconnecta.Model.Curso;
 import com.calferinnovate.mediconnecta.Model.Empleado;
 import com.calferinnovate.mediconnecta.Model.Pae;
 import com.calferinnovate.mediconnecta.Model.PeticionesJson;
+import com.calferinnovate.mediconnecta.Model.Seguimiento;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -45,6 +46,8 @@ public class SharedAlumnosViewModel extends ViewModel {
     private MutableLiveData<ArrayList<String>> mutableLiveDataCursos = new MutableLiveData<>();
     private MutableLiveData<ArrayList<Aulas>> mutableLiveDataAulas = new MutableLiveData<>();
     private MutableLiveData<ArrayList<Empleado>> mutableLiveDataEmpleadosActualizados = new MutableLiveData<>();
+    private MutableLiveData<ArrayList<Seguimiento>> mutableLiveDataSeguimientoArrayList = new MutableLiveData<>();
+    private final MutableLiveData<Seguimiento> mutableSeguimiento = new MutableLiveData<>();
     private ClaseGlobal  claseGlobal;
 
 
@@ -374,4 +377,43 @@ public class SharedAlumnosViewModel extends ViewModel {
                 jsonObject.optString("foto"));
     }
 
+    public LiveData<ArrayList<Seguimiento>> getListaSeguimientos(Alumnos alumno) {
+        String url = Constantes.url_part + "seguimiento.php?fk_id_alumno="+alumno.getIdAlumno();
+
+        peticionesJson.getJsonObjectRequest(url, new PeticionesJson.MyJsonObjectResponseListener() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    ArrayList<Seguimiento> seguimientoArrayList = new ArrayList<>();
+                    JSONArray jsonArray = response.getJSONArray("seguimiento");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        Seguimiento nuevoSeguimiento = new Seguimiento(jsonObject.optInt("id_seguimiento"),
+                                jsonObject.optString("fecha_y_hora"), jsonObject.optString("descripcion"),
+                                jsonObject.optInt("fk_id_alumno"));
+                        seguimientoArrayList.add(nuevoSeguimiento);
+                    }
+
+                    claseGlobal.setSeguimientoArrayList(seguimientoArrayList);
+                    if (!seguimientoArrayList.isEmpty()) {
+                        mutableLiveDataSeguimientoArrayList.postValue(new ArrayList<>(claseGlobal.getSeguimientoArrayList()));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        return mutableLiveDataSeguimientoArrayList;
+    }
+
+    public void setSeguimiento(int position) {
+        Seguimiento seguimientoSeleccionado = mutableLiveDataSeguimientoArrayList.getValue().get(position);
+        mutableSeguimiento.postValue(seguimientoSeleccionado);
+    }
 }
