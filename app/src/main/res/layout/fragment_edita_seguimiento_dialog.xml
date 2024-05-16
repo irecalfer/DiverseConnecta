@@ -28,7 +28,7 @@
                 android:orientation="vertical">
 
                 <com.google.android.material.appbar.MaterialToolbar
-                    android:id="@+id/toolbarEditaSeguimiento"
+                    android:id="@+id/toolbarConfirmaSeguimiento"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="?attr/colorPrimary"

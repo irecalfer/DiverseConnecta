@@ -416,4 +416,8 @@ public class SharedAlumnosViewModel extends ViewModel {
         Seguimiento seguimientoSeleccionado = mutableLiveDataSeguimientoArrayList.getValue().get(position);
         mutableSeguimiento.postValue(seguimientoSeleccionado);
     }
+
+    public LiveData<Seguimiento> getSeguimiento(){
+        return mutableSeguimiento;
+    }
 }

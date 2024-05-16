@@ -1,7 +1,16 @@
-package com.calferinnovate.mediconnecta.View.Home.Fragments.Addiciones;
+package com.calferinnovate.mediconnecta.View.Home.Fragments.Ediciones;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -9,17 +18,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.view.MenuHost;
-import androidx.fragment.app.DialogFragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.calferinnovate.mediconnecta.Adaptadores.OpcionesSeguimientoAdapter;
 import com.calferinnovate.mediconnecta.Model.Alumnos;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
 import com.calferinnovate.mediconnecta.Model.Constantes;
@@ -43,6 +46,7 @@ import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
@@ -50,17 +54,33 @@ import java.util.Hashtable;
 import java.util.Map;
 
 
-public class CreaSeguimientoFragment extends DialogFragment {
+public class EditaSeguimientoDialogFragment extends DialogFragment {
 
-private SharedAlumnosViewModel sharedAlumnosViewModel;
-private PeticionesJson peticionesJson;
-private ClaseGlobal claseGlobal;
-private TextInputEditText etFecha, etHora, etSeguimiento;
-private TextInputLayout tilFecha, tilHora;
-private String fechaSeguimientoSeleccionada, horaSeguimientoSeleccionada;
-public static final String TAG= "CreaSeguimientoFragment";
-private MenuHost menuHost;
-private MaterialToolbar toolbarSeguimiento;
+    public interface OnSeguimientoUpdatedListener {
+        void onSeguimientoUpdated();
+    }
+
+    public static final String TAG = "EditaSeguimientoDialogFragment";
+    private MaterialToolbar toolbarConfirmar;
+    private SharedAlumnosViewModel sharedAlumnosViewModel;
+    private PeticionesJson peticionesJson;
+    private ClaseGlobal claseGlobal;
+    private TextInputEditText etFecha, etHora, etSeguimiento;
+    private TextInputLayout tilFecha, tilHora;
+    private String fechaSeguimientoSeleccionada, horaSeguimientoSeleccionada;
+    private Seguimiento seguimiento;
+    private OnSeguimientoUpdatedListener mListener;
+
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        try {
+            mListener = (OnSeguimientoUpdatedListener) getTargetFragment();
+        } catch (ClassCastException e) {
+            throw new RuntimeException(context.toString() + " must implement OnSeguimientoUpdatedListener");
+        }
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -77,34 +97,37 @@ private MaterialToolbar toolbarSeguimiento;
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        super.onCreateView(inflater, container, savedInstanceState);
-        View view = inflater.inflate(R.layout.fragment_crea_seguimiento, container, false);
-        getActivity().setTitle("Crea Seguimiento");
+        View view = inflater.inflate(R.layout.fragment_edita_seguimiento_dialog, container, false);
         inicializaRecursos(view);
         inicializaViewModel();
         setupToolbar();
-        //cambiarToolbar();
         return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        rellenaUI(view);
         seleccionaFecha();
         seleccionaHora();
     }
 
 
-    public void setupToolbar(){
-        toolbarSeguimiento.inflateMenu(R.menu.app_menu_confirmar);
-        toolbarSeguimiento.setOnMenuItemClickListener(new androidx.appcompat.widget.Toolbar.OnMenuItemClickListener() {
+    public void setupToolbar() {
+        toolbarConfirmar.inflateMenu(R.menu.app_menu_confirmar);
+        toolbarConfirmar.setOnMenuItemClickListener(new androidx.appcompat.widget.Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 if (item.getItemId() == R.id.action_confirmar) {
                     sharedAlumnosViewModel.getPaciente().observe(getViewLifecycleOwner(), new Observer<Alumnos>() {
                         @Override
-                        public void onChanged(Alumnos alumno) {
-                            registraElSeguimiento(alumno);
+                        public void onChanged(Alumnos alumnos) {
+                            sharedAlumnosViewModel.getSeguimiento().observe(getViewLifecycleOwner(), new Observer<Seguimiento>() {
+                                @Override
+                                public void onChanged(Seguimiento seguimiento) {
+                                    registraElSeguimiento(seguimiento, alumnos);
+                                }
+                            });
                         }
                     });
                 }
@@ -113,19 +136,17 @@ private MaterialToolbar toolbarSeguimiento;
         });
     }
 
-
-
-    public void inicializaRecursos(View view){
+    public void inicializaRecursos(View view) {
         claseGlobal = ClaseGlobal.getInstance();
         etFecha = view.findViewById(R.id.ETFechaSeguimiento);
         etHora = view.findViewById(R.id.ETHoraSeguimiento);
         etSeguimiento = view.findViewById(R.id.ETSeguimientoAlumno);
         tilFecha = view.findViewById(R.id.TVFecha);
         tilHora = view.findViewById(R.id.TVHora);
-        toolbarSeguimiento = view.findViewById(R.id.toolbarEditaSeguimiento);
+        toolbarConfirmar = view.findViewById(R.id.toolbarConfirmaSeguimiento);
     }
 
-    public void inicializaViewModel(){
+    public void inicializaViewModel() {
         ViewModelArgs viewModelArgs = new ViewModelArgs() {
             @Override
             public PeticionesJson getPeticionesJson() {
@@ -142,13 +163,12 @@ private MaterialToolbar toolbarSeguimiento;
         sharedAlumnosViewModel = new ViewModelProvider(requireActivity(), factory).get(SharedAlumnosViewModel.class);
     }
 
-
-
-    public void seleccionaFecha(){
+    public void seleccionaFecha() {
         MaterialDatePicker.Builder<Long> materialDateBuilder = MaterialDatePicker.Builder.datePicker();
         materialDateBuilder.setTitleText("Selecciona la fecha en la que se registra el seguimiento");
 
         final MaterialDatePicker<Long> materialDatePicker = materialDateBuilder.build();
+
         tilFecha.setEndIconOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -167,18 +187,20 @@ private MaterialToolbar toolbarSeguimiento;
                 fechaSeguimientoSeleccionada = fechaFormateada;
             }
         });
+        fechaSeguimientoSeleccionada = etFecha.getText().toString();
     }
 
-    public void seleccionaHora(){
+    public void seleccionaHora() {
         MaterialTimePicker materialTimePicker = new MaterialTimePicker.Builder()
                 .setTimeFormat(TimeFormat.CLOCK_24H)
                 .setInputMode(MaterialTimePicker.INPUT_MODE_KEYBOARD)
                 .setTitleText("Seleccione la hora del seguimiento")
                 .build();
+        horaSeguimientoSeleccionada = etHora.getText().toString();
         tilHora.setEndIconOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                materialTimePicker.show(requireActivity().getSupportFragmentManager(),"MATERIAL_TIME_PICKER_SEGUIMIENTO");
+                materialTimePicker.show(requireActivity().getSupportFragmentManager(), "MATERIAL_TIME_PICKER_SEGUIMIENTO");
             }
         });
 
@@ -187,18 +209,29 @@ private MaterialToolbar toolbarSeguimiento;
             public void onClick(View v) {
                 int horaSeleccionada = materialTimePicker.getHour();
                 int minutosSeleccionados = materialTimePicker.getMinute();
-                horaSeguimientoSeleccionada = String.valueOf(horaSeleccionada)+":"+String.valueOf(minutosSeleccionados);
+                horaSeguimientoSeleccionada = String.valueOf(horaSeleccionada) + ":" + String.valueOf(minutosSeleccionados);
                 etHora.setText(horaSeguimientoSeleccionada);
             }
         });
     }
 
-    public void registraElSeguimiento(Alumnos alumno){
-        final String fechaSeguimiento = formateaFechaSQL();
-        final String descripcionSeguimiento = etSeguimiento.getText().toString();
-        final String idAlumno = String.valueOf(alumno.getIdAlumno());
 
-        String url = Constantes.url_part+"registra_seguimiento.php";
+    public void rellenaUI(View view) {
+        sharedAlumnosViewModel.getSeguimiento().observe(getViewLifecycleOwner(), new Observer<Seguimiento>() {
+            @Override
+            public void onChanged(Seguimiento seguimiento) {
+                OpcionesSeguimientoAdapter opcionesSeguimientoAdapter = new OpcionesSeguimientoAdapter(seguimiento, requireContext());
+                opcionesSeguimientoAdapter.rellenaUI(view);
+            }
+        });
+    }
+
+    public void registraElSeguimiento(Seguimiento seguimiento, Alumnos alumno) {
+        final String fechaSeguimiento = formateaFechaSQL(seguimiento);
+        final String descripcionSeguimiento = etSeguimiento.getText().toString();
+        final String idSeguimiento = String.valueOf(seguimiento.getIdSeguimiento());
+
+        String url = Constantes.url_part + "actualiza_seguimiento.php";
 
         StringRequest stringRequest;
 
@@ -207,7 +240,7 @@ private MaterialToolbar toolbarSeguimiento;
                 JSONObject jsonResponse = new JSONObject(response);
                 String message = jsonResponse.getString("message");
 
-                if ("Registro exitoso".equals(message)) {
+                if ("Actualización exitosa".equals(message)) {
                     // Después de completar la inserción del Pae, notifica a los observadores
                     Toast.makeText(getContext(), "Seguimiento registrado correctamente", Toast.LENGTH_SHORT).show();
                     Log.d("Respuesta PHP", response);
@@ -216,9 +249,20 @@ private MaterialToolbar toolbarSeguimiento;
                     sharedAlumnosViewModel.getListaSeguimientos(alumno).observe(getViewLifecycleOwner(), new Observer<ArrayList<Seguimiento>>() {
                         @Override
                         public void onChanged(ArrayList<Seguimiento> seguimientoArrayList) {
+                            // Notifica al Fragment padre que se ha completado la actualización del seguimiento
+                            if (mListener != null) {
+                                mListener.onSeguimientoUpdated();
+                            }
                             dismiss();
                         }
                     });
+
+                    /*sharedAlumnosViewModel.getListaSeguimientos(alumno).observe(getViewLifecycleOwner(), new Observer<ArrayList<Seguimiento>>() {
+                        @Override
+                        public void onChanged(ArrayList<Seguimiento> seguimientoArrayList) {
+                            dismiss();
+                        }
+                    });*/
                 } else {
                     Toast.makeText(getContext(), "Error al insertar el seguimiento", Toast.LENGTH_SHORT).show();
                 }
@@ -236,7 +280,7 @@ private MaterialToolbar toolbarSeguimiento;
             protected Map<String, String> getParams() {
                 Map<String, String> parametros = new Hashtable<>();
 
-                parametros.put("id_alumno", idAlumno.trim());
+                parametros.put("id_seguimiento", idSeguimiento.trim());
                 parametros.put("descripcion", descripcionSeguimiento.trim());
                 parametros.put("fecha", fechaSeguimiento.trim());
                 return parametros;
@@ -246,20 +290,39 @@ private MaterialToolbar toolbarSeguimiento;
         requestQueue.add(stringRequest);
     }
 
-    public String formateaFechaSQL(){
-        DateTimeFormatter formatoSalida = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        DateTimeFormatter formatoEntrada = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    public String formateaFechaSQL(Seguimiento seguimiento) {
+        if(horaSeguimientoSeleccionada.isEmpty() && fechaSeguimientoSeleccionada.isEmpty()){
+            return seguimiento.getFechaHora();
 
-        LocalDate fechaEntrada = LocalDate.parse(fechaSeguimientoSeleccionada, formatoEntrada);
-        String horaFormateada = horaSeguimientoSeleccionada+":"+"00";
+        } else if(fechaSeguimientoSeleccionada.isEmpty()){
+            DateTimeFormatter formatoSalida = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            DateTimeFormatter formatoEntrada = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-        String fechaFormateada = fechaEntrada.format(formatoSalida)+" "+horaFormateada;
-        return fechaFormateada;
+            LocalDateTime fechaEntrada = LocalDateTime.parse(seguimiento.getFechaHora(), formatoEntrada);
+
+            String horaFormateada = horaSeguimientoSeleccionada + ":" + "00";
+
+            return fechaEntrada.format(formatoSalida) + " " + horaFormateada;
+        }else if(horaSeguimientoSeleccionada.isEmpty()){
+            DateTimeFormatter formatoSalida = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            DateTimeFormatter formatoEntrada = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+            LocalDate fechaEntrada = LocalDate.parse(fechaSeguimientoSeleccionada, formatoEntrada);
+
+            DateTimeFormatter horaSalida = DateTimeFormatter.ofPattern("HH:mm:ss");
+            DateTimeFormatter DateEntrada = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                LocalDateTime horaEntrada = LocalDateTime.parse(seguimiento.getFechaHora(), DateEntrada);
+
+            return fechaEntrada.format(formatoSalida) + " " + horaEntrada.format(horaSalida);
+        }else{
+            DateTimeFormatter formatoSalida = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            DateTimeFormatter formatoEntrada = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+            LocalDate fechaEntrada = LocalDate.parse(fechaSeguimientoSeleccionada, formatoEntrada);
+
+            String horaFormateada = horaSeguimientoSeleccionada + ":" + "00";
+
+            return fechaEntrada.format(formatoSalida) + " " + horaFormateada;
+        }
     }
-
-
-    public void navegaAlNuevoFragmento(){
-        getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new SeguimientoFragment()).addToBackStack(null).commit();
-    }
-
 }

@@ -7,7 +7,7 @@ import androidx.core.view.MenuHost;
 import androidx.core.view.MenuProvider;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -22,7 +22,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.calferinnovate.mediconnecta.Adaptadores.AlumnosAdapter;
 import com.calferinnovate.mediconnecta.Adaptadores.SeguimientoAdapter;
 import com.calferinnovate.mediconnecta.Model.Alumnos;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
@@ -30,7 +29,7 @@ import com.calferinnovate.mediconnecta.Model.PeticionesJson;
 import com.calferinnovate.mediconnecta.Model.Seguimiento;
 import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.View.Home.Fragments.Addiciones.CreaSeguimientoFragment;
-import com.calferinnovate.mediconnecta.View.Home.Fragments.Addiciones.EditarPaeFragment;
+import com.calferinnovate.mediconnecta.View.Home.Fragments.Ediciones.EditaSeguimientoDialogFragment;
 import com.calferinnovate.mediconnecta.ViewModel.SharedAlumnosViewModel;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelArgs;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelFactory;
@@ -38,7 +37,7 @@ import com.calferinnovate.mediconnecta.ViewModel.ViewModelFactory;
 import java.util.ArrayList;
 
 
-public class SeguimientoFragment extends Fragment implements SeguimientoAdapter.ItemClickListener {
+public class SeguimientoFragment extends Fragment implements SeguimientoAdapter.ItemClickListener, EditaSeguimientoDialogFragment.OnSeguimientoUpdatedListener {
 
     private RecyclerView recycler;
     private ClaseGlobal claseGlobal;
@@ -136,11 +135,27 @@ public class SeguimientoFragment extends Fragment implements SeguimientoAdapter.
     @Override
     public void onClick(int position) {
         sharedAlumnosViewModel.setSeguimiento(position);
+        new OpcionesSeguimientoDialogFragment().show(getChildFragmentManager(), OpcionesSeguimientoDialogFragment.TAG);
         adapter.notifyDataSetChanged();
     }
 
     @Override
     public void onResume() {
         super.onResume();
+    }
+
+    @Override
+    public void onSeguimientoUpdated() {
+        // Aquí cierras ambos DialogFragments
+        FragmentManager fragmentManager = getChildFragmentManager();
+        DialogFragment editaSeguimientoDialog = (DialogFragment) fragmentManager.findFragmentByTag(EditaSeguimientoDialogFragment.TAG);
+        DialogFragment opcionesSeguimientoDialog = (DialogFragment) fragmentManager.findFragmentByTag(OpcionesSeguimientoDialogFragment.TAG);
+
+        if (editaSeguimientoDialog != null) {
+            editaSeguimientoDialog.dismiss();
+        }
+        if (opcionesSeguimientoDialog != null) {
+            opcionesSeguimientoDialog.dismiss();
+        }
     }
 }

@@ -194,4 +194,6 @@
     <string name="hora_description">Selecciona hora</string>
     <string name="descripcionSeguimiento">Descripción</string>
     <string name="añadir">Añadir</string>
+    <string name="borrar">Borrar</string>
+    <string name="editar">Edición</string>
 </resources>

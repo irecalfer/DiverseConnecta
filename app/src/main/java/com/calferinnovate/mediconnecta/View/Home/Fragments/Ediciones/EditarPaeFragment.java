@@ -1,4 +1,4 @@
-package com.calferinnovate.mediconnecta.View.Home.Fragments.Addiciones;
+package com.calferinnovate.mediconnecta.View.Home.Fragments.Ediciones;
 
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -28,7 +28,6 @@ import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.calferinnovate.mediconnecta.Adaptadores.EditaPaeAdapter;
@@ -43,6 +42,7 @@ import com.calferinnovate.mediconnecta.Model.Pae;
 import com.calferinnovate.mediconnecta.Model.PaeInsertionObservable;
 import com.calferinnovate.mediconnecta.Model.PeticionesJson;
 import com.calferinnovate.mediconnecta.R;
+import com.calferinnovate.mediconnecta.View.Home.Fragments.Addiciones.CrearPaeFragment;
 import com.calferinnovate.mediconnecta.View.Home.Fragments.Alumnos.PaeFragment;
 import com.calferinnovate.mediconnecta.View.IOnBackPressed;
 import com.calferinnovate.mediconnecta.ViewModel.SesionViewModel;

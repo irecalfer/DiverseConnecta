@@ -63,6 +63,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:textColor="@color/md_theme_black"
+                            android:enabled="false"
                             android:textSize="@dimen/defaultTextSize" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -87,7 +88,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:textColor="@color/md_theme_black"
-                            android:textSize="@dimen/defaultTextSize" />
+                            android:textSize="@dimen/defaultTextSize"
+                            android:enabled="false"/>
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
 
@@ -109,6 +111,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:textColor="@color/md_theme_black"
+                        android:enabled="false"
                         android:textSize="@dimen/defaultTextSize" />
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
