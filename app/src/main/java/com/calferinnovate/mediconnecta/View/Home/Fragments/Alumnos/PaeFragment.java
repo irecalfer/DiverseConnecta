@@ -41,6 +41,8 @@ import com.calferinnovate.mediconnecta.ViewModel.ViewModelFactory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 
 
 public class PaeFragment extends Fragment implements IOnBackPressed {
@@ -162,6 +164,18 @@ public class PaeFragment extends Fragment implements IOnBackPressed {
         // Finalmente agregar la fila en la primera posición
         tablaPae.addView(fila, 0);
     }
+
+    private ArrayList<ControlSomatometrico> ordenarPorTrimestre(ArrayList<ControlSomatometrico> controlSomatometricos) {
+        Collections.sort(controlSomatometricos, new Comparator<ControlSomatometrico>() {
+            @Override
+            public int compare(ControlSomatometrico control1, ControlSomatometrico control2) {
+                // Comparar los valores de fktrimestre y devolver el resultado de la comparación
+                return Integer.compare(control1.getFkTrimestre(), control2.getFkTrimestre());
+            }
+        });
+        return controlSomatometricos;
+    }
+
     public void creaTablaSeguimiento(View view, ArrayList<Pae> paeArrayList){
         // Limpia la tabla antes de volver a crear las filas y el encabezado
         tablaPae.removeAllViews();
@@ -172,7 +186,9 @@ public class PaeFragment extends Fragment implements IOnBackPressed {
         sharedAlumnosViewModel.obtieneControlSomatometrico(paeArrayList.get(0)).observe(getViewLifecycleOwner(), new Observer<ArrayList<ControlSomatometrico>>() {
             @Override
             public void onChanged(ArrayList<ControlSomatometrico> controlSomatometricos) {
-                ArrayList<ControlSomatometrico> controlTemp = new ArrayList<>(controlSomatometricos);
+                ArrayList<ControlSomatometrico> controlTemp;
+                // Ordenar los datos de control somatométrico por trimestre
+                controlTemp = ordenarPorTrimestre(controlSomatometricos);
                 // Crear una fila para cada propiedad
                 for (String propiedad : propiedades) {
                     TableRow filaPropiedad = new TableRow(getActivity());
