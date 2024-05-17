@@ -49,6 +49,8 @@ public class SharedAlumnosViewModel extends ViewModel {
     private MutableLiveData<ArrayList<Seguimiento>> mutableLiveDataSeguimientoArrayList = new MutableLiveData<>();
     private final MutableLiveData<Seguimiento> mutableSeguimiento = new MutableLiveData<>();
     private ClaseGlobal  claseGlobal;
+    private final MutableLiveData<Boolean> seguimientoUpdated = new MutableLiveData<>();
+    private MutableLiveData<Boolean> opcionesSeguimientoCerrado = new MutableLiveData<>();
 
 
 
@@ -420,4 +422,21 @@ public class SharedAlumnosViewModel extends ViewModel {
     public LiveData<Seguimiento> getSeguimiento(){
         return mutableSeguimiento;
     }
+
+    public void setSeguimientoUpdated(Boolean updated) {
+        seguimientoUpdated.setValue(updated);
+    }
+
+    public LiveData<Boolean> getSeguimientoUpdated() {
+        return seguimientoUpdated;
+    }
+
+    public LiveData<Boolean> getOpcionesSeguimientoCerrado() {
+        return opcionesSeguimientoCerrado;
+    }
+
+    public void setOpcionesSeguimientoCerrado(boolean closed) {
+        opcionesSeguimientoCerrado.setValue(closed);
+    }
+
 }

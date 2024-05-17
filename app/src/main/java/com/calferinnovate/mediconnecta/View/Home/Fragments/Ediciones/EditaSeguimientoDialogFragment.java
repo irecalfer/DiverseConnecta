@@ -68,19 +68,6 @@ public class EditaSeguimientoDialogFragment extends DialogFragment {
     private TextInputEditText etFecha, etHora, etSeguimiento;
     private TextInputLayout tilFecha, tilHora;
     private String fechaSeguimientoSeleccionada, horaSeguimientoSeleccionada;
-    private Seguimiento seguimiento;
-    private OnSeguimientoUpdatedListener mListener;
-
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        try {
-            mListener = (OnSeguimientoUpdatedListener) getTargetFragment();
-        } catch (ClassCastException e) {
-            throw new RuntimeException(context.toString() + " must implement OnSeguimientoUpdatedListener");
-        }
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -246,16 +233,8 @@ public class EditaSeguimientoDialogFragment extends DialogFragment {
                     Log.d("Respuesta PHP", response);
                     // Llama al método run() en el objeto Runnable para ejecutar registraElPae() después de la inserción
                     //navegaAlNuevoFragmento();
-                    sharedAlumnosViewModel.getListaSeguimientos(alumno).observe(getViewLifecycleOwner(), new Observer<ArrayList<Seguimiento>>() {
-                        @Override
-                        public void onChanged(ArrayList<Seguimiento> seguimientoArrayList) {
-                            // Notifica al Fragment padre que se ha completado la actualización del seguimiento
-                            if (mListener != null) {
-                                mListener.onSeguimientoUpdated();
-                            }
-                            dismiss();
-                        }
-                    });
+                    sharedAlumnosViewModel.setSeguimientoUpdated(true);
+                    dismiss();
 
                     /*sharedAlumnosViewModel.getListaSeguimientos(alumno).observe(getViewLifecycleOwner(), new Observer<ArrayList<Seguimiento>>() {
                         @Override
@@ -325,4 +304,6 @@ public class EditaSeguimientoDialogFragment extends DialogFragment {
             return fechaEntrada.format(formatoSalida) + " " + horaFormateada;
         }
     }
+
+
 }

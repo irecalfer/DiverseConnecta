@@ -3,6 +3,7 @@ package com.calferinnovate.mediconnecta.View.Home.Fragments.Alumnos;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.view.MenuHost;
 import androidx.core.view.MenuProvider;
 import androidx.fragment.app.DialogFragment;
@@ -59,6 +60,28 @@ public class SeguimientoFragment extends Fragment implements SeguimientoAdapter.
         obtieneSeguimientos();
 
         return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+       sharedAlumnosViewModel.getSeguimientoUpdated().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+           @Override
+           public void onChanged(Boolean actualizado) {
+               if(actualizado){
+                   obtieneSeguimientos();
+                   FragmentManager fragmentManager = getChildFragmentManager();
+                   DialogFragment editaSeguimientoDialog = (DialogFragment) fragmentManager.findFragmentByTag(EditaSeguimientoDialogFragment.TAG);
+                   DialogFragment opcionesSeguimientoDialog = (DialogFragment) fragmentManager.findFragmentByTag(OpcionesSeguimientoDialogFragment.TAG);
+                   if (editaSeguimientoDialog != null) {
+                       editaSeguimientoDialog.dismiss();
+                   }
+                   if (opcionesSeguimientoDialog != null) {
+                       opcionesSeguimientoDialog.dismiss();
+                   }
+               }
+           }
+       });
     }
 
     public void inicializaVariables(View view){
