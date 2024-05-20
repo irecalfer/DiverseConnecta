@@ -30,7 +30,6 @@ import com.bumptech.glide.Glide;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
 import com.calferinnovate.mediconnecta.Model.Empleado;
 import com.calferinnovate.mediconnecta.R;
-import com.calferinnovate.mediconnecta.View.Home.Fragments.AnadirPacienteFragment;
 import com.calferinnovate.mediconnecta.View.Home.Fragments.HomeFragment;
 import com.calferinnovate.mediconnecta.View.Home.Fragments.AlumnosFragment;
 import com.calferinnovate.mediconnecta.View.IOnBackPressed;
@@ -236,7 +235,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         dialog.setContentView(R.layout.dialog_cerrar_sesion_y_cambio_unidad);
 
-        TextView texto = dialog.findViewById(R.id.textViewCierreCambio);
+        TextView texto = dialog.findViewById(R.id.TVTextoBorrado);
         texto.setText(R.string.cierreSesion);
         TextView siSalir = dialog.findViewById(R.id.textViewSi);
         TextView noSalir = dialog.findViewById(R.id.textViewNo);
@@ -265,7 +264,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         dialog.setContentView(R.layout.dialog_cerrar_sesion_y_cambio_unidad);
 
-        TextView texto = dialog.findViewById(R.id.textViewCierreCambio);
+        TextView texto = dialog.findViewById(R.id.TVTextoBorrado);
         texto.setText(R.string.cambioUnidad);
         TextView siSalir = dialog.findViewById(R.id.textViewSi);
         TextView noSalir = dialog.findViewById(R.id.textViewNo);

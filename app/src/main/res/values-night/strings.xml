@@ -161,4 +161,5 @@
     <string name="añadir">Añadir</string>
     <string name="borrar">Borrar</string>
     <string name="editar">Edición</string>
+    <string name="borradoSeguimiento">¿Quiere borrar este seguimiento?</string>
 </resources>
