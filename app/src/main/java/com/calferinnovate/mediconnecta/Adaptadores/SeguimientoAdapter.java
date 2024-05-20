@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -80,6 +82,7 @@ public class SeguimientoAdapter extends RecyclerView.Adapter<SeguimientoAdapter.
 
         private final TextInputEditText tilFecha;
         private final TextInputEditText tilDescripcion;
+        private long doubleClickLastTime =0L;
         public SeguimientoViewHolder(@NonNull View itemView) {
             super(itemView);
             tilFecha = itemView.findViewById(R.id.fechaSeguimientoTil);
@@ -88,7 +91,12 @@ public class SeguimientoAdapter extends RecyclerView.Adapter<SeguimientoAdapter.
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    clickListener.onClick(getAdapterPosition());
+                    if(System.currentTimeMillis() - doubleClickLastTime < 300){
+                        doubleClickLastTime = 0;
+                        clickListener.onClick(getAdapterPosition());
+                    }else{
+                        doubleClickLastTime = System.currentTimeMillis();
+                    }
                 }
             });
         }
