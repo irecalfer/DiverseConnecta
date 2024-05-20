@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.util.Pair;
 import androidx.core.view.MenuHost;
 import androidx.core.view.MenuProvider;
 import androidx.fragment.app.DialogFragment;
@@ -34,8 +35,12 @@ import com.calferinnovate.mediconnecta.View.Home.Fragments.Ediciones.EditaSeguim
 import com.calferinnovate.mediconnecta.ViewModel.SharedAlumnosViewModel;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelArgs;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelFactory;
+import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 
 public class SeguimientoFragment extends Fragment implements SeguimientoAdapter.ItemClickListener, EditaSeguimientoDialogFragment.OnSeguimientoUpdatedListener {
@@ -44,8 +49,9 @@ public class SeguimientoFragment extends Fragment implements SeguimientoAdapter.
     private ClaseGlobal claseGlobal;
     private SharedAlumnosViewModel sharedAlumnosViewModel;
     private PeticionesJson peticionesJson;
-    private SeguimientoAdapter adapter;
+    private SeguimientoAdapter adapter, seguimientoFechasAdapter;
     private MenuHost menuHost;
+    private String fechaFin, fechaInicio;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -110,7 +116,7 @@ public class SeguimientoFragment extends Fragment implements SeguimientoAdapter.
         MenuProvider menuProvider = new MenuProvider() {
             @Override
             public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
-                menuInflater.inflate(R.menu.app_bar_menu_anadir, menu);
+                menuInflater.inflate(R.menu.app_bar_menu_seguimiento, menu);
             }
 
             @Override
@@ -118,6 +124,9 @@ public class SeguimientoFragment extends Fragment implements SeguimientoAdapter.
                 if(menuItem.getItemId() == R.id.action_añadir){
                     new CreaSeguimientoFragment().show(getChildFragmentManager(), CreaSeguimientoFragment.TAG);
                     adapter.notifyDataSetChanged();
+                }
+                if(menuItem.getItemId() == R.id.action_fechas){
+                    despliegaCalendarioYFiltra();
                 }
                 return false;
             }
@@ -154,6 +163,54 @@ public class SeguimientoFragment extends Fragment implements SeguimientoAdapter.
         recycler.addItemDecoration(new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL));
 
     }
+
+    public void despliegaCalendarioYFiltra(){
+        MaterialDatePicker.Builder<Pair<Long, Long>> materialFechaBuilder = MaterialDatePicker.Builder.dateRangePicker();
+        materialFechaBuilder.setTitleText("Selecciona las fechas");
+        final MaterialDatePicker<Pair<Long, Long>> materialDatePicker = materialFechaBuilder.build();
+
+        //obtieneFechasSeleccionadas(materialDatePicker);
+        materialDatePicker.show(getActivity().getSupportFragmentManager(), "MATERIAL_DATE_PICKER");
+
+        materialDatePicker.addOnPositiveButtonClickListener((MaterialPickerOnPositiveButtonClickListener<Pair<Long, Long>>) selection -> {
+            SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+
+            Date dateInicio = new Date(selection.first);
+            fechaInicio = formato.format(dateInicio);
+            Date dateFin = new Date(selection.second);
+            fechaFin = formato.format(dateFin);
+
+            filtraRecyclerViewSeguimientos(fechaInicio, fechaFin);
+        });
+    }
+
+    public void filtraRecyclerViewSeguimientos(String fechaInicio, String fechaFin){
+        sharedAlumnosViewModel.getPaciente().observe(getViewLifecycleOwner(), new Observer<Alumnos>() {
+            @Override
+            public void onChanged(Alumnos alumnos) {
+                sharedAlumnosViewModel.getListaSeguimientosFecha(alumnos, fechaInicio, fechaFin).observe(getViewLifecycleOwner(), new Observer<ArrayList<Seguimiento>>() {
+                    @Override
+                    public void onChanged(ArrayList<Seguimiento> seguimientoArrayList) {
+                        poblarRecyclerSeguimientoFechas(seguimientoArrayList);
+                    }
+                });
+            }
+        });
+    }
+
+    private void poblarRecyclerSeguimientoFechas(ArrayList<Seguimiento> seguimientoArrayList){
+        recycler.setHasFixedSize(true);
+
+        adapter = new SeguimientoAdapter(seguimientoArrayList, requireContext(), this);
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireContext());
+
+        recycler.setLayoutManager(linearLayoutManager);
+        recycler.setAdapter(adapter);
+
+        recycler.addItemDecoration(new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL));
+    }
+
 
     @Override
     public void onClick(int position) {

@@ -162,4 +162,5 @@
     <string name="borrar">Borrar</string>
     <string name="editar">Edición</string>
     <string name="borradoSeguimiento">¿Quiere borrar este seguimiento?</string>
+    <string name="fecha">Seleccione rango de fechas</string>
 </resources>

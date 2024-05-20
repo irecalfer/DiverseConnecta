@@ -47,6 +47,7 @@ public class SharedAlumnosViewModel extends ViewModel {
     private MutableLiveData<ArrayList<Aulas>> mutableLiveDataAulas = new MutableLiveData<>();
     private MutableLiveData<ArrayList<Empleado>> mutableLiveDataEmpleadosActualizados = new MutableLiveData<>();
     private MutableLiveData<ArrayList<Seguimiento>> mutableLiveDataSeguimientoArrayList = new MutableLiveData<>();
+    private MutableLiveData<ArrayList<Seguimiento>> mutableLiveDataSeguimientoFechasArrayList = new MutableLiveData<>();
     private final MutableLiveData<Seguimiento> mutableSeguimiento = new MutableLiveData<>();
     private ClaseGlobal  claseGlobal;
     private final MutableLiveData<Boolean> seguimientoUpdated = new MutableLiveData<>();
@@ -438,5 +439,41 @@ public class SharedAlumnosViewModel extends ViewModel {
     public void setOpcionesSeguimientoCerrado(boolean closed) {
         opcionesSeguimientoCerrado.setValue(closed);
     }
+
+    public LiveData<ArrayList<Seguimiento>> getListaSeguimientosFecha(Alumnos alumno, String fechaInicio, String fechaFin) {
+        String url = Constantes.url_part + "obtiene_seguimiento_fechas.php?fk_id_alumno="+alumno.getIdAlumno() +"&fecha_inicio="+ fechaInicio +"&fecha_fin=" + fechaFin;
+
+        peticionesJson.getJsonObjectRequest(url, new PeticionesJson.MyJsonObjectResponseListener() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    ArrayList<Seguimiento> seguimientoArrayList = new ArrayList<>();
+                    JSONArray jsonArray = response.getJSONArray("seguimiento_fecha");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        Seguimiento nuevoSeguimiento = new Seguimiento(jsonObject.optInt("id_seguimiento"),
+                                jsonObject.optString("fecha_y_hora"), jsonObject.optString("descripcion"),
+                                jsonObject.optInt("fk_id_alumno"));
+                        seguimientoArrayList.add(nuevoSeguimiento);
+                    }
+
+                    claseGlobal.setSeguimientoArrayList(seguimientoArrayList);
+                    if (!seguimientoArrayList.isEmpty()) {
+                        mutableLiveDataSeguimientoArrayList.postValue(new ArrayList<>(claseGlobal.getSeguimientoArrayList()));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        return mutableLiveDataSeguimientoArrayList;
+    }
+
 
 }

@@ -1,6 +1,7 @@
 package com.calferinnovate.mediconnecta.View.Home.Fragments.Alumnos;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -23,6 +24,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.calferinnovate.mediconnecta.Adaptadores.OpcionesSeguimientoAdapter;
+import com.calferinnovate.mediconnecta.Model.Alumnos;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
 import com.calferinnovate.mediconnecta.Model.Constantes;
 import com.calferinnovate.mediconnecta.Model.PeticionesJson;
@@ -39,6 +41,7 @@ import com.google.android.material.appbar.MaterialToolbar;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Map;
 
@@ -49,6 +52,7 @@ public class OpcionesSeguimientoDialogFragment extends DialogFragment {
     private SharedAlumnosViewModel sharedAlumnosViewModel;
     private ClaseGlobal claseGlobal;
     public static final String TAG = "OpcionesSeguimientoDialogFragment";
+    private boolean cancelaDialogo = false;
 
     private PeticionesJson peticionesJson;
 
@@ -79,6 +83,26 @@ public class OpcionesSeguimientoDialogFragment extends DialogFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         rellenaUI(view);
+    }
+
+
+    @Override
+    public void onCancel(@NonNull DialogInterface dialog) {
+        super.onCancel(dialog);
+        // Actualizar ViewModel u realizar cualquier otra acción necesaria
+
+           sharedAlumnosViewModel.getPaciente().observe(getViewLifecycleOwner(), new Observer<Alumnos>() {
+               @Override
+               public void onChanged(Alumnos alumnos) {
+                   sharedAlumnosViewModel.getListaSeguimientos(alumnos).observe(getViewLifecycleOwner(), new Observer<ArrayList<Seguimiento>>() {
+                       @Override
+                       public void onChanged(ArrayList<Seguimiento> seguimientoArrayList) {
+                           dismiss();
+                       }
+                   });
+               }
+           });
+
     }
 
 
@@ -151,6 +175,7 @@ public class OpcionesSeguimientoDialogFragment extends DialogFragment {
 
         dialog.show();
     }
+
 
     public void llamaBBDDBorrado() {
         sharedAlumnosViewModel.getSeguimiento().observe(getViewLifecycleOwner(), new Observer<Seguimiento>() {

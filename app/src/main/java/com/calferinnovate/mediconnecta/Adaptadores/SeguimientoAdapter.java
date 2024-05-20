@@ -108,4 +108,8 @@ public class SeguimientoAdapter extends RecyclerView.Adapter<SeguimientoAdapter.
     public void setOnClickListener(ItemClickListener clickListener) {
         this.clickListener = clickListener;
     }
+
+    public void cleanUp(){
+        seguimientoArrayList.clear();
+    }
 }

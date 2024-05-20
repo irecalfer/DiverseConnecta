@@ -82,4 +82,6 @@ public class OpcionesSeguimientoAdapter {
         return fechaEntrada.format(formatoSalida);
     }
 
+
+
 }
