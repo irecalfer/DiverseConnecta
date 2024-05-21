@@ -198,4 +198,12 @@
     <string name="editar">Edición</string>
     <string name="borradoSeguimiento">¿Quiere borrar este seguimiento?</string>
     <string name="fecha">Seleccione rango de fechas</string>
+    <string name="tipo">Tipo de crisis</string>
+    <string name="intensidadCrisis">Intensidad de la crisis</string>
+    <string name="lugarCrisis">Lugar de la crisis</string>
+    <string name="patrones">Patrones</string>
+    <string name="descripcionCrisis">Descripció</string>
+    <string name="descripcion">Descripción</string>
+    <string name="recuperacion">Recuperación</string>
+    <string name="duracion">Duración</string>
 </resources>
