@@ -28,7 +28,7 @@ public class ClaseGlobal extends Application {
     private ArrayList<Cargo> cargoArrayList;
     private ArrayList<Curso> cursoArrayList;
     private  ArrayList<Seguimiento> seguimientoArrayList;
-
+    private ArrayList<Crisis> crisisArrayList;
 
 
     @Override public void onCreate(){
@@ -51,7 +51,7 @@ public class ClaseGlobal extends Application {
         cargoArrayList = new ArrayList<>();
         cursoArrayList = new ArrayList<>();
         seguimientoArrayList = new ArrayList<>();
-
+        crisisArrayList = new ArrayList<>();
     }
 
     /**
@@ -153,5 +153,13 @@ public class ClaseGlobal extends Application {
 
     public void setSeguimientoArrayList(ArrayList<Seguimiento> seguimientoArrayList) {
         this.seguimientoArrayList = seguimientoArrayList;
+    }
+
+    public ArrayList<Crisis> getCrisisArrayList() {
+        return crisisArrayList;
+    }
+
+    public void setCrisisArrayList(ArrayList<Crisis> crisisArrayList) {
+        this.crisisArrayList = crisisArrayList;
     }
 }

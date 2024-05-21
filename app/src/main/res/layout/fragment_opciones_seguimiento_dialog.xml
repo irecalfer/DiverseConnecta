@@ -41,7 +41,7 @@
                     android:orientation="horizontal">
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/TVFecha"
+                        android:id="@+id/TilFecha"
                         android:layout_width="match_parent"
                         android:layout_height="100dp"
                         android:layout_marginStart="20dp"
@@ -68,7 +68,7 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/TVHora"
+                        android:id="@+id/TilHora"
                         android:layout_width="match_parent"
                         android:layout_height="100dp"
                         android:layout_marginStart="8dp"

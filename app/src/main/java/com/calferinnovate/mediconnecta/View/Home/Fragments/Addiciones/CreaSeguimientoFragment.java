@@ -120,8 +120,8 @@ private MaterialToolbar toolbarSeguimiento;
         etFecha = view.findViewById(R.id.ETFechaSeguimiento);
         etHora = view.findViewById(R.id.ETHoraSeguimiento);
         etSeguimiento = view.findViewById(R.id.ETSeguimientoAlumno);
-        tilFecha = view.findViewById(R.id.TVFecha);
-        tilHora = view.findViewById(R.id.TVHora);
+        tilFecha = view.findViewById(R.id.TilFecha);
+        tilHora = view.findViewById(R.id.TilHora);
         toolbarSeguimiento = view.findViewById(R.id.toolbarEditaSeguimiento);
     }
 

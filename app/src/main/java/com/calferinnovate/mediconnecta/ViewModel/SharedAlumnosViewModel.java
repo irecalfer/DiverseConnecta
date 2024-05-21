@@ -14,6 +14,7 @@ import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
 import com.calferinnovate.mediconnecta.Model.Constantes;
 import com.calferinnovate.mediconnecta.Model.ContactoFamiliares;
 import com.calferinnovate.mediconnecta.Model.ControlSomatometrico;
+import com.calferinnovate.mediconnecta.Model.Crisis;
 import com.calferinnovate.mediconnecta.Model.Curso;
 import com.calferinnovate.mediconnecta.Model.Empleado;
 import com.calferinnovate.mediconnecta.Model.Pae;
@@ -47,11 +48,12 @@ public class SharedAlumnosViewModel extends ViewModel {
     private MutableLiveData<ArrayList<Aulas>> mutableLiveDataAulas = new MutableLiveData<>();
     private MutableLiveData<ArrayList<Empleado>> mutableLiveDataEmpleadosActualizados = new MutableLiveData<>();
     private MutableLiveData<ArrayList<Seguimiento>> mutableLiveDataSeguimientoArrayList = new MutableLiveData<>();
-    private MutableLiveData<ArrayList<Seguimiento>> mutableLiveDataSeguimientoFechasArrayList = new MutableLiveData<>();
     private final MutableLiveData<Seguimiento> mutableSeguimiento = new MutableLiveData<>();
     private ClaseGlobal  claseGlobal;
     private final MutableLiveData<Boolean> seguimientoUpdated = new MutableLiveData<>();
     private MutableLiveData<Boolean> opcionesSeguimientoCerrado = new MutableLiveData<>();
+    private MutableLiveData<ArrayList<Crisis>> mutableLiveDataCrisisArrayList = new MutableLiveData<>();
+    private final MutableLiveData<Crisis> mutableCrisis = new MutableLiveData<>();
 
 
 
@@ -475,5 +477,51 @@ public class SharedAlumnosViewModel extends ViewModel {
         return mutableLiveDataSeguimientoArrayList;
     }
 
+    /*CRISIS*/
 
+    public LiveData<ArrayList<Crisis>> getListaCrisis(Alumnos alumno) {
+        String url = Constantes.url_part + "crisis.php?fk_id_alumno="+alumno.getIdAlumno();
+
+        peticionesJson.getJsonObjectRequest(url, new PeticionesJson.MyJsonObjectResponseListener() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    ArrayList<Crisis> crisisArrayList = new ArrayList<>();
+                    JSONArray jsonArray = response.getJSONArray("seguimiento");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        Crisis nuevaCrisis = new Crisis(jsonObject.optInt("id_crisis"), jsonObject.optString("fecha_y_hora"),
+                                jsonObject.optString("tipo"), jsonObject.optString("lugar"),
+                                jsonObject.optString("intensidad"), jsonObject.optString("patrones"),
+                                jsonObject.optString("descripcion"), jsonObject.optString("duracion"),
+                                jsonObject.optString("recuperacion"), jsonObject.optInt("fk_id_alumno"));
+                        crisisArrayList.add(nuevaCrisis);
+                    }
+
+                    claseGlobal.setCrisisArrayList(crisisArrayList);
+                    if (!crisisArrayList.isEmpty()) {
+                        mutableLiveDataCrisisArrayList.postValue(new ArrayList<>(claseGlobal.getCrisisArrayList()));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        return mutableLiveDataCrisisArrayList;
+    }
+
+    public void setCrisis(int position) {
+        Crisis crisisSeleccionada = mutableLiveDataCrisisArrayList.getValue().get(position);
+        mutableCrisis.postValue(crisisSeleccionada);
+    }
+
+    public LiveData<Crisis> getCrisis(){
+        return mutableCrisis;
+    }
 }

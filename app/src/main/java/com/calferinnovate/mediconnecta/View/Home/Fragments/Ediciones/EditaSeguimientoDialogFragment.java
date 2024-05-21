@@ -1,13 +1,11 @@
 package com.calferinnovate.mediconnecta.View.Home.Fragments.Ediciones;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -29,7 +27,6 @@ import com.calferinnovate.mediconnecta.Model.Constantes;
 import com.calferinnovate.mediconnecta.Model.PeticionesJson;
 import com.calferinnovate.mediconnecta.Model.Seguimiento;
 import com.calferinnovate.mediconnecta.R;
-import com.calferinnovate.mediconnecta.View.Home.Fragments.Alumnos.SeguimientoFragment;
 import com.calferinnovate.mediconnecta.ViewModel.SharedAlumnosViewModel;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelArgs;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelFactory;
@@ -48,7 +45,6 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.Map;
@@ -128,8 +124,8 @@ public class EditaSeguimientoDialogFragment extends DialogFragment {
         etFecha = view.findViewById(R.id.ETFechaSeguimiento);
         etHora = view.findViewById(R.id.ETHoraSeguimiento);
         etSeguimiento = view.findViewById(R.id.ETSeguimientoAlumno);
-        tilFecha = view.findViewById(R.id.TVFecha);
-        tilHora = view.findViewById(R.id.TVHora);
+        tilFecha = view.findViewById(R.id.TilFecha);
+        tilHora = view.findViewById(R.id.TilHora);
         toolbarConfirmar = view.findViewById(R.id.toolbarConfirmaSeguimiento);
     }
 
