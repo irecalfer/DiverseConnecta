@@ -18,6 +18,9 @@ import com.calferinnovate.mediconnecta.Model.Seguimiento;
 import com.calferinnovate.mediconnecta.R;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class SeguimientoAdapter extends RecyclerView.Adapter<SeguimientoAdapter.SeguimientoViewHolder> {
@@ -66,7 +69,7 @@ public class SeguimientoAdapter extends RecyclerView.Adapter<SeguimientoAdapter.
 
         int desiredTextSize = (int) (screenHeight * textPercentage);
 
-        holder.tilFecha.setText(seguimiento.getFechaHora());
+        holder.tilFecha.setText(fechaFormateada(seguimiento.getFechaHora()));
         holder.tilFecha.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
 
         holder.tilDescripcion.setText(seguimiento.getDescripcion());
@@ -102,6 +105,16 @@ public class SeguimientoAdapter extends RecyclerView.Adapter<SeguimientoAdapter.
         }
     }
 
+    private String fechaFormateada(String fechaHora){
+        DateTimeFormatter formatoEntrada = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        DateTimeFormatter formatoSalida = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+
+        // Parsea la fecha de entrada
+        LocalDateTime fechaEntrada = LocalDateTime.parse(fechaHora, formatoEntrada);
+
+        // Formatea la fecha en el formato de salida
+        return fechaEntrada.format(formatoSalida);
+    }
     /**
      * Este metodo se utiliza desde el fragmento que captura el evento de clic de los items
      */
