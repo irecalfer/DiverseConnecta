@@ -1,8 +1,7 @@
-package com.calferinnovate.mediconnecta.View.Home.Fragments.Alumnos;
+package com.calferinnovate.mediconnecta.View.Home.Fragments.VisualizacionOpciones;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -23,16 +22,14 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.calferinnovate.mediconnecta.Adaptadores.OpcionesSeguimientoAdapter;
+import com.calferinnovate.mediconnecta.Adaptadores.OpcionesCrisisAdapter;
 import com.calferinnovate.mediconnecta.Model.Alumnos;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
 import com.calferinnovate.mediconnecta.Model.Constantes;
+import com.calferinnovate.mediconnecta.Model.Crisis;
 import com.calferinnovate.mediconnecta.Model.PeticionesJson;
-import com.calferinnovate.mediconnecta.Model.Seguimiento;
 import com.calferinnovate.mediconnecta.R;
-import com.calferinnovate.mediconnecta.View.Home.Fragments.Ediciones.EditaSeguimientoDialogFragment;
-import com.calferinnovate.mediconnecta.View.Home.HomeActivity;
-import com.calferinnovate.mediconnecta.View.Sesion.MainActivity;
+import com.calferinnovate.mediconnecta.View.Home.Fragments.Ediciones.EditaCrisisFragment;
 import com.calferinnovate.mediconnecta.ViewModel.SharedAlumnosViewModel;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelArgs;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelFactory;
@@ -46,20 +43,13 @@ import java.util.Hashtable;
 import java.util.Map;
 
 
-public class OpcionesSeguimientoDialogFragment extends DialogFragment {
+public class OpcionesCrisisFragment extends DialogFragment {
 
-    private MaterialToolbar toolbarSeguimiento;
+    private MaterialToolbar toolbarOpcionesCrisis;
     private SharedAlumnosViewModel sharedAlumnosViewModel;
     private ClaseGlobal claseGlobal;
-    public static final String TAG = "OpcionesSeguimientoDialogFragment";
-    private boolean cancelaDialogo = false;
-
+    public static final String TAG = "OpcionesCrisisFragment";
     private PeticionesJson peticionesJson;
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
 
     @NonNull
     @Override
@@ -67,12 +57,23 @@ public class OpcionesSeguimientoDialogFragment extends DialogFragment {
         return super.onCreateDialog(savedInstanceState);
     }
 
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        int width = (int)(getResources().getDisplayMetrics().widthPixels*0.90);
+        int height = (int)(getResources().getDisplayMetrics().heightPixels*0.75);
+        //THIS WILL MAKE WIDTH 90% OF SCREEN
+        //HEIGHT WILL BE WRAP_CONTENT
+        getDialog().getWindow().setLayout(width, height);
+    }
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.fragment_opciones_seguimiento_dialog, container, false);
-        getActivity().setTitle("Crea Seguimiento");
+        View view =  inflater.inflate(R.layout.fragment_opciones_crisis, container, false);
         inicializaRecursos(view);
         inicializaViewModel();
         setupToolbar();
@@ -85,48 +86,9 @@ public class OpcionesSeguimientoDialogFragment extends DialogFragment {
         rellenaUI(view);
     }
 
-
-    @Override
-    public void onCancel(@NonNull DialogInterface dialog) {
-        super.onCancel(dialog);
-        // Actualizar ViewModel u realizar cualquier otra acción necesaria
-
-           sharedAlumnosViewModel.getPaciente().observe(getViewLifecycleOwner(), new Observer<Alumnos>() {
-               @Override
-               public void onChanged(Alumnos alumnos) {
-                   sharedAlumnosViewModel.getListaSeguimientos(alumnos).observe(getViewLifecycleOwner(), new Observer<ArrayList<Seguimiento>>() {
-                       @Override
-                       public void onChanged(ArrayList<Seguimiento> seguimientoArrayList) {
-                           dismiss();
-                       }
-                   });
-               }
-           });
-
-    }
-
-
-
-    public void setupToolbar(){
-        toolbarSeguimiento.inflateMenu(R.menu.app_bar_opciones);
-        toolbarSeguimiento.setOnMenuItemClickListener(new androidx.appcompat.widget.Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                if (item.getItemId() == R.id.action_borrar) {
-                    dialogBorradoSeguimiento();
-                }
-                if(item.getItemId() == R.id.action_editar){
-                    new EditaSeguimientoDialogFragment().show(getChildFragmentManager(), EditaSeguimientoDialogFragment.TAG);
-                }
-                return true;
-            }
-        });
-    }
-
     public void inicializaRecursos(View view){
         claseGlobal = ClaseGlobal.getInstance();
-
-        toolbarSeguimiento = view.findViewById(R.id.toolbarEditaSeguimiento);
+        toolbarOpcionesCrisis = view.findViewById(R.id.toolbarOpcionesCrisis);
     }
 
     public void inicializaViewModel(){
@@ -146,23 +108,39 @@ public class OpcionesSeguimientoDialogFragment extends DialogFragment {
         sharedAlumnosViewModel = new ViewModelProvider(requireActivity(), factory).get(SharedAlumnosViewModel.class);
     }
 
-    public void rellenaUI(View view){
-        sharedAlumnosViewModel.getSeguimiento().observe(getViewLifecycleOwner(), new Observer<Seguimiento>() {
+    public void setupToolbar(){
+        toolbarOpcionesCrisis.inflateMenu(R.menu.app_bar_opciones);
+        toolbarOpcionesCrisis.setOnMenuItemClickListener(new androidx.appcompat.widget.Toolbar.OnMenuItemClickListener() {
             @Override
-            public void onChanged(Seguimiento seguimiento) {
-                OpcionesSeguimientoAdapter opcionesSeguimientoAdapter = new OpcionesSeguimientoAdapter(seguimiento, requireContext());
-                opcionesSeguimientoAdapter.rellenaUI(view);
+            public boolean onMenuItemClick(MenuItem item) {
+                if (item.getItemId() == R.id.action_borrar) {
+                    dialogBorradoCrisis();
+                }
+                if(item.getItemId() == R.id.action_editar){
+                    new EditaCrisisFragment().show(getChildFragmentManager(), EditaCrisisFragment.TAG);
+                }
+                return true;
             }
         });
     }
 
-    public void dialogBorradoSeguimiento(){
+    public void  rellenaUI(View view){
+        sharedAlumnosViewModel.getCrisis().observe(getViewLifecycleOwner(), new Observer<Crisis>() {
+            @Override
+            public void onChanged(Crisis crisis) {
+                OpcionesCrisisAdapter opcionesCrisisAdapter = new OpcionesCrisisAdapter(crisis, requireContext());
+                opcionesCrisisAdapter.rellenaUI(view);
+            }
+        });
+    }
+
+    public void dialogBorradoCrisis(){
         final Dialog dialog = new Dialog(requireContext());
 
         dialog.setContentView(R.layout.dialog_borrado_seguimiento);
 
         TextView texto = dialog.findViewById(R.id.TVTextoBorrado);
-        texto.setText(R.string.borradoSeguimiento);
+        texto.setText(R.string.borradoCrisis);
         TextView siSalir = dialog.findViewById(R.id.textViewSi);
         TextView noSalir = dialog.findViewById(R.id.textViewNo);
 
@@ -176,14 +154,13 @@ public class OpcionesSeguimientoDialogFragment extends DialogFragment {
         dialog.show();
     }
 
-
-    public void llamaBBDDBorrado() {
-        sharedAlumnosViewModel.getSeguimiento().observe(getViewLifecycleOwner(), new Observer<Seguimiento>() {
+    public void llamaBBDDBorrado(){
+        sharedAlumnosViewModel.getCrisis().observe(getViewLifecycleOwner(), new Observer<Crisis>() {
             @Override
-            public void onChanged(Seguimiento seguimiento) {
-                final String idSeguimiento = String.valueOf(seguimiento.getIdSeguimiento());
+            public void onChanged(Crisis crisis) {
+                final String idCrisis = String.valueOf(crisis.getIdCrisis());
 
-                String url = Constantes.url_part + "borra_seguimiento.php";
+                String url = Constantes.url_part + "borra_crisis.php";
 
                 StringRequest stringRequest;
 
@@ -193,7 +170,7 @@ public class OpcionesSeguimientoDialogFragment extends DialogFragment {
                         String message = jsonResponse.getString("message");
 
                         if ("Borrado exitoso".equals(message)) {
-                            sharedAlumnosViewModel.setSeguimientoUpdated(true);
+                            sharedAlumnosViewModel.setCrisisUpdated(true);
                             Toast.makeText(getContext(), "Seguimiento borrado correctamente", Toast.LENGTH_SHORT).show();
                             dismiss();
                         } else {
@@ -213,15 +190,29 @@ public class OpcionesSeguimientoDialogFragment extends DialogFragment {
                     protected Map<String, String> getParams() {
                         Map<String, String> parametros = new Hashtable<>();
 
-                        parametros.put("id_seguimiento", idSeguimiento.trim());
+                        parametros.put("id_crisis", idCrisis.trim());
                         return parametros;
                     }
                 };
                 RequestQueue requestQueue = Volley.newRequestQueue(requireContext());
                 requestQueue.add(stringRequest);
-
             }
         });
+    }
 
+    @Override
+    public void onCancel(@NonNull DialogInterface dialog) {
+        super.onCancel(dialog);
+        sharedAlumnosViewModel.getPaciente().observe(getViewLifecycleOwner(), new Observer<Alumnos>() {
+            @Override
+            public void onChanged(Alumnos alumnos) {
+                sharedAlumnosViewModel.getListaCrisis(alumnos).observe(getViewLifecycleOwner(), new Observer<ArrayList<Crisis>>() {
+                    @Override
+                    public void onChanged(ArrayList<Crisis> crisisArrayList) {
+                        dismiss();
+                    }
+                });
+            }
+        });
     }
 }

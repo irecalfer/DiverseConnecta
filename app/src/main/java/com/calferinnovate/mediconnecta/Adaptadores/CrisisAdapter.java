@@ -12,7 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.calferinnovate.mediconnecta.Model.Crisis;
-import com.calferinnovate.mediconnecta.Model.Seguimiento;
 import com.calferinnovate.mediconnecta.R;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -51,9 +50,9 @@ public class CrisisAdapter extends RecyclerView.Adapter<CrisisAdapter.CrisisView
             super(itemView);
             fechaAdapter = itemView.findViewById(R.id.etFechaRV);
             lugarAdapter = itemView.findViewById(R.id.etLugarRV);
-            descripcionAdapter = itemView.findViewById(R.id.etDescripcionRV);
-            duracionAdapter = itemView.findViewById(R.id.etDuracionRV);
-            recuperacionAdapter = itemView.findViewById(R.id.etRecuperacionRV);
+            descripcionAdapter = itemView.findViewById(R.id.etDescripcionOpciones);
+            duracionAdapter = itemView.findViewById(R.id.etDuracionOpciones);
+            recuperacionAdapter = itemView.findViewById(R.id.etRecuperacionOpciones);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

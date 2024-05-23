@@ -18,8 +18,10 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">><com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/toolbarCreaCrisis"
+                android:orientation="vertical">
+
+                <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbarEdicionCrisis"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?attr/colorPrimary"
@@ -50,7 +52,7 @@
                         app:hintTextAppearance="@style/TextLabel">
 
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/ETFechaCrisis"
+                            android:id="@+id/ETFechaCrisisOpciones"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:textColor="@color/md_theme_black"
@@ -74,7 +76,7 @@
                         app:hintTextAppearance="@style/TextLabel">
 
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/ETHoraCrisis"
+                            android:id="@+id/ETHoraCrisisOpciones"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:textColor="@color/md_theme_black"
@@ -96,8 +98,8 @@
                     app:hintEnabled="true"
                     app:hintTextAppearance="@style/TextLabel">>
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/ATVLugaresCrisis"
+                    <AutoCompleteTextView
+                        android:id="@+id/ATVLugaresCrisisOpciones"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:textColor="@color/md_theme_black"
@@ -125,7 +127,7 @@
                         app:hintTextAppearance="@style/TextLabel">
 
                         <AutoCompleteTextView
-                            android:id="@+id/ATVTipoCrisis"
+                            android:id="@+id/ATVTipoCrisisOpciones"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:paddingStart="8dp"
@@ -148,7 +150,7 @@
                         app:hintTextAppearance="@style/TextLabel">
 
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/ETIntensidadCrisis"
+                            android:id="@+id/ETIntensidadCrisisOpciones"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:textColor="@color/md_theme_black"
@@ -182,7 +184,7 @@
                             app:hintTextAppearance="@style/TextLabel">
 
                             <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/ETPatrones"
+                                android:id="@+id/ETPatronesOpciones"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:textColor="@color/md_theme_black"
@@ -203,7 +205,7 @@
                             app:hintTextAppearance="@style/TextLabel">
 
                             <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/etDuracionRV"
+                                android:id="@+id/etDuracionOpciones"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:textColor="@color/md_theme_black"
@@ -225,7 +227,7 @@
                             app:hintTextAppearance="@style/TextLabel">
 
                             <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/etRecuperacionRV"
+                                android:id="@+id/etRecuperacionOpciones"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:textColor="@color/md_theme_black"
@@ -249,7 +251,7 @@
                         app:hintTextAppearance="@style/TextLabel">
 
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/etDescripcionRV"
+                            android:id="@+id/etDescripcionOpciones"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:textColor="@color/md_theme_black"

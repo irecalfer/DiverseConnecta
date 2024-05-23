@@ -51,6 +51,7 @@ public class SharedAlumnosViewModel extends ViewModel {
     private final MutableLiveData<Seguimiento> mutableSeguimiento = new MutableLiveData<>();
     private ClaseGlobal  claseGlobal;
     private final MutableLiveData<Boolean> seguimientoUpdated = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> crisisUpdated = new MutableLiveData<>();
     private MutableLiveData<Boolean> opcionesSeguimientoCerrado = new MutableLiveData<>();
     private MutableLiveData<ArrayList<Crisis>> mutableLiveDataCrisisArrayList = new MutableLiveData<>();
     private final MutableLiveData<Crisis> mutableCrisis = new MutableLiveData<>();
@@ -435,6 +436,14 @@ public class SharedAlumnosViewModel extends ViewModel {
         return seguimientoUpdated;
     }
 
+    public void setCrisisUpdated(Boolean updated){
+        crisisUpdated.setValue(updated);
+    }
+
+    public LiveData<Boolean> getCrisisUpdate(){
+        return crisisUpdated;
+    }
+
     public LiveData<Boolean> getOpcionesSeguimientoCerrado() {
         return opcionesSeguimientoCerrado;
     }
@@ -492,8 +501,8 @@ public class SharedAlumnosViewModel extends ViewModel {
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                         Crisis nuevaCrisis = new Crisis(jsonObject.optInt("id_crisis"), jsonObject.optString("fecha_y_hora"),
-                                jsonObject.optString("tipo"), jsonObject.optString("lugar"),
-                                jsonObject.optString("intensidad"), jsonObject.optString("patrones"),
+                                jsonObject.optString("tipo"), jsonObject.optString("intensidad"),
+                                jsonObject.optString("lugar"), jsonObject.optString("patrones"),
                                 jsonObject.optString("descripcion"), jsonObject.optString("duracion"),
                                 jsonObject.optString("recuperacion"), jsonObject.optInt("fk_id_alumno"));
                         crisisArrayList.add(nuevaCrisis);
@@ -560,5 +569,41 @@ public class SharedAlumnosViewModel extends ViewModel {
         });
 
         return mutableLiveDataTotalCrisisArrayList;
+    }
+
+    public LiveData<ArrayList<Crisis>> getListaCrisisFecha(Alumnos alumno, String fechaInicio, String fechaFin) {
+        String url = Constantes.url_part + "obtiene_crisis_fechas.php?fk_id_alumno="+alumno.getIdAlumno() +"&fecha_inicio="+ fechaInicio +"&fecha_fin=" + fechaFin;
+
+        peticionesJson.getJsonObjectRequest(url, new PeticionesJson.MyJsonObjectResponseListener() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    ArrayList<Crisis> crisisArrayList = new ArrayList<>();
+                    JSONArray jsonArray = response.getJSONArray("crisis");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        Crisis nuevaCrisis = new Crisis(jsonObject.optInt("id_crisis"), jsonObject.optString("fecha_y_hora"),
+                                jsonObject.optString("tipo"), jsonObject.optString("intensidad"),
+                                jsonObject.optString("lugar"), jsonObject.optString("patrones"),
+                                jsonObject.optString("descripcion"), jsonObject.optString("duracion"),
+                                jsonObject.optString("recuperacion"), jsonObject.optInt("fk_id_alumno"));
+                        crisisArrayList.add(nuevaCrisis);
+                    }
+
+                    if (!crisisArrayList.isEmpty()) {
+                        mutableLiveDataCrisisArrayList.postValue(new ArrayList<>(crisisArrayList));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        return mutableLiveDataCrisisArrayList;
     }
 }

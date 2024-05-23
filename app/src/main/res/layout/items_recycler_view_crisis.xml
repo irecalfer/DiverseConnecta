@@ -7,125 +7,149 @@
     android:orientation="vertical">
 
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineIzqPercent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.10" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineDerPercent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.90" />
+
+        <LinearLayout
+            android:id="@+id/linear1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toStartOf="@id/guidelineDerPercent"
+            app:layout_constraintStart_toEndOf="@id/guidelineIzqPercent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/fecha"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:hint="@string/fechaSeguimiento"
+                android:textColorHint="@color/md_theme_light_surfaceTint"
+                app:boxBackgroundMode="outline"
+                app:hintTextAppearance="@style/TextLabel">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etFechaRV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:textColor="@color/md_theme_black"
+                    android:textSize="@dimen/defaultTextSize" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/lugar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1"
+                android:hint="@string/lugarCrisis"
+                android:textColorHint="@color/md_theme_light_surfaceTint"
+                app:boxBackgroundMode="outline"
+                app:hintTextAppearance="@style/TextLabel">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etLugarRV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:textColor="@color/md_theme_black"
+                    android:textSize="@dimen/defaultTextSize" />
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/liner2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toStartOf="@id/guidelineDerPercent"
+            app:layout_constraintStart_toEndOf="@id/guidelineIzqPercent"
+            app:layout_constraintTop_toBottomOf="@id/linear1">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/duracion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:hint="@string/duracion"
+                android:textColorHint="@color/md_theme_light_surfaceTint"
+                app:boxBackgroundMode="outline"
+                app:hintTextAppearance="@style/TextLabel">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etDuracionOpciones"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:textColor="@color/md_theme_black"
+                    android:textSize="@dimen/defaultTextSize" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/recuperacion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1"
+                android:hint="@string/recuperacion"
+                android:textColorHint="@color/md_theme_light_surfaceTint"
+                app:boxBackgroundMode="outline"
+                app:hintTextAppearance="@style/TextLabel">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etRecuperacionOpciones"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:textColor="@color/md_theme_black"
+                    android:textSize="@dimen/defaultTextSize" />
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/fecha"
-            android:layout_width="match_parent"
+            android:id="@+id/descripcionCrisis"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="25dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_weight="1"
-            android:hint="@string/fechaSeguimiento"
+            android:hint="@string/descripcion"
             android:textColorHint="@color/md_theme_light_surfaceTint"
             app:boxBackgroundMode="outline"
-            app:hintTextAppearance="@style/TextLabel">
+            app:hintTextAppearance="@style/TextLabel"
+            app:layout_constraintEnd_toStartOf="@id/guidelineDerPercent"
+            app:layout_constraintStart_toEndOf="@id/guidelineIzqPercent"
+            app:layout_constraintTop_toBottomOf="@id/liner2">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etFechaRV"
+                android:id="@+id/etDescripcionOpciones"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:enabled="false"
                 android:textColor="@color/md_theme_black"
                 android:textSize="@dimen/defaultTextSize" />
         </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/lugar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="25dp"
-            android:layout_marginStart="8dp"
-            android:layout_weight="1"
-            android:hint="@string/descripcionSeguimiento"
-            android:textColorHint="@color/md_theme_light_surfaceTint"
-            app:boxBackgroundMode="outline"
-            app:hintTextAppearance="@style/TextLabel">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etLugarRV"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:enabled="false"
-                android:textColor="@color/md_theme_black"
-                android:textSize="@dimen/defaultTextSize" />
-        </com.google.android.material.textfield.TextInputLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/duracion"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="25dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_weight="1"
-            android:hint="@string/duracion"
-            android:textColorHint="@color/md_theme_light_surfaceTint"
-            app:boxBackgroundMode="outline"
-            app:hintTextAppearance="@style/TextLabel">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etDuracionRV"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:enabled="false"
-                android:textColor="@color/md_theme_black"
-                android:textSize="@dimen/defaultTextSize" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/recuperacion"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="25dp"
-            android:layout_weight="1"
-            android:hint="@string/recuperacion"
-            android:textColorHint="@color/md_theme_light_surfaceTint"
-            app:boxBackgroundMode="outline"
-            app:hintTextAppearance="@style/TextLabel">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etRecuperacionRV"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:enabled="false"
-                android:textColor="@color/md_theme_black"
-                android:textSize="@dimen/defaultTextSize" />
-        </com.google.android.material.textfield.TextInputLayout>
-    </LinearLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/descripcionCrisis"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginStart="25dp"
-        android:layout_marginEnd="25dp"
-        android:hint="@string/descripcion"
-        android:textColorHint="@color/md_theme_light_surfaceTint"
-        app:boxBackgroundMode="outline"
-        app:hintTextAppearance="@style/TextLabel">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etDescripcionRV"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:enabled="false"
-            android:textColor="@color/md_theme_black"
-            android:textSize="@dimen/defaultTextSize" />
-    </com.google.android.material.textfield.TextInputLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>

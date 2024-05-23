@@ -44,7 +44,6 @@ import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
@@ -109,16 +108,16 @@ public class RegistroCrisisFragment extends DialogFragment implements RegistraCr
         claseGlobal = ClaseGlobal.getInstance();
         tilFecha = view.findViewById(R.id.TilFecha);
         tilHora = view.findViewById(R.id.TilHora);
-        etFecha = view.findViewById(R.id.ETFechaCrisis);
-        etHora = view.findViewById(R.id.ETHoraCrisis);
-        toolbarCrisis = view.findViewById(R.id.toolbarCreaCrisis);
-        atvLugares = view.findViewById(R.id.ATVLugaresCrisis);
-        atvTipo = view.findViewById(R.id.ATVTipoCrisis);
-        etIntensidad = view.findViewById(R.id.ETIntensidadCrisis);
-        etPatrones = view.findViewById(R.id.ETPatrones);
-        etDuracion = view.findViewById(R.id.etDuracionRV);
-        etRecuperacion = view.findViewById(R.id.etRecuperacionRV);
-        etDescripcion = view.findViewById(R.id.etDescripcionRV);
+        etFecha = view.findViewById(R.id.ETFechaCrisisOpciones);
+        etHora = view.findViewById(R.id.ETHoraCrisisOpciones);
+        toolbarCrisis = view.findViewById(R.id.toolbarOpcionesCrisis);
+        atvLugares = view.findViewById(R.id.ATVLugaresCrisisOpciones);
+        atvTipo = view.findViewById(R.id.ATVTipoCrisisOpciones);
+        etIntensidad = view.findViewById(R.id.ETIntensidadCrisisOpciones);
+        etPatrones = view.findViewById(R.id.ETPatronesOpciones);
+        etDuracion = view.findViewById(R.id.etDuracionOpciones);
+        etRecuperacion = view.findViewById(R.id.etRecuperacionOpciones);
+        etDescripcion = view.findViewById(R.id.etDescripcionOpciones);
     }
 
     public void inicializaViewModel(){
