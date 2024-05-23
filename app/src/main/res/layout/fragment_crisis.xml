@@ -12,7 +12,7 @@
         android:fillViewport="true">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/RVSrisisAlumno"
+            android:id="@+id/RVCrisisAlumno"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </androidx.core.widget.NestedScrollView>

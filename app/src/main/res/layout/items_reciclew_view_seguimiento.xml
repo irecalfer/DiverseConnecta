@@ -26,7 +26,7 @@
             app:layout_constraintGuide_percent="0.80"/>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/fechaSeguimiento"
+            android:id="@+id/fecha"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -39,7 +39,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/fechaSeguimientoTil"
+                android:id="@+id/etFechaRV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/md_theme_black"
@@ -48,7 +48,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/descripcionSeguimiento"
+            android:id="@+id/lugar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -58,10 +58,10 @@
             app:hintTextAppearance="@style/TextLabel"
             app:layout_constraintEnd_toStartOf="@id/guidelineDer"
             app:layout_constraintStart_toEndOf="@id/guidelineIzq"
-            app:layout_constraintTop_toBottomOf="@id/fechaSeguimiento">
+            app:layout_constraintTop_toBottomOf="@id/fecha">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/descripcionSeguimientoTil"
+                android:id="@+id/etLugarRV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/md_theme_black"
@@ -77,7 +77,7 @@
             android:background="?android:attr/listDivider"
             app:layout_constraintEnd_toStartOf="@id/guidelineDer"
             app:layout_constraintStart_toEndOf="@id/guidelineIzq"
-            app:layout_constraintTop_toBottomOf="@id/descripcionSeguimiento" />
+            app:layout_constraintTop_toBottomOf="@id/lugar" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

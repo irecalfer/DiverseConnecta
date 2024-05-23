@@ -4,21 +4,17 @@ import android.app.Activity;
 import android.content.Context;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
-import android.view.GestureDetector;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.calferinnovate.mediconnecta.Model.Constantes;
 import com.calferinnovate.mediconnecta.Model.Seguimiento;
 import com.calferinnovate.mediconnecta.R;
 import com.google.android.material.textfield.TextInputEditText;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -88,8 +84,8 @@ public class SeguimientoAdapter extends RecyclerView.Adapter<SeguimientoAdapter.
         private long doubleClickLastTime =0L;
         public SeguimientoViewHolder(@NonNull View itemView) {
             super(itemView);
-            tilFecha = itemView.findViewById(R.id.fechaSeguimientoTil);
-            tilDescripcion = itemView.findViewById(R.id.descripcionSeguimientoTil);
+            tilFecha = itemView.findViewById(R.id.etFechaRV);
+            tilDescripcion = itemView.findViewById(R.id.etLugarRV);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

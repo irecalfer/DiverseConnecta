@@ -54,6 +54,7 @@ public class SharedAlumnosViewModel extends ViewModel {
     private MutableLiveData<Boolean> opcionesSeguimientoCerrado = new MutableLiveData<>();
     private MutableLiveData<ArrayList<Crisis>> mutableLiveDataCrisisArrayList = new MutableLiveData<>();
     private final MutableLiveData<Crisis> mutableCrisis = new MutableLiveData<>();
+    private MutableLiveData<ArrayList<Crisis>> mutableLiveDataTotalCrisisArrayList = new MutableLiveData<>();
 
 
 
@@ -487,7 +488,7 @@ public class SharedAlumnosViewModel extends ViewModel {
             public void onResponse(JSONObject response) {
                 try {
                     ArrayList<Crisis> crisisArrayList = new ArrayList<>();
-                    JSONArray jsonArray = response.getJSONArray("seguimiento");
+                    JSONArray jsonArray = response.getJSONArray("crisis");
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                         Crisis nuevaCrisis = new Crisis(jsonObject.optInt("id_crisis"), jsonObject.optString("fecha_y_hora"),
@@ -523,5 +524,41 @@ public class SharedAlumnosViewModel extends ViewModel {
 
     public LiveData<Crisis> getCrisis(){
         return mutableCrisis;
+    }
+
+    public LiveData<ArrayList<Crisis>> getListaTotalCrisis() {
+        String url = Constantes.url_part + "crisis.php";
+
+        peticionesJson.getJsonObjectRequest(url, new PeticionesJson.MyJsonObjectResponseListener() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    ArrayList<Crisis> crisisArrayList = new ArrayList<>();
+                    JSONArray jsonArray = response.getJSONArray("crisis");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        Crisis nuevaCrisis = new Crisis(jsonObject.optInt("id_crisis"), jsonObject.optString("fecha_y_hora"),
+                                jsonObject.optString("tipo"), jsonObject.optString("intensidad"),
+                                jsonObject.optString("lugar"), jsonObject.optString("patrones"),
+                                jsonObject.optString("descripcion"), jsonObject.optString("duracion"),
+                                jsonObject.optString("recuperacion"), jsonObject.optInt("fk_id_alumno"));
+                        crisisArrayList.add(nuevaCrisis);
+                    }
+
+                    if (!crisisArrayList.isEmpty()) {
+                        mutableLiveDataTotalCrisisArrayList.postValue(new ArrayList<>(crisisArrayList));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        return mutableLiveDataTotalCrisisArrayList;
     }
 }

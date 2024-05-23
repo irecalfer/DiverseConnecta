@@ -6,7 +6,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -22,12 +21,12 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.calferinnovate.mediconnecta.Adaptadores.RegistraCrisisAdapter;
 import com.calferinnovate.mediconnecta.Model.Alumnos;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
 import com.calferinnovate.mediconnecta.Model.Constantes;
 import com.calferinnovate.mediconnecta.Model.Crisis;
 import com.calferinnovate.mediconnecta.Model.PeticionesJson;
-import com.calferinnovate.mediconnecta.Model.Seguimiento;
 import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.ViewModel.SharedAlumnosViewModel;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelArgs;
@@ -52,7 +51,7 @@ import java.util.Date;
 import java.util.Hashtable;
 import java.util.Map;
 
-public class RegistroCrisisFragment extends DialogFragment {
+public class RegistroCrisisFragment extends DialogFragment implements RegistraCrisisAdapter.ItemItemSelectedListener {
 
     private MaterialToolbar toolbarCrisis;
     private ClaseGlobal claseGlobal;
@@ -61,7 +60,9 @@ public class RegistroCrisisFragment extends DialogFragment {
     private AutoCompleteTextView atvLugares, atvTipo;
     private PeticionesJson peticionesJson;
     private SharedAlumnosViewModel sharedAlumnosViewModel;
-    private String fechaCrisisSeleccionada, horaCrisisSeleccionada;
+    private String fechaCrisisSeleccionada, horaCrisisSeleccionada, tipoSeleccionado, lugarSeleccionado;
+    private RegistraCrisisAdapter registraCrisisAdapter;
+    public static final String TAG= "RegistroCrisisFragment";
 
 
     @Override
@@ -89,8 +90,19 @@ public class RegistroCrisisFragment extends DialogFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        inicializaSpinners(view);
         seleccionaFecha();
         seleccionaHora();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        int width = (int)(getResources().getDisplayMetrics().widthPixels*0.90);
+        int height = (int)(getResources().getDisplayMetrics().heightPixels*0.75);
+        //THIS WILL MAKE WIDTH 90% OF SCREEN
+        //HEIGHT WILL BE WRAP_CONTENT
+        getDialog().getWindow().setLayout(width, height);
     }
 
     public void inicializaRecursos(View view){
@@ -104,9 +116,9 @@ public class RegistroCrisisFragment extends DialogFragment {
         atvTipo = view.findViewById(R.id.ATVTipoCrisis);
         etIntensidad = view.findViewById(R.id.ETIntensidadCrisis);
         etPatrones = view.findViewById(R.id.ETPatrones);
-        etDuracion = view.findViewById(R.id.ETDuracion);
-        etRecuperacion = view.findViewById(R.id.ETRecuperacion);
-        etDescripcion = view.findViewById(R.id.ETDescripcionCrisis);
+        etDuracion = view.findViewById(R.id.etDuracionRV);
+        etRecuperacion = view.findViewById(R.id.etRecuperacionRV);
+        etDescripcion = view.findViewById(R.id.etDescripcionRV);
     }
 
     public void inicializaViewModel(){
@@ -144,6 +156,16 @@ public class RegistroCrisisFragment extends DialogFragment {
         });
     }
 
+    public void inicializaSpinners(View view){
+        sharedAlumnosViewModel.getListaTotalCrisis().observe(getViewLifecycleOwner(), new Observer<ArrayList<Crisis>>() {
+            @Override
+            public void onChanged(ArrayList<Crisis> crisisArrayList) {
+                registraCrisisAdapter = new RegistraCrisisAdapter(claseGlobal, requireActivity(), crisisArrayList);
+                registraCrisisAdapter.setSpinnerItemSelectedListener(RegistroCrisisFragment.this);
+                registraCrisisAdapter.rellenaUI(view);
+            }
+        });
+    }
     public void seleccionaFecha(){
         MaterialDatePicker.Builder<Long> materialDateBuilder = MaterialDatePicker.Builder.datePicker();
         materialDateBuilder.setTitleText("Selecciona la fecha en la que se registra la crisis");
@@ -263,12 +285,15 @@ public class RegistroCrisisFragment extends DialogFragment {
         DateTimeFormatter formatoFechaEntrada = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
         LocalDate fecha = LocalDate.parse(fechaCrisisSeleccionada, formatoFechaEntrada);
+        String horaFormateada = horaCrisisSeleccionada+":"+"00";
 
-        DateTimeFormatter formatoHoraSalida = DateTimeFormatter.ofPattern("HH:mm:ss");
-        DateTimeFormatter formatoHoraEntrada = DateTimeFormatter.ofPattern("HH:mm");
 
-        LocalDateTime hora = LocalDateTime.parse(horaCrisisSeleccionada, formatoHoraEntrada);
+        return fecha.format(formatoFechaSalida)+" "+horaFormateada;
+    }
 
-        return fecha.format(formatoFechaSalida)+" "+hora.format(formatoHoraSalida);
+    @Override
+    public void onSpinnerItemSelected(String tipo, String lugar) {
+        tipoSeleccionado = tipo;
+        lugarSeleccionado = lugar;
     }
 }

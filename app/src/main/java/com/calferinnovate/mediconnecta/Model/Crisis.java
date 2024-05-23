@@ -8,13 +8,13 @@ public class Crisis {
     public Crisis() {
     }
 
-    public Crisis(int idCrisis, String fecha, String tipo, String lugar, String intensidad, String patron,
+    public Crisis(int idCrisis, String fecha, String tipo, String intensidad, String lugar, String patron,
                   String descripcion, String duracion, String recuperacion, int idAlumno) {
         this.idCrisis = idCrisis;
         this.fecha = fecha;
         this.tipo = tipo;
-        this.lugar = lugar;
         this.intensidad = intensidad;
+        this.lugar = lugar;
         this.patron = patron;
         this.descripcion = descripcion;
         this.duracion = duracion;

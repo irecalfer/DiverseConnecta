@@ -203,7 +203,7 @@
                             app:hintTextAppearance="@style/TextLabel">
 
                             <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/ETDuracion"
+                                android:id="@+id/etDuracionRV"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:textColor="@color/md_theme_black"
@@ -225,7 +225,7 @@
                             app:hintTextAppearance="@style/TextLabel">
 
                             <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/ETRecuperacion"
+                                android:id="@+id/etRecuperacionRV"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:textColor="@color/md_theme_black"
@@ -249,7 +249,7 @@
                         app:hintTextAppearance="@style/TextLabel">
 
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/ETDescripcionCrisis"
+                            android:id="@+id/etDescripcionRV"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:textColor="@color/md_theme_black"

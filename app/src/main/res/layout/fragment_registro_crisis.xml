@@ -94,9 +94,9 @@
                     android:textColorHint="@color/md_theme_light_surfaceTint"
                     app:boxBackgroundMode="outline"
                     app:hintEnabled="true"
-                    app:hintTextAppearance="@style/TextLabel">>
+                    app:hintTextAppearance="@style/TextLabel">
 
-                    <com.google.android.material.textfield.TextInputEditText
+                    <AutoCompleteTextView
                         android:id="@+id/ATVLugaresCrisis"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -117,7 +117,6 @@
                         android:layout_marginEnd="8dp"
                         android:layout_weight="1"
                         android:layout_marginTop="8dp"
-                        android:paddingStart="8dp"
                         android:hint="@string/tipo"
                         android:textColorHint="@color/md_theme_light_surfaceTint"
                         app:boxBackgroundMode="outline"
@@ -203,7 +202,7 @@
                             app:hintTextAppearance="@style/TextLabel">
 
                             <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/ETDuracion"
+                                android:id="@+id/etDuracionRV"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:textColor="@color/md_theme_black"
@@ -225,7 +224,7 @@
                             app:hintTextAppearance="@style/TextLabel">
 
                             <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/ETRecuperacion"
+                                android:id="@+id/etRecuperacionRV"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:textColor="@color/md_theme_black"
@@ -249,7 +248,7 @@
                         app:hintTextAppearance="@style/TextLabel">
 
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/ETDescripcionCrisis"
+                            android:id="@+id/etDescripcionRV"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:textColor="@color/md_theme_black"
