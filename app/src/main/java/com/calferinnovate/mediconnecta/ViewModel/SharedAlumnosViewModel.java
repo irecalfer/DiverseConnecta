@@ -17,6 +17,7 @@ import com.calferinnovate.mediconnecta.Model.ControlSomatometrico;
 import com.calferinnovate.mediconnecta.Model.Crisis;
 import com.calferinnovate.mediconnecta.Model.Curso;
 import com.calferinnovate.mediconnecta.Model.Empleado;
+import com.calferinnovate.mediconnecta.Model.Especialista;
 import com.calferinnovate.mediconnecta.Model.Pae;
 import com.calferinnovate.mediconnecta.Model.PeticionesJson;
 import com.calferinnovate.mediconnecta.Model.Seguimiento;
@@ -56,7 +57,8 @@ public class SharedAlumnosViewModel extends ViewModel {
     private MutableLiveData<ArrayList<Crisis>> mutableLiveDataCrisisArrayList = new MutableLiveData<>();
     private final MutableLiveData<Crisis> mutableCrisis = new MutableLiveData<>();
     private MutableLiveData<ArrayList<Crisis>> mutableLiveDataTotalCrisisArrayList = new MutableLiveData<>();
-
+    private MutableLiveData<ArrayList<Especialista>> mutableLiveDataEspecialistasArrayList = new MutableLiveData<>();
+    private final MutableLiveData<Especialista> mutableEspecialista = new MutableLiveData<>();
 
 
     /**
@@ -605,5 +607,49 @@ public class SharedAlumnosViewModel extends ViewModel {
         });
 
         return mutableLiveDataCrisisArrayList;
+    }
+
+    public LiveData<ArrayList<Especialista>> getListaEspecialistas(Alumnos alumno) {
+        String url = Constantes.url_part + "obtiene_especialistas_alumno.php?fk_id_alumno="+alumno.getIdAlumno();
+
+        peticionesJson.getJsonObjectRequest(url, new PeticionesJson.MyJsonObjectResponseListener() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    ArrayList<Especialista> especialistaArrayList = new ArrayList<>();
+                    JSONArray jsonArray = response.getJSONArray("especialistas");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                       Especialista nuevoEspecialista = new Especialista(jsonObject.optInt("id_doctor"),
+                               jsonObject.optString("nombre"),jsonObject.optString("centro"),
+                               jsonObject.optString("especialidad"),jsonObject.optString("telefono"),
+                               jsonObject.optString("email"), jsonObject.optInt("fk_id_alumno"));
+                        especialistaArrayList.add(nuevoEspecialista);
+                    }
+
+                    if (!especialistaArrayList.isEmpty()) {
+                        mutableLiveDataEspecialistasArrayList.postValue(new ArrayList<>(especialistaArrayList));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        return mutableLiveDataEspecialistasArrayList;
+    }
+
+    public void setEspecialista(int position) {
+        Especialista especialistaSeleccionado = mutableLiveDataEspecialistasArrayList.getValue().get(position);
+        mutableEspecialista.postValue(especialistaSeleccionado);
+    }
+
+    public LiveData<Especialista> getEspecialista(){
+        return mutableEspecialista;
     }
 }

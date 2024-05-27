@@ -21,7 +21,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.calferinnovate.mediconnecta.Adaptadores.RegistraCrisisAdapter;
+import com.calferinnovate.mediconnecta.Adaptadores.Registros.RegistraCrisisAdapter;
 import com.calferinnovate.mediconnecta.Model.Alumnos;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
 import com.calferinnovate.mediconnecta.Model.Constantes;

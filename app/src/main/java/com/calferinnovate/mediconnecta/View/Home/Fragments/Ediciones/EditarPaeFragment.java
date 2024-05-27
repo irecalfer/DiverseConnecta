@@ -30,7 +30,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.calferinnovate.mediconnecta.Adaptadores.EditaPaeAdapter;
+import com.calferinnovate.mediconnecta.Adaptadores.Ediciones.EditaPaeAdapter;
 import com.calferinnovate.mediconnecta.Interfaces.PaeInsertionObserver;
 import com.calferinnovate.mediconnecta.Model.Alumnos;
 import com.calferinnovate.mediconnecta.Model.Aulas;

@@ -1,33 +1,30 @@
-package com.calferinnovate.mediconnecta.Adaptadores;
+package com.calferinnovate.mediconnecta.Adaptadores.Registros;
 
-import android.app.Activity;
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 
+import com.calferinnovate.mediconnecta.Model.Alumnos;
+import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
 import com.calferinnovate.mediconnecta.Model.Crisis;
 import com.calferinnovate.mediconnecta.R;
-import com.google.android.material.textfield.TextInputEditText;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-public class EditaCrisisAdapter {
+public class RegistraCrisisAdapter {
 
-    private TextInputEditText etFecha, etHora, etIntensidad, etPatrones, etDuracion, etRecuperacion, etDescipcion;
-    private AutoCompleteTextView atvLugar, atvTipo;
-    private final Crisis crisis;
-    private final Context context;
-    private ArrayList<Crisis> crisisArrayList;
-    private ItemItemSelectedListener listener;
-    private String tipo, lugar;
     private ArrayList<String> tipoArrayList, lugaresArrayList;
+    private ArrayList<Crisis> crisisArrayList;
+    private Alumnos alumno;
+    private ClaseGlobal claseGlobal;
+    private Context context;
+    private AutoCompleteTextView tiposTV, lugaresTV;
+    private String tipo, lugar;
+    private ItemItemSelectedListener listener;
 
     public interface ItemItemSelectedListener {
         void onSpinnerItemSelected(String tipo, String lugar);
@@ -38,86 +35,28 @@ public class EditaCrisisAdapter {
         this.listener = listener;
     }
 
+    public RegistraCrisisAdapter(ClaseGlobal claseGlobal, Context context, ArrayList<Crisis> crisisArrayList){
+        this.claseGlobal = claseGlobal;
+        this.context = context;
+        this.crisisArrayList = crisisArrayList;
+    }
     private void notifyItemSelectedListener() {
         if (listener != null) {
             listener.onSpinnerItemSelected(tipo, lugar);
         }
     }
 
-    public EditaCrisisAdapter(Crisis crisis, ArrayList<Crisis> crisisArrayList,  Context context){
-        this.crisis = crisis;
-        this.crisisArrayList = crisisArrayList;
-        this.context = context;
-    }
-
     public void rellenaUI(View view) {
         enlazaRecursos(view);
-        seteaDatos();
         setupSpinners();
     }
 
     public void enlazaRecursos(View view){
-        etFecha = view.findViewById(R.id.ETFechaCrisisOpciones);
-        etHora = view.findViewById(R.id.ETHoraCrisisOpciones);
-        etIntensidad = view.findViewById(R.id.ETIntensidadCrisisOpciones);
-        etPatrones = view.findViewById(R.id.ETPatronesOpciones);
-        etDuracion = view.findViewById(R.id.etDuracionOpciones);
-        etRecuperacion = view.findViewById(R.id.etRecuperacionOpciones);
-        etDescipcion = view.findViewById(R.id.etDescripcionOpciones);
-        atvLugar = view.findViewById(R.id.ATVLugaresCrisisOpciones);
-        atvTipo = view.findViewById(R.id.ATVTipoCrisisOpciones);
+        tiposTV = view.findViewById(R.id.ATVTipoCrisisOpciones);
+        lugaresTV = view.findViewById(R.id.ATVLugaresCrisisOpciones);
     }
 
-    public void seteaDatos(){
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-
-        int screenHeight = displayMetrics.heightPixels;
-
-        // Porcentaje del alto de la pantalla para el tamaño de texto
-        float textPercentage = 0.02f; // Puedes ajustar este valor según tus necesidades
-
-        int desiredTextSize = (int) (screenHeight * textPercentage);
-        etFecha.setText(obtieneFecha(crisis.getFecha()));
-        etHora.setText(obtieneHora(crisis.getFecha()));
-        etIntensidad.setText(crisis.getIntensidad());
-        etPatrones.setText(crisis.getPatron());
-        etDuracion.setText(crisis.getDuracion());
-        etRecuperacion.setText(crisis.getRecuperacion());
-        etDescipcion.setText(crisis.getDescripcion());
-        atvLugar.setText(crisis.getLugar());
-        atvTipo.setText(crisis.getTipo());
-    }
-
-    private String obtieneFecha(String fecha) {
-        // Formato de entrada (año-mes-día)
-        DateTimeFormatter formatoEntrada = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
-        // Formato de salida (día-mes-año abreviado)
-        DateTimeFormatter formatoSalida = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-
-        // Parsea la fecha de entrada
-        LocalDateTime fechaEntrada = LocalDateTime.parse(fecha, formatoEntrada);
-
-        // Formatea la fecha en el formato de salida
-        return fechaEntrada.format(formatoSalida);
-    }
-
-    private String obtieneHora(String hora) {
-        // Formato de entrada (año-mes-día)
-        DateTimeFormatter formatoEntrada = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
-        // Formato de salida (día-mes-año abreviado)
-        DateTimeFormatter formatoSalida = DateTimeFormatter.ofPattern("HH:mm");
-
-        // Parsea la fecha de entrada
-        LocalDateTime fechaEntrada = LocalDateTime.parse(hora, formatoEntrada);
-
-        // Formatea la fecha en el formato de salida
-        return fechaEntrada.format(formatoSalida);
-    }
-
-    public void setupSpinners(){
+    public void setupSpinners() {
         setupTiposSpinner();
         setupLugaresSpinner();
     }
@@ -130,13 +69,13 @@ public class EditaCrisisAdapter {
             }
         }
         ArrayAdapter<String> tiposAdapter = new ArrayAdapter<>(context, android.R.layout.select_dialog_item, tipoArrayList);
-        atvTipo.setThreshold(1);
-        atvTipo.setAdapter(tiposAdapter);
+        tiposTV.setThreshold(1);
+        tiposTV.setAdapter(tiposAdapter);
         //Si no se selecciona curso y se deja por defecto
 
 
         //Si se selecciona un curso del spinner
-        atvTipo.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        tiposTV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 tipo = (String) parent.getItemAtPosition(position);
@@ -144,7 +83,7 @@ public class EditaCrisisAdapter {
             }
         });
 
-        atvTipo.addTextChangedListener(new TextWatcher() {
+        tiposTV.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 // No es necesario implementar este método
@@ -168,7 +107,7 @@ public class EditaCrisisAdapter {
         });
 
         //SI no se ha seleccionado nada
-        tipo = atvTipo.getText().toString();
+        tipo = tiposTV.getText().toString();
         notifyItemSelectedListener();
 
     }
@@ -181,13 +120,13 @@ public class EditaCrisisAdapter {
             }
         }
         ArrayAdapter<String> lugaresAdapter = new ArrayAdapter<>(context, android.R.layout.select_dialog_item, lugaresArrayList);
-        atvLugar.setThreshold(1);
-        atvLugar.setAdapter(lugaresAdapter);
+        lugaresTV.setThreshold(1);
+        lugaresTV.setAdapter(lugaresAdapter);
         //Si no se selecciona curso y se deja por defecto
 
 
         //Si se selecciona un curso del spinner
-        atvLugar.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        lugaresTV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 lugar = (String) parent.getItemAtPosition(position);
@@ -195,7 +134,7 @@ public class EditaCrisisAdapter {
             }
         });
 
-        atvLugar.addTextChangedListener(new TextWatcher() {
+        lugaresTV.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 // No es necesario implementar este método
@@ -219,8 +158,9 @@ public class EditaCrisisAdapter {
         });
 
         //SI no se ha seleccionado nada
-        lugar = atvLugar.getText().toString();
+        lugar = lugaresTV.getText().toString();
         notifyItemSelectedListener();
 
     }
+
 }

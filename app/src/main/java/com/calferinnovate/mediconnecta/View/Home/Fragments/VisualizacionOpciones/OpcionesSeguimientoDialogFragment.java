@@ -2,7 +2,6 @@ package com.calferinnovate.mediconnecta.View.Home.Fragments.VisualizacionOpcione
 
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -23,7 +22,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.calferinnovate.mediconnecta.Adaptadores.OpcionesSeguimientoAdapter;
+import com.calferinnovate.mediconnecta.Adaptadores.Opciones.OpcionesSeguimientoAdapter;
 import com.calferinnovate.mediconnecta.Model.Alumnos;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
 import com.calferinnovate.mediconnecta.Model.Constantes;
@@ -31,8 +30,6 @@ import com.calferinnovate.mediconnecta.Model.PeticionesJson;
 import com.calferinnovate.mediconnecta.Model.Seguimiento;
 import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.View.Home.Fragments.Ediciones.EditaSeguimientoDialogFragment;
-import com.calferinnovate.mediconnecta.View.Home.HomeActivity;
-import com.calferinnovate.mediconnecta.View.Sesion.MainActivity;
 import com.calferinnovate.mediconnecta.ViewModel.SharedAlumnosViewModel;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelArgs;
 import com.calferinnovate.mediconnecta.ViewModel.ViewModelFactory;

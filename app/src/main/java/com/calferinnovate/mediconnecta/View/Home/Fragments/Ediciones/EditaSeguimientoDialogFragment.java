@@ -20,7 +20,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.calferinnovate.mediconnecta.Adaptadores.OpcionesSeguimientoAdapter;
+import com.calferinnovate.mediconnecta.Adaptadores.Opciones.OpcionesSeguimientoAdapter;
 import com.calferinnovate.mediconnecta.Model.Alumnos;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
 import com.calferinnovate.mediconnecta.Model.Constantes;

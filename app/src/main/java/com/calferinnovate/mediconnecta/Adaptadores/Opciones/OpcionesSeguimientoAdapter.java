@@ -1,4 +1,4 @@
-package com.calferinnovate.mediconnecta.Adaptadores;
+package com.calferinnovate.mediconnecta.Adaptadores.Opciones;
 
 import android.app.Activity;
 import android.content.Context;
@@ -50,7 +50,9 @@ public class OpcionesSeguimientoAdapter {
         etFecha.setText(obtieneFecha(seguimiento.getFechaHora()));
         etFecha.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
         etHora.setText(obtieneHora(seguimiento.getFechaHora()));
+        etHora.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
         etSeguimiento.setText(seguimiento.getDescripcion());
+        etSeguimiento.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
 
     }
 

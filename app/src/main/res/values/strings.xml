@@ -207,4 +207,9 @@
     <string name="recuperacion">Recuperación</string>
     <string name="duracion">Duración</string>
     <string name="borradoCrisis">¿Quieres borrar esta crisis?</string>
+    <string name="especialistas">Especialistas</string>
+    <string name="especialidad">Especialidad médica</string>
+    <string name="nombreDoctor">Nombre</string>
+    <string name="telefono">Teléfono de contacto</string>
+    <string name="email">Correo electrónico</string>
 </resources>

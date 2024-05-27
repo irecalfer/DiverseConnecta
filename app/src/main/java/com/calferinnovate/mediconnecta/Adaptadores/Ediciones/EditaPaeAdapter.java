@@ -1,64 +1,67 @@
-package com.calferinnovate.mediconnecta.Adaptadores;
+package com.calferinnovate.mediconnecta.Adaptadores.Ediciones;
 
-
-
+import android.app.Activity;
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 
-import androidx.lifecycle.Observer;
-
 import com.calferinnovate.mediconnecta.Model.Alumnos;
 import com.calferinnovate.mediconnecta.Model.Aulas;
 import com.calferinnovate.mediconnecta.Model.Cargo;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
+import com.calferinnovate.mediconnecta.Model.ControlSomatometrico;
 import com.calferinnovate.mediconnecta.Model.Empleado;
+import com.calferinnovate.mediconnecta.Model.Pae;
+import com.calferinnovate.mediconnecta.Model.PaeInsertionObservable;
 import com.calferinnovate.mediconnecta.R;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-public class CreaPaeAdapter {
+public class EditaPaeAdapter {
 
     private ArrayList<String> cursoArrayList;
     private Alumnos alumno;
     private ClaseGlobal claseGlobal;
     private Context context;
-
+private Pae pae;
     private AutoCompleteTextView cursosTV, tutorTv, enfermeraTV, aulasTV;
-    private TextInputEditText nombreTV, nacimientoTV;
-    private String curso, tutor, enfermera, aulas;
     private ArrayList<String> nombreTutoresArrayList, nombreEnfermerasArrayList, nombreAulasArrayList;
+    private String[] cursoActual = new String[2];
+    private ArrayList<ControlSomatometrico> controlTrimestres;
+    private PaeInsertionObservable paeInsertionObservable = new PaeInsertionObservable();
     private ItemItemSelectedListener listener;
-    private ArrayList<Aulas> aulasArrayList;
-
-
+    private TextInputEditText nombreAlumno, fechaNacimiento, protesis,
+            ortesis, gafas, audifonos, otros, fiebre, alergias, diagnosticoClinico, dietas, medicacion, datosImportantes, ultimaModidicacion;
+    private String curso, tutor, enfermera, aulas;
 
 
     public interface ItemItemSelectedListener {
-        void onSpinnerItemSelected(String curso, String tutor, String enfermera, String aula);
+        void onSpinnerItemSelected(String curso, String tutor, String enfermera, String aulas);
     }
 
     // Método para establecer el escuchador de eventos
-    public void setSpinnerItemSelectedListener(ItemItemSelectedListener listener) {
+    public void setSpinnerItemSelectedListener(EditaPaeAdapter.ItemItemSelectedListener listener) {
         this.listener = listener;
     }
 
-    /**
-     * Este metodo se utiliza desde el fragmento que captura el evento de clic de los items
-     */
 
-
-    public CreaPaeAdapter(Alumnos alumno, ArrayList<String> cursoArrayList, ClaseGlobal claseGlobal, Context context, ArrayList<Aulas> aulasArrayList){
+    public EditaPaeAdapter(Alumnos alumno, ArrayList<String> cursoArrayList, Pae pae, ClaseGlobal claseGlobal, Context context) {
         this.alumno = alumno;
         this.cursoArrayList = cursoArrayList;
+        this.pae = pae;
         this.claseGlobal = claseGlobal;
         this.context = context;
-        this.aulasArrayList = aulasArrayList;
+
+
     }
 
 
@@ -69,39 +72,97 @@ public class CreaPaeAdapter {
      */
     public void rellenaUI(View view) {
         enlazaRecursos(view);
-        seteaDatosConocidos();
+        seteaDatos();
         setupSpinners();
     }
 
-    public void enlazaRecursos(View view){
+    public void enlazaRecursos(View view) {
+        nombreAlumno = view.findViewById(R.id.nombreAlumno);
+        fechaNacimiento = view.findViewById(R.id.fechaNacimientoPae);
+        fiebre = view.findViewById(R.id.fiebrePae);
+        alergias = view.findViewById(R.id.alergias);
+        protesis = view.findViewById(R.id.protesis);
+        ortesis = view.findViewById(R.id.ortesis);
+        gafas = view.findViewById(R.id.gafas);
+        audifonos = view.findViewById(R.id.audifonos);
+        otros = view.findViewById(R.id.otros);
+        diagnosticoClinico = view.findViewById(R.id.diagnostico);
+        dietas = view.findViewById(R.id.dietas);
+        medicacion = view.findViewById(R.id.medicacion);
         cursosTV = view.findViewById(R.id.cursos_exposed_dropdown);
         tutorTv = view.findViewById(R.id.tutor_exposed_dropdown);
         enfermeraTV = view.findViewById(R.id.enfermera_exposed_dropdown);
-        nombreTV = view.findViewById(R.id.nombreAlumno);
-        nacimientoTV = view.findViewById(R.id.fechaNacimientoPae);
-        aulasTV = view.findViewById(R.id.aula_exposed_dropdown);
+        aulasTV = view.findViewById(R.id.aulaAlumnoPae);
+        ultimaModidicacion = view.findViewById(R.id.modificado);
+        datosImportantes = view.findViewById(R.id.datosImportantes);
     }
 
+    public void seteaDatos() {
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
-    public void seteaDatosConocidos(){
-        nombreTV.setText(alumno.getNombre()+" "+alumno.getApellidos());
-        nacimientoTV.setText(alumno.getFechaNacimiento());
+        int screenHeight = displayMetrics.heightPixels;
+
+        // Porcentaje del alto de la pantalla para el tamaño de texto
+        float textPercentage = 0.02f; // Puedesfiebre ajustar este valor según tus necesidades
+
+        int desiredTextSize = (int) (screenHeight * textPercentage);
+
+        nombreAlumno.setText(alumno.getNombre());
+        nombreAlumno.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
+
+        fechaNacimiento.setText(alumno.getFechaNacimiento());
+        fechaNacimiento.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
+
+        cursosTV.setText(String.valueOf(pae.getCursoEmision()) + "/" + String.valueOf(pae.getCursoEmisionFin()));
+        cursosTV.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
+
+        tutorTv.setText(obtieneNombreTutor(pae));
+        tutorTv.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
+
+        enfermeraTV.setText(obtieneNombreEnfermera(pae));
+        enfermeraTV.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
+
+        fiebre.setText(pae.getFiebre());
+        fiebre.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
+
+        alergias.setText(pae.getAlergias());
+        alergias.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
+
+        protesis.setText(pae.getProtesis());
+        protesis.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
+
+        ortesis.setText(pae.getOrtesis());
+        ortesis.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
+
+        gafas.setText(pae.getGafas());
+        gafas.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
+
+        audifonos.setText(pae.getAudifonos());
+        audifonos.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
+
+        otros.setText(pae.getOtros());
+        otros.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
+
+        diagnosticoClinico.setText(pae.getDiagnosticoClinico());
+        diagnosticoClinico.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
+
+        dietas.setText(pae.getDieta());
+        dietas.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
+
+        medicacion.setText(pae.getMedicacion());
+        medicacion.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
+
+        aulasTV.setText(obtieneNombreAula(pae));
+        aulasTV.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
+
+        ultimaModidicacion.setText(seteaUltimoModificado(pae));
+        ultimaModidicacion.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
+
+        datosImportantes.setText(pae.getDatosImportantes());
+        datosImportantes.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
     }
 
-
-    public String getCurso() {
-        return curso;
-    }
-
-    public String getTutor() {
-        return tutor;
-    }
-
-    public String getEnfermera() {
-        return enfermera;
-    }
-
-    // Método para inicializar los spinners y establecer los listeners
     public void setupSpinners() {
         setupCursosSpinner();
         setupTutorSpinner();
@@ -113,10 +174,7 @@ public class CreaPaeAdapter {
         ArrayAdapter<String> cursosAdapter = new ArrayAdapter<>(context, android.R.layout.select_dialog_item, cursoArrayList);
         cursosTV.setThreshold(1);
         cursosTV.setAdapter(cursosAdapter);
-        //Si no se selecciona curso y se deja por defecto
 
-
-        //Si se selecciona un curso del spinner
         cursosTV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -151,22 +209,20 @@ public class CreaPaeAdapter {
         //SI no se ha seleccionado nada
         curso = cursosTV.getText().toString();
         notifyItemSelectedListener();
-
     }
 
     private void setupTutorSpinner() {
         nombreTutoresArrayList = new ArrayList<>();
-        for(Cargo c: claseGlobal.getCargoArrayList()){
-            for(Empleado e: claseGlobal.getListaEmpleados()){
-                if(e.getFk_cargo() == c.getIdCargo() && c.getNombreCargo().equals("Profesor")){
+        for (Cargo c : claseGlobal.getCargoArrayList()) {
+            for (Empleado e : claseGlobal.getListaEmpleados()) {
+                if (e.getFk_cargo() == c.getIdCargo() && c.getNombreCargo().equals("Profesor")) {
                     nombreTutoresArrayList.add(e.getNombre());
                 }
             }
         }
-        ArrayAdapter<String> tutoresAdapter = new ArrayAdapter<>(context,android.R.layout.select_dialog_item, nombreTutoresArrayList);
+        ArrayAdapter<String> tutoresAdapter = new ArrayAdapter<>(context, android.R.layout.select_dialog_item, nombreTutoresArrayList);
         tutorTv.setThreshold(1);
         tutorTv.setAdapter(tutoresAdapter);
-        //tutor = tutorTv.getText().toString();
         tutorTv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -205,9 +261,9 @@ public class CreaPaeAdapter {
 
     private void setupEnfermeraSpinner() {
         nombreEnfermerasArrayList = new ArrayList<>();
-        for(Cargo c: claseGlobal.getCargoArrayList()){
-            for(Empleado e: claseGlobal.getListaEmpleados()){
-                if(e.getFk_cargo() == c.getIdCargo() && c.getNombreCargo().equals("Enfermera")){
+        for (Cargo c : claseGlobal.getCargoArrayList()) {
+            for (Empleado e : claseGlobal.getListaEmpleados()) {
+                if (e.getFk_cargo() == c.getIdCargo() && c.getNombreCargo().equals("Enfermera")) {
                     nombreEnfermerasArrayList.add(e.getNombre());
                 }
             }
@@ -215,7 +271,6 @@ public class CreaPaeAdapter {
         ArrayAdapter<String> enfermerasAdapter = new ArrayAdapter<>(context, android.R.layout.select_dialog_item, nombreEnfermerasArrayList);
         enfermeraTV.setThreshold(1);
         enfermeraTV.setAdapter(enfermerasAdapter);
-        //enfermera = enfermeraTV.getText().toString();
         enfermeraTV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -251,16 +306,15 @@ public class CreaPaeAdapter {
         notifyItemSelectedListener();
     }
 
-    private void setupAulasSpinner(){
-        ArrayList<String> nombreAulasArrayList = new ArrayList<>();
-        for(Aulas a: aulasArrayList){
-            nombreAulasArrayList.add(a.getNombreAula());
-        }
+    private void setupAulasSpinner() {
+        nombreAulasArrayList = new ArrayList<>();
+        for (Aulas a : claseGlobal.getListaAulas()) {
+                    nombreAulasArrayList.add(a.getNombreAula());
+            }
 
         ArrayAdapter<String> aulasAdapter = new ArrayAdapter<>(context, android.R.layout.select_dialog_item, nombreAulasArrayList);
         aulasTV.setThreshold(1);
         aulasTV.setAdapter(aulasAdapter);
-
         aulasTV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -298,10 +352,65 @@ public class CreaPaeAdapter {
     }
 
 
+    private String obtieneNombreTutor(Pae pae){
+        String nombreProfesor = "";
+        for(Empleado e: ClaseGlobal.getInstance().getListaEmpleados()){
+            if(e.getCod_empleado() == pae.getFkIdProfesor()){
+                nombreProfesor = e.getNombre();
+            }
+        }
+        return nombreProfesor;
+    }
+
+    private String obtieneNombreEnfermera(Pae pae){
+        String nombreEnfermera = "";
+        for(Empleado e: ClaseGlobal.getInstance().getListaEmpleados()){
+            if(e.getCod_empleado() == pae.getFkIdEnfermero()){
+                nombreEnfermera = e.getNombre();
+            }
+        }
+        return nombreEnfermera;
+    }
+
+    private String obtieneNombreAula(Pae pae){
+        String nombreAula = "";
+        for(Aulas a: ClaseGlobal.getInstance().getListaAulas()){
+            if(a.getIdAula() == pae.getFkAula()){
+                nombreAula = a.getNombreAula();
+            }
+        }
+        return nombreAula;
+    }
+
     private void notifyItemSelectedListener() {
         if (listener != null) {
             listener.onSpinnerItemSelected(curso, tutor, enfermera, aulas);
         }
     }
+
+    private String seteaUltimoModificado(Pae pae){
+        String enfermeraModificacion = "", tiempoModificacion, ultimoModificado;
+
+        for(Empleado e: ClaseGlobal.getInstance().getListaEmpleados()){
+            if(e.getCod_empleado() == pae.getIdEnfermeroModifica()){
+                enfermeraModificacion = e.getNombre();
+            }
+        }
+
+        tiempoModificacion = formateaFechaModificacion(pae.getTiempoDeModificacion());
+        ultimoModificado = enfermeraModificacion+" "+"a: "+tiempoModificacion;
+        return ultimoModificado;
+    }
+
+    private String formateaFechaModificacion(String fechaHora){
+        DateTimeFormatter formatoEntrada = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        DateTimeFormatter formatoSalida = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+
+        LocalDateTime fechaEntrada = LocalDateTime.parse(fechaHora, formatoEntrada);
+
+        return fechaEntrada.format(formatoSalida);
+    }
+
+
 
 }

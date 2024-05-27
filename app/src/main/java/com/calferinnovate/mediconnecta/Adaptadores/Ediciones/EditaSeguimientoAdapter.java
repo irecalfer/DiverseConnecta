@@ -1,4 +1,4 @@
-package com.calferinnovate.mediconnecta.Adaptadores;
+package com.calferinnovate.mediconnecta.Adaptadores.Ediciones;
 
 import android.app.Activity;
 import android.content.Context;

@@ -2,24 +2,17 @@ package com.calferinnovate.mediconnecta.View.Home.Fragments.Alumnos;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.view.MenuHost;
-import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.calferinnovate.mediconnecta.Model.Alumnos;
 import com.calferinnovate.mediconnecta.Model.Pae;
-import com.calferinnovate.mediconnecta.View.Home.Fragments.Addiciones.CreaSeguimientoFragment;
 import com.calferinnovate.mediconnecta.View.Home.Fragments.Addiciones.CrearPaeFragment;
 import com.calferinnovate.mediconnecta.View.Home.Fragments.AlumnosFragment;
 import com.calferinnovate.mediconnecta.View.IOnBackPressed;
@@ -138,6 +131,9 @@ public class DetalleAlumnoFragment extends Fragment implements IOnBackPressed {
                 break;
             case "Crisis":
                 getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new CrisisFragment()).commit();
+                break;
+            case "Especialistas":
+                getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new EspecialistasFragment()).commit();
                 break;
 
         }
