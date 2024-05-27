@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    tools:context=".View.Home.Fragments.Addiciones.RegistraNuevoEspecialistaDialogFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/materialToolbarRegistraEspecialista"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineIzqPercent"
+            app:layout_constraintGuide_percent="0.10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineDerPercent"
+            app:layout_constraintGuide_percent="0.90"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/especialidadLabel"
+            app:boxBackgroundMode="outline"
+            app:hintTextAppearance="@style/TextLabel"
+            app:layout_constraintEnd_toStartOf="@id/guidelineDerPercent"
+            app:layout_constraintStart_toEndOf="@id/guidelineIzqPercent"
+            app:layout_constraintTop_toBottomOf="@id/materialToolbarRegistraEspecialista"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="@string/especialidad"
+            android:textColorHint="@color/md_theme_light_surfaceTint">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etEspecialidad"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="true"
+                android:textColor="@color/md_theme_black"
+                android:textSize="@dimen/defaultTextSize" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <LinearLayout
+            android:id="@+id/linear1"
+            app:layout_constraintEnd_toStartOf="@id/guidelineDerPercent"
+            app:layout_constraintStart_toEndOf="@id/guidelineIzqPercent"
+            app:layout_constraintTop_toBottomOf="@id/especialidadLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/nombreDoctorLabel"
+                app:boxBackgroundMode="outline"
+                app:hintTextAppearance="@style/TextLabel"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:hint="@string/nombreDoctor"
+                android:textColorHint="@color/md_theme_light_surfaceTint">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etNombre"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="true"
+                    android:textColor="@color/md_theme_black"
+                    android:textSize="@dimen/defaultTextSize" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/centroLabel"
+                app:boxBackgroundMode="outline"
+                app:hintTextAppearance="@style/TextLabel"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1"
+                android:hint="@string/centro"
+                android:textColorHint="@color/md_theme_light_surfaceTint">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etCentro"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="true"
+                    android:textColor="@color/md_theme_black"
+                    android:textSize="@dimen/defaultTextSize" />
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/liner2"
+            app:layout_constraintEnd_toStartOf="@id/guidelineDerPercent"
+            app:layout_constraintStart_toEndOf="@id/guidelineIzqPercent"
+            app:layout_constraintTop_toBottomOf="@id/linear1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/telefonoLabel"
+                app:boxBackgroundMode="outline"
+                app:hintTextAppearance="@style/TextLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:hint="@string/telefono"
+                android:textColorHint="@color/md_theme_light_surfaceTint">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etTelefono"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="true"
+                    android:textColor="@color/md_theme_black"
+                    android:textSize="@dimen/defaultTextSize" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/emailLabel"
+                app:boxBackgroundMode="outline"
+                app:hintTextAppearance="@style/TextLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1"
+                android:hint="@string/email"
+                android:textColorHint="@color/md_theme_light_surfaceTint">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="true"
+                    android:textColor="@color/md_theme_black"
+                    android:textSize="@dimen/defaultTextSize" />
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>

@@ -59,6 +59,7 @@ public class SharedAlumnosViewModel extends ViewModel {
     private MutableLiveData<ArrayList<Crisis>> mutableLiveDataTotalCrisisArrayList = new MutableLiveData<>();
     private MutableLiveData<ArrayList<Especialista>> mutableLiveDataEspecialistasArrayList = new MutableLiveData<>();
     private final MutableLiveData<Especialista> mutableEspecialista = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> especialistaUpdate = new MutableLiveData<>();
 
 
     /**
@@ -651,5 +652,13 @@ public class SharedAlumnosViewModel extends ViewModel {
 
     public LiveData<Especialista> getEspecialista(){
         return mutableEspecialista;
+    }
+
+    public void setEspecialistaUpdated(Boolean updated) {
+        especialistaUpdate.setValue(updated);
+    }
+
+    public LiveData<Boolean> getEspecialistaUpdated() {
+        return especialistaUpdate;
     }
 }

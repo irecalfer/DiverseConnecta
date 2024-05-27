@@ -77,6 +77,8 @@ public class OpcionesCrisisFragment extends DialogFragment {
         inicializaRecursos(view);
         inicializaViewModel();
         setupToolbar();
+        toolbarOpcionesCrisis.setTitle("Opciones crisis");
+        toolbarOpcionesCrisis.setTitleTextColor(getResources().getColor(R.color.blanco_de_cinc));
         return view;
     }
 

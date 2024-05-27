@@ -83,6 +83,8 @@ public class RegistroCrisisFragment extends DialogFragment implements RegistraCr
         inicializaRecursos(view);
         inicializaViewModel();
         setupToolbar();
+        toolbarCrisis.setTitle("Registro crisis");
+        toolbarCrisis.setTitleTextColor(getResources().getColor(R.color.blanco_de_cinc));
         return view;
     }
 

@@ -97,6 +97,8 @@ public class EditaCrisisFragment extends DialogFragment implements EditaCrisisAd
         inicializaRecursos(view);
         inicializaViewModel();
         setupToolbar();
+        toolbarConfirmar.setTitle("Edita Crisis");
+        toolbarConfirmar.setTitleTextColor(getResources().getColor(R.color.blanco_de_cinc));
         return view;
     }
 

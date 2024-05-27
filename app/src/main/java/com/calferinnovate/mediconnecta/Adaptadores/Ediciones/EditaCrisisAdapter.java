@@ -5,6 +5,7 @@ import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -79,14 +80,23 @@ public class EditaCrisisAdapter {
 
         int desiredTextSize = (int) (screenHeight * textPercentage);
         etFecha.setText(obtieneFecha(crisis.getFecha()));
+        etFecha.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
         etHora.setText(obtieneHora(crisis.getFecha()));
+        etHora.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
         etIntensidad.setText(crisis.getIntensidad());
+        etIntensidad.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
         etPatrones.setText(crisis.getPatron());
+        etPatrones.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
         etDuracion.setText(crisis.getDuracion());
+        etDuracion.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
         etRecuperacion.setText(crisis.getRecuperacion());
+        etRecuperacion.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
         etDescipcion.setText(crisis.getDescripcion());
+        etDescipcion.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
         atvLugar.setText(crisis.getLugar());
+        atvLugar.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
         atvTipo.setText(crisis.getTipo());
+        atvTipo.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
     }
 
     private String obtieneFecha(String fecha) {

@@ -83,6 +83,8 @@ private MaterialToolbar toolbarSeguimiento;
         inicializaRecursos(view);
         inicializaViewModel();
         setupToolbar();
+        toolbarSeguimiento.setTitle("Registro seguimiento");
+        toolbarSeguimiento.setTitleTextColor(getResources().getColor(R.color.blanco_de_cinc));
         //cambiarToolbar();
         return view;
     }

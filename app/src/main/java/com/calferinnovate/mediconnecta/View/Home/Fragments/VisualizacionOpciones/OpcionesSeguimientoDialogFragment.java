@@ -73,6 +73,8 @@ public class OpcionesSeguimientoDialogFragment extends DialogFragment {
         inicializaRecursos(view);
         inicializaViewModel();
         setupToolbar();
+        toolbarSeguimiento.setTitle("Opciones seguimiento");
+        toolbarSeguimiento.setTitleTextColor(getResources().getColor(R.color.blanco_de_cinc));
         return view;
     }
 

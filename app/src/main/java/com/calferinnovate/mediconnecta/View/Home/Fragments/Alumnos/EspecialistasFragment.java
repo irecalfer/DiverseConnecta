@@ -5,7 +5,9 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.MenuProvider;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -28,6 +30,9 @@ import com.calferinnovate.mediconnecta.Model.Especialista;
 import com.calferinnovate.mediconnecta.Model.PeticionesJson;
 import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.View.Home.Fragments.Addiciones.CreaSeguimientoFragment;
+import com.calferinnovate.mediconnecta.View.Home.Fragments.Addiciones.RegistraNuevoEspecialistaDialogFragment;
+import com.calferinnovate.mediconnecta.View.Home.Fragments.Ediciones.EditaEspecialistaDialogFragment;
+import com.calferinnovate.mediconnecta.View.Home.Fragments.Ediciones.EditaSeguimientoDialogFragment;
 import com.calferinnovate.mediconnecta.View.Home.Fragments.VisualizacionOpciones.OpcionesEspecialistasDialogFragment;
 import com.calferinnovate.mediconnecta.View.Home.Fragments.VisualizacionOpciones.OpcionesSeguimientoDialogFragment;
 import com.calferinnovate.mediconnecta.ViewModel.SharedAlumnosViewModel;
@@ -37,7 +42,7 @@ import com.calferinnovate.mediconnecta.ViewModel.ViewModelFactory;
 import java.util.ArrayList;
 
 
-public class EspecialistasFragment extends Fragment implements EspecialistasAdapter.ItemClickListener {
+public class EspecialistasFragment extends Fragment implements EspecialistasAdapter.ItemClickListener, EditaEspecialistaDialogFragment.OnEspecialistaUpdatedListener {
     private ClaseGlobal claseGlobal;
     private RecyclerView recyclerEspecialistas;
     private PeticionesJson peticionesJson;
@@ -59,9 +64,27 @@ public class EspecialistasFragment extends Fragment implements EspecialistasAdap
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        sharedAlumnosViewModel.getEspecialistaUpdated().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean update) {
+                if(update){
+                    obtieneEspecialistas();
+                    FragmentManager fragmentManager = getChildFragmentManager();
+                    DialogFragment editaEspecialistaDialog = (DialogFragment) fragmentManager.findFragmentByTag(EditaEspecialistaDialogFragment.TAG);
+                    DialogFragment opcionesEspecialistaDialog = (DialogFragment) fragmentManager.findFragmentByTag(OpcionesEspecialistasDialogFragment.TAG);
+
+                    if (editaEspecialistaDialog != null) {
+                        editaEspecialistaDialog.dismiss();
+                    }
+                    if (opcionesEspecialistaDialog != null) {
+                        opcionesEspecialistaDialog.dismiss();
+                    }
+                }
+            }
+        });
     }
 
-    public void inicializaVariables(View view){
+    public void inicializaVariables(View view) {
         claseGlobal = ClaseGlobal.getInstance();
         recyclerEspecialistas = view.findViewById(R.id.RVEspecialistas);
     }
@@ -83,7 +106,7 @@ public class EspecialistasFragment extends Fragment implements EspecialistasAdap
         sharedAlumnosViewModel = new ViewModelProvider(requireActivity(), factory).get(SharedAlumnosViewModel.class);
     }
 
-    public void cambiarToolbar(){
+    public void cambiarToolbar() {
         MenuProvider menuProvider = new MenuProvider() {
             @Override
             public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
@@ -92,9 +115,9 @@ public class EspecialistasFragment extends Fragment implements EspecialistasAdap
 
             @Override
             public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
-                if(menuItem.getItemId() == R.id.action_añadir){
-                    //new CreaSeguimientoFragment().show(getChildFragmentManager(), CreaSeguimientoFragment.TAG);
-                    //adapter.notifyDataSetChanged();
+                if (menuItem.getItemId() == R.id.action_añadir) {
+                    new RegistraNuevoEspecialistaDialogFragment().show(getChildFragmentManager(), RegistraNuevoEspecialistaDialogFragment.TAG);
+                    adapter.notifyDataSetChanged();
                 }
                 return false;
             }
@@ -103,7 +126,7 @@ public class EspecialistasFragment extends Fragment implements EspecialistasAdap
         requireActivity().addMenuProvider(menuProvider, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
     }
 
-    public void obtieneEspecialistas(){
+    public void obtieneEspecialistas() {
         recyclerEspecialistas.setHasFixedSize(true);
         sharedAlumnosViewModel.getPaciente().observe(getViewLifecycleOwner(), new Observer<Alumnos>() {
             @Override
@@ -118,7 +141,7 @@ public class EspecialistasFragment extends Fragment implements EspecialistasAdap
         });
     }
 
-    public void poblaRecyclerEspecialistas(ArrayList<Especialista> especialistaArrayList){
+    public void poblaRecyclerEspecialistas(ArrayList<Especialista> especialistaArrayList) {
         adapter = new EspecialistasAdapter(especialistaArrayList, requireContext(), this);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireContext());
@@ -134,5 +157,20 @@ public class EspecialistasFragment extends Fragment implements EspecialistasAdap
         sharedAlumnosViewModel.setEspecialista(position);
         new OpcionesEspecialistasDialogFragment().show(getChildFragmentManager(), OpcionesEspecialistasDialogFragment.TAG);
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onEspecialistaUpdated() {
+// Aquí cierras ambos DialogFragments
+        FragmentManager fragmentManager = getChildFragmentManager();
+        DialogFragment editaEspecialistaDialog = (DialogFragment) fragmentManager.findFragmentByTag(EditaEspecialistaDialogFragment.TAG);
+        DialogFragment opcionesEspecialistaDialog = (DialogFragment) fragmentManager.findFragmentByTag(OpcionesEspecialistasDialogFragment.TAG);
+
+        if (editaEspecialistaDialog != null) {
+            editaEspecialistaDialog.dismiss();
+        }
+        if (opcionesEspecialistaDialog != null) {
+            opcionesEspecialistaDialog.dismiss();
+        }
     }
 }

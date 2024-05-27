@@ -84,6 +84,8 @@ public class EditaSeguimientoDialogFragment extends DialogFragment {
         inicializaRecursos(view);
         inicializaViewModel();
         setupToolbar();
+        toolbarConfirmar.setTitle("Edita seguimiento");
+        toolbarConfirmar.setTitleTextColor(getResources().getColor(R.color.blanco_de_cinc));
         return view;
     }
 

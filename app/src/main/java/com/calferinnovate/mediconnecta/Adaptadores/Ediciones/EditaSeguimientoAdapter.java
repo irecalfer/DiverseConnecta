@@ -47,8 +47,9 @@ public class EditaSeguimientoAdapter {
         etFecha.setText(obtieneFecha(seguimiento.getFechaHora()));
         etFecha.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
         etHora.setText(obtieneHora(seguimiento.getFechaHora()));
+        etHora.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
         etSeguimiento.setText(seguimiento.getDescripcion());
-
+        etSeguimiento.setTextSize(TypedValue.COMPLEX_UNIT_PX, desiredTextSize);
     }
 
     private String obtieneFecha(String fecha) {
