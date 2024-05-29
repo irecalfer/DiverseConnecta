@@ -213,4 +213,5 @@
     <string name="telefono">Teléfono de contacto</string>
     <string name="email">Correo electrónico</string>
     <string name="borradoEspecialista">¿Quiere borrar este especialista?</string>
+    <string name="centroPerteneciente">C.P.R.E.E. Carrechiquilla</string>
 </resources>

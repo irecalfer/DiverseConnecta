@@ -71,6 +71,7 @@ public class CrisisFragment extends Fragment implements CrisisAdapter.ItemClickL
         View view = inflater.inflate(R.layout.fragment_crisis, container, false);
         menuHost = requireActivity();
         inicializaVariables(view);
+        getActivity().setTitle("Diario de crisis");
         inicializaViewModel();
         cambiarToolbar();
         obtieneCrisis();

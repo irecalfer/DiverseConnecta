@@ -55,6 +55,7 @@ public class EspecialistasFragment extends Fragment implements EspecialistasAdap
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_especialistas, container, false);
         inicializaVariables(view);
+        getActivity().setTitle("Especialistas");
         inicializaViewModel();
         cambiarToolbar();
         obtieneEspecialistas();

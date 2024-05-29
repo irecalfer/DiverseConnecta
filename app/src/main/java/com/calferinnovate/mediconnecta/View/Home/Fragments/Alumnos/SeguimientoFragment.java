@@ -59,7 +59,7 @@ public class SeguimientoFragment extends Fragment implements SeguimientoAdapter.
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_seguimiento, container, false);
-        getActivity().setTitle("Seguimiento");
+        getActivity().setTitle("Diario de seguimiento");
         menuHost = requireActivity();
         inicializaVariables(view);
         inicializaViewModel();
