@@ -11,6 +11,6 @@
         android:icon="@drawable/add"
         android:title="@string/añadir"
         android:iconTint="@color/md_theme_white"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
     <group />
 </menu>

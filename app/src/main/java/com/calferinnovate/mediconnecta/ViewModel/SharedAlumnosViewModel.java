@@ -60,6 +60,7 @@ public class SharedAlumnosViewModel extends ViewModel {
     private MutableLiveData<ArrayList<Especialista>> mutableLiveDataEspecialistasArrayList = new MutableLiveData<>();
     private final MutableLiveData<Especialista> mutableEspecialista = new MutableLiveData<>();
     private final MutableLiveData<Boolean> especialistaUpdate = new MutableLiveData<>();
+    private final MutableLiveData<ArrayList<String>> listaDiscapacidadLiveData = new MutableLiveData<>();
 
 
     /**
@@ -660,5 +661,39 @@ public class SharedAlumnosViewModel extends ViewModel {
 
     public LiveData<Boolean> getEspecialistaUpdated() {
         return especialistaUpdate;
+    }
+
+    public LiveData<ArrayList<String>> obtieneGradoDiscapacidadEnum() {
+        String url = Constantes.url_part + "grado_discapacidad.php";
+        peticionesJson.getJsonObjectRequest(url, new PeticionesJson.MyJsonObjectResponseListener() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    ArrayList<String> discapacidadArrayList = new ArrayList<>();
+                    JSONArray discapacidadArray = response.getJSONArray("grado_discapacidad");
+
+                    // Itera sobre los valores ENUM
+                    for (int i = 0; i < discapacidadArray.length(); i++) {
+                        String enumDiscapacidad = discapacidadArray.getString(i);
+                        //Añadimos el valor a nuestro arrayList
+                        discapacidadArrayList.add(enumDiscapacidad);
+                    }
+
+                    // Actualiza el LiveData con la nueva lista
+                    if (!discapacidadArrayList.isEmpty()) {
+                        listaDiscapacidadLiveData.postValue(new ArrayList<>(discapacidadArrayList));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+
+        return listaDiscapacidadLiveData;
     }
 }

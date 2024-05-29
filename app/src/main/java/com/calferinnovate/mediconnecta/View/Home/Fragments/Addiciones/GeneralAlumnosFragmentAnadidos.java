@@ -6,12 +6,15 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -33,8 +36,11 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.calferinnovate.mediconnecta.Model.Aulas;
+import com.calferinnovate.mediconnecta.Model.Cargo;
 import com.calferinnovate.mediconnecta.Model.ClaseGlobal;
 import com.calferinnovate.mediconnecta.Model.Constantes;
+import com.calferinnovate.mediconnecta.Model.Empleado;
 import com.calferinnovate.mediconnecta.Model.PeticionesJson;
 import com.calferinnovate.mediconnecta.R;
 import com.calferinnovate.mediconnecta.View.Home.Fragments.AlumnosFragment;
@@ -48,6 +54,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -57,6 +64,8 @@ import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -70,12 +79,10 @@ public class GeneralAlumnosFragmentAnadidos extends Fragment implements IOnBackP
 
 
     private ImageView fotoPaciente;
-    private Button guardarBtn, nacimientoBtn, ingresoBtn;
-    private TextInputEditText nombre, apellidos, nacimientoLugar, dni, cipSns, numSeguridadSocial, numeroHistoriaClinica;
-    private Spinner seguroSp, unidadSp, habitacionSp, sexoSp, estadoCivilSp;
-    private TextInputEditText fechaNacimiento, fechaIngreso;
-    private String unidadSeleccionada, sexoSeleccionado, estadoCivilSeleccionado, seguroSeleccionado, fechaNacimientoSeleccionada,
-    fechaIngresoSeleccionada, habitacionSeleccionada;
+    private TextInputEditText nombre, apellidos, sexo, dni, edad, fechaNacimiento;
+    private AutoCompleteTextView profesorAT, ateAT, aulaAT;
+    private Spinner gradoDiscapacidad;
+    private TextInputLayout tilFechaNacimiento;
     private ClaseGlobal claseGlobal;
     private PeticionesJson peticionesJson;
     private SharedAlumnosViewModel sharedAlumnosViewModel;
@@ -83,6 +90,7 @@ public class GeneralAlumnosFragmentAnadidos extends Fragment implements IOnBackP
     private String imageBase64;
     private int idUnidad, idSeguro;
     private StorageReference storageReference;
+    private String gradoDiscapacidadSeleccionado, fechaNacimientoSeleccionada, aulaSeleccionada, ateSeleccionado, profesorSeleccionado;
 
 
 
@@ -104,7 +112,7 @@ public class GeneralAlumnosFragmentAnadidos extends Fragment implements IOnBackP
         View view = inflater.inflate(R.layout.fragment_general_pacientes_anadidos, container, false);
         inicializaRecursos(view);
         inicializaViewModel();
-        inicializaLauncherSeleccionarImagenes();
+        //inicializaLauncherSeleccionarImagenes();
         return view;
     }
 
@@ -116,26 +124,19 @@ public class GeneralAlumnosFragmentAnadidos extends Fragment implements IOnBackP
      */
     public void inicializaRecursos(View view) {
         storageReference = FirebaseStorage.getInstance().getReference();
-
         claseGlobal = ClaseGlobal.getInstance();
-        fotoPaciente = view.findViewById(R.id.fotoPacienteDetalleNuevo);
-        guardarBtn = view.findViewById(R.id.btnGuardar);
-        nombre = view.findViewById(R.id.nombrePacienteNuevo);
-        apellidos = view.findViewById(R.id.apellidoPacienteNuevo);
-        nacimientoLugar = view.findViewById(R.id.lugarNacimientoPacienteNuevo);
-        dni = view.findViewById(R.id.dniPacienteNuevo);
-        cipSns = view.findViewById(R.id.cipSnsPacienteNuevo);
-        numSeguridadSocial = view.findViewById(R.id.numSeguridadSocialPacienteNuevo);
-        seguroSp = view.findViewById(R.id.seguroPacienteNuevoSpinner);
-        unidadSp = view.findViewById(R.id.spinnerUnidadPacienteNuevo);
-        habitacionSp = view.findViewById(R.id.spinnerHabitaciónPacienteNuevo);
-        sexoSp = view.findViewById(R.id.spinnerSexoPacienteNuevo);
-        estadoCivilSp = view.findViewById(R.id.spinnerEstadoCivilPacienteNuevo);
-        fechaNacimiento = view.findViewById(R.id.fechaNacimientoPacienteNuevo);
-        fechaIngreso = view.findViewById(R.id.fechaIngresoPacienteNuevo);
-        nacimientoBtn = view.findViewById(R.id.btnNacimiento);
-        ingresoBtn = view.findViewById(R.id.btnIngreso);
-        numeroHistoriaClinica = view.findViewById(R.id.historiaClinica);
+        fotoPaciente = view.findViewById(R.id.fotoPacienteDetalle);
+        nombre = view.findViewById(R.id.nombreAlumno);
+        apellidos = view.findViewById(R.id.apellidoAlumno);
+        sexo = view.findViewById(R.id.sexoAlumno);
+        dni = view.findViewById(R.id.dniAlumno);
+        edad = view.findViewById(R.id.edadAlumno);
+        fechaNacimiento = view.findViewById(R.id.fechaNacimientoAlumno);
+        profesorAT = view.findViewById(R.id.profesorAlumno);
+        aulaAT = view.findViewById(R.id.aulaAlumno);
+        ateAT = view.findViewById(R.id.ateAlumno);
+        gradoDiscapacidad = view.findViewById(R.id.gradoDiscapacidad);
+        tilFechaNacimiento = view.findViewById(R.id.labelFechaNacimientoAlumno);
 
     }
 
@@ -160,6 +161,7 @@ public class GeneralAlumnosFragmentAnadidos extends Fragment implements IOnBackP
         sharedAlumnosViewModel = new ViewModelProvider(requireActivity(), factory).get(SharedAlumnosViewModel.class);
     }
 
+    /*
     private void inicializaLauncherSeleccionarImagenes(){
         pickImageLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
             @Override
@@ -174,7 +176,7 @@ public class GeneralAlumnosFragmentAnadidos extends Fragment implements IOnBackP
                 }
             }
         });
-    }
+    }*/
 
     /**
      * Método llamado cuando la vista ya ha sido creada.
@@ -187,10 +189,9 @@ public class GeneralAlumnosFragmentAnadidos extends Fragment implements IOnBackP
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        obtieneSexoPacientes();
+        setupSpinners();
         seleccionaFechaNacimiento();
-        seleccionaFechaIngreso();
-        listenerImageView();
+        //listenerImageView();
 
     }
 
@@ -264,17 +265,17 @@ public class GeneralAlumnosFragmentAnadidos extends Fragment implements IOnBackP
         });
     }*/
 
-    private void obtieneSexoPacientes() {
-        sharedAlumnosViewModel.obtieneSexoPacientesEnum().observe(getViewLifecycleOwner(), new Observer<ArrayList<String>>() {
+    private void obtieneGradoDiscapacidadPacientes() {
+        sharedAlumnosViewModel.obtieneGradoDiscapacidadEnum().observe(getViewLifecycleOwner(), new Observer<ArrayList<String>>() {
             @Override
-            public void onChanged(ArrayList<String> listaSexo) {
-                ArrayAdapter<String> sexoAdapter = new ArrayAdapter<>(requireActivity(), R.layout.my_spinner, listaSexo);
-                sexoAdapter.setDropDownViewResource(R.layout.my_spinner);
-                sexoSp.setAdapter(sexoAdapter);
-                sexoSp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onChanged(ArrayList<String> listaGrados) {
+                ArrayAdapter<String> discapacidadAdapter = new ArrayAdapter<>(requireActivity(), R.layout.my_spinner, listaGrados);
+                discapacidadAdapter.setDropDownViewResource(R.layout.my_spinner);
+                gradoDiscapacidad.setAdapter(discapacidadAdapter);
+                gradoDiscapacidad.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        sexoSeleccionado = parent.getItemAtPosition(position).toString();
+                        gradoDiscapacidadSeleccionado = parent.getItemAtPosition(position).toString();
                     }
 
                     @Override
@@ -283,6 +284,7 @@ public class GeneralAlumnosFragmentAnadidos extends Fragment implements IOnBackP
                     }
                 });
             }
+
         });
     }
 
@@ -294,7 +296,7 @@ public class GeneralAlumnosFragmentAnadidos extends Fragment implements IOnBackP
 
       final MaterialDatePicker<Long> materialDatePicker = materialDateBuilder.build();
 
-      nacimientoBtn.setOnClickListener(new View.OnClickListener() {
+      tilFechaNacimiento.setEndIconOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View v) {
               if (getActivity() != null) {
@@ -310,36 +312,162 @@ public class GeneralAlumnosFragmentAnadidos extends Fragment implements IOnBackP
               String fechaFormateada = simpleDateFormat.format(new Date(selection));
               fechaNacimiento.setText(fechaFormateada);
               fechaNacimientoSeleccionada = fechaFormateada;
+              seteaEdad();
           }
       });
+
     }
 
-    private void seleccionaFechaIngreso(){
-        MaterialDatePicker.Builder<Long> materialDateBuilder = MaterialDatePicker.Builder.datePicker();
-        materialDateBuilder.setTitleText("Selecciona la fecha de ingreso");
+    public void seteaEdad(){
+        LocalDate fechaActual = LocalDate.now();
+        LocalDate fechaNacimiento = LocalDate.parse(fechaDateTimeSql(fechaNacimientoSeleccionada));
+        Period periodo = Period.between(fechaNacimiento, fechaActual);
+        edad.setText(String.valueOf(periodo.getYears()));
+    }
 
-        final MaterialDatePicker<Long> materialDatePicker = materialDateBuilder.build();
+    public void setupSpinners(){
+        obtieneGradoDiscapacidadPacientes();
+        setupAula();
+        setUpAte();
+        setUpProfesor();
+    }
 
-        ingresoBtn.setOnClickListener(new View.OnClickListener() {
+    public void setupAula(){
+        ArrayList<String> nombreAulasArrayList = new ArrayList<>();
+        for(Aulas a: claseGlobal.getListaAulas()){
+            nombreAulasArrayList.add(a.getNombreAula());
+        }
+
+        ArrayAdapter<String> aulasAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.select_dialog_item, nombreAulasArrayList);
+        aulaAT.setThreshold(1);
+        ateAT.setAdapter(aulasAdapter);
+
+        aulaAT.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(View v) {
-                if (getActivity() != null) {
-                    materialDatePicker.show(requireActivity().getSupportFragmentManager(), "MATERIAL_DATE_PICKER_INGRESO");
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                aulaSeleccionada = (String) parent.getItemAtPosition(position);
+            }
+        });
+
+        aulaAT.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // No es necesario implementar este método
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // No es necesario implementar este método
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String aulaText = s.toString();
+                if (!nombreAulasArrayList.contains(aulaText)) {
+                    // El texto ingresado no coincide con ningún elemento de la lista
+                    // Considerarlo como un nuevo elemento y guardarlo en la base de datos
+                    aulaSeleccionada = aulaText;
                 }
             }
         });
 
-        materialDatePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Long>() {
-            @Override
-            public void onPositiveButtonClick(Long selection) {
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
-                String fechaFormateada = simpleDateFormat.format(new Date(selection));
-                fechaIngreso.setText(fechaFormateada);
-                fechaIngresoSeleccionada = fechaFormateada;
-            }
-        });
+        //Si no se ha seleccionado nada
+        aulaSeleccionada = aulaAT.getText().toString();
     }
 
+    public void setUpAte(){
+        ArrayList<String> nombreATEArrayList = new ArrayList<>();
+        for(Cargo c: claseGlobal.getCargoArrayList()){
+            for(Empleado e: claseGlobal.getListaEmpleados()){
+                if(e.getFk_cargo() == c.getIdCargo() && c.getNombreCargo().equals("ATE")){
+                    nombreATEArrayList.add(e.getNombre());
+                }
+            }
+        }
+
+        ArrayAdapter<String> tutoresAdapter = new ArrayAdapter<>(requireContext(),android.R.layout.select_dialog_item, nombreATEArrayList);
+        ateAT.setThreshold(1);
+        ateAT.setAdapter(tutoresAdapter);
+        //tutor = tutorTv.getText().toString();
+        ateAT.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ateSeleccionado = (String) parent.getItemAtPosition(position);
+            }
+        });
+
+        ateAT.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // No es necesario implementar este método
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // No es necesario implementar este método
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String tutorText = s.toString();
+                if (!nombreATEArrayList.contains(tutorText)) {
+                    // El texto ingresado no coincide con ningún elemento de la lista
+                    // Considerarlo como un nuevo elemento y guardarlo en la base de datos
+                    ateSeleccionado = tutorText;
+                }
+            }
+        });
+
+        //Si no se ha seleccionado nada
+        ateSeleccionado = ateAT.getText().toString();
+    }
+
+    public void setUpProfesor(){
+        ArrayList<String> nombreTutoresArrayList = new ArrayList<>();
+        for(Cargo c: claseGlobal.getCargoArrayList()){
+            for(Empleado e: claseGlobal.getListaEmpleados()){
+                if(e.getFk_cargo() == c.getIdCargo() && c.getNombreCargo().equals("Profesor")){
+                    nombreTutoresArrayList.add(e.getNombre());
+                }
+            }
+        }
+        ArrayAdapter<String> tutoresAdapter = new ArrayAdapter<>(requireContext(),android.R.layout.select_dialog_item, nombreTutoresArrayList);
+        profesorAT.setThreshold(1);
+        profesorAT.setAdapter(tutoresAdapter);
+        //tutor = tutorTv.getText().toString();
+        profesorAT.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                profesorSeleccionado = (String) parent.getItemAtPosition(position);
+            }
+        });
+
+        profesorAT.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // No es necesario implementar este método
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // No es necesario implementar este método
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String tutorText = s.toString();
+                if (!nombreTutoresArrayList.contains(tutorText)) {
+                    // El texto ingresado no coincide con ningún elemento de la lista
+                    // Considerarlo como un nuevo elemento y guardarlo en la base de datos
+                    profesorSeleccionado = tutorText;
+                }
+            }
+        });
+
+        //Si no se ha seleccionado nada
+        profesorSeleccionado = profesorAT.getText().toString();
+    }
+    /*
     private void listenerImageView(){
         fotoPaciente.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -347,8 +475,9 @@ public class GeneralAlumnosFragmentAnadidos extends Fragment implements IOnBackP
                 abrirGaleriaFotoPaciente();
             }
         });
-    }
+    }*/
 
+    /*
     private void abrirGaleriaFotoPaciente(){
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         pickImageLauncher.launch(intent);
@@ -388,9 +517,9 @@ public class GeneralAlumnosFragmentAnadidos extends Fragment implements IOnBackP
                 }
             }
         });
-    }
+    }*/
 
-    private void sendImageUrlToServer(String url) {
+    /*private void sendImageUrlToServer(String url) {
         // Después de guardar la imagen, obtén la URL y llama a sendImageUrlToServer con la URL
         // String imageUrl = "http://192.168.1.136/MediConnecta/imagenes/"+nombreRellenado+apellidosRellenado+".jpg";// Reemplaza con la URL real
         final String imageUrl = url;
@@ -484,7 +613,7 @@ public class GeneralAlumnosFragmentAnadidos extends Fragment implements IOnBackP
 
     private void validacionesDatos(){
 
-    }
+    }*/
 
     /**
      * Método encargado de formatear la fecha y hora del parte de caídas a yyyy-MM-dd HH:mm:ss para
