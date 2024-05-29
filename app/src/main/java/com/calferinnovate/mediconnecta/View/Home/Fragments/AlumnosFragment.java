@@ -47,7 +47,6 @@ public class AlumnosFragment extends Fragment implements AlumnosAdapter.ItemClic
     private AlumnosAdapter adapter;
     private MenuHost menuHost;
 
-
     /**
      * Método llamado cuando se crea la vista del fragmento.
      * Infla el diseño de la UI desde el archivo XML fragment_pacientes.xml.
@@ -78,10 +77,12 @@ public class AlumnosFragment extends Fragment implements AlumnosAdapter.ItemClic
         return view;
     }
 
+
     public void cambiarToolbar() {
         MenuProvider menuProvider = new MenuProvider() {
             @Override
             public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                menu.clear();
                 menuInflater.inflate(R.menu.app_bar_usuarios, menu);
             }
 

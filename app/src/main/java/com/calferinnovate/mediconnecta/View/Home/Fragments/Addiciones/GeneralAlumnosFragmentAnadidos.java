@@ -340,7 +340,7 @@ public class GeneralAlumnosFragmentAnadidos extends Fragment implements IOnBackP
 
         ArrayAdapter<String> aulasAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.select_dialog_item, nombreAulasArrayList);
         aulaAT.setThreshold(1);
-        ateAT.setAdapter(aulasAdapter);
+        aulaAT.setAdapter(aulasAdapter);
 
         aulaAT.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
