@@ -107,7 +107,11 @@ public class DetalleAlumnoFragment extends Fragment implements IOnBackPressed {
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
+                String tabSeleccionado = (String) tab.getText();
 
+                assert tabSeleccionado != null;
+
+                actualizaElFragmento(tabSeleccionado);
             }
         });
 
@@ -139,6 +143,20 @@ public class DetalleAlumnoFragment extends Fragment implements IOnBackPressed {
         }
     }
 
+    /**
+     * Método que resetea el fragmento según el Tab seleccionado.
+     * @param tabSeleccionado
+     */
+    public void actualizaElFragmento(String tabSeleccionado){
+        switch (tabSeleccionado) {
+            case "Seguimiento":
+                getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new SeguimientoFragment()).commit();
+                break;
+            case "Crisis":
+                getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerDetallePacientes, new CrisisFragment()).commit();
+                break;
+        }
+    }
 
     public void seleccionaTipoPae() {
         // Limpiar datos del paciente anterior

@@ -183,6 +183,8 @@ public class SeguimientoFragment extends Fragment implements SeguimientoAdapter.
 
             filtraRecyclerViewSeguimientos(fechaInicio, fechaFin);
         });
+
+        
     }
 
     public void filtraRecyclerViewSeguimientos(String fechaInicio, String fechaFin){
@@ -192,7 +194,12 @@ public class SeguimientoFragment extends Fragment implements SeguimientoAdapter.
                 sharedAlumnosViewModel.getListaSeguimientosFecha(alumnos, fechaInicio, fechaFin).observe(getViewLifecycleOwner(), new Observer<ArrayList<Seguimiento>>() {
                     @Override
                     public void onChanged(ArrayList<Seguimiento> seguimientoArrayList) {
-                        poblarRecyclerSeguimientoFechas(seguimientoArrayList);
+                        if(!seguimientoArrayList.isEmpty()){
+                            poblarRecyclerSeguimientoFechas(seguimientoArrayList);
+                        }else{
+                            ArrayList<Seguimiento> arrayVacio = new ArrayList<>();
+                            poblarRecyclerSeguimientoFechas(arrayVacio);
+                        }
                     }
                 });
             }

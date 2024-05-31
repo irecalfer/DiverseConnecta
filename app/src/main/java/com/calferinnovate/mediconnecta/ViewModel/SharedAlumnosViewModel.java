@@ -459,6 +459,7 @@ public class SharedAlumnosViewModel extends ViewModel {
     public LiveData<ArrayList<Seguimiento>> getListaSeguimientosFecha(Alumnos alumno, String fechaInicio, String fechaFin) {
         String url = Constantes.url_part + "obtiene_seguimiento_fechas.php?fk_id_alumno="+alumno.getIdAlumno() +"&fecha_inicio="+ fechaInicio +"&fecha_fin=" + fechaFin;
 
+        mutableLiveDataSeguimientoArrayList.setValue(new ArrayList<>());
         peticionesJson.getJsonObjectRequest(url, new PeticionesJson.MyJsonObjectResponseListener() {
             @Override
             public void onResponse(JSONObject response) {
@@ -578,6 +579,7 @@ public class SharedAlumnosViewModel extends ViewModel {
     public LiveData<ArrayList<Crisis>> getListaCrisisFecha(Alumnos alumno, String fechaInicio, String fechaFin) {
         String url = Constantes.url_part + "obtiene_crisis_fechas.php?fk_id_alumno="+alumno.getIdAlumno() +"&fecha_inicio="+ fechaInicio +"&fecha_fin=" + fechaFin;
 
+        mutableLiveDataCrisisArrayList.setValue(new ArrayList<>());
         peticionesJson.getJsonObjectRequest(url, new PeticionesJson.MyJsonObjectResponseListener() {
             @Override
             public void onResponse(JSONObject response) {

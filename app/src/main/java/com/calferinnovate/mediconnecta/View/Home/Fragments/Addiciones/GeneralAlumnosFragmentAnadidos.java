@@ -10,6 +10,9 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -26,7 +29,9 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -112,6 +117,7 @@ public class GeneralAlumnosFragmentAnadidos extends Fragment implements IOnBackP
         View view = inflater.inflate(R.layout.fragment_general_pacientes_anadidos, container, false);
         inicializaRecursos(view);
         inicializaViewModel();
+        cambiarToolbar();
         //inicializaLauncherSeleccionarImagenes();
         return view;
     }
@@ -161,6 +167,26 @@ public class GeneralAlumnosFragmentAnadidos extends Fragment implements IOnBackP
         sharedAlumnosViewModel = new ViewModelProvider(requireActivity(), factory).get(SharedAlumnosViewModel.class);
     }
 
+    public void cambiarToolbar(){
+        MenuProvider menuProvider = new MenuProvider() {
+            @Override
+            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                menuInflater.inflate(R.menu.app_menu_confirmar, menu);
+            }
+
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                if(menuItem.getItemId() == R.id.action_confirmar){
+                    //registraElNuevoAlumno();
+                    return true;
+                }
+
+                return false;
+            }
+        };
+
+        requireActivity().addMenuProvider(menuProvider, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
+    }
     /*
     private void inicializaLauncherSeleccionarImagenes(){
         pickImageLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
