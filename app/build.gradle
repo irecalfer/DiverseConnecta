@@ -3,15 +3,18 @@ plugins {
     id 'com.google.gms.google-services'
 }
 
-apply plugin: 'com.android.application'
-
 android {
+
     namespace 'com.calferinnovate.mediconnecta'
     compileSdk 34
 
+    configurations {
+        jarCompile
+    }
+
     defaultConfig {
         applicationId "com.calferinnovate.mediconnecta"
-        minSdk 33
+        minSdk 22
         targetSdk 34
         versionCode 1
         versionName "1.0"
@@ -26,27 +29,21 @@ android {
         }
     }
 
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
     buildFeatures {
-        viewBinding = true
-        dataBinding = true
+        viewBinding true
+        dataBinding true
     }
 
     dataBinding {
-        enabled = true
+        enabled true
     }
-
-
 }
 
-
-
 dependencies {
-
     implementation 'androidx.appcompat:appcompat:1.7.0-beta01'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.7.0'
@@ -60,40 +57,57 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
-    // Nos va a permitir enviar datos a través de HTTP
     implementation 'com.android.volley:volley:1.2.1'
-    //Navegación entre fragmentos
     implementation 'com.loopj.android:android-async-http:1.4.11'
-    //Imagenes con libreria Glide
     implementation "com.github.bumptech.glide:glide:4.16.0"
-    //Dependencia para usar un Navigation Drawer Modal
     implementation "androidx.drawerlayout:drawerlayout:1.2.0"
     implementation 'de.hdodenhof:circleimageview:3.1.0'
     implementation 'androidx.viewpager2:viewpager2:1.0.0'
     implementation 'com.google.android.material:material:1.12.0'
-    //Dependencias para tener recyclerView con secciones
     implementation 'com.github.luizgrp:SectionedRecyclerViewAdapter:v3.2.0'
-    //GridLayout
     implementation "androidx.gridlayout:gridlayout:1.0.0"
-    //CardView
     implementation "androidx.cardview:cardview:1.0.0"
-    //Coroutines
     implementation "androidx.lifecycle:lifecycle-viewmodel:2.7.0"
-    //Para visualizar pdf dentro de la aplicación
     implementation 'com.github.barteksc:android-pdf-viewer:3.2.0-beta.1'
-    implementation 'androidx.appcompat:appcompat:1.7.0-beta01'
-
-
     implementation 'com.google.firebase:firebase-storage:21.0.0'
     implementation 'com.google.firebase:firebase-core:21.1.1'
-
-    
-
-
-
 }
 
+task createJar(type: Jar) {
+    archiveFileName = 'diverseconnecta.jar'
 
+    // Incluye las clases compiladas, los recursos y el archivo de manifiesto en el JAR
+    from {
+        configurations.jarCompile.collect { it.isDirectory() ? it : zipTree(it) }
+        android.sourceSets.main.java.srcDirs
+        'src/main'
+    }
 
+    // Excluye los archivos no deseados
+    exclude '**/R.class', '**/R$*.class', '**/BuildConfig.*'
 
+    with copySpec {
+        from("$buildDir/intermediates/javac/release/classes") {
+            exclude '**/R.class', '**/R$*.class', '**/BuildConfig.*'
+        }
+        from("$buildDir/tmp/kotlin-classes/release") {
+            exclude '**/R.class', '**/R$*.class', '**/BuildConfig.*'
+        }
+        from("$buildDir/intermediates/javac/debug/compileDebugJavaWithJavac/classes") {
+            exclude '**/R.class', '**/R$*.class', '**/BuildConfig.*'
+        }
+        // Incluye los recursos de la aplicación en el JAR
+        from 'src/main/res'
+        duplicatesStrategy 'include' // Configura una estrategia para manejar duplicados
+        // Incluye el AndroidManifest.xml en el JAR
+        from 'src/main/AndroidManifest.xml'
+    }
+
+    // Incluye el archivo de manifiesto en el JAR
+    manifest {
+        attributes 'Implementation-Title': project.name,
+                'Implementation-Version': project.version,
+        'Main-Class': 'com.calferinnovate.mediconnecta.View.Sesion.MainActivity'
+    }
+}
 
